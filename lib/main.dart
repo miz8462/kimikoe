@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kimikoe_app/ui/auth/view/sign_in_page.dart';
+import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+final mainBlue = Colors.blue[200];
 
 Future<void> main() async {
   // Flutterの初期化
@@ -17,17 +19,6 @@ Future<void> main() async {
   // Riverpodでラップ
   runApp(const ProviderScope(child: KimikoeApp()));
 }
+
 // Supabaseクライアントを取得
 final supabase = Supabase.instance.client;
-
-class KimikoeApp extends StatelessWidget {
-  const KimikoeApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'キミコエ',
-      home: SignInPage(),
-    );
-  }
-}
