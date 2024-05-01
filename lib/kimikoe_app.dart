@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kimikoe_app/config/color.dart';
+import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/ui/auth/view/sign_in_page.dart';
 import 'package:kimikoe_app/ui/home/view/home_page.dart';
 

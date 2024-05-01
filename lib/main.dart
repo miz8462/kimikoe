@@ -15,7 +15,7 @@ Future<void> main() async {
     anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
   );
   // Riverpodでラップ
-  runApp(ProviderScope(child: KimikoeApp()));
+  runApp(const ProviderScope(child: KimikoeApp()));
 }
 
 // Supabaseクライアントを取得
