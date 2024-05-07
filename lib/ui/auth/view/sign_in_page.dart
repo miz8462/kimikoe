@@ -21,7 +21,7 @@ class SignInPage extends StatelessWidget {
                   children: [
                     SizedBox(height: 80),
                     Image(
-                      image: AssetImage('assets/Kimikoe_Logo.png'),
+                      image: AssetImage('assets/images/Kimikoe_Logo.png'),
                     ),
                   ],
                 ),
@@ -110,7 +110,7 @@ class SignInPage extends StatelessWidget {
                               icon: SvgPicture.asset(
                                 height: 40,
                                 width: 40,
-                                'assets/google.svg',
+                                'assets/images/google.svg',
                                 colorFilter: const ColorFilter.mode(
                                     textWhite, BlendMode.srcIn),
                               ),
@@ -120,7 +120,7 @@ class SignInPage extends StatelessWidget {
                               icon: SvgPicture.asset(
                                 height: 40,
                                 width: 40,
-                                'assets/twitter.svg',
+                                'assets/images/twitter.svg',
                                 colorFilter: const ColorFilter.mode(
                                     textWhite, BlendMode.srcIn),
                               ),
