@@ -7,3 +7,4 @@ const Color textWhite = Color(0xFFF5F5F5);
 const double fontS = 16;
 const double fontM = 20;
 const double fontL = 24;
+const double fontLL = 28;
