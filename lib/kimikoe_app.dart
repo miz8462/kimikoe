@@ -62,21 +62,24 @@ class KimikoeApp extends StatelessWidget {
                   ),
                 ),
               ),
-              body: HomePage(),
+              body: const HomePage(),
               bottomNavigationBar: BottomNavigationBar(
+                // アイコンのラベルを消去
                 showSelectedLabels: false,
                 showUnselectedLabels: false,
                 iconSize: 32,
                 backgroundColor: mainBlue,
-                
+                // アイコン。二つ以上必要。labelは必須
                 items: const <BottomNavigationBarItem>[
+                  // ホームボタン
                   BottomNavigationBarItem(
                     icon: Icon(
                       Icons.home,
                       color: textWhite,
                     ),
-                    label: 'Home',
+                    label: 'Home', // 必須項目
                   ),
+                  // 追加ボタン
                   BottomNavigationBarItem(
                     icon: Icon(
                       Icons.add_box_outlined,
@@ -84,6 +87,7 @@ class KimikoeApp extends StatelessWidget {
                     ),
                     label: 'Add',
                   ),
+                  // ユーザーサムネ
                   BottomNavigationBarItem(
                       icon: CircleAvatar(
                         backgroundImage:
