@@ -74,7 +74,7 @@ class KimikoeApp extends StatelessWidget {
                   // ホームボタン
                   BottomNavigationBarItem(
                     icon: Icon(
-                      Icons.home,
+                      Icons.home_outlined,
                       color: textWhite,
                     ),
                     label: 'Home', // 必須項目
