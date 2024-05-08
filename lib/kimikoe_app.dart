@@ -63,6 +63,36 @@ class KimikoeApp extends StatelessWidget {
                 ),
               ),
               body: HomePage(),
+              bottomNavigationBar: BottomNavigationBar(
+                showSelectedLabels: false,
+                showUnselectedLabels: false,
+                iconSize: 32,
+                backgroundColor: mainBlue,
+                
+                items: const <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.home,
+                      color: textWhite,
+                    ),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.add_box_outlined,
+                      color: textWhite,
+                    ),
+                    label: 'Add',
+                  ),
+                  BottomNavigationBarItem(
+                      icon: CircleAvatar(
+                        backgroundImage:
+                            AssetImage('assets/images/opanchu_ashiyu.jpg'),
+                        radius: 16,
+                      ),
+                      label: 'User'),
+                ],
+              ),
             )
           : SignInPage(),
       theme: ThemeData(primaryColor: mainBlue),
