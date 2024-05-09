@@ -18,34 +18,34 @@ class HomePage extends StatelessWidget {
         crossAxisCount: 2,
         childAspectRatio: 1.0,
       ),
-      itemCount: 8,
-      itemBuilder: (context, index) {
+      // itemCount: 8, // 外部から取得したデータを表示
+      itemBuilder: (BuildContext context, int index) {
         return GroupCard();
       },
     );
   }
 }
 
+// グループ画像とグループ名を受け取るカード
 class GroupCard extends StatelessWidget {
   const GroupCard({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-        child: Column(
-          children: [
-            Image(
-              image: AssetImage('assets/images/poison_palette.jpg'),
+      child: Column(
+        children: [
+          Image(
+            image: AssetImage('assets/images/poison_palette.jpg'),
+          ),
+          Text(
+            'Poison Palette',
+            style: TextStyle(
+              color: textDark,
             ),
-            Text(
-              'Poison Palette',
-              style: TextStyle(
-                color: textDark,
-              ),
-            ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
   }
 }
-
