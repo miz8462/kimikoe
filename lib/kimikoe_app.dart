@@ -9,7 +9,7 @@ import 'package:kimikoe_app/ui/home/view/home_page.dart';
 class KimikoeApp extends StatelessWidget {
   const KimikoeApp({super.key});
   // todo: ログインしてるかどうか
-  final bool isLogin = false;
+  final bool isLogin = true;
 
   @override
   Widget build(BuildContext context) {

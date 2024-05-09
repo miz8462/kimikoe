@@ -8,3 +8,5 @@ const double fontS = 16;
 const double fontM = 20;
 const double fontL = 24;
 const double fontLL = 28;
+
+const Color backgroundWhite = Color(0xFFF9FDFF);
