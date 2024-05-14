@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:kimikoe_app/config/config.dart';
+  import 'package:flutter/material.dart';
+  import 'package:kimikoe_app/config/config.dart';
 
 /*
 グループ一覧を表示する
@@ -22,8 +22,8 @@ class HomePage extends StatelessWidget {
     //   padding: EdgeInsets.symmetric(horizontal: sidePadding),
     //   child: GridView.builder(
     return GridView.builder(
-      padding: EdgeInsets.symmetric(horizontal: 20,vertical: 8),  
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 8),  
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2, // 横に表示する数
         crossAxisSpacing: 18, // 横のスペース
         mainAxisSpacing: 15, // 縦のスペース
@@ -50,7 +50,7 @@ class GroupCard extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.3), // 影の色
-            offset: Offset(4, 4), // 右下方向に影をオフセット
+            offset: const Offset(4, 4), // 右下方向に影をオフセット
             blurRadius: 5, // 影のぼかしの大きさ
           ),
         ],
@@ -61,11 +61,11 @@ class GroupCard extends StatelessWidget {
           // 画像をClipRRectで囲って角を丸くする
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: Image(
+            child: const Image(
               image: AssetImage('assets/images/poison_palette.jpg'),
             ),
           ),
-          Text(
+          const Text(
             'Poison Palette',
             textAlign: TextAlign.start,
             style: TextStyle(

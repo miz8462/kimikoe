@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/ui/auth/view/sign_in_page.dart';
-import 'package:kimikoe_app/ui/home/view/home_page.dart';
+import 'package:kimikoe_app/ui/post/view/add_artist.dart';
 
 // AppBarとBottomNavigationBarの設計
 // bodyに子要素として各ページを受け取る
@@ -13,6 +13,8 @@ class KimikoeApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double horizontalPadding = screenWidth * 0.05;
     return MaterialApp(
       // 右上の赤いDebugを表示しない
       debugShowCheckedModeBanner: false,
@@ -22,7 +24,7 @@ class KimikoeApp extends StatelessWidget {
       home: (isLogin)
           ? Scaffold(
               appBar: AppBar(
-                // leadingウィジェットのデフォルト幅は56
+                // leadingウィジェット(左に表示されるウィジェット)のデフォルト幅は56
                 leadingWidth: 110,
                 leading: Padding(
                   padding: const EdgeInsets.only(top: 12, left: 15.0),
@@ -65,7 +67,10 @@ class KimikoeApp extends StatelessWidget {
               ),
               // ログインしている場合はホームへ
               // してない場合はサインインページへ
-              body: const HomePage(),
+              body: Padding(
+                padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                child: AddArtistPage(),
+              ),
               // todo: アイコンをタップすると画面遷移
               bottomNavigationBar: BottomNavigationBar(
                 // アイコンのラベルを消去
