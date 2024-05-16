@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/ui/widgets/button.dart';
+import 'package:kimikoe_app/ui/widgets/text_form.dart';
 
 class AddArtistPage extends StatelessWidget {
   const AddArtistPage({super.key});
@@ -15,39 +17,16 @@ class AddArtistPage extends StatelessWidget {
         ),
         // アーティスト名入力
         // todo: クラスウィジェット作る
-        Container(
-          color: backgroundLightBlue,
-          child: TextFormField(
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              hintText: '*アーティスト名(作詞家、作曲家)',
-              hintStyle: TextStyle(color: textGray),
-              contentPadding: EdgeInsets.only(left: spaceWidthS),
-            ),
-            controller: TextEditingController(),
-          ),
-        ),
+        TextForm(hintText: '*アーティスト名'),
         const Gap(spaceWidthS),
         // ユーザー画像登録ボタン
-        SizedBox(
-          height: 40,
-          child: OutlinedButton(
-            onPressed: () {},
-            style: OutlinedButton.styleFrom(
-              backgroundColor: backgroundWhite,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(borderRadius),
-              ),
-              side: const BorderSide(color: backgroundLightBlue, width: borderWidth),
-              fixedSize: const Size.fromWidth(double.maxFinite),
-            ),
-            child: const Text(
-              'アーティスト画像',
-              style: TextStyle(
-                color: textGray,
-              ),
-            ),
-          ),
+        const Button(
+          'アーティスト画像',
+          textColor: textGray,
+          backgroundColor: backgroundWhite,
+          buttonSize: buttonS,
+          borderSide:
+              BorderSide(color: backgroundLightBlue, width: borderWidth),
         ),
         const Gap(spaceWidthS),
         // 備考欄
@@ -72,23 +51,9 @@ class AddArtistPage extends StatelessWidget {
         ),
         const Gap(spaceWidthS),
         // 登録ボタン
-        SizedBox(
-          height: 40,
-          child: OutlinedButton(
-            onPressed: () {},
-            style: OutlinedButton.styleFrom(
-              backgroundColor: mainBlue,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(borderRadius),
-              ),
-              side: BorderSide.none,
-              fixedSize: const Size.fromWidth(double.maxFinite),
-            ),
-            child: const Text(
-              '登録',
-              style: TextStyle(color: textWhite),
-            ),
-          ),
+        const Button(
+          '登録',
+          buttonSize: buttonL,
         ),
         const Gap(spaceWidthS),
       ],

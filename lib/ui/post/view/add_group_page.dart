@@ -74,9 +74,8 @@ class AddGroupPage extends StatelessWidget {
         ),
         const Gap(spaceWidthS),
         // 登録ボタン
-        Button(
+        const Button(
           '登録',
-          backgroundColor: mainBlue,
           buttonSize: buttonL,
         ),
         const Gap(spaceWidthS),
