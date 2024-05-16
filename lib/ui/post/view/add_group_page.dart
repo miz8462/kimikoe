@@ -43,7 +43,7 @@ class AddGroupPage extends StatelessWidget {
               fixedSize: const Size.fromWidth(double.maxFinite),
             ),
             child: const Text(
-              'ユーザー画像',
+              'グループ画像',
               style: TextStyle(
                 color: textGray,
               ),

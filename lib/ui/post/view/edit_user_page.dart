@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
 
-class AddArtistPage extends StatelessWidget {
-  const AddArtistPage({super.key});
+class EditUserPage extends StatelessWidget {
+  const EditUserPage({super.key});
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -20,7 +20,7 @@ class AddArtistPage extends StatelessWidget {
           child: TextFormField(
             decoration: const InputDecoration(
               border: InputBorder.none,
-              hintText: '*アーティスト名(作詞家、作曲家)',
+              hintText: '*名前',
               hintStyle: TextStyle(color: textGray),
               contentPadding: EdgeInsets.only(left: spaceWidthS),
             ),
@@ -38,15 +38,29 @@ class AddArtistPage extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(borderRadius),
               ),
-              side: const BorderSide(color: backgroundLightBlue, width: borderWidth),
+              side: const BorderSide(
+                  color: backgroundLightBlue, width: borderWidth),
               fixedSize: const Size.fromWidth(double.maxFinite),
             ),
             child: const Text(
-              'アーティスト画像',
+              'ユーザー画像',
               style: TextStyle(
                 color: textGray,
               ),
             ),
+          ),
+        ),
+        const Gap(spaceWidthS),
+        Container(
+          color: backgroundLightBlue,
+          child: TextFormField(
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              hintText: 'メール',
+              hintStyle: TextStyle(color: textGray),
+              contentPadding: EdgeInsets.only(left: spaceWidthS),
+            ),
+            controller: TextEditingController(),
           ),
         ),
         const Gap(spaceWidthS),

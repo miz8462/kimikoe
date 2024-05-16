@@ -3,6 +3,7 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/ui/auth/view/sign_in_page.dart';
 import 'package:kimikoe_app/ui/post/view/add_artist_page.dart';
 import 'package:kimikoe_app/ui/post/view/add_group_page.dart';
+import 'package:kimikoe_app/ui/post/view/edit_user_page.dart';
 
 // AppBarとBottomNavigationBarの設計
 // bodyに子要素として各ページを受け取る
@@ -70,7 +71,7 @@ class KimikoeApp extends StatelessWidget {
               // してない場合はサインインページへ
               body: Padding(
                 padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                child: AddArtistPage(),
+                child: EditUserPage(),
               ),
               // todo: アイコンをタップすると画面遷移
               bottomNavigationBar: BottomNavigationBar(
