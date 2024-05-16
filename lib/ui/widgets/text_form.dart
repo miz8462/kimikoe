@@ -17,8 +17,8 @@ class TextForm extends StatelessWidget {
         decoration: InputDecoration(
           border: InputBorder.none,
           hintText: hintText,
-          hintStyle: TextStyle(color: textGray),
-          contentPadding: EdgeInsets.only(left: spaceWidthS),
+          hintStyle: const TextStyle(color: textGray),
+          contentPadding: const EdgeInsets.only(left: spaceWidthS),
         ),
         controller: TextEditingController(),
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/ui/widgets/button.dart';
+import 'package:kimikoe_app/ui/widgets/expanded_text_form.dart';
 
 class AddGroupPage extends StatelessWidget {
   const AddGroupPage({super.key});
@@ -54,24 +55,7 @@ class AddGroupPage extends StatelessWidget {
         const Gap(spaceWidthS),
         // 備考欄
         // todo: '備考'をもっと上に表示したい
-        Expanded(
-          child: Container(
-            color: backgroundLightBlue,
-            child: TextFormField(
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                hintText: '備考',
-                hintStyle: TextStyle(
-                  color: textGray,
-                  height: 0,
-                ),
-                contentPadding: EdgeInsets.only(left: spaceWidthS),
-              ),
-              controller: TextEditingController(),
-              maxLines: null,
-            ),
-          ),
-        ),
+        ExpandedTextForm(hintText: '備考'),
         const Gap(spaceWidthS),
         // 登録ボタン
         const Button(
@@ -83,3 +67,4 @@ class AddGroupPage extends StatelessWidget {
     );
   }
 }
+
