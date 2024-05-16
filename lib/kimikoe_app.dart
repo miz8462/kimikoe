@@ -71,7 +71,7 @@ class KimikoeApp extends StatelessWidget {
               // してない場合はサインインページへ
               body: Padding(
                 padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                child: EditUserPage(),
+                child: AddGroupPage(),
               ),
               // todo: アイコンをタップすると画面遷移
               bottomNavigationBar: BottomNavigationBar(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/ui/widgets/button.dart';
 
 class AddGroupPage extends StatelessWidget {
   const AddGroupPage({super.key});
@@ -29,26 +30,13 @@ class AddGroupPage extends StatelessWidget {
         ),
         const Gap(spaceWidthS),
         // ユーザー画像登録ボタン
-        SizedBox(
-          height: 40,
-          child: OutlinedButton(
-            onPressed: () {},
-            style: OutlinedButton.styleFrom(
-              backgroundColor: backgroundWhite,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(borderRadius),
-              ),
-              side: const BorderSide(
-                  color: backgroundLightBlue, width: borderWidth),
-              fixedSize: const Size.fromWidth(double.maxFinite),
-            ),
-            child: const Text(
-              'グループ画像',
-              style: TextStyle(
-                color: textGray,
-              ),
-            ),
-          ),
+        const Button(
+          'グループ画像',
+          textColor: textGray,
+          backgroundColor: backgroundWhite,
+          buttonSize: buttonS,
+          borderSide:
+              BorderSide(color: backgroundLightBlue, width: borderWidth),
         ),
         const Gap(spaceWidthS),
         Container(
@@ -86,23 +74,10 @@ class AddGroupPage extends StatelessWidget {
         ),
         const Gap(spaceWidthS),
         // 登録ボタン
-        SizedBox(
-          height: 40,
-          child: OutlinedButton(
-            onPressed: () {},
-            style: OutlinedButton.styleFrom(
-              backgroundColor: mainBlue,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(borderRadius),
-              ),
-              side: BorderSide.none,
-              fixedSize: const Size.fromWidth(double.maxFinite),
-            ),
-            child: const Text(
-              '登録',
-              style: TextStyle(color: textWhite),
-            ),
-          ),
+        Button(
+          '登録',
+          backgroundColor: mainBlue,
+          buttonSize: buttonL,
         ),
         const Gap(spaceWidthS),
       ],

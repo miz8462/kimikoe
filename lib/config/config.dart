@@ -5,6 +5,9 @@ const Color textDark = Color(0xFF535655);
 const Color textGray = Color(0xFF7D8B93);
 const Color textWhite = Color(0xFFF5F5F5);
 
+const double buttonS = 40;
+const double buttonL = 50;
+
 const double fontS = 16;
 const double fontM = 20;  
 const double fontL = 24;
