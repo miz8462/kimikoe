@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/ui/auth/view/sign_in_page.dart';
 import 'package:kimikoe_app/ui/post/view/add_artist_page.dart';
-import 'package:kimikoe_app/ui/post/view/add_group_page.dart';
-import 'package:kimikoe_app/ui/post/view/edit_user_page.dart';
 
 // AppBarとBottomNavigationBarの設計
 // bodyに子要素として各ページを受け取る

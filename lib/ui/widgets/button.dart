@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
 
+const maxWidth = double.maxFinite;
+
 class Button extends StatelessWidget {
   const Button(
-    this.name, {
+    this.text, {
     this.textColor = textWhite,
     this.backgroundColor = mainBlue,
     this.buttonSize = 40,
@@ -11,13 +13,11 @@ class Button extends StatelessWidget {
     super.key,
   });
 
-  final String name;
+  final String text;
   final Color textColor;
   final Color backgroundColor;
   final double buttonSize;
-  final BorderSide borderSide;
-
-  
+  final BorderSide borderSide;  
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +31,10 @@ class Button extends StatelessWidget {
             borderRadius: BorderRadius.circular(borderRadius),
           ),
           side: borderSide,
-          fixedSize: const Size.fromWidth(double.maxFinite),
+          fixedSize: const Size.fromWidth(maxWidth),
         ),
         child: Text(
-          name,
+          text,
           style: TextStyle(color: textColor),
         ),
       ),
