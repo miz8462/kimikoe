@@ -34,4 +34,4 @@ const double borderRadius = 8;
 // テキストフォームのヒントのパディング
 const double bottomPadding = 7;
 // テキストフォームのボーダー
-const noBorder = InputBorder.none;
+const noBorder = InputBorder.none;    
