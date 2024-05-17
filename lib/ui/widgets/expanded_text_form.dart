@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
 
-const noBorder = InputBorder.none;
-
 class ExpandedTextForm extends StatelessWidget {
   const ExpandedTextForm({
     this.hintText,
@@ -20,11 +18,10 @@ class ExpandedTextForm extends StatelessWidget {
           decoration: InputDecoration(
             border: noBorder,
             hintText: hintText,
-            hintStyle: const TextStyle(
-              color: textGray,
-              height: 0,
-            ),
-            contentPadding: const EdgeInsets.only(left: spaceWidthS),
+            hintStyle:
+                const TextStyle(color: textGray, fontSize: fontM),
+            contentPadding:
+                const EdgeInsets.only(left: spaceWidthS, bottom: bottomPadding),
           ),
           controller: TextEditingController(),
           maxLines: null,

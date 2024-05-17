@@ -8,7 +8,7 @@ class Button extends StatelessWidget {
     this.text, {
     this.textColor = textWhite,
     this.backgroundColor = mainBlue,
-    this.buttonSize = 40,
+    this.buttonSize = buttonS,
     this.borderSide = BorderSide.none,
     super.key,
   });

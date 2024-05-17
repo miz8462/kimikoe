@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
 
-const noBorder = InputBorder.none;
-
 class TextForm extends StatelessWidget {
   const TextForm({
     this.hintText,
@@ -14,13 +12,15 @@ class TextForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: buttonS,
       color: backgroundLightBlue,
       child: TextFormField(
         decoration: InputDecoration(
           border: noBorder,
           hintText: hintText,
-          hintStyle: const TextStyle(color: textGray),
-          contentPadding: const EdgeInsets.only(left: spaceWidthS),
+          hintStyle: const TextStyle(color: textGray, fontSize: fontM),
+          contentPadding:
+              const EdgeInsets.only(left: spaceWidthS, bottom: bottomPadding),
         ),
         controller: TextEditingController(),
       ),
