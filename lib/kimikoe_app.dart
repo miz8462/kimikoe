@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/ui/auth/view/sign_in_page.dart';
 import 'package:kimikoe_app/ui/group/view/group_page.dart';
-import 'package:kimikoe_app/ui/user/view/user_page.dart';
 
 // AppBarとBottomNavigationBarの設計
 // bodyに子要素として各ページを受け取る
@@ -102,7 +101,7 @@ class KimikoeApp extends StatelessWidget {
                       icon: CircleAvatar(
                         backgroundImage:
                             AssetImage('assets/images/opanchu_ashiyu.jpg'),
-                        radius: 16,
+                        radius: avaterSizeS,
                       ),
                       label: 'User'),
                 ],

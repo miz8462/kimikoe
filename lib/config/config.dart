@@ -18,9 +18,11 @@ const double fontL = 24;
 const double fontLL = 28;
 
 // 主にGap()用
+const double spaceWidthSS = 6;
 const double spaceWidthS = 8;
 const double spaceWidthM = 12;
 const double spaceWidthL = 16;
+const double spaceWidthLL = 20;
 
 // ボタンの高さ
 const double buttonS = 30;
@@ -28,10 +30,17 @@ const double buttonM = 40;
 const double buttonL = 50;
 // ボタンの枠の幅
 const double borderWidth = 2;
-// ボタンの丸み
-const double borderRadius = 8;
+
+// ボタンやカードの丸み
+var borderRadius4 = BorderRadius.circular(4);
+var borderRadius8 = BorderRadius.circular(12);
 
 // テキストフォームのヒントのパディング
 const double bottomPadding = 7;
 // テキストフォームのボーダー
-const noBorder = InputBorder.none;    
+const noBorder = InputBorder.none;
+
+// アバターサムネイルの大きさ
+const double avaterSizeS = 16;
+const double avaterSizeM = 24;
+const double avaterSizeL = 32;

@@ -36,7 +36,7 @@ class EditUserPage extends StatelessWidget {
             style: OutlinedButton.styleFrom(
               backgroundColor: backgroundWhite,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(borderRadius),
+                borderRadius: borderRadius8,
               ),
               side: const BorderSide(
                   color: backgroundLightBlue, width: borderWidth),
@@ -93,7 +93,7 @@ class EditUserPage extends StatelessWidget {
             style: OutlinedButton.styleFrom(
               backgroundColor: mainBlue,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(borderRadius),
+                borderRadius: borderRadius8,
               ),
               side: BorderSide.none,
               fixedSize: const Size.fromWidth(double.maxFinite),
