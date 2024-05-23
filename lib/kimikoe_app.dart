@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/ui/auth/view/sign_in_page.dart';
+import 'package:kimikoe_app/ui/group/view/group_page.dart';
 import 'package:kimikoe_app/ui/user/view/user_page.dart';
 
 // AppBarとBottomNavigationBarの設計
@@ -69,7 +70,7 @@ class KimikoeApp extends StatelessWidget {
               // してない場合はサインインページへ
               body: Padding(
                 padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                child: UserPage(),
+                child: GroupPage(),
               ),
               // todo: アイコンをタップすると画面遷移
               bottomNavigationBar: BottomNavigationBar(
