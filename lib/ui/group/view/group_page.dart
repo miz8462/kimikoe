@@ -13,11 +13,11 @@ class GroupPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        GroupCardWide(),
-        Gap(spaceWidthM),
+        const GroupCardWide(),
+        const Gap(spaceWidthM),
         Expanded(
           child: ListView(
-            children: [
+            children: const [
               SongCard(),
               Gap(spaceWidthSS),
               SongCard(),

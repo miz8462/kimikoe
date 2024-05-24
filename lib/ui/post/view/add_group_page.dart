@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/ui/widgets/button.dart';
+import 'package:kimikoe_app/ui/widgets/styled_button.dart';
 import 'package:kimikoe_app/ui/widgets/expanded_text_form.dart';
 
 class AddGroupPage extends StatelessWidget {
@@ -31,7 +31,7 @@ class AddGroupPage extends StatelessWidget {
         ),
         const Gap(spaceWidthS),
         // ユーザー画像登録ボタン
-        const Button(
+        const StyledButton(
           'グループ画像',
           textColor: textGray,
           backgroundColor: backgroundWhite,
@@ -58,7 +58,7 @@ class AddGroupPage extends StatelessWidget {
         ExpandedTextForm(hintText: '備考'),
         const Gap(spaceWidthS),
         // 登録ボタン
-        const Button(
+        const StyledButton(
           '登録',
           buttonSize: buttonL,
         ),
@@ -67,4 +67,3 @@ class AddGroupPage extends StatelessWidget {
     );
   }
 }
-

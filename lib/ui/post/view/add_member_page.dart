@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/ui/widgets/button.dart';
+import 'package:kimikoe_app/ui/widgets/styled_button.dart';
 import 'package:kimikoe_app/ui/widgets/circular_button.dart';
 import 'package:kimikoe_app/ui/widgets/expanded_text_form.dart';
 import 'package:kimikoe_app/ui/widgets/text_form.dart';
@@ -32,7 +32,7 @@ class AddMemberPage extends StatelessWidget {
           ],
         ),
         // メンバー画像
-        const Button(
+        const StyledButton(
           'メンバー画像',
           textColor: textGray,
           backgroundColor: backgroundWhite,
@@ -51,7 +51,7 @@ class AddMemberPage extends StatelessWidget {
         const Gap(spaceWidthS),
         const ExpandedTextForm(hintText: 'その他、備考'),
         const Gap(spaceWidthS),
-        const Button('登録', buttonSize: buttonL),
+        const StyledButton('登録', buttonSize: buttonL),
         const Gap(spaceWidthS),
       ],
     );

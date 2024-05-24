@@ -18,8 +18,7 @@ class ExpandedTextForm extends StatelessWidget {
           decoration: InputDecoration(
             border: noBorder,
             hintText: hintText,
-            hintStyle:
-                const TextStyle(color: textGray, fontSize: fontM),
+            hintStyle: const TextStyle(color: textGray, fontSize: fontM),
             contentPadding:
                 const EdgeInsets.only(left: spaceWidthS, bottom: bottomPadding),
           ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/ui/widgets/button.dart';
+import 'package:kimikoe_app/ui/widgets/styled_button.dart';
 
 class UserPage extends StatelessWidget {
   const UserPage({super.key});
@@ -25,7 +25,7 @@ class UserPage extends StatelessWidget {
               backgroundImage: AssetImage(avaterImage),
               radius: 20,
             ),
-            Button(
+            StyledButton(
               editButtonText,
               textColor: textGray,
               backgroundColor: backgroundWhite,

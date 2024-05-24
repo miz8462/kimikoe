@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/ui/widgets/button.dart';
+import 'package:kimikoe_app/ui/widgets/styled_button.dart';
 import 'package:kimikoe_app/ui/widgets/expanded_text_form.dart';
 import 'package:kimikoe_app/ui/widgets/text_form.dart';
 
@@ -21,7 +21,7 @@ class AddArtistPage extends StatelessWidget {
         TextForm(hintText: '*アーティスト名'),
         Gap(spaceWidthS),
         // ユーザー画像登録ボタン
-        Button(
+        StyledButton(
           'アーティスト画像',
           textColor: textGray,
           backgroundColor: backgroundWhite,
@@ -35,7 +35,7 @@ class AddArtistPage extends StatelessWidget {
         ExpandedTextForm(hintText: '備考'),
         Gap(spaceWidthS),
         // 登録ボタン
-        Button(
+        StyledButton(
           '登録',
           buttonSize: buttonL,
         ),
