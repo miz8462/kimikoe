@@ -28,7 +28,7 @@ class StyledButton extends StatelessWidget {
         style: OutlinedButton.styleFrom(
           backgroundColor: backgroundColor,
           shape: RoundedRectangleBorder(
-            borderRadius: borderRadius8,
+            borderRadius: borderRadius4,
           ),
           side: borderSide,
           fixedSize: Size.fromWidth(width),

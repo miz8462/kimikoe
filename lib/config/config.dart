@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // イメージカラー
 const Color mainBlue = Color(0xFF38B6FF);
 // テキストカラー
-const Color textDark = Color(0xFF535655);
+const Color textDark = Color.fromARGB(255, 65, 67, 66);
 const Color textGray = Color(0xFF7D8B93);
 const Color textWhite = Color(0xFFF5F5F5);
 // 主にボタンやフォームの背景カラー
