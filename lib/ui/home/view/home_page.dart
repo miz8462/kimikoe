@@ -1,79 +1,25 @@
-  import 'package:flutter/material.dart';
-  import 'package:kimikoe_app/config/config.dart';
-
-/*
-グループ一覧を表示する
-画面上はグリッドで横2列、縦4行（？）
-下方にスクロールしてさらにグループを表示
-各グループをカードで画像と名前を表示する
-*/
+import 'package:flutter/material.dart';
+import 'package:kimikoe_app/ui/appbar/kimikoe_bottom_navigation_bar.dart';
+import 'package:kimikoe_app/ui/appbar/kimikoe_top_app_bar.dart';
+import 'package:kimikoe_app/ui/home/view/group_list_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // // 画面の両端を空白にする
-    // // 画面の幅を取得
-    // double screenWidth = MediaQuery.of(context).size.width;
-    // // 画面の幅に基づいて4%の空白を計算
-    // double sidePadding = screenWidth * 0.04;
-    // return Padding(
-    //   padding: EdgeInsets.symmetric(horizontal: sidePadding),
-    //   child: GridView.builder(
-    return GridView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 8),  
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2, // 横に表示する数
-        crossAxisSpacing: 18, // 横のスペース
-        mainAxisSpacing: 15, // 縦のスペース
-        childAspectRatio: 1.0, // カードのアスペクト比
+    double screenWidth = MediaQuery.of(context).size.width;
+    double horizontalPadding = screenWidth * 0.05;
+    return Scaffold(
+      appBar: KimikoeTopAppBar(),
+      // ログインしている場合はホームへ
+      // してない場合はサインインページへ
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+        child: GroupListPage(),
       ),
-      // itemCount: 8, // todo: 取得したデータ数
-      itemBuilder: (BuildContext context, int index) {
-        return GroupCard();
-      },
-    );
-  }
-}
-
-// グループ画像とグループ名を受け取るカード
-class GroupCard extends StatelessWidget {
-  const GroupCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: backgroundWhite,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3), // 影の色
-            offset: const Offset(4, 4), // 右下方向に影をオフセット
-            blurRadius: 5, // 影のぼかしの大きさ
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // 画像をClipRRectで囲って角を丸くする
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: const Image(
-              image: AssetImage('assets/images/poison_palette.jpg'),
-            ),
-          ),
-          const Text(
-            'Poison Palette',
-            textAlign: TextAlign.start,
-            style: TextStyle(
-              color: textDark,
-            ),
-          ),
-        ],
-      ),
+      // todo: アイコンをタップすると画面遷移
+      bottomNavigationBar: KimikoeBottomNavigationBar(),
     );
   }
 }

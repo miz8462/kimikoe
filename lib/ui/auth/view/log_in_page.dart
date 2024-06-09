@@ -6,16 +6,42 @@ import 'package:kimikoe_app/ui/auth/view/divide_line.dart';
 import 'package:kimikoe_app/ui/auth/view/title_logo.dart';
 import 'package:kimikoe_app/ui/widgets/social_login_button.dart';
 
-class SignInPage extends StatelessWidget {
-  const SignInPage({super.key});
+class LogInPage extends StatefulWidget {
+  const LogInPage({super.key});
+
+  @override
+  State<LogInPage> createState() => _LogInPageState();
+}
+
+class _LogInPageState extends State<LogInPage> {
+  final _emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
 
   // マジックリンク
   Future<void> magicLink() async {
-    await supabase.auth.signInWithOtp(email: 'wwr8462@gmail.com');
+    final email = _emailController.text.trim();
+    await supabase.auth.signInWithOtp(
+      email: email,
+      emailRedirectTo: 'io.supabase.kimikoe://login-callback/',
+    );
+    if (mounted) {
+      // スナックバー通知
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Check your inbox'),
+        ),
+      );
+    }
   }
 
   // googleログイン
   Future<void> googleSignIn() async {}
+
   // twitterログイン
   Future<void> twitterSignIn() async {}
 
@@ -38,6 +64,8 @@ class SignInPage extends StatelessWidget {
                       children: [
                         const Gap(60),
                         TextFormField(
+                          style: TextStyle(color: textWhite),
+                          controller: _emailController,
                           decoration: const InputDecoration(
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
@@ -57,7 +85,7 @@ class SignInPage extends StatelessWidget {
                           ),
                         ),
                         const Gap(20),
-                        // パスワードレス認証ボタン
+                        // MagicLinkボタン
                         FractionallySizedBox(
                           widthFactor: 1.0,
                           child: ElevatedButton(
