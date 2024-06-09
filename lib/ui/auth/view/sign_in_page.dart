@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/main.dart';
+import 'package:kimikoe_app/ui/auth/view/divide_line.dart';
+import 'package:kimikoe_app/ui/auth/view/title_logo.dart';
+import 'package:kimikoe_app/ui/widgets/social_login_button.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
+
+  // マジックリンク
+  Future<void> magicLink() async {
+    await supabase.auth.signInWithOtp(email: 'wwr8462@gmail.com');
+  }
+
+  // googleログイン
+  Future<void> googleSignIn() async {}
+  // twitterログイン
+  Future<void> twitterSignIn() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -13,20 +26,7 @@ class SignInPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Expanded(
-              flex: 4,
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 80),
-                    Image(
-                      image: AssetImage('assets/images/Kimikoe_Logo.png'),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            TitleLogo(),
             Expanded(
               flex: 6,
               child: Container(
@@ -61,7 +61,7 @@ class SignInPage extends StatelessWidget {
                         FractionallySizedBox(
                           widthFactor: 1.0,
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: magicLink,
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -78,59 +78,21 @@ class SignInPage extends StatelessWidget {
                           ),
                         ),
                         const Gap(30),
-                        const Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: Divider(
-                                color: textWhite,
-                                thickness: 2,
-                              ),
-                            ),
-                            Text(
-                              "    OR    ",
-                              style: TextStyle(
-                                color: textWhite,
-                                fontSize: fontS,
-                              ),
-                            ),
-                            Expanded(
-                              child: Divider(
-                                color: textWhite,
-                                thickness: 2,
-                              ),
-                            ),
-                          ],
-                        ),
+                        DivideLine(),
                         const Gap(10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            IconButton(
-                              onPressed: () {},
-                              icon: SvgPicture.asset(
-                                height: 40,
-                                width: 40,
-                                'assets/images/google.svg',
-                                colorFilter: const ColorFilter.mode(
-                                    textWhite, BlendMode.srcIn),
-                              ),
+                            SocialLoginButton(
+                              googleSignIn,
+                              imagePath: 'assets/images/google.svg',
                             ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: SvgPicture.asset(
-                                height: 40,
-                                width: 40,
-                                'assets/images/twitter.svg',
-                                colorFilter: const ColorFilter.mode(
-                                    textWhite, BlendMode.srcIn),
-                              ),
+                            SocialLoginButton(
+                              twitterSignIn,
+                              imagePath: 'assets/images/twitter.svg',
                             ),
                           ],
                         ),
-                        const Text(
-                          'Sign in with another account',
-                          style: TextStyle(color: textWhite, fontSize: fontS),
-                        )
                       ],
                     ),
                   ),
