@@ -16,6 +16,7 @@ class HomePage extends StatelessWidget {
       // してない場合はサインインページへ
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+        // todo: メイン画面は操作により変化する
         child: GroupListPage(),
       ),
       // todo: アイコンをタップすると画面遷移

@@ -18,7 +18,7 @@ class KimikoeApp extends StatelessWidget {
       title: 'キミコエ',
       theme: ThemeData(primaryColor: mainBlue),
       // ログインしている場合はHomePageへ
-      // していない場合はSignInPageへ
+      // していない場合はLogInPageへ
       initialRoute: '/',
       routes: <String, WidgetBuilder>{
         '/': (_) => const SplashPage(),
