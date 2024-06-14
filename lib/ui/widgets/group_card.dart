@@ -1,51 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 
-class GroupCardWide extends StatelessWidget {
-  const GroupCardWide({
-    super.key,
-  });
+class GroupCard extends StatelessWidget {
+  const GroupCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    const groupImage = 'assets/images/poison_palette.jpg';
-    const groupName = 'Poison Palette';
-    const groupInfo = '聞きたくないが嘘になる“毒”創性！\nBreak&Popガールズグループ';
-    return Card(
-      elevation: 6,
-      color: backgroundLightBlue,
-      shape: RoundedRectangleBorder(
-        borderRadius: borderRadius4,
-      ),
-      child: const Row(
-        children: [
-          CircleAvatar(
-            backgroundImage: AssetImage(groupImage),
-            radius: avaterSizeL,
-          ),
-          Gap(spaceWidthL),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                groupName,
-                style: TextStyle(
-                  fontSize: fontLL,
-                  fontWeight: FontWeight.w600,
-                  color: textDark,
-                ),
+    return GestureDetector(
+      onTap: () => context.go('/group-page'),
+      child: Container(
+        decoration: BoxDecoration(
+          color: backgroundWhite,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.3), // 影の色
+              offset: const Offset(4, 4), // 右下方向に影をオフセット
+              blurRadius: 5, // 影のぼかしの大きさ
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 画像をClipRRectで囲って角を丸くする
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: const Image(
+                image: AssetImage('assets/images/poison_palette.jpg'),
               ),
-              Text(
-                groupInfo,
-                style: TextStyle(
-                  fontSize: fontSS,
-                  color: textDark,
-                ),
+            ),
+            const Text(
+              'Poison Palette',
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                color: textDark,
               ),
-            ],
-          )
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

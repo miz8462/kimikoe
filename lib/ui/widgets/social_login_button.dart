@@ -12,7 +12,7 @@ class SocialLoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     const double height = 40;
     const double width = 40;
-    const Color textColor = textWhite;    
+    const Color textColor = textWhite;
 
     return IconButton(
       onPressed: socialName,
@@ -23,6 +23,5 @@ class SocialLoginButton extends StatelessWidget {
         colorFilter: const ColorFilter.mode(textColor, BlendMode.srcIn),
       ),
     );
-    ;
   }
 }

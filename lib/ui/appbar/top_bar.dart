@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/ui/widgets/appbar/app_bar_divider.dart';
+import 'package:kimikoe_app/ui/appbar/app_bar_divider.dart';
 
-class KimikoeAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const KimikoeAppBar({
+class TopBar extends StatelessWidget implements PreferredSizeWidget {
+  const TopBar({
     super.key,
   });
 

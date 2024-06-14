@@ -1,47 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/ui/auth/view/sign_in_page.dart';
-import 'package:kimikoe_app/ui/lyric/lyric_page.dart';
-import 'package:kimikoe_app/ui/widgets/appbar/kimikoe_app_bar.dart';
-import 'package:kimikoe_app/ui/widgets/appbar/kimikoe_bottom_navigation_bar.dart';
+import 'package:kimikoe_app/main.dart';
+import 'package:kimikoe_app/router.dart';
 
 // AppBarとBottomNavigationBarの設計
 // bodyに子要素として各ページを受け取る
 
-class KimikoeApp extends StatelessWidget {
+class KimikoeApp extends StatefulWidget {
   const KimikoeApp({super.key});
+
+  @override
+  State<KimikoeApp> createState() => _KimikoeAppState();
+}
+
+class _KimikoeAppState extends State<KimikoeApp> {
+  late bool isLogin = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkIsLogin();
+  }
+
   // todo: ログインしてるかどうか
-  final bool isLogin = true;
+  bool _checkIsLogin() {
+    final session = supabase.auth.currentSession;
+    print(session?.user.email);
+    if (session != null) {
+      isLogin = true;
+    } else {
+      isLogin = false;
+    }
+    print('isLogin: $isLogin');
+    return isLogin;
+  }
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double horizontalPadding = screenWidth * 0.05;
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: router,
       // 右上の赤いDebugを表示しない
       debugShowCheckedModeBanner: false,
       title: 'キミコエ',
-      // ログインしている場合はHomeへ
-      // していない場合はサインインへ
-      home: (isLogin)
-          ? Scaffold(
-              appBar: KimikoeAppBar(),
-              // ログインしている場合はホームへ
-              // してない場合はサインインページへ
-              body: Padding(
-                padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                child: LyricPage(),
-              ),
-              // todo: アイコンをタップすると画面遷移
-              bottomNavigationBar: KimikoeBottomNavigationBar(),
-            )
-          // ログインしていない場合はサインインへ
-          : const Scaffold(body: SignInPage()),
       theme: ThemeData(primaryColor: mainBlue),
     );
   }
 }
-
-
-
-

@@ -1,5 +1,5 @@
-  import 'package:flutter/material.dart';
-  import 'package:kimikoe_app/config/config.dart';
+import 'package:flutter/material.dart';
+import 'package:kimikoe_app/ui/widgets/group_card.dart';
 
 /*
 グループ一覧を表示する
@@ -13,16 +13,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // // 画面の両端を空白にする
-    // // 画面の幅を取得
-    // double screenWidth = MediaQuery.of(context).size.width;
-    // // 画面の幅に基づいて4%の空白を計算
-    // double sidePadding = screenWidth * 0.04;
-    // return Padding(
-    //   padding: EdgeInsets.symmetric(horizontal: sidePadding),
-    //   child: GridView.builder(
     return GridView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 8),  
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2, // 横に表示する数
         crossAxisSpacing: 18, // 横のスペース
@@ -33,47 +25,6 @@ class HomePage extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         return GroupCard();
       },
-    );
-  }
-}
-
-// グループ画像とグループ名を受け取るカード
-class GroupCard extends StatelessWidget {
-  const GroupCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: backgroundWhite,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3), // 影の色
-            offset: const Offset(4, 4), // 右下方向に影をオフセット
-            blurRadius: 5, // 影のぼかしの大きさ
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // 画像をClipRRectで囲って角を丸くする
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: const Image(
-              image: AssetImage('assets/images/poison_palette.jpg'),
-            ),
-          ),
-          const Text(
-            'Poison Palette',
-            textAlign: TextAlign.start,
-            style: TextStyle(
-              color: textDark,
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

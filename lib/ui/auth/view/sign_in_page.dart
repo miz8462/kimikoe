@@ -1,23 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/ui/auth/view/divide_line.dart';
 import 'package:kimikoe_app/ui/auth/view/title_logo.dart';
 import 'package:kimikoe_app/ui/widgets/social_login_button.dart';
 
-class SignInPage extends StatelessWidget {
+class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
 
+  @override
+  State<SignInPage> createState() => _SignInPageState();
+}
+
+class _SignInPageState extends State<SignInPage> {
+  final _emailController = TextEditingController();
+
   // マジックリンク
-  Future<void> magicLink() async {
-    await supabase.auth.signInWithOtp(email: 'wwr8462@gmail.com');
+  Future<void> _login() async {
+    await supabase.auth.signInWithOtp(
+      email: 'wwr8462@gmail.com',
+      // email: _emailController.text.trim(),
+      emailRedirectTo: 'io.supabase.kimikoe://login-callback/',
+    );
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Check your email for a login link!')),
+      );
+      _emailController.clear();
+    }
   }
 
   // googleログイン
-  Future<void> googleSignIn() async {}
+  Future<void> _googleSignIn() async {}
+
   // twitterログイン
-  Future<void> twitterSignIn() async {}
+  Future<void> _twitterSignIn() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +57,8 @@ class SignInPage extends StatelessWidget {
                       children: [
                         const Gap(60),
                         TextFormField(
+                          controller: _emailController,
+                          style: TextStyle(color: textWhite),
                           decoration: const InputDecoration(
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
@@ -61,7 +82,8 @@ class SignInPage extends StatelessWidget {
                         FractionallySizedBox(
                           widthFactor: 1.0,
                           child: ElevatedButton(
-                            onPressed: magicLink,
+                            onPressed: () => context.go('/home'),
+                            // onPressed: _login,
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -84,11 +106,11 @@ class SignInPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SocialLoginButton(
-                              googleSignIn,
+                              _googleSignIn,
                               imagePath: 'assets/images/google.svg',
                             ),
                             SocialLoginButton(
-                              twitterSignIn,
+                              _twitterSignIn,
                               imagePath: 'assets/images/twitter.svg',
                             ),
                           ],
