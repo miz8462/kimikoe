@@ -78,7 +78,7 @@ class _SignInPageState extends State<SignInPage> {
                           ),
                         ),
                         const Gap(20),
-                        // パスワードレス認証ボタン
+                        // MagicLinkボタン
                         FractionallySizedBox(
                           widthFactor: 1.0,
                           child: ElevatedButton(
