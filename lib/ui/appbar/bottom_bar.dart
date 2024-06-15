@@ -15,7 +15,7 @@ class BottomBar extends StatelessWidget {
     int currentIndex = navigationShell.currentIndex;
 
     return NavigationBar(
-      labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+      // labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
       backgroundColor: mainBlue,
       selectedIndex: currentIndex,
       destinations: [
@@ -26,6 +26,7 @@ class BottomBar extends StatelessWidget {
             color: currentIndex == 0 ? textDark : textWhite,
           ),
           label: 'Home', // 必須項目
+          
         ),
         // 追加ボタン
         NavigationDestination(

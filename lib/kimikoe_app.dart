@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/router.dart';
 
 // AppBarとBottomNavigationBarの設計
@@ -14,27 +13,6 @@ class KimikoeApp extends StatefulWidget {
 }
 
 class _KimikoeAppState extends State<KimikoeApp> {
-  late bool isLogin = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _checkIsLogin();
-  }
-
-  // todo: ログインしてるかどうか
-  bool _checkIsLogin() {
-    final session = supabase.auth.currentSession;
-    print(session?.user.email);
-    if (session != null) {
-      isLogin = true;
-    } else {
-      isLogin = false;
-    }
-    print('isLogin: $isLogin');
-    return isLogin;
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
@@ -42,7 +20,14 @@ class _KimikoeAppState extends State<KimikoeApp> {
       // 右上の赤いDebugを表示しない
       debugShowCheckedModeBanner: false,
       title: 'キミコエ',
-      theme: ThemeData(primaryColor: mainBlue),
+      theme: ThemeData(
+        primaryColor: mainBlue,
+        navigationBarTheme: NavigationBarThemeData(
+          labelTextStyle: MaterialStateProperty.all(
+            TextStyle(color: textWhite),
+          ),
+        ),
+      ),
     );
   }
 }
