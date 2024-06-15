@@ -4,12 +4,15 @@ import 'package:kimikoe_app/ui/appbar/app_top_bottom_navi_bar.dart';
 import 'package:kimikoe_app/ui/group/view/group_page.dart';
 import 'package:kimikoe_app/ui/home/view/home_page.dart';
 import 'package:kimikoe_app/ui/lyric/lyric_page.dart';
+import 'package:kimikoe_app/ui/post/view/add_artist_page.dart';
+import 'package:kimikoe_app/ui/post/view/add_group_page.dart';
+import 'package:kimikoe_app/ui/post/view/add_member_page.dart';
 import 'package:kimikoe_app/ui/post/view/add_song_page.dart';
 import 'package:kimikoe_app/ui/user/view/user_page.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'home');
-final _addSongNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'add-song');
+final _addItemNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'add-item');
 final _userInfoNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'user-info');
 
@@ -63,7 +66,7 @@ final router = GoRouter(
           ],
         ),
         StatefulShellBranch(
-          navigatorKey: _addSongNavigatorKey,
+          navigatorKey: _addItemNavigatorKey,
           routes: [
             GoRoute(
               path: '/add-song',
@@ -71,7 +74,28 @@ final router = GoRouter(
                 key: state.pageKey,
                 child: AddSongPage(),
               ),
-            )
+            ),
+            GoRoute(
+              path: '/add-group',
+              pageBuilder: (context, state) => NoTransitionPage(
+                key: state.pageKey,
+                child: AddGroupPage(),
+              ),
+            ),
+            GoRoute(
+              path: '/add-member',
+              pageBuilder: (context, state) => NoTransitionPage(
+                key: state.pageKey,
+                child: AddMemberPage(),
+              ),
+            ),
+            GoRoute(
+              path: '/add-artist',
+              pageBuilder: (context, state) => NoTransitionPage(
+                key: state.pageKey,
+                child: AddArtistPage(),
+              ),
+            ),
           ],
         ),
         StatefulShellBranch(

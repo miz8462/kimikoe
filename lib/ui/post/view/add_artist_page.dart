@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/ui/widgets/styled_button.dart';
 import 'package:kimikoe_app/ui/widgets/expanded_text_form.dart';
+import 'package:kimikoe_app/ui/widgets/styled_button.dart';
 import 'package:kimikoe_app/ui/widgets/text_form.dart';
 
 class AddArtistPage extends StatelessWidget {
   const AddArtistPage({super.key});
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
@@ -23,6 +24,7 @@ class AddArtistPage extends StatelessWidget {
         // ユーザー画像登録ボタン
         StyledButton(
           'アーティスト画像',
+          onPressed: () {},
           textColor: textGray,
           backgroundColor: backgroundWhite,
           buttonSize: buttonS,
@@ -31,12 +33,14 @@ class AddArtistPage extends StatelessWidget {
         ),
         Gap(spaceWidthS),
         // 備考欄
-        // todo: '備考'をもっと上に表示したい
         ExpandedTextForm(hintText: '備考'),
         Gap(spaceWidthS),
         // 登録ボタン
         StyledButton(
           '登録',
+          onPressed: () {
+            context.go('/');
+          },
           buttonSize: buttonL,
         ),
         Gap(spaceWidthS),

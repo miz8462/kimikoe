@@ -117,6 +117,7 @@ class LyricPage extends StatelessWidget {
           Gap(spaceWidthM),
           BorderButton(
             'メンバー追加',
+            onPressed: () {},
             width: 200,
           ),
           Gap(spaceWidthL),

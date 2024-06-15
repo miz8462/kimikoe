@@ -4,6 +4,7 @@ import 'package:kimikoe_app/config/config.dart';
 class StyledButton extends StatelessWidget {
   const StyledButton(
     this.text, {
+    required this.onPressed,
     this.textColor = textWhite,
     this.backgroundColor = mainBlue,
     this.buttonSize = buttonS,
@@ -13,6 +14,7 @@ class StyledButton extends StatelessWidget {
   });
 
   final String text;
+  final void Function() onPressed;
   final Color textColor;
   final Color backgroundColor;
   final double buttonSize;
@@ -24,7 +26,7 @@ class StyledButton extends StatelessWidget {
     return SizedBox(
       height: buttonSize,
       child: OutlinedButton(
-        onPressed: () {},
+        onPressed: onPressed,
         style: OutlinedButton.styleFrom(
           backgroundColor: backgroundColor,
           shape: RoundedRectangleBorder(

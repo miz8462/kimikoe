@@ -14,7 +14,7 @@ class UserPage extends StatelessWidget {
     const String editButtonText = '編集する';
     const double buttonWidth = 180;
 
-    return const Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Gap(spaceWidthS),
@@ -27,6 +27,7 @@ class UserPage extends StatelessWidget {
             ),
             StyledButton(
               editButtonText,
+              onPressed: () {},
               textColor: textGray,
               backgroundColor: backgroundWhite,
               buttonSize: buttonM,

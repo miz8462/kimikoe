@@ -5,6 +5,7 @@ import 'package:kimikoe_app/ui/widgets/styled_button.dart';
 class BorderButton extends StyledButton {
   const BorderButton(
     super.text, {
+    required super.onPressed,
     super.textColor = textGray,
     super.backgroundColor = backgroundWhite,
     super.buttonSize,

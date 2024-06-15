@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/ui/widgets/styled_button.dart';
 
 class BottomBar extends StatelessWidget {
   const BottomBar({
@@ -9,15 +10,74 @@ class BottomBar extends StatelessWidget {
   });
   final StatefulNavigationShell navigationShell;
 
+  void _openAddOverlay(context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return SizedBox(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height * 0.3,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                StyledButton(
+                  'Add Song',
+                  onPressed: () {
+                    context.pop(context);
+                    context.go('/add-song');
+                  },
+                  // child: Text('Add Song'),
+                ),
+                StyledButton(
+                  'Add Group',
+                  onPressed: () {
+                    context.pop(context);
+                    context.go('/add-group');
+                  },
+                ),
+                StyledButton(
+                  'Add Member',
+                  onPressed: () {
+                    context.pop(context);
+                    context.go('/add-member');
+                  },
+                ),
+                StyledButton(
+                  'Add Artist',
+                  onPressed: () {
+                    context.pop(context);
+                    context.go('/add-artist');
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
   // void _logout() async {}
+
   @override
   Widget build(BuildContext context) {
     int currentIndex = navigationShell.currentIndex;
 
     return NavigationBar(
-      // labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
       backgroundColor: mainBlue,
       selectedIndex: currentIndex,
+      onDestinationSelected: (index) {
+        if (index == 1) {
+          _openAddOverlay(context);
+        } else {
+          navigationShell.goBranch(
+            index,
+            initialLocation: index == navigationShell.currentIndex,
+          );
+        }
+      },
       destinations: [
         // ホームボタン
         NavigationDestination(
@@ -26,7 +86,6 @@ class BottomBar extends StatelessWidget {
             color: currentIndex == 0 ? textDark : textWhite,
           ),
           label: 'Home', // 必須項目
-          
         ),
         // 追加ボタン
         NavigationDestination(
@@ -50,12 +109,6 @@ class BottomBar extends StatelessWidget {
           label: 'Logout',
         ),
       ],
-      onDestinationSelected: (index) {
-        navigationShell.goBranch(
-          index,
-          initialLocation: index == navigationShell.currentIndex,
-        );
-      },
     );
   }
 }
