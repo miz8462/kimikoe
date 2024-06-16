@@ -27,7 +27,7 @@ class BottomBar extends StatelessWidget {
                   'Add Song',
                   onPressed: () {
                     Navigator.of(context).pop();
-                    context.go('/add-song');
+                    context.goNamed('add-song');
                   },
                   // child: Text('Add Song'),
                 ),
@@ -35,21 +35,21 @@ class BottomBar extends StatelessWidget {
                   'Add Group',
                   onPressed: () {
                     Navigator.of(context).pop();
-                    context.go('/add-group');
+                    context.goNamed('add-group');
                   },
                 ),
                 StyledButton(
                   'Add Member',
                   onPressed: () {
                     Navigator.of(context).pop();
-                    context.go('/add-member');
+                    context.goNamed('add-member');
                   },
                 ),
                 StyledButton(
                   'Add Artist',
                   onPressed: () {
                     Navigator.of(context).pop();
-                    context.go('/add-artist');
+                    context.goNamed('add-artist');
                   },
                 ),
               ],

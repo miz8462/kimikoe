@@ -21,7 +21,7 @@ final _userInfoNavigatorKey =
 final router = GoRouter(
   navigatorKey: rootNavigatorKey,
   debugLogDiagnostics: true,
-  initialLocation: '/',
+  initialLocation: '/home',
   routes: [
     GoRoute(
       path: '/',
@@ -75,6 +75,7 @@ final router = GoRouter(
           routes: [
             GoRoute(
               path: '/add-song',
+              name: 'add-song',
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
                 child: AddSongPage(),
@@ -82,6 +83,7 @@ final router = GoRouter(
             ),
             GoRoute(
               path: '/add-group',
+              name: 'add-group',
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
                 child: AddGroupPage(),
@@ -89,6 +91,7 @@ final router = GoRouter(
             ),
             GoRoute(
               path: '/add-member',
+              name: 'add-member',
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
                 child: AddMemberPage(),
@@ -96,6 +99,7 @@ final router = GoRouter(
             ),
             GoRoute(
               path: '/add-artist',
+              name: 'add-artist',
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
                 child: AddArtistPage(),
