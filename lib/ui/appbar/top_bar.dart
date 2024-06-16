@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/ui/appbar/app_bar_divider.dart';
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
@@ -10,23 +9,11 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      // leadingウィジェット(左に表示されるウィジェット)のデフォルト幅は56
-      leadingWidth: 110,
-      leading: Padding(
-        padding: const EdgeInsets.only(top: 12, left: 15.0),
-        child: FittedBox(
-          fit: BoxFit.contain,
-          child: Image(
-            image: const AssetImage('assets/images/Kimikoe_Logo.png'),
-            height: AppBar().preferredSize.height,
-          ),
-        ),
-      ),
-      title: const Padding(
+      title: Padding(
         padding: EdgeInsets.only(top: 8.0),
-        child: Text(
-          'Home',
-          style: TextStyle(color: textDark, fontSize: fontLL),
+        child: Image(
+          image: const AssetImage('assets/images/Kimikoe_Logo.png'),
+          height: 40,
         ),
       ),
       centerTitle: true,
