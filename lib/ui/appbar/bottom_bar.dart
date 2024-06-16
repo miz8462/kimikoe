@@ -64,12 +64,12 @@ class BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int currentIndex = navigationShell.currentIndex;
-
+    int addIndex = 1;
     return NavigationBar(
       backgroundColor: mainBlue,
       selectedIndex: currentIndex,
       onDestinationSelected: (index) {
-        if (index == 1) {
+        if (index == addIndex) {
           _openAddOverlay(context);
         } else {
           navigationShell.goBranch(

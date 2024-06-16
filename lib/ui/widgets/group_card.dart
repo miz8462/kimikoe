@@ -8,7 +8,7 @@ class GroupCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.go('/group-page'),
+      onTap: () => context.pushNamed('group-page'),
       child: Container(
         decoration: BoxDecoration(
           color: backgroundWhite,

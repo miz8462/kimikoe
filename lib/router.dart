@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/ui/appbar/app_top_bottom_navi_bar.dart';
+import 'package:kimikoe_app/ui/auth/view/sign_in_page.dart';
 import 'package:kimikoe_app/ui/group/view/group_page.dart';
 import 'package:kimikoe_app/ui/home/view/home_page.dart';
 import 'package:kimikoe_app/ui/lyric/lyric_page.dart';
@@ -8,6 +9,7 @@ import 'package:kimikoe_app/ui/post/view/add_artist_page.dart';
 import 'package:kimikoe_app/ui/post/view/add_group_page.dart';
 import 'package:kimikoe_app/ui/post/view/add_member_page.dart';
 import 'package:kimikoe_app/ui/post/view/add_song_page.dart';
+import 'package:kimikoe_app/ui/post/view/edit_user_page.dart';
 import 'package:kimikoe_app/ui/user/view/user_page.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -21,11 +23,11 @@ final router = GoRouter(
   debugLogDiagnostics: true,
   initialLocation: '/',
   routes: [
-    // GoRoute(
-    //   path: '/signin',
-    //   name: 'signin',
-    //   builder: (cotext, state) => SignInPage(),
-    // ),
+    GoRoute(
+      path: '/',
+      name: 'signin',
+      builder: (cotext, state) => SignInPage(),
+    ),
     StatefulShellRoute.indexedStack(
       parentNavigatorKey: rootNavigatorKey,
       builder: (context, state, navitationShell) {
@@ -37,7 +39,8 @@ final router = GoRouter(
           navigatorKey: _homeNavigatorKey,
           routes: [
             GoRoute(
-              path: '/',
+              path: '/home',
+              name: 'home',
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
                 child: HomePage(),
@@ -45,6 +48,7 @@ final router = GoRouter(
               routes: [
                 GoRoute(
                   path: 'group-page',
+                  name: 'group-page',
                   pageBuilder: (context, state) {
                     return MaterialPage(
                       child: GroupPage(),
@@ -54,6 +58,7 @@ final router = GoRouter(
                 ),
                 GoRoute(
                   path: 'lyric-page',
+                  name: 'lyric-page',
                   pageBuilder: (context, state) {
                     return MaterialPage(
                       child: LyricPage(),
@@ -103,11 +108,25 @@ final router = GoRouter(
           routes: [
             GoRoute(
               path: '/user-info',
+              name: 'user-info',
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
                 child: UserPage(),
               ),
-            )
+              routes: [
+                // todo: 挙動がおかしい
+                GoRoute(
+                  path: 'edit-user',
+                  name: 'edit-user',
+                  pageBuilder: (context, state) {
+                    return MaterialPage(
+                      child: EditUserPage(),
+                      key: state.pageKey,
+                    );
+                  },
+                ),
+              ],
+            ),
           ],
         ),
       ],

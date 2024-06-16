@@ -13,7 +13,7 @@ class SongCard extends StatelessWidget {
     const songImage = 'assets/images/poison_palette.jpg';
     const title = 'Sound Paradise';
     return GestureDetector(
-      onTap: () => context.go('/lyric-page'),
+      onTap: () => context.pushNamed('lyric-page'),
       child: Card(
         elevation: 6,
         color: backgroundWhite,

@@ -12,10 +12,10 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    _redirect();
+    _redirect(context);
   }
 
-  Future<void> _redirect() async {
+  Future<void> _redirect(context) async {
     await Future.delayed(Duration.zero);
     if (!mounted) {
       return;
@@ -23,9 +23,9 @@ class _SplashPageState extends State<SplashPage> {
 
     final session = supabase.auth.currentSession;
     if (session != null) {
-      Navigator.of(context).pushReplacementNamed('/home');
+      context.of('/home');
     } else {
-      Navigator.of(context).pushReplacementNamed('/login');
+      context.of('/signin');
     }
   }
 

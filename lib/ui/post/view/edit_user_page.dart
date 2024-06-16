@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/ui/widgets/styled_button.dart';
 
 class EditUserPage extends StatelessWidget {
   const EditUserPage({super.key});
@@ -65,7 +67,6 @@ class EditUserPage extends StatelessWidget {
         ),
         const Gap(spaceWidthS),
         // 備考欄
-        // todo: '備考'をもっと上に表示したい
         Expanded(
           child: Container(
             color: backgroundLightBlue,
@@ -86,23 +87,10 @@ class EditUserPage extends StatelessWidget {
         ),
         const Gap(spaceWidthS),
         // 登録ボタン
-        SizedBox(
-          height: 40,
-          child: OutlinedButton(
-            onPressed: () {},
-            style: OutlinedButton.styleFrom(
-              backgroundColor: mainBlue,
-              shape: RoundedRectangleBorder(
-                borderRadius: borderRadius8,
-              ),
-              side: BorderSide.none,
-              fixedSize: const Size.fromWidth(double.maxFinite),
-            ),
-            child: const Text(
-              '登録',
-              style: TextStyle(color: textWhite),
-            ),
-          ),
+        StyledButton(
+          '登録',
+          onPressed: () => context.goNamed('home'),
+          buttonSize: buttonL,
         ),
         const Gap(spaceWidthS),
       ],

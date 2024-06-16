@@ -63,7 +63,7 @@ class AddGroupPage extends StatelessWidget {
         StyledButton(
           '登録',
           onPressed: () {
-            context.go('/');
+            context.goNamed('home');
           },
           buttonSize: buttonL,
         ),

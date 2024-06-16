@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/ui/widgets/styled_button.dart';
 
@@ -25,9 +26,13 @@ class UserPage extends StatelessWidget {
               backgroundImage: AssetImage(avaterImage),
               radius: 20,
             ),
+            // 編集
+            // todo: 他のページに遷移したら編集を終了する
             StyledButton(
               editButtonText,
-              onPressed: () {},
+              onPressed: () {
+                context.pushNamed('edit-user');
+              },
               textColor: textGray,
               backgroundColor: backgroundWhite,
               buttonSize: buttonM,
