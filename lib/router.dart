@@ -119,7 +119,6 @@ final router = GoRouter(
                 child: UserPage(),
               ),
               routes: [
-                // todo: 挙動がおかしい
                 GoRoute(
                   path: 'edit-user',
                   name: 'edit-user',
