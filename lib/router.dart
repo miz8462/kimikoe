@@ -17,6 +17,7 @@ final _homeNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'home');
 final _addItemNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'add-item');
 final _userInfoNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'user-info');
+final _signOutNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'sign-out');
 
 final router = GoRouter(
   navigatorKey: rootNavigatorKey,
@@ -130,6 +131,20 @@ final router = GoRouter(
                   },
                 ),
               ],
+            ),
+          ],
+        ),
+        // todo: 開発用ログアウトボタン
+        StatefulShellBranch(
+          navigatorKey: _signOutNavigatorKey,
+          routes: [
+            GoRoute(
+              path: '/sign-out',
+              name: 'sign-out',
+              pageBuilder: (context, state) => NoTransitionPage(
+                key: state.pageKey,
+                child: SignInPage(),
+              ),
             ),
           ],
         ),

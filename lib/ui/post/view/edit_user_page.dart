@@ -89,7 +89,7 @@ class EditUserPage extends StatelessWidget {
         // 登録ボタン
         StyledButton(
           '登録',
-          onPressed: () => context.goNamed('home'),
+          onPressed: () => context.go('/home'),
           buttonSize: buttonL,
         ),
         const Gap(spaceWidthS),

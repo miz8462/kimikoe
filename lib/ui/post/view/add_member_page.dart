@@ -56,7 +56,7 @@ class AddMemberPage extends StatelessWidget {
         StyledButton(
           '登録',
           onPressed: () {
-            context.goNamed('home');
+            context.go('/home');
           },
           buttonSize: buttonL,
         ),

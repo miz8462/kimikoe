@@ -18,7 +18,7 @@ class _SignInPageState extends State<SignInPage> {
   final _emailController = TextEditingController();
 
   // マジックリンク
-  Future<void> _login() async {
+  Future<void> _signIn() async {
     await supabase.auth.signInWithOtp(
       email: 'wwr8462@gmail.com',
       // email: _emailController.text.trim(),
