@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/ui/widgets/styled_button.dart';
 
 class BottomBar extends StatelessWidget {
@@ -59,18 +60,25 @@ class BottomBar extends StatelessWidget {
       },
     );
   }
-  // void _logout() async {}
+
+  void _signOut() async {
+    await supabase.auth.signOut();
+  }
 
   @override
   Widget build(BuildContext context) {
     int currentIndex = navigationShell.currentIndex;
     int addIndex = 1;
+    int logoutIndex = 3;
     return NavigationBar(
       backgroundColor: mainBlue,
       selectedIndex: currentIndex,
       onDestinationSelected: (index) {
         if (index == addIndex) {
           _openAddOverlay(context);
+        } else if (index == logoutIndex) {
+          _signOut();
+          context.go('/');
         } else {
           navigationShell.goBranch(
             index,
@@ -106,7 +114,7 @@ class BottomBar extends StatelessWidget {
         // todo: 開発用ログアウトボタン
         NavigationDestination(
           icon: Icon(Icons.logout),
-          label: 'Logout',
+          label: 'SignOut',
         ),
       ],
     );

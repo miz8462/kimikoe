@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/main.dart';
 
 class SplashPage extends StatefulWidget {
@@ -12,10 +13,10 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    _redirect(context);
+    _redirect();
   }
 
-  Future<void> _redirect(context) async {
+  Future<void> _redirect() async {
     await Future.delayed(Duration.zero);
     if (!mounted) {
       return;
@@ -23,9 +24,9 @@ class _SplashPageState extends State<SplashPage> {
 
     final session = supabase.auth.currentSession;
     if (session != null) {
-      context.of('/home');
+      context.go('/home');
     } else {
-      context.of('/signin');
+      context.go('/signin');
     }
   }
 

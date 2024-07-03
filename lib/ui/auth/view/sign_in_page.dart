@@ -1,11 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/ui/auth/view/divide_line.dart';
 import 'package:kimikoe_app/ui/auth/view/title_logo.dart';
 import 'package:kimikoe_app/ui/widgets/social_login_button.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -15,7 +20,10 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  bool _redirecting = false;
+
   final _emailController = TextEditingController();
+  late final StreamSubscription<AuthState> _authStateSubscription;
 
   // マジックリンク
   Future<void> _signIn() async {
@@ -33,10 +41,73 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   // googleログイン
-  Future<void> _googleSignIn() async {}
+  Future<void> _googleSignIn() async {
+    /// Web Client ID that you registered with Google Cloud.
+    final webClientId = dotenv.env['GOOGLE_OAUTH_WEB_CLIENT_ID'];
+
+    /// iOS Client ID that you registered with Google Cloud.
+    final iosClientId = dotenv.env['GOOGLE_OAUTH_IOS_CLIENT_ID'];
+
+    // Google sign in on Android will work without providing the Android
+    // Client ID registered on Google Cloud.
+
+    final GoogleSignIn googleSignIn = GoogleSignIn(
+      clientId: iosClientId,
+      serverClientId: webClientId,
+    );
+    final googleUser = await googleSignIn.signIn();
+    final googleAuth = await googleUser!.authentication;
+    final accessToken = googleAuth.accessToken;
+    final idToken = googleAuth.idToken;
+
+    if (accessToken == null) {
+      throw 'No Access Token found.';
+    }
+    if (idToken == null) {
+      throw 'No ID Token found.';
+    }
+
+    await supabase.auth.signInWithIdToken(
+      provider: OAuthProvider.google,
+      idToken: idToken,
+      accessToken: accessToken,
+    );
+  }
 
   // twitterログイン
   Future<void> _twitterSignIn() async {}
+
+  @override
+  void initState() {
+    _authStateSubscription = supabase.auth.onAuthStateChange.listen(
+      (data) async {
+        if (_redirecting) return;
+        final session = data.session;
+        if (session != null) {
+          _redirecting = true;
+          await Future.delayed(Duration.zero);
+          if (mounted) {
+            context.go('/home');
+          }
+        }
+      },
+      onError: (error) {
+        if (error is AuthException) {
+          context.showSnackBar(error.message, isError: true);
+        } else {
+          context.showSnackBar('Unexpected error occurrded', isError: true);
+        }
+      },
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _authStateSubscription.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,8 +153,8 @@ class _SignInPageState extends State<SignInPage> {
                         FractionallySizedBox(
                           widthFactor: 1.0,
                           child: ElevatedButton(
-                            onPressed: () => context.go('/home'),
-                            // onPressed: _login,
+                            // onPressed: () => context.go('/home'),
+                            onPressed: _signIn,
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),

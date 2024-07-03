@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/ui/appbar/app_top_bottom_navi_bar.dart';
 import 'package:kimikoe_app/ui/auth/view/sign_in_page.dart';
 import 'package:kimikoe_app/ui/group/view/group_page.dart';
@@ -11,6 +12,7 @@ import 'package:kimikoe_app/ui/post/view/add_member_page.dart';
 import 'package:kimikoe_app/ui/post/view/add_song_page.dart';
 import 'package:kimikoe_app/ui/post/view/edit_user_page.dart';
 import 'package:kimikoe_app/ui/user/view/user_page.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'home');
@@ -22,7 +24,19 @@ final _signOutNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'sign-out');
 final router = GoRouter(
   navigatorKey: rootNavigatorKey,
   debugLogDiagnostics: true,
-  initialLocation: '/home',
+  initialLocation: '/',
+  // todo: マジックリンクで戻ってきたとき遷移しない
+  redirect: (context, state) {
+    final currentSession = supabase.auth.currentSession;
+    // final currentSession = 'true';
+    if (currentSession == null && state.matchedLocation != '/') {
+      // if (false) {
+      return '/';
+    } else if (currentSession != null && state.matchedLocation == '/') {
+      return '/home';
+    }
+    return null;
+  },
   routes: [
     GoRoute(
       path: '/',
@@ -151,3 +165,12 @@ final router = GoRouter(
     ),
   ],
 );
+
+class AuthState {
+  final Session? session;
+  AuthState({this.session});
+
+  factory AuthState.initial() {
+    return AuthState(session: supabase.auth.currentSession);
+  }
+}

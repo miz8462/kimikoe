@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/router.dart';
+import 'package:kimikoe_app/router/router.dart';
 
 // AppBarとBottomNavigationBarの設計
 // bodyに子要素として各ページを受け取る
 
-class KimikoeApp extends StatefulWidget {
+class KimikoeApp extends StatelessWidget {
   const KimikoeApp({super.key});
 
-  @override
-  State<KimikoeApp> createState() => _KimikoeAppState();
-}
-
-class _KimikoeAppState extends State<KimikoeApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
