@@ -40,7 +40,6 @@ class _SignInPageState extends State<SignInPage> {
     }
   }
 
-  // googleログイン
   Future<void> _googleSignIn() async {
     /// Web Client ID that you registered with Google Cloud.
     final webClientId = dotenv.env['GOOGLE_OAUTH_WEB_CLIENT_ID'];

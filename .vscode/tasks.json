@@ -1,0 +1,11 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+      {
+          "label": "flutterRunEmulator",
+          "type": "shell",
+          "command": "flutter emulators --launch Pixel_7_API_33",
+          "problemMatcher": []
+      }
+  ]
+}
