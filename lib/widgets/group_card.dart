@@ -3,7 +3,13 @@ import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 
 class GroupCard extends StatelessWidget {
-  const GroupCard({super.key});
+  const GroupCard({
+    super.key,
+    required this.name,
+    required this.imageUrl,
+  });
+  final String name;
+  final String imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +33,12 @@ class GroupCard extends StatelessWidget {
             // 画像をClipRRectで囲って角を丸くする
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: const Image(
-                image: AssetImage('assets/images/poison_palette.jpg'),
+              child: Image(
+                image: AssetImage(imageUrl!),
               ),
             ),
-            const Text(
-              'Poison Palette',
+            Text(
+              name,
               textAlign: TextAlign.start,
               style: TextStyle(
                 color: textDark,
