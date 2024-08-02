@@ -17,7 +17,7 @@ class DivideLine extends StatelessWidget {
           ),
         ),
         Text(
-          "    OR    ",
+          "    Social Login    ",
           style: TextStyle(
             color: textWhite,
             fontSize: fontS,

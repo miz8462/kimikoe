@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
-import 'package:kimikoe_app/ui/widgets/styled_button.dart';
+import 'package:kimikoe_app/widgets/styled_button.dart';
 
 class BottomBar extends StatelessWidget {
   const BottomBar({

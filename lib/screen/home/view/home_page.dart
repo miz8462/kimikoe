@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kimikoe_app/ui/widgets/group_card.dart';
+import 'package:kimikoe_app/widgets/group_card.dart';
 
 /*
 グループ一覧を表示する

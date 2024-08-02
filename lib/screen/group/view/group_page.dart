@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/ui/widgets/group_info.dart';
-import 'package:kimikoe_app/ui/widgets/song_card.dart';
+import 'package:kimikoe_app/widgets/group_info.dart';
+import 'package:kimikoe_app/widgets/song_card.dart';
 
 class GroupPage extends StatelessWidget {
   const GroupPage({super.key});

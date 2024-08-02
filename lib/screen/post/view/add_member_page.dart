@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/ui/widgets/circular_button.dart';
-import 'package:kimikoe_app/ui/widgets/expanded_text_form.dart';
-import 'package:kimikoe_app/ui/widgets/styled_button.dart';
-import 'package:kimikoe_app/ui/widgets/text_form.dart';
+import 'package:kimikoe_app/widgets/circular_button.dart';
+import 'package:kimikoe_app/widgets/expanded_text_form.dart';
+import 'package:kimikoe_app/widgets/styled_button.dart';
+import 'package:kimikoe_app/widgets/text_form.dart';
 
 class AddMemberPage extends StatelessWidget {
   const AddMemberPage({super.key});

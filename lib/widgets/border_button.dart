@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/ui/widgets/styled_button.dart';
+import 'package:kimikoe_app/widgets/styled_button.dart';
 
 class BorderButton extends StyledButton {
   const BorderButton(

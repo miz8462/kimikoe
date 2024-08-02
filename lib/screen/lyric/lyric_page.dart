@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/ui/widgets/border_button.dart';
-import 'package:kimikoe_app/ui/widgets/highlighted_text.dart';
-import 'package:kimikoe_app/ui/widgets/styled_text.dart';
+import 'package:kimikoe_app/widgets/border_button.dart';
+import 'package:kimikoe_app/widgets/highlighted_text.dart';
+import 'package:kimikoe_app/widgets/styled_text.dart';
 
 // HylightedTextクラスを作成し行単位でハイライトできるようにする
 // 文字が見やすい用に色を調節

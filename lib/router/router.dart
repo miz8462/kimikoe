@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/main.dart';
-import 'package:kimikoe_app/ui/appbar/app_top_bottom_navi_bar.dart';
-import 'package:kimikoe_app/ui/auth/view/sign_in_page.dart';
-import 'package:kimikoe_app/ui/group/view/group_page.dart';
-import 'package:kimikoe_app/ui/home/view/home_page.dart';
-import 'package:kimikoe_app/ui/lyric/lyric_page.dart';
-import 'package:kimikoe_app/ui/post/view/add_artist_page.dart';
-import 'package:kimikoe_app/ui/post/view/add_group_page.dart';
-import 'package:kimikoe_app/ui/post/view/add_member_page.dart';
-import 'package:kimikoe_app/ui/post/view/add_song_page.dart';
-import 'package:kimikoe_app/ui/post/view/edit_user_page.dart';
-import 'package:kimikoe_app/ui/user/view/user_page.dart';
+import 'package:kimikoe_app/screen/appbar/app_top_bottom_navi_bar.dart';
+import 'package:kimikoe_app/screen/auth/view/sign_in_page.dart';
+import 'package:kimikoe_app/screen/group/view/group_page.dart';
+import 'package:kimikoe_app/screen/home/view/home_page.dart';
+import 'package:kimikoe_app/screen/lyric/lyric_page.dart';
+import 'package:kimikoe_app/screen/post/view/add_artist_page.dart';
+import 'package:kimikoe_app/screen/post/view/add_group_page.dart';
+import 'package:kimikoe_app/screen/post/view/add_member_page.dart';
+import 'package:kimikoe_app/screen/post/view/add_song_page.dart';
+import 'package:kimikoe_app/screen/post/view/edit_user_page.dart';
+import 'package:kimikoe_app/screen/user/view/user_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -25,7 +25,6 @@ final router = GoRouter(
   navigatorKey: rootNavigatorKey,
   debugLogDiagnostics: true,
   initialLocation: '/',
-  // todo: マジックリンクで戻ってきたとき遷移しない
   redirect: (context, state) {
     final currentSession = supabase.auth.currentSession;
     // final currentSession = 'true';

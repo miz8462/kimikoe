@@ -7,9 +7,9 @@ import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
-import 'package:kimikoe_app/ui/auth/view/divide_line.dart';
-import 'package:kimikoe_app/ui/auth/view/title_logo.dart';
-import 'package:kimikoe_app/ui/widgets/social_login_button.dart';
+import 'package:kimikoe_app/screen/auth/view/divide_line.dart';
+import 'package:kimikoe_app/screen/auth/view/title_logo.dart';
+import 'package:kimikoe_app/widgets/social_login_button.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignInPage extends StatefulWidget {
@@ -74,7 +74,9 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   // twitterログイン
-  Future<void> _twitterSignIn() async {}
+//   Future<void> _twitterSignIn() async {
+//   await supabase.auth.signInWithOAuth(OAuthProvider.twitter);
+// }
 
   @override
   void initState() {
@@ -152,7 +154,6 @@ class _SignInPageState extends State<SignInPage> {
                         FractionallySizedBox(
                           widthFactor: 1.0,
                           child: ElevatedButton(
-                            // onPressed: () => context.go('/home'),
                             onPressed: _signIn,
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
@@ -179,10 +180,10 @@ class _SignInPageState extends State<SignInPage> {
                               _googleSignIn,
                               imagePath: 'assets/images/google.svg',
                             ),
-                            SocialLoginButton(
-                              _twitterSignIn,
-                              imagePath: 'assets/images/twitter.svg',
-                            ),
+                            // SocialLoginButton(
+                            //   _twitterSignIn,
+                            //   imagePath: 'assets/images/twitter.svg',
+                            // ),
                           ],
                         ),
                       ],
