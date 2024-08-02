@@ -36,11 +36,12 @@ class _HomePageState extends State<HomePage> {
             mainAxisSpacing: 15, // 縦のスペース
             childAspectRatio: 1.0, // カードのアスペクト比
           ),
-          itemCount: groups.length, // todo: 取得したデータ数
+          itemCount: groups.length,
           itemBuilder: (BuildContext context, int index) {
             final group = groups[index];
             var imageUrl = group['image_url'];
             imageUrl ??= "";
+
             return GroupCard(
               name: group['name'],
               imageUrl: imageUrl,

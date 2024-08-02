@@ -28,13 +28,16 @@ class GroupCard extends StatelessWidget {
           ],
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // 画像をClipRRectで囲って角を丸くする
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Image(
-                image: AssetImage(imageUrl!),
+              child: Image.network(
+                imageUrl,
+                height: 130,
+                width: 130,
               ),
             ),
             Text(
