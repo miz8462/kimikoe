@@ -43,7 +43,7 @@ class AddSongPage extends StatelessWidget {
         Gap(spaceWidthS),
         // 備考欄
         // todo: '備考'をもっと上に表示したい
-        ExpandedTextForm(hintText: '*歌詞'),
+        ExpandedTextForm(label: '*歌詞'),
         Gap(spaceWidthS),
         // 登録ボタン
         StyledButton(

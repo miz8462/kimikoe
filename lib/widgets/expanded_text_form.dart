@@ -3,11 +3,11 @@ import 'package:kimikoe_app/config/config.dart';
 
 class ExpandedTextForm extends StatelessWidget {
   const ExpandedTextForm({
-    this.hintText,
+    this.label,
     super.key,
   });
 
-  final String? hintText;
+  final String? label;
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +17,11 @@ class ExpandedTextForm extends StatelessWidget {
         child: TextFormField(
           decoration: InputDecoration(
             border: noBorder,
-            hintText: hintText,
+            label: Text(label!),
             hintStyle: const TextStyle(color: textGray, fontSize: fontM),
             contentPadding:
                 const EdgeInsets.only(left: spaceWidthS, bottom: bottomPadding),
           ),
-          controller: TextEditingController(),
           maxLines: null,
         ),
       ),
