@@ -7,19 +7,17 @@ import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
-import 'package:kimikoe_app/screen/auth/view/divide_line.dart';
-import 'package:kimikoe_app/screen/auth/view/title_logo.dart';
 import 'package:kimikoe_app/widgets/social_login_button.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class SignInPage extends StatefulWidget {
-  const SignInPage({super.key});
+class SignInScreen extends StatefulWidget {
+  const SignInScreen({super.key});
 
   @override
-  State<SignInPage> createState() => _SignInPageState();
+  State<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _SignInScreenState extends State<SignInScreen> {
   bool _redirecting = false;
 
   final _emailController = TextEditingController();
@@ -117,7 +115,20 @@ class _SignInPageState extends State<SignInPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TitleLogo(),
+            const Expanded(
+              flex: 4,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 80),
+                    Image(
+                      image: AssetImage('assets/images/Kimikoe_Logo.png'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             Expanded(
               flex: 6,
               child: Container(
@@ -171,7 +182,29 @@ class _SignInPageState extends State<SignInPage> {
                           ),
                         ),
                         const Gap(30),
-                        DivideLine(),
+                        const Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: Divider(
+                                color: textWhite,
+                                thickness: 2,
+                              ),
+                            ),
+                            Text(
+                              "    Social Login    ",
+                              style: TextStyle(
+                                color: textWhite,
+                                fontSize: fontS,
+                              ),
+                            ),
+                            Expanded(
+                              child: Divider(
+                                color: textWhite,
+                                thickness: 2,
+                              ),
+                            ),
+                          ],
+                        ),
                         const Gap(10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,

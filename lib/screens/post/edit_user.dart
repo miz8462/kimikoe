@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/widgets/styled_button.dart';
 
-class EditUserPage extends StatelessWidget {
-  const EditUserPage({super.key});
+class EditUserScreen extends StatelessWidget {
+  const EditUserScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return Column(

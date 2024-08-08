@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/widgets/styled_button.dart';
 
-class UserPage extends StatelessWidget {
-  const UserPage({super.key});
+class UserScreen extends StatelessWidget {
+  const UserScreen({super.key});
   @override
   Widget build(context) {
     const String userName = 'おぱんちゅうさぎ';

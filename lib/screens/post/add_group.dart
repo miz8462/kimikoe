@@ -4,14 +4,14 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/widgets/expanded_text_form.dart';
 import 'package:kimikoe_app/widgets/styled_button.dart';
 
-class AddGroupPage extends StatefulWidget {
-  const AddGroupPage({super.key});
+class AddGroupScreen extends StatefulWidget {
+  const AddGroupScreen({super.key});
 
   @override
-  State<AddGroupPage> createState() => _AddGroupPageState();
+  State<AddGroupScreen> createState() => _AddGroupScreenState();
 }
 
-class _AddGroupPageState extends State<AddGroupPage> {
+class _AddGroupScreenState extends State<AddGroupScreen> {
   final _formKey = GlobalKey<FormState>();
   var _enteredName = '';
   var _enteredYear = 0;
@@ -79,10 +79,9 @@ class _AddGroupPageState extends State<AddGroupPage> {
               ),
               keyboardType: TextInputType.number,
               validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return null;
-                }
-                if (int.tryParse(value) == null) {
+                if (value == null ||
+                    value.isEmpty ||
+                    int.tryParse(value) == null) {
                   return '結成年は数字を入力してください。';
                 }
                 return null;

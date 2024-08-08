@@ -6,8 +6,8 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/widgets/group_info.dart';
 import 'package:kimikoe_app/widgets/song_card.dart';
 
-class GroupPage extends StatelessWidget {
-  const GroupPage({super.key});
+class GroupScreen extends StatelessWidget {
+  const GroupScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

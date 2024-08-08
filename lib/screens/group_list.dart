@@ -9,14 +9,14 @@ import 'package:kimikoe_app/widgets/group_card.dart';
 各グループをカードで画像と名前を表示する
 */
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class GroupListScreen extends StatefulWidget {
+  const GroupListScreen({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<GroupListScreen> createState() => _GroupListScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _GroupListScreenState extends State<GroupListScreen> {
   final _future = supabase.from('group').select('name, image_url');
 
   @override

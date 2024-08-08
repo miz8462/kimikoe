@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kimikoe_app/screen/appbar/bottom_bar.dart';
-import 'package:kimikoe_app/screen/appbar/top_bar.dart';
+import 'package:kimikoe_app/screens/appbar/bottom_bar.dart';
+import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 
 class AppTopBottomNaviBar extends StatelessWidget {
   const AppTopBottomNaviBar({

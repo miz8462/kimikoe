@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kimikoe_app/screen/appbar/app_bar_divider.dart';
+import 'package:kimikoe_app/screens/appbar/app_bar_divider.dart';
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
   const TopBar({

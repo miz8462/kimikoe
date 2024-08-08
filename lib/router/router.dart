@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/main.dart';
-import 'package:kimikoe_app/screen/appbar/app_top_bottom_navi_bar.dart';
-import 'package:kimikoe_app/screen/auth/view/sign_in_page.dart';
-import 'package:kimikoe_app/screen/group/view/group_page.dart';
-import 'package:kimikoe_app/screen/home/view/home_page.dart';
-import 'package:kimikoe_app/screen/lyric/lyric_page.dart';
-import 'package:kimikoe_app/screen/post/view/add_artist_page.dart';
-import 'package:kimikoe_app/screen/post/view/add_group_page.dart';
-import 'package:kimikoe_app/screen/post/view/add_member_page.dart';
-import 'package:kimikoe_app/screen/post/view/add_song_page.dart';
-import 'package:kimikoe_app/screen/post/view/edit_user_page.dart';
-import 'package:kimikoe_app/screen/user/view/user_page.dart';
+import 'package:kimikoe_app/screens/appbar/app_top_bottom_navi_bar.dart';
+import 'package:kimikoe_app/screens/group.dart';
+import 'package:kimikoe_app/screens/group_list.dart';
+import 'package:kimikoe_app/screens/lyric.dart';
+import 'package:kimikoe_app/screens/post/add_artist.dart';
+import 'package:kimikoe_app/screens/post/add_group.dart';
+import 'package:kimikoe_app/screens/post/add_member.dart';
+import 'package:kimikoe_app/screens/post/add_song.dart';
+import 'package:kimikoe_app/screens/post/edit_user.dart';
+import 'package:kimikoe_app/screens/sign_in.dart';
+import 'package:kimikoe_app/screens/user.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -26,8 +26,9 @@ final router = GoRouter(
   debugLogDiagnostics: true,
   initialLocation: '/',
   redirect: (context, state) {
-    final currentSession = supabase.auth.currentSession;
-    // final currentSession = 'true';
+    // todo: 開発用自動ログイン
+    // final currentSession = supabase.auth.currentSession;
+    final currentSession = 'true';
     if (currentSession == null && state.matchedLocation != '/') {
       // if (false) {
       return '/';
@@ -40,7 +41,7 @@ final router = GoRouter(
     GoRoute(
       path: '/',
       name: 'signin',
-      builder: (cotext, state) => SignInPage(),
+      builder: (cotext, state) => SignInScreen(),
     ),
     StatefulShellRoute.indexedStack(
       parentNavigatorKey: rootNavigatorKey,
@@ -57,7 +58,7 @@ final router = GoRouter(
               name: 'home',
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
-                child: HomePage(),
+                child: GroupListScreen(),
               ),
               routes: [
                 GoRoute(
@@ -65,7 +66,7 @@ final router = GoRouter(
                   name: 'group-page',
                   pageBuilder: (context, state) {
                     return MaterialPage(
-                      child: GroupPage(),
+                      child: GroupScreen(),
                       key: state.pageKey,
                     );
                   },
@@ -75,7 +76,7 @@ final router = GoRouter(
                   name: 'lyric-page',
                   pageBuilder: (context, state) {
                     return MaterialPage(
-                      child: LyricPage(),
+                      child: LyricScreen(),
                       key: state.pageKey,
                     );
                   },
@@ -92,7 +93,7 @@ final router = GoRouter(
               name: 'add-song',
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
-                child: AddSongPage(),
+                child: AddSongScreen(),
               ),
             ),
             GoRoute(
@@ -100,7 +101,7 @@ final router = GoRouter(
               name: 'add-group',
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
-                child: AddGroupPage(),
+                child: AddGroupScreen(),
               ),
             ),
             GoRoute(
@@ -108,7 +109,7 @@ final router = GoRouter(
               name: 'add-member',
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
-                child: AddMemberPage(),
+                child: AddMemberScreen(),
               ),
             ),
             GoRoute(
@@ -116,7 +117,7 @@ final router = GoRouter(
               name: 'add-artist',
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
-                child: AddArtistPage(),
+                child: AddArtistScreen(),
               ),
             ),
           ],
@@ -129,7 +130,7 @@ final router = GoRouter(
               name: 'user-info',
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
-                child: UserPage(),
+                child: UserScreen(),
               ),
               routes: [
                 GoRoute(
@@ -137,7 +138,7 @@ final router = GoRouter(
                   name: 'edit-user',
                   pageBuilder: (context, state) {
                     return MaterialPage(
-                      child: EditUserPage(),
+                      child: EditUserScreen(),
                       key: state.pageKey,
                     );
                   },
@@ -155,7 +156,7 @@ final router = GoRouter(
               name: 'sign-out',
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
-                child: SignInPage(),
+                child: SignInScreen(),
               ),
             ),
           ],

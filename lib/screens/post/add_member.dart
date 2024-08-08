@@ -7,8 +7,8 @@ import 'package:kimikoe_app/widgets/expanded_text_form.dart';
 import 'package:kimikoe_app/widgets/styled_button.dart';
 import 'package:kimikoe_app/widgets/text_form.dart';
 
-class AddMemberPage extends StatelessWidget {
-  const AddMemberPage({super.key});
+class AddMemberScreen extends StatelessWidget {
+  const AddMemberScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return Column(

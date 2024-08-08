@@ -8,8 +8,8 @@ import 'package:kimikoe_app/widgets/styled_text.dart';
 // HylightedTextクラスを作成し行単位でハイライトできるようにする
 // 文字が見やすい用に色を調節
 
-class LyricPage extends StatelessWidget {
-  const LyricPage({super.key});
+class LyricScreen extends StatelessWidget {
+  const LyricScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
