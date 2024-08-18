@@ -5,11 +5,11 @@ class Group {
     required this.name,
     this.image,
     this.year = 0,
-    this.remarks = '',
+    this.comment = '',
   });
 
   String name;
   File? image;
   int? year;
-  String? remarks;
+  String? comment;
 }

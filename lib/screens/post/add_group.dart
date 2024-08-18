@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/provider/groups_notifier.dart';
+import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/widgets/expanded_text_form.dart';
 import 'package:kimikoe_app/widgets/styled_button.dart';
 
@@ -21,33 +21,37 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
   final _nameController = TextEditingController();
   File? _selectedImage;
   final _yearController = TextEditingController();
-  final _remarksController = TextEditingController();
+  final _commentController = TextEditingController();
 
   @override
   void dispose() {
     _nameController.dispose();
     _yearController.dispose();
-    _remarksController.dispose();
+    _commentController.dispose();
     super.dispose();
   }
 
-  void _saveGroup() {
+  void _saveGroup() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
     }
     final enteredName = _nameController.text;
     final enteredYear = _yearController.text;
-    final enteredRemarks = _remarksController.text;
+    final enteredComment = _commentController.text;
 
     if (enteredName.isEmpty) {
       return;
     }
-    ref.read(groupsProvider.notifier).addGroup(
-          enteredName,
-          _selectedImage,
-          int.parse(enteredYear),
-          enteredRemarks,
-        );
+    await supabase.from('group').insert({
+      'name': enteredName,
+      'year_forming_group': int.parse(enteredYear),
+      'comment': enteredComment
+    });
+
+    if (!mounted) {
+      return;
+    }
+    
     context.go('/home');
   }
 
@@ -115,7 +119,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
             ),
           ),
           const Gap(spaceWidthS),
-          ExpandedTextForm(label: '備考', controller: _remarksController),
+          ExpandedTextForm(label: '備考', controller: _commentController),
           const Gap(spaceWidthS),
           StyledButton(
             '登録',
