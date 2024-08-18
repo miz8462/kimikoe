@@ -2,13 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/widgets/group_card.dart';
 
-/*
-グループ一覧を表示する
-画面上はグリッドで横2列、縦4行（？）
-下方にスクロールしてさらにグループを表示
-各グループをカードで画像と名前を表示する
-*/
-
 class GroupListScreen extends StatefulWidget {
   const GroupListScreen({super.key});
 

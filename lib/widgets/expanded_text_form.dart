@@ -5,9 +5,11 @@ class ExpandedTextForm extends StatelessWidget {
   const ExpandedTextForm({
     this.label,
     super.key,
+    this.controller,
   });
 
   final String? label;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,7 @@ class ExpandedTextForm extends StatelessWidget {
                 const EdgeInsets.only(left: spaceWidthS, bottom: bottomPadding),
           ),
           maxLines: null,
+          controller: controller,
         ),
       ),
     );

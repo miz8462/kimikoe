@@ -1,26 +1,54 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/provider/groups_notifier.dart';
 import 'package:kimikoe_app/widgets/expanded_text_form.dart';
 import 'package:kimikoe_app/widgets/styled_button.dart';
 
-class AddGroupScreen extends StatefulWidget {
+class AddGroupScreen extends ConsumerStatefulWidget {
   const AddGroupScreen({super.key});
 
   @override
-  State<AddGroupScreen> createState() => _AddGroupScreenState();
+  ConsumerState<AddGroupScreen> createState() => _AddGroupScreenState();
 }
 
-class _AddGroupScreenState extends State<AddGroupScreen> {
+class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
   final _formKey = GlobalKey<FormState>();
-  var _enteredName = '';
-  var _enteredYear = 0;
-  var _entered = '';
+  final _nameController = TextEditingController();
+  File? _selectedImage;
+  final _yearController = TextEditingController();
+  final _remarksController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _yearController.dispose();
+    _remarksController.dispose();
+    super.dispose();
+  }
+
   void _saveGroup() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      print(_enteredName);
     }
+    final enteredName = _nameController.text;
+    final enteredYear = _yearController.text;
+    final enteredRemarks = _remarksController.text;
+
+    if (enteredName.isEmpty) {
+      return;
+    }
+    ref.read(groupsProvider.notifier).addGroup(
+          enteredName,
+          _selectedImage,
+          int.parse(enteredYear),
+          enteredRemarks,
+        );
+    context.go('/home');
   }
 
   @override
@@ -51,9 +79,7 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
                 }
                 return null;
               },
-              onSaved: (value) {
-                _enteredName = value!;
-              },
+              controller: _nameController,
             ),
           ),
           const Gap(spaceWidthS),
@@ -70,7 +96,6 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
           Container(
             color: backgroundLightBlue,
             child: TextFormField(
-              initialValue: _enteredYear.toString(),
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 label: Text('結成年'),
@@ -86,19 +111,16 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
                 }
                 return null;
               },
-              onSaved: (value) {
-                _enteredYear = int.parse(value!);
-              },
+              controller: _yearController,
             ),
           ),
           const Gap(spaceWidthS),
-          ExpandedTextForm(label: '備考'),
+          ExpandedTextForm(label: '備考', controller: _remarksController),
           const Gap(spaceWidthS),
           StyledButton(
             '登録',
             onPressed: () {
               _saveGroup();
-              // context.go('/home');
             },
             buttonSize: buttonL,
           ),
