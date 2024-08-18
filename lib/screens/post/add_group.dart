@@ -1,11 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
+import 'package:kimikoe_app/provider/groups_notifier.dart';
 import 'package:kimikoe_app/widgets/expanded_text_form.dart';
 import 'package:kimikoe_app/widgets/styled_button.dart';
 
@@ -19,7 +18,7 @@ class AddGroupScreen extends ConsumerStatefulWidget {
 class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  File? _selectedImage;
+  // File? _selectedImage;
   final _yearController = TextEditingController();
   final _commentController = TextEditingController();
 
@@ -36,23 +35,33 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
       _formKey.currentState!.save();
     }
     final enteredName = _nameController.text;
-    final enteredYear = _yearController.text;
+    final enteredTextYear = _yearController.text;
     final enteredComment = _commentController.text;
+
+    final enteredYear = int.parse(enteredTextYear);
 
     if (enteredName.isEmpty) {
       return;
     }
+
+    ref.read(groupsProvider.notifier).addGroup(
+          enteredName,
+          // _selectedImage,
+          enteredYear,
+          enteredComment,
+        );
+
     await supabase.from('group').insert({
       'name': enteredName,
-      'year_forming_group': int.parse(enteredYear),
+      'year_forming_group': enteredYear,
       'comment': enteredComment
     });
 
     if (!mounted) {
       return;
     }
-    
-    context.go('/home');
+
+    context.pushReplacement('/home');
   }
 
   @override

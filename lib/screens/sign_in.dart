@@ -91,6 +91,7 @@ class _SignInScreenState extends State<SignInScreen> {
         }
       },
       onError: (error) {
+        if (!mounted) {return;}
         if (error is AuthException) {
           context.showSnackBar(error.message, isError: true);
         } else {

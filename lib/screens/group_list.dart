@@ -10,7 +10,16 @@ class GroupListScreen extends StatefulWidget {
 }
 
 class _GroupListScreenState extends State<GroupListScreen> {
-  final _future = supabase.from('group').select('name, image_url');
+  late Future _future;
+  @override
+  void initState() {
+    super.initState();
+    _loadGroups();
+  }
+
+  void _loadGroups() {
+    _future = supabase.from('group').select('name, image_url');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +43,6 @@ class _GroupListScreenState extends State<GroupListScreen> {
             final group = groups[index];
             var imageUrl = group['image_url'];
             imageUrl ??= "";
-
             return GroupCard(
               name: group['name'],
               imageUrl: imageUrl,
