@@ -6,13 +6,13 @@ class GroupsNotifier extends StateNotifier<List<Group>> {
 
   void addGroup(
     String name,
-    // File? image,
+    String? image,
     int year,
     String comment,
   ) {
     final newGroup = Group(
       name: name,
-      // image: image,
+      imageUrl: image,
       year: year,
       comment: comment,
     );

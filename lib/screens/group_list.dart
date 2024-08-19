@@ -10,7 +10,7 @@ class GroupListScreen extends StatefulWidget {
 }
 
 class _GroupListScreenState extends State<GroupListScreen> {
-  late Future _future;
+  late Future _groupFuture;
   @override
   void initState() {
     super.initState();
@@ -18,16 +18,16 @@ class _GroupListScreenState extends State<GroupListScreen> {
   }
 
   void _loadGroups() {
-    _future = supabase.from('group').select('name, image_url');
+    _groupFuture = supabase.from('groups').select('name, image_url');
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _future,
+      future: _groupFuture,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return Center(child: CircularProgressIndicator());
+          return Center(child: Text('登録データはありません'));
         }
         final groups = snapshot.data!;
         return GridView.builder(
@@ -41,8 +41,8 @@ class _GroupListScreenState extends State<GroupListScreen> {
           itemCount: groups.length,
           itemBuilder: (BuildContext context, int index) {
             final group = groups[index];
-            var imageUrl = group['image_url'];
-            imageUrl ??= "";
+            // todo: バケットはパブリックでいいの？
+            var imageUrl = supabase.storage.from('images').getPublicUrl(group['image_url']);
             return GroupCard(
               name: group['name'],
               imageUrl: imageUrl,
