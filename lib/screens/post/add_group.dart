@@ -41,7 +41,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
           _enteredComment,
         );
 
-    await supabase.from('groups').insert({
+    await supabase.from('idol-groups').insert({
       'name': _enteredName,
       'image_url': imagePathWithCreatedAtJPG,
       'year_forming_group': _enteredYear,

@@ -18,7 +18,7 @@ class _GroupListScreenState extends State<GroupListScreen> {
   }
 
   void _loadGroups() {
-    _groupFuture = supabase.from('groups').select('name, image_url');
+    _groupFuture = supabase.from('idol-groups').select('name, image_url');
   }
 
   @override
