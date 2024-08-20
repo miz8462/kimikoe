@@ -20,52 +20,38 @@ class AddGroupScreen extends ConsumerStatefulWidget {
 
 class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
+  var _enteredName = '';
   File? _selectedImage;
-  final _yearController = TextEditingController(text: '2000');
-  final _commentController = TextEditingController();
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _yearController.dispose();
-    _commentController.dispose();
-    super.dispose();
-  }
+  var _enteredYear = '';
+  var _enteredComment = '';
 
   Future<void> _saveGroup() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
     }
-    final enteredName = _nameController.text;
-    final enteredTextYear = _yearController.text;
-    final enteredComment = _commentController.text;
 
-    final enteredYear = int.parse(enteredTextYear);
-
-    if (enteredName.isEmpty) {
-      return;
-    }
-    final imagePath = _selectedImage?.path.split('/').last;
+    final imagePath = _selectedImage?.path.split('/').last.split('.').first;
+    final imagePathWithCreatedAtJPG =
+        '$imagePath${(DateTime.now().toString()).replaceAll(' ', '-')}.jpg';
 
     ref.read(groupsProvider.notifier).addGroup(
-          enteredName,
-          imagePath,
-          enteredYear,
-          enteredComment,
+          _enteredName,
+          imagePathWithCreatedAtJPG,
+          int.parse(_enteredYear),
+          _enteredComment,
         );
 
     await supabase.from('groups').insert({
-      'name': enteredName,
-      'image_url': imagePath,
-      'year_forming_group': enteredYear,
-      'comment': enteredComment
+      'name': _enteredName,
+      'image_url': imagePathWithCreatedAtJPG,
+      'year_forming_group': _enteredYear,
+      'comment': _enteredComment
     });
 
     if (_selectedImage != null) {
       await supabase.storage
           .from('images')
-          .upload(imagePath!, _selectedImage!);
+          .upload(imagePathWithCreatedAtJPG, _selectedImage!);
     }
 
     if (!mounted) {
@@ -73,6 +59,12 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     }
 
     context.pushReplacement('/home');
+  }
+
+  void _handleCommentChanged(String? comment) {
+    setState(() {
+      _enteredComment = comment!;
+    });
   }
 
   @override
@@ -107,7 +99,9 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                     }
                     return null;
                   },
-                  controller: _nameController,
+                  onSaved: (value) {
+                    _enteredName = value!;
+                  },
                 ),
               ),
               const Gap(spaceWidthS),
@@ -135,11 +129,16 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                     }
                     return null;
                   },
-                  controller: _yearController,
+                  onSaved: (value) {
+                    _enteredYear = value!;
+                  },
                 ),
               ),
               const Gap(spaceWidthS),
-              ExpandedTextForm(label: '備考', controller: _commentController),
+              ExpandedTextForm(
+                onTextChanged: _handleCommentChanged,
+                label: '備考',
+              ),
               const Gap(spaceWidthS),
               StyledButton(
                 '登録',

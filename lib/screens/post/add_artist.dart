@@ -33,7 +33,7 @@ class AddArtistScreen extends StatelessWidget {
         ),
         Gap(spaceWidthS),
         // 備考欄
-        ExpandedTextForm(label: '備考'),
+        // ExpandedTextForm(label: '備考'),
         Gap(spaceWidthS),
         // 登録ボタン
         StyledButton(

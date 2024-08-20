@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
 
-class ExpandedTextForm extends StatelessWidget {
+class ExpandedTextForm extends StatefulWidget {
   const ExpandedTextForm({
-    this.label,
     super.key,
-    this.controller,
+    this.label,
+    required this.onTextChanged,
   });
 
   final String? label;
-  final TextEditingController? controller;
+  final ValueChanged<String?> onTextChanged;
+
+  @override
+  State<ExpandedTextForm> createState() => _ExpandedTextFormState();
+}
+
+class _ExpandedTextFormState extends State<ExpandedTextForm> {
+  String? _enteredText;
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +26,18 @@ class ExpandedTextForm extends StatelessWidget {
         child: TextFormField(
           decoration: InputDecoration(
             border: noBorder,
-            label: Text(label!),
+            label: Text(widget.label!),
             hintStyle: const TextStyle(color: textGray, fontSize: fontM),
             contentPadding:
                 const EdgeInsets.only(left: spaceWidthS, bottom: bottomPadding),
           ),
           maxLines: null,
-          controller: controller,
+          onSaved: (value) {
+            setState(() {
+              _enteredText = value!;
+            });
+            widget.onTextChanged(_enteredText);
+          },
         ),
       ),
     );

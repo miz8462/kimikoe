@@ -51,7 +51,7 @@ class AddMemberScreen extends StatelessWidget {
         const Gap(spaceWidthS),
         const TextForm(hintText: 'デビュー年'),
         const Gap(spaceWidthS),
-        const ExpandedTextForm(label: 'その他、備考'),
+        // const ExpandedTextForm(label: 'その他、備考'),
         const Gap(spaceWidthS),
         StyledButton(
           '登録',
