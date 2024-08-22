@@ -3,7 +3,6 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/widgets/circular_button.dart';
-import 'package:kimikoe_app/widgets/expanded_text_form.dart';
 import 'package:kimikoe_app/widgets/styled_button.dart';
 import 'package:kimikoe_app/widgets/text_form.dart';
 
@@ -56,7 +55,7 @@ class AddMemberScreen extends StatelessWidget {
         StyledButton(
           '登録',
           onPressed: () {
-            context.go('/home');
+            context.go('/group_list');
           },
           buttonSize: buttonL,
         ),

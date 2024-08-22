@@ -86,12 +86,14 @@ class _SignInScreenState extends State<SignInScreen> {
           _redirecting = true;
           await Future.delayed(Duration.zero);
           if (mounted) {
-            context.go('/home');
+            context.go('/group_list');
           }
         }
       },
       onError: (error) {
-        if (!mounted) {return;}
+        if (!mounted) {
+          return;
+        }
         if (error is AuthException) {
           context.showSnackBar(error.message, isError: true);
         } else {

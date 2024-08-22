@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/router/routing_path.dart';
 
 class SongCard extends StatelessWidget {
   const SongCard({
@@ -13,7 +14,8 @@ class SongCard extends StatelessWidget {
     const songImage = 'assets/images/poison_palette.jpg';
     const title = 'Sound Paradise';
     return GestureDetector(
-      onTap: () => context.pushNamed('lyric-page'),
+      onTap: () =>
+          context.push('${RoutingPath.groupList}/${RoutingPath.lyric}'),
       child: Card(
         elevation: 6,
         color: backgroundWhite,

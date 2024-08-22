@@ -89,7 +89,7 @@ class EditUserScreen extends StatelessWidget {
         // 登録ボタン
         StyledButton(
           '登録',
-          onPressed: () => context.go('/home'),
+          onPressed: () => context.go('/group_list'),
           buttonSize: buttonL,
         ),
         const Gap(spaceWidthS),

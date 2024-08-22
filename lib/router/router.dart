@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/main.dart';
+import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/app_top_bottom_navi_bar.dart';
 import 'package:kimikoe_app/screens/group.dart';
 import 'package:kimikoe_app/screens/group_list.dart';
@@ -16,15 +17,16 @@ import 'package:kimikoe_app/screens/sign_in.dart';
 import 'package:kimikoe_app/screens/user.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-final rootNavigatorKey = GlobalKey<NavigatorState>();
-final _homeNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'home');
+final _rootNavigatorKey = GlobalKey<NavigatorState>();
+final _homeNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: RoutingPath.groupList);
 final _addItemNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'add-item');
 final _userInfoNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'user-info');
 final _signOutNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'sign-out');
 
 final router = GoRouter(
-  navigatorKey: rootNavigatorKey,
+  navigatorKey: _rootNavigatorKey,
   debugLogDiagnostics: true,
   initialLocation: '/',
   redirect: (context, state) {
@@ -35,7 +37,7 @@ final router = GoRouter(
       // if (false) {
       return '/';
     } else if (currentSession != null && state.matchedLocation == '/') {
-      return '/home';
+      return '/group_list';
     }
     return null;
   },
@@ -46,7 +48,7 @@ final router = GoRouter(
       builder: (cotext, state) => SignInScreen(),
     ),
     StatefulShellRoute.indexedStack(
-      parentNavigatorKey: rootNavigatorKey,
+      parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state, navitationShell) {
         return AppTopBottomNaviBar(navigationShell: navitationShell);
       },
@@ -56,16 +58,16 @@ final router = GoRouter(
           navigatorKey: _homeNavigatorKey,
           routes: [
             GoRoute(
-              path: '/home',
-              name: 'home',
+              path: RoutingPath.groupList,
+              name: RoutingPath.groupList,
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
                 child: GroupListScreen(),
               ),
               routes: [
                 GoRoute(
-                  path: 'group-page',
-                  name: 'group-page',
+                  path: RoutingPath.groupDetails,
+                  name: RoutingPath.groupDetails,
                   pageBuilder: (context, state) {
                     return MaterialPage(
                       child: GroupScreen(),
@@ -74,8 +76,8 @@ final router = GoRouter(
                   },
                 ),
                 GoRoute(
-                  path: 'lyric-page',
-                  name: 'lyric-page',
+                  path: RoutingPath.lyric,
+                  name: RoutingPath.lyric,
                   pageBuilder: (context, state) {
                     return MaterialPage(
                       child: LyricScreen(),
@@ -91,32 +93,32 @@ final router = GoRouter(
           navigatorKey: _addItemNavigatorKey,
           routes: [
             GoRoute(
-              path: '/add-song',
-              name: 'add-song',
+              path: RoutingPath.addSong,
+              name: RoutingPath.addSong,
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
                 child: AddSongScreen(),
               ),
             ),
             GoRoute(
-              path: '/add-group',
-              name: 'add-group',
+              path: RoutingPath.addGroup,
+              name: RoutingPath.addGroup,
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
                 child: AddGroupScreen(),
               ),
             ),
             GoRoute(
-              path: '/add-member',
-              name: 'add-member',
+              path: RoutingPath.addMember,
+              name: RoutingPath.addMember,
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
                 child: AddMemberScreen(),
               ),
             ),
             GoRoute(
-              path: '/add-artist',
-              name: 'add-artist',
+              name: RoutingPath.addArtist,
+              path: RoutingPath.addArtist,
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
                 child: AddArtistScreen(),
@@ -128,16 +130,16 @@ final router = GoRouter(
           navigatorKey: _userInfoNavigatorKey,
           routes: [
             GoRoute(
-              path: '/user-info',
-              name: 'user-info',
+              path: RoutingPath.userDetails,
+              name: RoutingPath.userDetails,
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
                 child: UserScreen(),
               ),
               routes: [
                 GoRoute(
-                  path: 'edit-user',
-                  name: 'edit-user',
+                  path: RoutingPath.editUser,
+                  name: RoutingPath.editUser,
                   pageBuilder: (context, state) {
                     return MaterialPage(
                       child: EditUserScreen(),
@@ -154,8 +156,8 @@ final router = GoRouter(
           navigatorKey: _signOutNavigatorKey,
           routes: [
             GoRoute(
-              path: '/sign-out',
-              name: 'sign-out',
+              path: RoutingPath.signOut,
+              name: RoutingPath.signOut,
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
                 child: SignInScreen(),

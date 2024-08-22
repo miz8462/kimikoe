@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
+import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/widgets/styled_button.dart';
 
 class BottomBar extends StatelessWidget {
@@ -28,7 +29,7 @@ class BottomBar extends StatelessWidget {
                   'Add Song',
                   onPressed: () {
                     Navigator.of(context).pop();
-                    context.go('/add-song');
+                    context.push(RoutingPath.addSong);
                   },
                   // child: Text('Add Song'),
                 ),
@@ -36,21 +37,21 @@ class BottomBar extends StatelessWidget {
                   'Add Group',
                   onPressed: () {
                     Navigator.of(context).pop();
-                    context.go('/add-group');
+                    context.push(RoutingPath.addGroup);
                   },
                 ),
                 StyledButton(
                   'Add Member',
                   onPressed: () {
                     Navigator.of(context).pop();
-                    context.go('/add-member');
+                    context.push(RoutingPath.addMember);
                   },
                 ),
                 StyledButton(
                   'Add Artist',
                   onPressed: () {
                     Navigator.of(context).pop();
-                    context.go('/add-artist');
+                    context.push(RoutingPath.addArtist);
                   },
                 ),
               ],
@@ -87,15 +88,13 @@ class BottomBar extends StatelessWidget {
         }
       },
       destinations: [
-        // ホームボタン
         NavigationDestination(
           icon: Icon(
             Icons.home_outlined,
             color: currentIndex == 0 ? textDark : textWhite,
           ),
-          label: 'Home', // 必須項目
+          label: 'home', // 必須項目
         ),
-        // 追加ボタン
         NavigationDestination(
           icon: Icon(
             Icons.add_box_outlined,
@@ -103,7 +102,6 @@ class BottomBar extends StatelessWidget {
           ),
           label: 'Add',
         ),
-        // ユーザーサムネ
         NavigationDestination(
           icon: CircleAvatar(
             backgroundImage: AssetImage('assets/images/opanchu_ashiyu.jpg'),

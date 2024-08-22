@@ -58,7 +58,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
       return;
     }
 
-    context.pushReplacement('/home');
+    context.pushReplacement('/group_list');
   }
 
   void _handleCommentChanged(String? comment) {

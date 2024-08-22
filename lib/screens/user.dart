@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/widgets/styled_button.dart';
 
 class UserScreen extends StatelessWidget {
@@ -31,7 +32,8 @@ class UserScreen extends StatelessWidget {
             StyledButton(
               editButtonText,
               onPressed: () {
-                context.pushNamed('edit-user');
+                context
+                    .push('${RoutingPath.userDetails}/${RoutingPath.editUser}');
               },
               textColor: textGray,
               backgroundColor: backgroundWhite,

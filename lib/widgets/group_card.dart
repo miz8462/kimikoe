@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/router/routing_path.dart';
 
 class GroupCard extends StatelessWidget {
   const GroupCard({
@@ -14,7 +15,8 @@ class GroupCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.pushNamed('group-page'),
+      onTap: () =>
+          context.push('${RoutingPath.groupList}/${RoutingPath.groupDetails}'),
       child: Container(
         decoration: BoxDecoration(
           color: backgroundWhite,
