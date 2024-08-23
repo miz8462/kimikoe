@@ -1,6 +1,6 @@
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/song.dart';
-
+// todo: uuidが必要か？
 class User {
   const User({
     required this.name,
