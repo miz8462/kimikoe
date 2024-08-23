@@ -1,5 +1,5 @@
-import 'package:kimikoe_app/model/idol_group.dart';
-import 'package:kimikoe_app/model/song.dart';
+import 'package:kimikoe_app/models/idol_group.dart';
+import 'package:kimikoe_app/models/song.dart';
 
 class User {
   const User({

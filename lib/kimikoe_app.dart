@@ -12,7 +12,6 @@ class KimikoeApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig: router,
-      // 右上の赤いDebugを表示しない
       debugShowCheckedModeBanner: false,
       title: 'キミコエ',
       theme: ThemeData(

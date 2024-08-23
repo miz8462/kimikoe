@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kimikoe_app/model/idol_group.dart';
+import 'package:kimikoe_app/models/idol_group.dart';
 
 class IdolGroupsNotifier extends StateNotifier<List<IdolGroup>> {
   IdolGroupsNotifier() : super(const []);
