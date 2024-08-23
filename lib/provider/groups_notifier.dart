@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kimikoe_app/model/group.dart';
+import 'package:kimikoe_app/model/idol_group.dart';
 
-class GroupsNotifier extends StateNotifier<List<Group>> {
-  GroupsNotifier() : super(const []);
+class IdolGroupsNotifier extends StateNotifier<List<IdolGroup>> {
+  IdolGroupsNotifier() : super(const []);
 
   void addGroup(
     String name,
@@ -10,7 +10,7 @@ class GroupsNotifier extends StateNotifier<List<Group>> {
     int year,
     String comment,
   ) {
-    final newGroup = Group(
+    final newGroup = IdolGroup(
       name: name,
       imageUrl: image,
       year: year,
@@ -20,6 +20,6 @@ class GroupsNotifier extends StateNotifier<List<Group>> {
   }
 }
 
-final groupsProvider = StateNotifierProvider<GroupsNotifier, List<Group>>(
-  (ref) => GroupsNotifier(),
+final groupsProvider = StateNotifierProvider<IdolGroupsNotifier, List<IdolGroup>>(
+  (ref) => IdolGroupsNotifier(),
 );

@@ -5,8 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/app_top_bottom_navi_bar.dart';
-import 'package:kimikoe_app/screens/group.dart';
-import 'package:kimikoe_app/screens/group_list.dart';
+import 'package:kimikoe_app/screens/idol_group.dart';
+import 'package:kimikoe_app/screens/idol_group_list.dart';
 import 'package:kimikoe_app/screens/lyric.dart';
 import 'package:kimikoe_app/screens/post/add_artist.dart';
 import 'package:kimikoe_app/screens/post/add_group.dart';
@@ -62,7 +62,7 @@ final router = GoRouter(
               name: RoutingPath.groupList,
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
-                child: GroupListScreen(),
+                child: IdolGroupListScreen(),
               ),
               routes: [
                 GoRoute(
@@ -70,7 +70,7 @@ final router = GoRouter(
                   name: RoutingPath.groupDetails,
                   pageBuilder: (context, state) {
                     return MaterialPage(
-                      child: GroupScreen(),
+                      child: IdolGroupScreen(),
                       key: state.pageKey,
                     );
                   },

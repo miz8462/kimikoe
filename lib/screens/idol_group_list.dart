@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/widgets/group_card.dart';
 
-class GroupListScreen extends StatefulWidget {
-  const GroupListScreen({super.key});
+class IdolGroupListScreen extends StatefulWidget {
+  const IdolGroupListScreen({super.key});
 
   @override
-  State<GroupListScreen> createState() => _GroupListScreenState();
+  State<IdolGroupListScreen> createState() => _IdolGroupListScreenState();
 }
 
-class _GroupListScreenState extends State<GroupListScreen> {
+class _IdolGroupListScreenState extends State<IdolGroupListScreen> {
   late Future _groupFuture;
   @override
   void initState() {
@@ -42,7 +42,9 @@ class _GroupListScreenState extends State<GroupListScreen> {
           itemBuilder: (BuildContext context, int index) {
             final group = groups[index];
             // todo: バケットはパブリックでいいの？
-            var imageUrl = supabase.storage.from('images').getPublicUrl(group['image_url']);
+            var imageUrl = supabase.storage
+                .from('images')
+                .getPublicUrl(group['image_url']);
             return GroupCard(
               name: group['name'],
               imageUrl: imageUrl,
