@@ -15,6 +15,9 @@ class Idol extends Artist {
     this.height,
     this.hometown,
     this.debutYear,
+    this.officialUrl,
+    this.twitterUrl,
+    this.instagramUrl,
   });
 
   final Color color;
@@ -23,4 +26,7 @@ class Idol extends Artist {
   final double? height;
   final String? hometown;
   final DateTime? debutYear;
+  final String? officialUrl;
+  final String? twitterUrl;
+  final String? instagramUrl;
 }

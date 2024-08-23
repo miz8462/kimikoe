@@ -9,6 +9,9 @@ class IdolGroup {
     this.imageUrl,
     this.year,
     this.comment,
+    this.officialUrl,
+    this.twitterUrl,
+    this.instagramUrl,
   });
 
   final String name;
@@ -17,4 +20,7 @@ class IdolGroup {
   final String? imageUrl;
   final int? year;
   final String? comment;
+  final String? officialUrl;
+  final String? twitterUrl;
+  final String? instagramUrl;
 }
