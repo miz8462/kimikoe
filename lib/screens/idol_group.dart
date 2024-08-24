@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/widgets/group_info.dart';
 import 'package:kimikoe_app/widgets/song_card.dart';
 
@@ -11,32 +10,37 @@ class IdolGroupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const GroupInfo(),
-        const Gap(spaceWidthM),
-        Expanded(
-          child: ListView(
-            children: const [
-              SongCard(),
-              Gap(spaceWidthSS),
-              SongCard(),
-              Gap(spaceWidthSS),
-              SongCard(),
-              Gap(spaceWidthSS),
-              SongCard(),
-              Gap(spaceWidthSS),
-              SongCard(),
-              Gap(spaceWidthSS),
-              SongCard(),
-              Gap(spaceWidthSS),
-              SongCard(),
-              Gap(spaceWidthSS),
-              SongCard(),
-            ],
-          ),
-        )
-      ],
+    return Scaffold(
+      appBar: TopBar(
+        title: 'ソングリスト',
+      ),
+      body: Column(
+        children: [
+          const GroupInfo(),
+          const Gap(spaceWidthM),
+          Expanded(
+            child: ListView(
+              children: const [
+                SongCard(),
+                Gap(spaceWidthSS),
+                SongCard(),
+                Gap(spaceWidthSS),
+                SongCard(),
+                Gap(spaceWidthSS),
+                SongCard(),
+                Gap(spaceWidthSS),
+                SongCard(),
+                Gap(spaceWidthSS),
+                SongCard(),
+                Gap(spaceWidthSS),
+                SongCard(),
+                Gap(spaceWidthSS),
+                SongCard(),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }

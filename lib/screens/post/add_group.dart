@@ -30,7 +30,8 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
     }
-
+    
+    // e.g. /aaa/bbb/ccc/image.png
     final imagePath = _selectedImage?.path.split('/').last.split('.').first;
     final imagePathWithCreatedAtJPG =
         '$imagePath${(DateTime.now().toString()).replaceAll(' ', '-')}.jpg';
