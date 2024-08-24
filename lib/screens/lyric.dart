@@ -9,8 +9,15 @@ import 'package:kimikoe_app/widgets/styled_text.dart';
 // HylightedTextクラスを作成し行単位でハイライトできるようにする
 // 文字が見やすい用に色を調節
 
-class LyricScreen extends StatelessWidget {
+class LyricScreen extends StatefulWidget {
   const LyricScreen({super.key});
+
+  @override
+  State<LyricScreen> createState() => _LyricScreenState();
+}
+
+class _LyricScreenState extends State<LyricScreen> {
+  var _isSending = false;
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +129,8 @@ class LyricScreen extends StatelessWidget {
             Gap(spaceWidthM),
             BorderButton(
               'メンバー追加',
-              onPressed: () {},
+              onPressed: () {},                  isSending: _isSending,
+
               width: 200,
             ),
             Gap(spaceWidthL),

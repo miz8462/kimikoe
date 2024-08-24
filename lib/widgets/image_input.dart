@@ -18,6 +18,7 @@ class ImageInput extends StatefulWidget {
 
 class _ImageInputState extends State<ImageInput> {
   File? _selectedImage;
+  var _isSending = false;
 
   Future<File?> _getImageFromMobileStrage() async {
     final picker = ImagePicker();
@@ -39,7 +40,8 @@ class _ImageInputState extends State<ImageInput> {
   Widget build(BuildContext context) {
     Widget content = StyledButton(
       'グループ画像',
-      onPressed: _getImageFromMobileStrage,
+      onPressed: _getImageFromMobileStrage,                  isSending: _isSending,
+
       textColor: textGray,
       backgroundColor: backgroundWhite,
       buttonSize: buttonS,

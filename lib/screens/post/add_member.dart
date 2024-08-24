@@ -7,8 +7,16 @@ import 'package:kimikoe_app/widgets/circular_button.dart';
 import 'package:kimikoe_app/widgets/styled_button.dart';
 import 'package:kimikoe_app/widgets/text_form.dart';
 
-class AddMemberScreen extends StatelessWidget {
+class AddMemberScreen extends StatefulWidget {
   const AddMemberScreen({super.key});
+
+  @override
+  State<AddMemberScreen> createState() => _AddMemberScreenState();
+}
+
+class _AddMemberScreenState extends State<AddMemberScreen> {
+    var _isSending = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +45,8 @@ class AddMemberScreen extends StatelessWidget {
           // メンバー画像
           StyledButton(
             'メンバー画像',
-            onPressed: () {},
+            onPressed: () {},                  isSending: _isSending,
+
             textColor: textGray,
             backgroundColor: backgroundWhite,
             buttonSize: buttonS,
@@ -59,7 +68,8 @@ class AddMemberScreen extends StatelessWidget {
             '登録',
             onPressed: () {
               context.go('/group_list');
-            },
+            },                  isSending: _isSending,
+
             buttonSize: buttonL,
           ),
           const Gap(spaceWidthS),

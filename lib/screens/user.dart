@@ -6,8 +6,16 @@ import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/widgets/styled_button.dart';
 
-class UserScreen extends StatelessWidget {
+class UserScreen extends StatefulWidget {
   const UserScreen({super.key});
+
+  @override
+  State<UserScreen> createState() => _UserScreenState();
+}
+
+class _UserScreenState extends State<UserScreen> {
+    var _isSending = false;
+
   @override
   Widget build(context) {
     const String userName = 'おぱんちゅうさぎ';
@@ -39,7 +47,8 @@ class UserScreen extends StatelessWidget {
                 onPressed: () {
                   context.push(
                       '${RoutingPath.userDetails}/${RoutingPath.editUser}');
-                },
+                },                  isSending: _isSending,
+
                 textColor: textGray,
                 backgroundColor: backgroundWhite,
                 buttonSize: buttonM,

@@ -6,8 +6,16 @@ import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/widgets/styled_button.dart';
 import 'package:kimikoe_app/widgets/text_form.dart';
 
-class AddSongScreen extends StatelessWidget {
+class AddSongScreen extends StatefulWidget {
   const AddSongScreen({super.key});
+
+  @override
+  State<AddSongScreen> createState() => _AddSongScreenState();
+}
+
+class _AddSongScreenState extends State<AddSongScreen> {
+    var _isSending = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +36,8 @@ class AddSongScreen extends StatelessWidget {
           // ユーザー画像登録ボタン
           StyledButton(
             'イメージ画像',
-            onPressed: () {},
+            onPressed: () {},                  isSending: _isSending,
+
             textColor: textGray,
             backgroundColor: backgroundWhite,
             buttonSize: buttonS,
@@ -54,7 +63,8 @@ class AddSongScreen extends StatelessWidget {
             '登録',
             onPressed: () {
               context.go('/group_list');
-            },
+            },                  isSending: _isSending,
+
             buttonSize: buttonL,
           ),
           Gap(spaceWidthS),

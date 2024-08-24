@@ -12,6 +12,7 @@ class IdolGroupListScreen extends StatefulWidget {
 
 class _IdolGroupListScreenState extends State<IdolGroupListScreen> {
   late Future _groupFuture;
+
   @override
   void initState() {
     super.initState();
@@ -31,6 +32,10 @@ class _IdolGroupListScreenState extends State<IdolGroupListScreen> {
       body: FutureBuilder(
         future: _groupFuture,
         builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+
           if (!snapshot.hasData) {
             return Center(child: Text('登録データはありません'));
           }

@@ -5,8 +5,16 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/widgets/styled_button.dart';
 
-class EditUserScreen extends StatelessWidget {
+class EditUserScreen extends StatefulWidget {
   const EditUserScreen({super.key});
+
+  @override
+  State<EditUserScreen> createState() => _EditUserScreenState();
+}
+
+class _EditUserScreenState extends State<EditUserScreen> {
+    var _isSending = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,7 +100,8 @@ class EditUserScreen extends StatelessWidget {
           // 登録ボタン
           StyledButton(
             '登録',
-            onPressed: () => context.go('/group_list'),
+            onPressed: () => context.go('/group_list'),                  isSending: _isSending,
+
             buttonSize: buttonL,
           ),
           const Gap(spaceWidthS),

@@ -25,12 +25,16 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
   File? _selectedImage;
   var _enteredYear = '';
   var _enteredComment = '';
+  var _isSending = false;
 
   Future<void> _saveGroup() async {
+    setState(() {
+      _isSending = true;
+    });
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
     }
-    
+
     // e.g. /aaa/bbb/ccc/image.png
     final imagePath = _selectedImage?.path.split('/').last.split('.').first;
     final imagePathWithCreatedAtJPG =
@@ -55,6 +59,9 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
           .from('images')
           .upload(imagePathWithCreatedAtJPG, _selectedImage!);
     }
+    setState(() {
+      _isSending = false;
+    });
 
     if (!mounted) {
       return;
@@ -146,9 +153,12 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                 const Gap(spaceWidthS),
                 StyledButton(
                   '登録',
-                  onPressed: () {
-                    _saveGroup();
-                  },
+                  onPressed: _isSending
+                      ? null
+                      : () {
+                          _saveGroup();
+                        },
+                  isSending: _isSending,
                   buttonSize: buttonL,
                 ),
                 const Gap(spaceWidthS),

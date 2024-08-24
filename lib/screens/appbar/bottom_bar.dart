@@ -21,6 +21,8 @@ class _BottomBarState extends State<BottomBar> {
   int addIndex = 1;
   int userIndex = 2;
   int logoutIndex = 3;
+  var _isSending = false;
+
   void _openAddOverlay(BuildContext context) {
     setState(() {
       widget.navigationShell.goBranch(addIndex, initialLocation: false);
@@ -43,6 +45,8 @@ class _BottomBarState extends State<BottomBar> {
                     Navigator.of(context).pop();
                     context.push(RoutingPath.addSong);
                   },
+                  isSending: _isSending,
+
                   // child: Text('Add Song'),
                 ),
                 StyledButton(
@@ -51,6 +55,7 @@ class _BottomBarState extends State<BottomBar> {
                     Navigator.of(context).pop();
                     context.push(RoutingPath.addGroup);
                   },
+                  isSending: _isSending,
                 ),
                 StyledButton(
                   'Add Idol',
@@ -58,6 +63,7 @@ class _BottomBarState extends State<BottomBar> {
                     Navigator.of(context).pop();
                     context.push(RoutingPath.addMember);
                   },
+                  isSending: _isSending,
                 ),
                 StyledButton(
                   'Add Artist',
@@ -65,6 +71,7 @@ class _BottomBarState extends State<BottomBar> {
                     Navigator.of(context).pop();
                     context.push(RoutingPath.addArtist);
                   },
+                  isSending: _isSending,
                 ),
               ],
             ),

@@ -4,7 +4,8 @@ import 'package:kimikoe_app/config/config.dart';
 class StyledButton extends StatelessWidget {
   const StyledButton(
     this.text, {
-    required this.onPressed,
+    required this.isSending,
+    this.onPressed,
     this.textColor = textWhite,
     this.backgroundColor = mainBlue,
     this.buttonSize = buttonS,
@@ -13,8 +14,9 @@ class StyledButton extends StatelessWidget {
     super.key,
   });
 
+  final bool isSending;
   final String text;
-  final void Function() onPressed;
+  final void Function()? onPressed;
   final Color textColor;
   final Color backgroundColor;
   final double buttonSize;
@@ -35,10 +37,16 @@ class StyledButton extends StatelessWidget {
           side: borderSide,
           fixedSize: Size.fromWidth(width),
         ),
-        child: Text(
-          text,
-          style: TextStyle(color: textColor),
-        ),
+        child: isSending
+            ? SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(),
+              )
+            : Text(
+                text,
+                style: TextStyle(color: textColor),
+              ),
       ),
     );
   }
