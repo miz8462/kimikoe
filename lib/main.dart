@@ -22,11 +22,9 @@ Future<void> main() async {
       providerContainer.read(sessionProvider.notifier).state = data.session;
     },
   );
-  // Riverpodでラップ
   runApp(const ProviderScope(child: KimikoeApp()));
 }
 
-// Supabaseクライアントを取得
 final supabase = Supabase.instance.client;
 
 extension ContextExtension on BuildContext {

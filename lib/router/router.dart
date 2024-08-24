@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
-import 'package:kimikoe_app/screens/appbar/app_top_bottom_navi_bar.dart';
+import 'package:kimikoe_app/screens/appbar/bottom_bar.dart';
 import 'package:kimikoe_app/screens/idol_group.dart';
 import 'package:kimikoe_app/screens/idol_group_list.dart';
 import 'package:kimikoe_app/screens/lyric.dart';
@@ -50,7 +50,7 @@ final router = GoRouter(
     StatefulShellRoute.indexedStack(
       parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state, navitationShell) {
-        return AppTopBottomNaviBar(navigationShell: navitationShell);
+        return BottomBar(navigationShell: navitationShell);
       },
       branches: [
         // home

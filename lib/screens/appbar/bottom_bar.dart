@@ -5,14 +5,26 @@ import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/widgets/styled_button.dart';
 
-class BottomBar extends StatelessWidget {
+class BottomBar extends StatefulWidget {
   const BottomBar({
-    required this.navigationShell,
     super.key,
+    required this.navigationShell,
   });
   final StatefulNavigationShell navigationShell;
 
-  void _openAddOverlay(context) {
+  @override
+  State<BottomBar> createState() => _BottomBarState();
+}
+
+class _BottomBarState extends State<BottomBar> {
+  int homeIndex = 0;
+  int addIndex = 1;
+  int userIndex = 2;
+  int logoutIndex = 3;
+  void _openAddOverlay(BuildContext context) {
+    setState(() {
+      widget.navigationShell.goBranch(addIndex, initialLocation: false);
+    });
     showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -41,7 +53,7 @@ class BottomBar extends StatelessWidget {
                   },
                 ),
                 StyledButton(
-                  'Add Member',
+                  'Add Idol',
                   onPressed: () {
                     Navigator.of(context).pop();
                     context.push(RoutingPath.addMember);
@@ -68,53 +80,61 @@ class BottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int currentIndex = navigationShell.currentIndex;
-    int addIndex = 1;
-    int logoutIndex = 3;
-    return NavigationBar(
-      backgroundColor: mainBlue,
-      selectedIndex: currentIndex,
-      onDestinationSelected: (index) {
-        if (index == addIndex) {
-          _openAddOverlay(context);
-        } else if (index == logoutIndex) {
-          _signOut();
-          context.go('/');
-        } else {
-          navigationShell.goBranch(
-            index,
-            initialLocation: index == navigationShell.currentIndex,
-          );
-        }
-      },
-      destinations: [
-        NavigationDestination(
-          icon: Icon(
-            Icons.home_outlined,
-            color: currentIndex == 0 ? textDark : textWhite,
+    double screenWidth = MediaQuery.of(context).size.width;
+    double horizontalPadding = screenWidth * 0.04;
+
+    int currentIndex = widget.navigationShell.currentIndex;
+
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+        child: widget.navigationShell,
+      ),
+      bottomNavigationBar: NavigationBar(
+        backgroundColor: mainBlue,
+        selectedIndex: currentIndex,
+        onDestinationSelected: (index) {
+          if (index == addIndex) {
+            _openAddOverlay(context);
+          } else if (index == logoutIndex) {
+            _signOut();
+            context.go('/');
+          } else {
+            widget.navigationShell.goBranch(
+              index,
+              initialLocation: index == widget.navigationShell.currentIndex,
+            );
+          }
+        },
+        destinations: [
+          NavigationDestination(
+            icon: Icon(
+              Icons.home_outlined,
+              color: currentIndex == homeIndex ? textDark : textWhite,
+            ),
+            label: 'Home',
           ),
-          label: 'home', // 必須項目
-        ),
-        NavigationDestination(
-          icon: Icon(
-            Icons.add_box_outlined,
-            color: currentIndex == 1 ? textDark : textWhite,
+          NavigationDestination(
+            icon: Icon(
+              Icons.add_box_outlined,
+              color: currentIndex == addIndex ? textDark : textWhite,
+            ),
+            label: 'Add',
           ),
-          label: 'Add',
-        ),
-        NavigationDestination(
-          icon: CircleAvatar(
-            backgroundImage: AssetImage('assets/images/opanchu_ashiyu.jpg'),
-            radius: avaterSizeS,
+          NavigationDestination(
+            icon: CircleAvatar(
+              backgroundImage: AssetImage('assets/images/opanchu_ashiyu.jpg'),
+              radius: avaterSizeS,
+            ),
+            label: 'User',
           ),
-          label: 'User',
-        ),
-        // todo: 開発用ログアウトボタン
-        NavigationDestination(
-          icon: Icon(Icons.logout),
-          label: 'SignOut',
-        ),
-      ],
+          // todo: 開発用ログアウトボタン
+          NavigationDestination(
+            icon: Icon(Icons.logout),
+            label: 'SignOut',
+          ),
+        ],
+      ),
     );
   }
 }

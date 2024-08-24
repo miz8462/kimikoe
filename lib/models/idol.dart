@@ -9,7 +9,7 @@ class Idol extends Artist {
     required super.name,
     super.imageUrl,
     super.comment,
-    required this.color,
+    this.color,
     this.groupName,
     this.birthDay,
     this.height,
@@ -20,7 +20,7 @@ class Idol extends Artist {
     this.instagramUrl,
   });
 
-  final Color color;
+  final Color? color;
   final IdolGroup? groupName;
   final DateTime? birthDay;
   final double? height;
