@@ -62,7 +62,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height - 100;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: TopBar(

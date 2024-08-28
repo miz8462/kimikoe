@@ -10,7 +10,7 @@ import 'package:kimikoe_app/screens/idol_group_list.dart';
 import 'package:kimikoe_app/screens/lyric.dart';
 import 'package:kimikoe_app/screens/post/add_artist.dart';
 import 'package:kimikoe_app/screens/post/add_group.dart';
-import 'package:kimikoe_app/screens/post/add_member.dart';
+import 'package:kimikoe_app/screens/post/add_idol.dart';
 import 'package:kimikoe_app/screens/post/add_song.dart';
 import 'package:kimikoe_app/screens/post/edit_user.dart';
 import 'package:kimikoe_app/screens/sign_in.dart';
@@ -113,7 +113,7 @@ final router = GoRouter(
               name: RoutingPath.addMember,
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
-                child: AddMemberScreen(),
+                child: AddIdolScreen(),
               ),
             ),
             GoRoute(
