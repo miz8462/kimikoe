@@ -3,15 +3,18 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/widgets/styled_button.dart';
+import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
 
 class ImageInput extends StatefulWidget {
   const ImageInput({
     super.key,
+    required this.label,
     required this.onPickImage,
   });
 
+  final String label;
   final void Function(File image) onPickImage;
+
   @override
   State<ImageInput> createState() => _ImageInputState();
 }
@@ -39,9 +42,9 @@ class _ImageInputState extends State<ImageInput> {
   @override
   Widget build(BuildContext context) {
     Widget content = StyledButton(
-      'グループ画像',
-      onPressed: _getImageFromMobileStrage,                  isSending: _isSending,
-
+      widget.label,
+      onPressed: _getImageFromMobileStrage,
+      isSending: _isSending,
       textColor: textGray,
       backgroundColor: backgroundWhite,
       buttonSize: buttonS,

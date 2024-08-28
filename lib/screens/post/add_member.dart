@@ -3,8 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/widgets/circular_button.dart';
-import 'package:kimikoe_app/widgets/styled_button.dart';
+import 'package:kimikoe_app/widgets/buttons/circular_button.dart';
+import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
 import 'package:kimikoe_app/widgets/text_form.dart';
 
 class AddMemberScreen extends StatefulWidget {
@@ -20,7 +20,8 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopBar(title: 'アイドル登録'),
+      appBar: TopBar(title: 'アイドル登録',        showLeading: false,
+),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

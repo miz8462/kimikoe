@@ -20,25 +20,24 @@ class _ExpandedTextFormState extends State<ExpandedTextForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        color: backgroundLightBlue,
-        child: TextFormField(
-          decoration: InputDecoration(
-            border: noBorder,
-            label: Text(widget.label!),
-            hintStyle: const TextStyle(color: textGray, fontSize: fontM),
-            contentPadding:
-                const EdgeInsets.only(left: spaceWidthS, bottom: bottomPadding),
-          ),
-          maxLines: null,
-          onSaved: (value) {
-            setState(() {
-              _enteredText = value!;
-            });
-            widget.onTextChanged(_enteredText);
-          },
+    return Container(
+      height: 300,
+      color: backgroundLightBlue,
+      child: TextFormField(
+        decoration: InputDecoration(
+          border: noBorder,
+          label: Text(widget.label!),
+          hintStyle: const TextStyle(color: textGray, fontSize: fontM),
+          contentPadding:
+              const EdgeInsets.only(left: spaceWidthS, bottom: bottomPadding),
         ),
+        maxLines: null,
+        onSaved: (value) {
+          setState(() {
+            _enteredText = value!;
+          });
+          widget.onTextChanged(_enteredText);
+        },
       ),
     );
   }

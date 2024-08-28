@@ -7,16 +7,18 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     this.imageUrl,
     this.title,
+    this.showLeading = true,
   });
   final String? imageUrl;
   final String? title;
+  final bool showLeading;
 
   @override
   Widget build(BuildContext context) {
     final localImage = imageUrl;
     final localTitle = title;
     return AppBar(
-      automaticallyImplyLeading: true,
+      automaticallyImplyLeading: showLeading,
       title: Padding(
         padding: EdgeInsets.only(top: 8.0),
         child: Column(

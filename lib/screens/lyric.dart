@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/widgets/border_button.dart';
+import 'package:kimikoe_app/widgets/buttons/border_button.dart';
 import 'package:kimikoe_app/widgets/highlighted_text.dart';
 import 'package:kimikoe_app/widgets/styled_text.dart';
 

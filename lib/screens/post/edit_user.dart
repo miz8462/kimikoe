@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/widgets/styled_button.dart';
+import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
 
 class EditUserScreen extends StatefulWidget {
   const EditUserScreen({super.key});
@@ -13,7 +14,7 @@ class EditUserScreen extends StatefulWidget {
 }
 
 class _EditUserScreenState extends State<EditUserScreen> {
-    var _isSending = false;
+  var _isSending = false;
 
   @override
   Widget build(BuildContext context) {
@@ -100,8 +101,8 @@ class _EditUserScreenState extends State<EditUserScreen> {
           // 登録ボタン
           StyledButton(
             '登録',
-            onPressed: () => context.go('/group_list'),                  isSending: _isSending,
-
+            onPressed: () => context.push(RoutingPath.userDetails),
+            isSending: _isSending,
             buttonSize: buttonL,
           ),
           const Gap(spaceWidthS),

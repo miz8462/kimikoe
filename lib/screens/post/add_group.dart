@@ -8,9 +8,9 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/provider/groups_notifier.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
+import 'package:kimikoe_app/widgets/buttons/image_input_button.dart';
+import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
 import 'package:kimikoe_app/widgets/expanded_text_form.dart';
-import 'package:kimikoe_app/widgets/image_input.dart';
-import 'package:kimikoe_app/widgets/styled_button.dart';
 
 class AddGroupScreen extends ConsumerStatefulWidget {
   const AddGroupScreen({super.key});
@@ -22,9 +22,10 @@ class AddGroupScreen extends ConsumerStatefulWidget {
 class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
   final _formKey = GlobalKey<FormState>();
   var _enteredName = '';
-  File? _selectedImage;
   var _enteredYear = '';
   var _enteredComment = '';
+  File? _selectedImage;
+
   var _isSending = false;
 
   Future<void> _saveGroup() async {
@@ -70,17 +71,12 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     context.pushReplacement('/group_list');
   }
 
-  void _handleCommentChanged(String? comment) {
-    setState(() {
-      _enteredComment = comment!;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: TopBar(title: 'グループ登録'),
+      appBar: TopBar(title: 'グループ登録',        showLeading: false,
+),
       body: SingleChildScrollView(
         child: ConstrainedBox(
           constraints: BoxConstraints(maxHeight: screenHeight),
@@ -120,6 +116,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                   onPickImage: (image) {
                     _selectedImage = image;
                   },
+                  label: 'グループ画像',
                 ),
                 const Gap(spaceWidthS),
                 Container(
@@ -147,7 +144,11 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                 ),
                 const Gap(spaceWidthS),
                 ExpandedTextForm(
-                  onTextChanged: _handleCommentChanged,
+                  onTextChanged: (value) {
+                    setState(() {
+                      _enteredComment = value!;
+                    });
+                  },
                   label: '備考',
                 ),
                 const Gap(spaceWidthS),
