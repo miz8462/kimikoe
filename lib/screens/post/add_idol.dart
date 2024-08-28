@@ -1,11 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
+    as picker;
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/widgets/buttons/circular_button.dart';
 import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
-import 'package:kimikoe_app/widgets/text_form.dart';
+import 'package:kimikoe_app/widgets/forms/text_form.dart';
+import 'package:kimikoe_app/widgets/forms/text_input_form.dart';
 
 class AddIdolScreen extends StatefulWidget {
   const AddIdolScreen({super.key});
@@ -16,8 +22,62 @@ class AddIdolScreen extends StatefulWidget {
 
 class _AddIdolScreenState extends State<AddIdolScreen> {
   final _formKey = GlobalKey<FormState>();
-  
+  var _enteredName = '';
+  var _enteredGroup = '';
+  Color _selectedColor = Colors.white;
+  File? _selectedImage;
+  DateTime? _enteredBirthday;
+  String? _formattedBirthday;
+  int? _enteredHeight;
+  String? _enteredHometown;
+  int? _enteredDebutYear;
+
   var _isSending = false;
+
+  String? _nameValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return '名前を入力してください。';
+    } else if (value.trim().length > 50) {
+      return '名前は50文字以下にしてください。';
+    }
+    return null;
+  }
+
+  String? _groupNameValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'グループ名を入力してください。';
+    } else if (value.trim().length > 50) {
+      return 'グループ名は50文字以下にしてください。';
+    }
+    return null;
+  }
+
+  void _formatDateTimeToYYYYMMdd(DateTime date) {
+    final formatter = DateFormat('yyyy/MM/dd');
+    setState(() {
+      _formattedBirthday = formatter.format(date);
+    });
+  }
+
+  void _pickBirthday() async {
+    await picker.DatePicker.showDatePicker(
+      context,
+      minTime: DateTime(1900, 1, 1),
+      maxTime: DateTime.now(),
+      currentTime: DateTime(2000, 6, 15),
+      locale: picker.LocaleType.jp,
+      onConfirm: (date) {
+        setState(
+          () {
+            _enteredBirthday = date;
+          },
+        );
+      },
+    );
+    if (_enteredBirthday != null) {
+      _formatDateTimeToYYYYMMdd(_enteredBirthday!);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,61 +86,97 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         title: 'アイドル登録',
         showLeading: false,
       ),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              '*必須項目',
-              style: TextStyle(color: textGray, fontSize: fontSS),
-            ),
-            const TextForm(hintText: '*名前'),
-            const Gap(spaceWidthS),
-            const TextForm(hintText: '*所属グループ'),
-            const Gap(spaceWidthS),
-            // 歌詞で表示する個人カラー選択
-            Row(
-              children: [
-                CircularButton(color: Colors.pink.shade200),
-                const Text(
-                  '*カラー選択',
-                  style: TextStyle(color: textGray, fontSize: fontM),
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                '*必須項目',
+                style: TextStyle(color: textGray, fontSize: fontSS),
+              ),
+              InputForm(
+                label: '*名前',
+                validator: _nameValidator,
+                onSaved: (value) {
+                  _enteredName = value!;
+                },
+              ),
+              const Gap(spaceWidthS),
+              InputForm(
+                label: '*所属グループ',
+                validator: _groupNameValidator,
+                onSaved: (value) {
+                  _enteredGroup = value!;
+                },
+              ),
+              const Gap(spaceWidthS),
+              // 歌詞で表示する個人カラー選択
+              Row(
+                children: [
+                  CircularButton(color: Colors.pink.shade200),
+                  const Text(
+                    '*カラー選択',
+                    style: TextStyle(color: textGray, fontSize: fontM),
+                  ),
+                ],
+              ),
+              const Gap(spaceWidthS),
+              StyledButton(
+                'メンバー画像',
+                onPressed: () {},
+                isSending: _isSending,
+                textColor: textGray,
+                backgroundColor: backgroundWhite,
+                buttonSize: buttonM,
+                borderSide:
+                    BorderSide(color: backgroundLightBlue, width: borderWidth),
+              ),
+              const Gap(spaceWidthS),
+              if (_enteredBirthday == null)
+                TextButton(
+                  onPressed: _pickBirthday,
+                  child: Text(
+                    '生年月日',
+                    style: TextStyle(
+                      fontSize: fontM,
+                    ),
+                  ),
                 ),
-              ],
-            ),
-            // メンバー画像
-            StyledButton(
-              'メンバー画像',
-              onPressed: () {},
-              isSending: _isSending,
-              textColor: textGray,
-              backgroundColor: backgroundWhite,
-              buttonSize: buttonS,
-              borderSide:
-                  BorderSide(color: backgroundLightBlue, width: borderWidth),
-            ),
-            const Gap(spaceWidthS),
-            const TextForm(hintText: '生年月日'),
-            const Gap(spaceWidthS),
-            const TextForm(hintText: '身長'),
-            const Gap(spaceWidthS),
-            const TextForm(hintText: '出身地'),
-            const Gap(spaceWidthS),
-            const TextForm(hintText: 'デビュー年'),
-            const Gap(spaceWidthS),
-            // const ExpandedTextForm(label: 'その他、備考'),
-            const Gap(spaceWidthS),
-            StyledButton(
-              '登録',
-              onPressed: () {
-                context.go('/group_list');
-              },
-              isSending: _isSending,
-              buttonSize: buttonL,
-            ),
-            const Gap(spaceWidthS),
-          ],
+              if (_enteredBirthday != null)
+                TextButton(
+                  onPressed: _pickBirthday,
+                  child: Text(
+                    '生年月日： $_formattedBirthday',
+                    style: TextStyle(fontSize: fontM, color: textGray),
+                  ),
+                ),
+              const Gap(spaceWidthS),
+              const TextForm(hintText: '身長'),
+              const Gap(spaceWidthS),
+              InputForm(
+                  label: '出身地',
+                  validator: (validator) {},
+                  onSaved: (value) {
+                    _enteredHometown = value;
+                  }),
+              const Gap(spaceWidthS),
+              const TextForm(hintText: 'デビュー年'),
+              const Gap(spaceWidthS),
+              // const ExpandedTextForm(label: 'その他、備考'),
+              const Gap(spaceWidthS),
+              StyledButton(
+                '登録',
+                onPressed: () {
+                  context.go('/group_list');
+                },
+                isSending: _isSending,
+                buttonSize: buttonL,
+              ),
+              const Gap(spaceWidthS),
+            ],
+          ),
         ),
       ),
     );

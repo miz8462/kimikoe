@@ -10,10 +10,10 @@ import 'package:kimikoe_app/provider/groups_notifier.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/widgets/buttons/image_input_button.dart';
 import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
-import 'package:kimikoe_app/widgets/expanded_text_form.dart';
-import 'package:kimikoe_app/widgets/text_input_form.dart';
+import 'package:kimikoe_app/widgets/forms/expanded_text_form.dart';
+import 'package:kimikoe_app/widgets/forms/text_input_form.dart';
 
-const String defaultPathToNoImage = 'no-images.png';
+const String defaultPathNoImage = 'no-images.png';
 
 class AddGroupScreen extends ConsumerStatefulWidget {
   const AddGroupScreen({super.key});
@@ -25,9 +25,9 @@ class AddGroupScreen extends ConsumerStatefulWidget {
 class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
   final _formKey = GlobalKey<FormState>();
   var _enteredName = '';
+  File? _selectedImage;
   var _enteredYear = '';
   var _enteredComment = '';
-  File? _selectedImage;
 
   var _isSending = false;
 
@@ -58,14 +58,18 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
 
     ref.read(groupsProvider.notifier).addGroup(
           _enteredName,
-          _selectedImage == null ? defaultPathToNoImage : imagePathWithCreatedAtJPG,
+          _selectedImage == null
+              ? defaultPathNoImage
+              : imagePathWithCreatedAtJPG,
           int.parse(_enteredYear),
           _enteredComment,
         );
 
     await supabase.from('idol-groups').insert({
       'name': _enteredName,
-      'image_url': _selectedImage == null ? defaultPathToNoImage : imagePathWithCreatedAtJPG,
+      'image_url': _selectedImage == null
+          ? defaultPathNoImage
+          : imagePathWithCreatedAtJPG,
       'year_forming_group': _enteredYear,
       'comment': _enteredComment
     });
@@ -95,19 +99,11 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     return null;
   }
 
-  void _changeInputGroupName(value) {
-    _enteredName = value!;
-  }
-
   String? _yearValidator(String? value) {
     if (value == null || value.isEmpty || int.tryParse(value) == null) {
       return '結成年は数字を入力してください。';
     }
     return null;
-  }
-
-  void _changeInputYear(value) {
-    _enteredYear = value!;
   }
 
   @override
@@ -130,33 +126,13 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                   '*必須項目',
                   style: TextStyle(color: textGray),
                 ),
-                // todo: クラスウィジェット作る
-                TextInputForm(
+                InputForm(
                   label: '*グループ名',
                   validator: _groupNameValidator,
-                  onSaved: _changeInputGroupName,
+                  onSaved: (value) {
+                    _enteredName = value!;
+                  },
                 ),
-                // Container(
-                //   color: backgroundLightBlue,
-                //   child: TextFormField(
-                //     maxLength: 50,
-                //     decoration: const InputDecoration(
-                //       border: InputBorder.none,
-                //       label: Text('*グループ名'),
-                //       hintStyle: TextStyle(color: textGray),
-                //       contentPadding: EdgeInsets.only(left: spaceWidthS),
-                //     ),
-                //     validator: (value) {
-                //       if (value == null || value.isEmpty || value.length > 50) {
-                //         return 'グループ名は50文字以下にしてください。';
-                //       }
-                //       return null;
-                //     },
-                //     onSaved: (value) {
-                //       _enteredName = value!;
-                //     },
-                //   ),
-                // ),
                 const Gap(spaceWidthS),
                 ImageInput(
                   onPickImage: (image) {
@@ -165,10 +141,12 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                   label: 'グループ画像',
                 ),
                 const Gap(spaceWidthS),
-                TextInputForm(
+                InputForm(
                   label: '結成年',
                   validator: _yearValidator,
-                  onSaved: _changeInputYear,
+                  onSaved: (value) {
+                    _enteredYear = value!;
+                  },
                 ),
                 const Gap(spaceWidthS),
                 ExpandedTextForm(

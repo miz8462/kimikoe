@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
 
-class TextInputForm extends StatelessWidget {
-  const TextInputForm({
+class InputForm extends StatelessWidget {
+  const InputForm({
     super.key,
     required this.label,
     required this.validator,

@@ -21,6 +21,7 @@ class _BottomBarState extends State<BottomBar> {
   int addIndex = 1;
   int userIndex = 2;
   int logoutIndex = 3;
+  
   var _isSending = false;
 
   void _openAddOverlay(BuildContext context) {

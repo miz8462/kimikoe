@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
-import 'package:kimikoe_app/widgets/text_form.dart';
+import 'package:kimikoe_app/widgets/forms/text_form.dart';
 
 class AddSongScreen extends StatefulWidget {
   const AddSongScreen({super.key});
