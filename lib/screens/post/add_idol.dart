@@ -10,8 +10,8 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/widgets/buttons/circular_button.dart';
 import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
-import 'package:kimikoe_app/widgets/forms/text_form.dart';
 import 'package:kimikoe_app/widgets/forms/text_input_form.dart';
+import 'package:kimikoe_app/widgets/validator/validator.dart';
 
 class AddIdolScreen extends StatefulWidget {
   const AddIdolScreen({super.key});
@@ -22,34 +22,36 @@ class AddIdolScreen extends StatefulWidget {
 
 class _AddIdolScreenState extends State<AddIdolScreen> {
   final _formKey = GlobalKey<FormState>();
-  var _enteredName = '';
+  var _enteredIdolName = '';
   var _enteredGroup = '';
   Color _selectedColor = Colors.white;
   File? _selectedImage;
   DateTime? _enteredBirthday;
   String? _formattedBirthday;
-  int? _enteredHeight;
-  String? _enteredHometown;
-  int? _enteredDebutYear;
+  var _enteredHeight = '';
+  var _enteredHometown = '';
+  var _enteredDebutYear = '';
 
   var _isSending = false;
 
-  String? _nameValidator(String? value) {
-    if (value == null || value.isEmpty) {
-      return '名前を入力してください。';
-    } else if (value.trim().length > 50) {
-      return '名前は50文字以下にしてください。';
-    }
-    return null;
+  String? _idolNameValidator(String? value) {
+    return textInputValidator(value, '名前');
   }
 
   String? _groupNameValidator(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'グループ名を入力してください。';
-    } else if (value.trim().length > 50) {
-      return 'グループ名は50文字以下にしてください。';
-    }
-    return null;
+    return textInputValidator(value, 'グループ名');
+  }
+
+  String? _heightValidator(String? value) {
+    return intInputValidator(value, '身長');
+  }
+
+  String? _hometownValidator(String? value) {
+    return textInputValidator(value, '出身地');
+  }
+
+  String? _debutYearValidator(String? value) {
+    return intInputValidator(value, 'デビュー年');
   }
 
   void _formatDateTimeToYYYYMMdd(DateTime date) {
@@ -98,9 +100,9 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
               ),
               InputForm(
                 label: '*名前',
-                validator: _nameValidator,
+                validator: _idolNameValidator,
                 onSaved: (value) {
-                  _enteredName = value!;
+                  _enteredIdolName = value!;
                 },
               ),
               const Gap(spaceWidthS),
@@ -149,20 +151,35 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                   onPressed: _pickBirthday,
                   child: Text(
                     '生年月日： $_formattedBirthday',
-                    style: TextStyle(fontSize: fontM, color: textGray),
+                    style: TextStyle(
+                      fontSize: fontM,
+                      color: textGray,
+                    ),
                   ),
                 ),
               const Gap(spaceWidthS),
-              const TextForm(hintText: '身長'),
+              InputForm(
+                label: '身長',
+                validator: _heightValidator,
+                onSaved: (value) {
+                  _enteredHeight = value!;
+                },
+              ),
               const Gap(spaceWidthS),
               InputForm(
                   label: '出身地',
-                  validator: (validator) {},
+                  validator: _hometownValidator,
                   onSaved: (value) {
-                    _enteredHometown = value;
+                    _enteredHometown = value!;
                   }),
               const Gap(spaceWidthS),
-              const TextForm(hintText: 'デビュー年'),
+              InputForm(
+                label: 'デビュー年',
+                validator: _debutYearValidator,
+                onSaved: (value) {
+                  _enteredDebutYear = value!;
+                },
+              ),
               const Gap(spaceWidthS),
               // const ExpandedTextForm(label: 'その他、備考'),
               const Gap(spaceWidthS),

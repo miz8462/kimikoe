@@ -7,7 +7,7 @@ class IdolGroupsNotifier extends StateNotifier<List<IdolGroup>> {
   void addGroup(
     String name,
     String? image,
-    int year,
+    int? year,
     String comment,
   ) {
     final newGroup = IdolGroup(

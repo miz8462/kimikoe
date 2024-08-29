@@ -24,7 +24,7 @@ class InputForm extends StatelessWidget {
           hintStyle: TextStyle(color: textGray),
           contentPadding: EdgeInsets.only(left: spaceWidthS),
         ),
-        keyboardType: TextInputType.number,
+        keyboardType: TextInputType.text,
         validator: validator,
         onSaved: onSaved,
       ),
