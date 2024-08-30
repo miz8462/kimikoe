@@ -14,7 +14,7 @@ class UserScreen extends StatefulWidget {
 }
 
 class _UserScreenState extends State<UserScreen> {
-    var _isSending = false;
+  var _isSending = false;
 
   @override
   Widget build(context) {
@@ -29,45 +29,48 @@ class _UserScreenState extends State<UserScreen> {
       appBar: TopBar(
         title: 'ユーザー情報',
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Gap(spaceWidthS),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              CircleAvatar(
-                backgroundImage: AssetImage(avaterImage),
-                radius: 20,
-              ),
-              // 編集
-              // todo: 他のページに遷移したら編集を終了する
-              StyledButton(
-                editButtonText,
-                onPressed: () {
-                  context.push(
-                      '${RoutingPath.userDetails}/${RoutingPath.editUser}');
-                },                  isSending: _isSending,
-
-                textColor: textGray,
-                backgroundColor: backgroundWhite,
-                buttonSize: buttonM,
-                borderSide:
-                    BorderSide(color: backgroundLightBlue, width: borderWidth),
-                width: buttonWidth,
-              ),
-            ],
-          ),
-          Gap(spaceWidthS),
-          Text(
-            userName,
-            style: TextStyle(
-              fontSize: fontLL,
+      body: Padding(
+        padding: screenPadding,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Gap(spaceWidthS),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CircleAvatar(
+                  backgroundImage: AssetImage(avaterImage),
+                  radius: 20,
+                ),
+                // 編集
+                // todo: 他のページに遷移したら編集を終了する
+                StyledButton(
+                  editButtonText,
+                  onPressed: () {
+                    context.push(
+                        '${RoutingPath.userDetails}/${RoutingPath.editUser}');
+                  },
+                  isSending: _isSending,
+                  textColor: textGray,
+                  backgroundColor: backgroundWhite,
+                  buttonSize: buttonM,
+                  borderSide: BorderSide(
+                      color: backgroundLightBlue, width: borderWidth),
+                  width: buttonWidth,
+                ),
+              ],
             ),
-          ),
-          Gap(spaceWidthS),
-          Text(userInfo),
-        ],
+            Gap(spaceWidthS),
+            Text(
+              userName,
+              style: TextStyle(
+                fontSize: fontLL,
+              ),
+            ),
+            Gap(spaceWidthS),
+            Text(userInfo),
+          ],
+        ),
       ),
     );
   }

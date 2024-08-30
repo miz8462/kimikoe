@@ -74,64 +74,69 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
           constraints: BoxConstraints(maxHeight: screenHeight),
           child: Form(
             key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '*必須項目',
-                  style: TextStyle(color: textGray),
-                ),
-                Container(
-                  color: backgroundLightBlue,
-                  child: TextFormField(
-                    maxLength: 50,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      label: Text('*アーティスト名'),
-                      hintStyle: TextStyle(color: textGray),
-                      contentPadding: EdgeInsets.only(left: spaceWidthS),
+            child: Padding(
+              padding: screenPadding,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '*必須項目',
+                    style: TextStyle(color: textGray),
+                  ),
+                  Container(
+                    color: backgroundLightBlue,
+                    child: TextFormField(
+                      maxLength: 50,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        label: Text('*アーティスト名'),
+                        hintStyle: TextStyle(color: textGray),
+                        contentPadding: EdgeInsets.only(left: spaceWidthS),
+                      ),
+                      validator: (value) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            value.length > 50) {
+                          return 'アーティスト名は50文字以下にしてください。';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _enteredName = value!;
+                      },
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty || value.length > 50) {
-                        return 'アーティスト名は50文字以下にしてください。';
-                      }
-                      return null;
+                  ),
+                  Gap(spaceWidthS),
+                  ImageInput(
+                    onPickImage: (image) {
+                      _selectedImage = image;
                     },
-                    onSaved: (value) {
-                      _enteredName = value!;
+                    label: 'アーティスト画像',
+                  ),
+                  Gap(spaceWidthS),
+                  ExpandedTextForm(
+                    label: '備考',
+                    onTextChanged: (value) {
+                      setState(() {
+                        _enteredComment = value!;
+                      });
                     },
                   ),
-                ),
-                Gap(spaceWidthS),
-                ImageInput(
-                  onPickImage: (image) {
-                    _selectedImage = image;
-                  },
-                  label: 'アーティスト画像',
-                ),
-                Gap(spaceWidthS),
-                ExpandedTextForm(
-                  label: '備考',
-                  onTextChanged: (value) {
-                    setState(() {
-                      _enteredComment = value!;
-                    });
-                  },
-                ),
-                Gap(spaceWidthS),
-                // 登録ボタン
-                StyledButton(
-                  '登録',
-                  onPressed: _isSending
-                      ? null
-                      : () {
-                          _saveArtist();
-                        },
-                  isSending: _isSending,
-                  buttonSize: buttonL,
-                ),
-                Gap(spaceWidthS),
-              ],
+                  Gap(spaceWidthS),
+                  // 登録ボタン
+                  StyledButton(
+                    '登録',
+                    onPressed: _isSending
+                        ? null
+                        : () {
+                            _saveArtist();
+                          },
+                    isSending: _isSending,
+                    buttonSize: buttonL,
+                  ),
+                  Gap(spaceWidthS),
+                ],
+              ),
             ),
           ),
         ),

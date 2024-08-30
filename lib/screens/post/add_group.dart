@@ -14,6 +14,7 @@ import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/utils/year_picker.dart';
 import 'package:kimikoe_app/widgets/buttons/image_input_button.dart';
 import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
+import 'package:kimikoe_app/widgets/forms/drum_roll_form.dart';
 import 'package:kimikoe_app/widgets/forms/expanded_text_form.dart';
 import 'package:kimikoe_app/widgets/forms/text_input_form.dart';
 import 'package:kimikoe_app/widgets/validator/validator.dart';
@@ -29,6 +30,8 @@ class AddGroupScreen extends ConsumerStatefulWidget {
 
 class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _yearController = TextEditingController();
+
   var _enteredName = '';
   File? _selectedImage;
   String? _selectedYear;
@@ -111,6 +114,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
       ),
       onConfirm: (date) {
         _formatDateTimeToYYYY(date);
+        _yearController.text = _selectedYear!;
       },
     );
   }
@@ -128,72 +132,63 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
           constraints: BoxConstraints(maxHeight: screenHeight),
           child: Form(
             key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  '*必須項目',
-                  style: TextStyle(color: textGray),
-                ),
-                InputForm(
-                  label: '*グループ名',
-                  validator: _groupNameValidator,
-                  onSaved: (value) {
-                    _enteredName = value!;
-                  },
-                ),
-                const Gap(spaceWidthS),
-                ImageInput(
-                  onPickImage: (image) {
-                    _selectedImage = image;
-                  },
-                  label: 'グループ画像',
-                ),
-                const Gap(spaceWidthS),
-                if (_selectedYear == null)
-                  TextButton(
-                    onPressed: _pickYear,
-                    child: Text(
-                      '結成年',
-                      style: TextStyle(
-                        fontSize: fontM,
-                        color: textGray,
-                      ),
-                    ),
+            child: Padding(
+              padding: screenPadding,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    '*必須項目',
+                    style: TextStyle(color: textGray),
                   ),
-                if (_selectedYear != null)
-                  TextButton(
-                    onPressed: _pickYear,
-                    child: Text(
-                      '結成年： $_selectedYear年',
-                      style: TextStyle(
-                        fontSize: fontM,
-                        color: textGray,
-                      ),
-                    ),
+                  InputForm(
+                    label: '*グループ名',
+                    validator: _groupNameValidator,
+                    onSaved: (value) {
+                      _enteredName = value!;
+                    },
                   ),
-                const Gap(spaceWidthS),
-                ExpandedTextForm(
-                  onTextChanged: (value) {
-                    setState(() {
-                      _enteredComment = value!;
-                    });
-                  },
-                  label: '備考',
-                ),
-                const Gap(spaceWidthS),
-                StyledButton(
-                  '登録',
-                  onPressed: _isSending
-                      ? null
-                      : () {
-                          _saveGroup();
-                        },
-                  isSending: _isSending,
-                  buttonSize: buttonL,
-                ),
-                const Gap(spaceWidthS),
-              ],
+                  const Gap(spaceWidthS),
+                  ImageInput(
+                    onPickImage: (image) {
+                      _selectedImage = image;
+                    },
+                    label: 'グループ画像',
+                  ),
+                  const Gap(spaceWidthS),
+                  DrumRollForm(
+                      label: '結成年',
+                      selectedNum: _selectedYear,
+                      controller: _yearController,
+                      picker: _pickYear,
+                      onSaved: (value) {
+                        setState(() {
+                          _selectedYear = value;
+                        });
+                      }),
+                  const Gap(spaceWidthS),
+                  ExpandedTextForm(
+                    onTextChanged: (value) {
+                      setState(() {
+                        _enteredComment = value!;
+                      });
+                    },
+                    label: '備考',
+                  ),
+                  const Gap(spaceWidthS),
+                  StyledButton(
+                    '登録',
+                    onPressed: _isSending
+                        ? null
+                        : () {
+                            _saveGroup();
+                          },
+                    isSending: _isSending,
+                    buttonSize: buttonL,
+                  ),
+                  const Gap(spaceWidthS),
+                ],
+              ),
             ),
           ),
         ),

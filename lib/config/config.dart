@@ -44,3 +44,5 @@ const noBorder = InputBorder.none;
 const double avaterSizeS = 16;
 const double avaterSizeM = 24;
 const double avaterSizeL = 32;
+
+const screenPadding = EdgeInsets.symmetric(horizontal: 20);

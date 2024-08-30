@@ -14,32 +14,35 @@ class IdolGroupScreen extends StatelessWidget {
       appBar: TopBar(
         title: 'ソングリスト',
       ),
-      body: Column(
-        children: [
-          const GroupInfo(),
-          const Gap(spaceWidthM),
-          Expanded(
-            child: ListView(
-              children: const [
-                SongCard(),
-                Gap(spaceWidthSS),
-                SongCard(),
-                Gap(spaceWidthSS),
-                SongCard(),
-                Gap(spaceWidthSS),
-                SongCard(),
-                Gap(spaceWidthSS),
-                SongCard(),
-                Gap(spaceWidthSS),
-                SongCard(),
-                Gap(spaceWidthSS),
-                SongCard(),
-                Gap(spaceWidthSS),
-                SongCard(),
-              ],
-            ),
-          )
-        ],
+      body: Padding(
+        padding: screenPadding,
+        child: Column(
+          children: [
+            const GroupInfo(),
+            const Gap(spaceWidthM),
+            Expanded(
+              child: ListView(
+                children: const [
+                  SongCard(),
+                  Gap(spaceWidthSS),
+                  SongCard(),
+                  Gap(spaceWidthSS),
+                  SongCard(),
+                  Gap(spaceWidthSS),
+                  SongCard(),
+                  Gap(spaceWidthSS),
+                  SongCard(),
+                  Gap(spaceWidthSS),
+                  SongCard(),
+                  Gap(spaceWidthSS),
+                  SongCard(),
+                  Gap(spaceWidthSS),
+                  SongCard(),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

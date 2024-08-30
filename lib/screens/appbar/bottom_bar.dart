@@ -21,7 +21,7 @@ class _BottomBarState extends State<BottomBar> {
   int addIndex = 1;
   int userIndex = 2;
   int logoutIndex = 3;
-  
+
   var _isSending = false;
 
   void _openAddOverlay(BuildContext context) {
@@ -89,15 +89,11 @@ class _BottomBarState extends State<BottomBar> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double horizontalPadding = screenWidth * 0.04;
 
     int currentIndex = widget.navigationShell.currentIndex;
 
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-        child: widget.navigationShell,
-      ),
+      body: widget.navigationShell,
       bottomNavigationBar: NavigationBar(
         backgroundColor: mainBlue,
         selectedIndex: currentIndex,

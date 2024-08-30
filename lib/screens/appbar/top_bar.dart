@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/screens/appbar/app_bar_bottom.dart';
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
   const TopBar({
@@ -44,4 +43,28 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(60);
+}
+
+class AppBarBottom extends StatelessWidget implements PreferredSizeWidget {
+  const AppBarBottom({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        height: 2.0,
+        decoration: BoxDecoration(color: mainBlue.withOpacity(0.3), boxShadow: [
+          BoxShadow(
+            color: mainBlue.withOpacity(0.5),
+            spreadRadius: 0,
+            blurRadius: 2,
+          )
+        ]),
+      ),
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(0);
 }
