@@ -6,18 +6,18 @@ import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/provider/groups_notifier.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
+import 'package:kimikoe_app/utils/formatter.dart';
+import 'package:kimikoe_app/utils/validator/validator.dart';
 import 'package:kimikoe_app/utils/year_picker.dart';
 import 'package:kimikoe_app/widgets/buttons/image_input_button.dart';
 import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
 import 'package:kimikoe_app/widgets/forms/drum_roll_form.dart';
 import 'package:kimikoe_app/widgets/forms/expanded_text_form.dart';
 import 'package:kimikoe_app/widgets/forms/text_input_form.dart';
-import 'package:kimikoe_app/widgets/validator/validator.dart';
 
 const String defaultPathNoImage = 'no-images.png';
 
@@ -95,25 +95,21 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     return textInputValidator(value, 'グループ名');
   }
 
-  void _formatDateTimeToYYYY(DateTime date) {
-    final formatter = DateFormat('yyyy');
-    setState(() {
-      _selectedYear = formatter.format(date);
-    });
-  }
-
   void _pickYear() async {
     await picker.DatePicker.showPicker(
       context,
-      showTitleActions: true,
+      showTitleActions: false,
       pickerModel: CustomYearPicker(
         currentTime: DateTime(2020),
         minTime: DateTime(1990),
         maxTime: DateTime.now(),
         locale: picker.LocaleType.jp,
       ),
-      onConfirm: (date) {
-        _formatDateTimeToYYYY(date);
+      onChanged: (date) {
+        _selectedYear = formatDateTimeToXXXX(
+          date: date,
+          formatStyle: 'yyyy',
+        );
         _yearController.text = _selectedYear!;
       },
     );
@@ -156,16 +152,18 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                     label: 'グループ画像',
                   ),
                   const Gap(spaceWidthS),
-                  DrumRollForm(
-                      label: '結成年',
-                      selectedNum: _selectedYear,
-                      controller: _yearController,
-                      picker: _pickYear,
-                      onSaved: (value) {
-                        setState(() {
+                  PickerForm(
+                    label: '結成年',
+                    controller: _yearController,
+                    picker: _pickYear,
+                    onSaved: (value) {
+                      setState(
+                        () {
                           _selectedYear = value;
-                        });
-                      }),
+                        },
+                      );
+                    },
+                  ),
                   const Gap(spaceWidthS),
                   ExpandedTextForm(
                     onTextChanged: (value) {

@@ -1,26 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
 
-class DrumRollForm extends StatefulWidget {
-  const DrumRollForm({
+class PickerForm extends StatefulWidget {
+  const PickerForm({
     super.key,
     required this.label,
-    this.selectedNum,
     required this.controller,
     required this.picker,
     required this.onSaved,
   });
 
   final String label;
-  final String? selectedNum;
   final TextEditingController controller;
   final void Function() picker;
   final void Function(String?) onSaved;
   @override
-  State<DrumRollForm> createState() => _DrumRollFormState();
+  State<PickerForm> createState() => _PickerFormState();
 }
 
-class _DrumRollFormState extends State<DrumRollForm> {
+class _PickerFormState extends State<PickerForm> {
   @override
   Widget build(BuildContext context) {
     return Container(

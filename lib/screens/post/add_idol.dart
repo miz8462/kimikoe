@@ -5,13 +5,16 @@ import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
     as picker;
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
+import 'package:kimikoe_app/utils/formatter.dart';
+import 'package:kimikoe_app/utils/int_picker.dart';
+import 'package:kimikoe_app/utils/validator/validator.dart';
+import 'package:kimikoe_app/utils/year_picker.dart';
 import 'package:kimikoe_app/widgets/buttons/circular_button.dart';
 import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
+import 'package:kimikoe_app/widgets/forms/drum_roll_form.dart';
 import 'package:kimikoe_app/widgets/forms/text_input_form.dart';
-import 'package:kimikoe_app/widgets/validator/validator.dart';
 
 class AddIdolScreen extends StatefulWidget {
   const AddIdolScreen({super.key});
@@ -22,15 +25,19 @@ class AddIdolScreen extends StatefulWidget {
 
 class _AddIdolScreenState extends State<AddIdolScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _birthdayController = TextEditingController();
+  final _heightController = TextEditingController();
+  final _debutYearController = TextEditingController();
+
   var _enteredIdolName = '';
   var _enteredGroup = '';
   Color _selectedColor = Colors.white;
   File? _selectedImage;
-  DateTime? _enteredBirthday;
+  String? _selectedBirthday;
   String? _formattedBirthday;
-  var _enteredHeight = '';
+  String? _selectedHeight;
   var _enteredHometown = '';
-  var _enteredDebutYear = '';
+  String? _selectedDebutYear;
 
   var _isSending = false;
 
@@ -42,43 +49,62 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     return textInputValidator(value, 'グループ名');
   }
 
-  String? _heightValidator(String? value) {
-    return intInputValidator(value, '身長');
-  }
-
   String? _hometownValidator(String? value) {
     return textInputValidator(value, '出身地');
-  }
-
-  String? _debutYearValidator(String? value) {
-    return intInputValidator(value, 'デビュー年');
-  }
-
-  void _formatDateTimeToYYYYMMdd(DateTime date) {
-    final formatter = DateFormat('yyyy/MM/dd');
-    setState(() {
-      _formattedBirthday = formatter.format(date);
-    });
   }
 
   void _pickBirthday() async {
     await picker.DatePicker.showDatePicker(
       context,
-      minTime: DateTime(1900, 1, 1),
+      showTitleActions: false,
+      minTime: DateTime(1900),
       maxTime: DateTime.now(),
       currentTime: DateTime(2000, 6, 15),
       locale: picker.LocaleType.jp,
-      onConfirm: (date) {
-        setState(
-          () {
-            _enteredBirthday = date;
-          },
+      onChanged: (date) {
+        _selectedBirthday = formatDateTimeToXXXX(
+          date: date,
+          formatStyle: 'yyyy/MM/dd',
+        );
+        _birthdayController.text = _selectedBirthday!;
+      },
+    );
+  }
+
+  void _pickHeight() async {
+    await showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: MediaQuery.of(context).size.height / 3,
+          child: IntPicker(
+            startNum: 100,
+            endNum: 190,
+            controller: _heightController,
+          ),
         );
       },
     );
-    if (_enteredBirthday != null) {
-      _formatDateTimeToYYYYMMdd(_enteredBirthday!);
-    }
+  }
+
+  void _pickDebutYear() async {
+    await picker.DatePicker.showPicker(
+      context,
+      showTitleActions: false,
+      pickerModel: CustomYearPicker(
+        currentTime: DateTime(2020),
+        minTime: DateTime(1990),
+        maxTime: DateTime.now(),
+        locale: picker.LocaleType.jp,
+      ),
+      onChanged: (date) {
+        _selectedDebutYear = formatDateTimeToXXXX(
+          date: date,
+          formatStyle: 'yyyy',
+        );
+        _debutYearController.text = _selectedDebutYear!;
+      },
+    );
   }
 
   @override
@@ -138,33 +164,29 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       color: backgroundLightBlue, width: borderWidth),
                 ),
                 const Gap(spaceWidthS),
-                if (_enteredBirthday == null)
-                  TextButton(
-                    onPressed: _pickBirthday,
-                    child: Text(
-                      '生年月日',
-                      style: TextStyle(
-                        fontSize: fontM,
-                      ),
-                    ),
-                  ),
-                if (_enteredBirthday != null)
-                  TextButton(
-                    onPressed: _pickBirthday,
-                    child: Text(
-                      '生年月日： $_formattedBirthday',
-                      style: TextStyle(
-                        fontSize: fontM,
-                        color: textGray,
-                      ),
-                    ),
-                  ),
-                const Gap(spaceWidthS),
-                InputForm(
-                  label: '身長',
-                  validator: _heightValidator,
+                PickerForm(
+                  label: '生年月日',
+                  controller: _birthdayController,
+                  picker: _pickBirthday,
                   onSaved: (value) {
-                    _enteredHeight = value!;
+                    setState(
+                      () {
+                        _selectedBirthday = value!;
+                      },
+                    );
+                  },
+                ),
+                const Gap(spaceWidthS),
+                PickerForm(
+                  label: '身長',
+                  controller: _heightController,
+                  picker: _pickHeight,
+                  onSaved: (value) {
+                    setState(
+                      () {
+                        _heightController.text = value!;
+                      },
+                    );
                   },
                 ),
                 const Gap(spaceWidthS),
@@ -175,11 +197,16 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       _enteredHometown = value!;
                     }),
                 const Gap(spaceWidthS),
-                InputForm(
+                PickerForm(
                   label: 'デビュー年',
-                  validator: _debutYearValidator,
+                  controller: _debutYearController,
+                  picker: _pickDebutYear,
                   onSaved: (value) {
-                    _enteredDebutYear = value!;
+                    setState(
+                      () {
+                        _selectedDebutYear = value!;
+                      },
+                    );
                   },
                 ),
                 const Gap(spaceWidthS),
