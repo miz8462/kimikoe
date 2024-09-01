@@ -12,7 +12,7 @@ import 'package:kimikoe_app/provider/groups_notifier.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/utils/formatter.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
-import 'package:kimikoe_app/utils/year_picker.dart';
+import 'package:kimikoe_app/utils/pickers/year_picker.dart';
 import 'package:kimikoe_app/widgets/buttons/image_input_button.dart';
 import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
 import 'package:kimikoe_app/widgets/forms/drum_roll_form.dart';

@@ -1,20 +1,26 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
     as picker;
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/models/enums/idol_colors.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/utils/formatter.dart';
-import 'package:kimikoe_app/utils/int_picker.dart';
+import 'package:kimikoe_app/utils/pickers/int_picker.dart';
+import 'package:kimikoe_app/utils/pickers/year_picker.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
-import 'package:kimikoe_app/utils/year_picker.dart';
 import 'package:kimikoe_app/widgets/buttons/circular_button.dart';
+import 'package:kimikoe_app/widgets/buttons/image_input_button.dart';
 import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
 import 'package:kimikoe_app/widgets/forms/drum_roll_form.dart';
+import 'package:kimikoe_app/widgets/forms/expanded_text_form.dart';
 import 'package:kimikoe_app/widgets/forms/text_input_form.dart';
+
+List<Color> colorsList = IdolColors.values.map((color) => color.rgb).toList();
 
 class AddIdolScreen extends StatefulWidget {
   const AddIdolScreen({super.key});
@@ -31,13 +37,14 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
 
   var _enteredIdolName = '';
   var _enteredGroup = '';
-  Color _selectedColor = Colors.white;
+  Color _selectedColor = Colors.lightBlue;
   File? _selectedImage;
   String? _selectedBirthday;
   String? _formattedBirthday;
   String? _selectedHeight;
   var _enteredHometown = '';
   String? _selectedDebutYear;
+  String _enteredComment = '';
 
   var _isSending = false;
 
@@ -75,7 +82,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     await showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return Container(
+        return SizedBox(
           height: MediaQuery.of(context).size.height / 3,
           child: IntPicker(
             startNum: 100,
@@ -103,6 +110,27 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
           formatStyle: 'yyyy',
         );
         _debutYearController.text = _selectedDebutYear!;
+      },
+    );
+  }
+
+  void _pickColor() async {
+    await showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height / 2,
+          child: BlockPicker(
+            pickerColor: _selectedColor,
+            onColorChanged: (color) {
+              setState(() {
+                _selectedColor = color;
+              });
+              context.pop();
+            },
+            availableColors: colorsList,
+          ),
+        );
       },
     );
   }
@@ -145,23 +173,25 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                 // 歌詞で表示する個人カラー選択
                 Row(
                   children: [
-                    CircularButton(color: Colors.pink.shade200),
+                    CircularButton(
+                      color: _selectedColor,
+                      onPressed: _pickColor,
+                    ),
                     const Text(
                       '*カラー選択',
-                      style: TextStyle(color: textGray, fontSize: fontM),
+                      style: TextStyle(
+                        color: textGray,
+                        fontSize: fontM,
+                      ),
                     ),
                   ],
                 ),
                 const Gap(spaceWidthS),
-                StyledButton(
-                  'メンバー画像',
-                  onPressed: () {},
-                  isSending: _isSending,
-                  textColor: textGray,
-                  backgroundColor: backgroundWhite,
-                  buttonSize: buttonM,
-                  borderSide: BorderSide(
-                      color: backgroundLightBlue, width: borderWidth),
+                ImageInput(
+                  onPickImage: (image) {
+                    _selectedImage = image;
+                  },
+                  label: 'グループ画像',
                 ),
                 const Gap(spaceWidthS),
                 PickerForm(
@@ -210,7 +240,14 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                   },
                 ),
                 const Gap(spaceWidthS),
-                // const ExpandedTextForm(label: 'その他、備考'),
+                ExpandedTextForm(
+                  onTextChanged: (value) {
+                    setState(() {
+                      _enteredComment = value!;
+                    });
+                  },
+                  label: '備考',
+                ),
                 const Gap(spaceWidthS),
                 StyledButton(
                   '登録',

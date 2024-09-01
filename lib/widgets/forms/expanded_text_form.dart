@@ -21,7 +21,7 @@ class _ExpandedTextFormState extends State<ExpandedTextForm> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: 200,
       color: backgroundLightBlue,
       child: TextFormField(
         decoration: InputDecoration(
