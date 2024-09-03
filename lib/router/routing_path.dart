@@ -1,4 +1,6 @@
 class RoutingPath {
+  static const signIn = '/';
+
   static const groupList = '/group_list';
   static const groupDetails = 'group_details';
   static const lyric = 'lyric';

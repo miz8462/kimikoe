@@ -31,10 +31,9 @@ final router = GoRouter(
   initialLocation: '/',
   redirect: (context, state) {
     // todo: 開発用自動ログイン
-    // final currentSession = supabase.auth.currentSession;
-    final currentSession = 'true';
+    final currentSession = supabase.auth.currentSession;
+    // final currentSession = 'true';
     if (currentSession == null && state.matchedLocation != '/') {
-      // if (false) {
       return '/';
     } else if (currentSession != null && state.matchedLocation == '/') {
       return '/group_list';

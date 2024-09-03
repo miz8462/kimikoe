@@ -46,3 +46,5 @@ const double avaterSizeM = 24;
 const double avaterSizeL = 32;
 
 const screenPadding = EdgeInsets.symmetric(horizontal: 20);
+
+const String defaultPathNoImage = 'no-images.png';

@@ -13,3 +13,12 @@ String? textInputValidator(String? value, String? text) {
   }
   return null;
 }
+
+String? nullableTextInputValidator(String? value, String? text) {
+  if (value == null || value.isEmpty) {
+    return null;
+  } else if (value.trim().length > 50) {
+    return '$textは50文字以下にしてください。';
+  }
+  return null;
+}

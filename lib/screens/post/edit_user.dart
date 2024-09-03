@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
@@ -18,6 +19,16 @@ class _EditUserScreenState extends State<EditUserScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = supabase.auth.currentUser;
+    if (currentUser == null) {
+      //buildが終わる前に画面遷移をしようとするとエラーになるので
+      //buildが終わった後に画面遷移を実行
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.go(RoutingPath.signIn);
+      });
+    }
+    final userData = currentUser!.userMetadata;
+    print(userData);
     return Scaffold(
       appBar: TopBar(title: 'ユーザー編集'),
       body: Padding(
@@ -29,8 +40,6 @@ class _EditUserScreenState extends State<EditUserScreen> {
               '*必須項目',
               style: TextStyle(color: textGray),
             ),
-            // アーティスト名入力
-            // todo: クラスウィジェット作る
             Container(
               color: backgroundLightBlue,
               child: TextFormField(
@@ -44,7 +53,20 @@ class _EditUserScreenState extends State<EditUserScreen> {
               ),
             ),
             const Gap(spaceWidthS),
-            // ユーザー画像登録ボタン
+            Container(
+              color: backgroundLightBlue,
+              child: TextFormField(
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'メール',
+                  hintStyle: TextStyle(color: textGray),
+                  contentPadding: EdgeInsets.only(left: spaceWidthS),
+                ),
+                controller: TextEditingController(),
+              ),
+            ),
+            const Gap(spaceWidthS),
+
             SizedBox(
               height: 40,
               child: OutlinedButton(
@@ -67,18 +89,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
               ),
             ),
             const Gap(spaceWidthS),
-            Container(
-              color: backgroundLightBlue,
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'メール',
-                  hintStyle: TextStyle(color: textGray),
-                  contentPadding: EdgeInsets.only(left: spaceWidthS),
-                ),
-                controller: TextEditingController(),
-              ),
-            ),
+
             const Gap(spaceWidthS),
             // 備考欄
             Expanded(

@@ -10,16 +10,15 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/provider/groups_notifier.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
+import 'package:kimikoe_app/utils/create_image_name_with_jpg.dart';
 import 'package:kimikoe_app/utils/formatter.dart';
-import 'package:kimikoe_app/utils/validator/validator.dart';
 import 'package:kimikoe_app/utils/pickers/year_picker.dart';
+import 'package:kimikoe_app/utils/validator/validator.dart';
 import 'package:kimikoe_app/widgets/buttons/image_input_button.dart';
 import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
 import 'package:kimikoe_app/widgets/forms/drum_roll_form.dart';
 import 'package:kimikoe_app/widgets/forms/expanded_text_form.dart';
 import 'package:kimikoe_app/widgets/forms/text_input_form.dart';
-
-const String defaultPathNoImage = 'no-images.png';
 
 class AddGroupScreen extends ConsumerStatefulWidget {
   const AddGroupScreen({super.key});
@@ -43,6 +42,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     setState(() {
       _isSending = true;
     });
+
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
     } else {
@@ -53,10 +53,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     }
 
     // e.g. /aaa/bbb/ccc/image.png
-    final imagePath = _selectedImage?.path.split('/').last.split('.').first;
-    final imagePathWithCreatedAtJPG =
-        '$imagePath${(DateTime.now().toString()).replaceAll(' ', '-')}.jpg';
-
+    final imagePathWithCreatedAtJPG = createImageNameWithJPG(_selectedImage);
     ref.read(groupsProvider.notifier).addGroup(
           _enteredName,
           _selectedImage == null
@@ -71,15 +68,17 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
       'image_url': _selectedImage == null
           ? defaultPathNoImage
           : imagePathWithCreatedAtJPG,
-      'year_forming_group': _selectedYear,
+      'year_forming_group':
+          _selectedYear == null ? null : int.tryParse(_selectedYear!),
       'comment': _enteredComment
     });
 
     if (_selectedImage != null) {
       await supabase.storage
           .from('images')
-          .upload(imagePathWithCreatedAtJPG, _selectedImage!);
+          .upload(imagePathWithCreatedAtJPG!, _selectedImage!);
     }
+    
     setState(() {
       _isSending = false;
     });
@@ -176,11 +175,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                   const Gap(spaceWidthS),
                   StyledButton(
                     '登録',
-                    onPressed: _isSending
-                        ? null
-                        : () {
-                            _saveGroup();
-                          },
+                    onPressed: _isSending ? null : _saveGroup,
                     isSending: _isSending,
                     buttonSize: buttonL,
                   ),

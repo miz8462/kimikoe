@@ -69,12 +69,21 @@ class _SignInScreenState extends State<SignInScreen> {
       idToken: idToken,
       accessToken: accessToken,
     );
-  }
 
-  // twitterログイン
-//   Future<void> _twitterSignIn() async {
-//   await supabase.auth.signInWithOAuth(OAuthProvider.twitter);
-// }
+    final userId = supabase.auth.currentUser!.id;
+    final userData = supabase.auth.currentUser!.userMetadata;
+
+    final response = await supabase.from('profiles').select().eq('id', userId);
+
+    if (response[0]['email'] == null) {
+      await supabase.from('profiles').update({
+        'username': userData?['name'],
+        'email': userData?['email'],
+        'image_url': userData?['avatar_url']
+      }).eq('id', userId);
+      ;
+    }
+  }
 
   @override
   void initState() {

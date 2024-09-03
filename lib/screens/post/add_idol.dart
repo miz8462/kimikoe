@@ -7,8 +7,10 @@ import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/enums/idol_colors.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
+import 'package:kimikoe_app/utils/create_image_name_with_jpg.dart';
 import 'package:kimikoe_app/utils/formatter.dart';
 import 'package:kimikoe_app/utils/pickers/int_picker.dart';
 import 'package:kimikoe_app/utils/pickers/year_picker.dart';
@@ -40,15 +42,76 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
   Color _selectedColor = Colors.lightBlue;
   File? _selectedImage;
   String? _selectedBirthday;
-  String? _formattedBirthday;
   String? _selectedHeight;
-  var _enteredHometown = '';
+  String? _enteredHometown;
   String? _selectedDebutYear;
-  String _enteredComment = '';
+  String? _enteredComment;
 
   var _isSending = false;
 
-  String? _idolNameValidator(String? value) {
+  Future<void> _saveIdol() async {
+    setState(() {
+      _isSending = true;
+    });
+
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+    } else {
+      setState(() {
+        _isSending = false;
+      });
+      return;
+    }
+
+    // e.g. /aaa/bbb/ccc/image.png
+    final imagePathWithCreatedAtJPG = createImageNameWithJPG(_selectedImage);
+
+    if (_selectedHeight == null || _selectedHeight!.isEmpty) {
+      _selectedHeight = null;
+    } else {
+      int.parse(_selectedHeight!);
+    }
+
+    if (_selectedBirthday == null || _selectedBirthday!.isEmpty) {
+      _selectedBirthday = null;
+    }
+
+    if (_selectedDebutYear == null || _selectedDebutYear!.isEmpty) {
+      _selectedDebutYear = null;
+    }
+
+    await supabase.from('idol').insert({
+      'name': _enteredIdolName,
+      'group_name': _enteredGroup,
+      'color': _selectedColor.toString(),
+      'image_url': _selectedImage == null
+          ? defaultPathNoImage
+          : imagePathWithCreatedAtJPG,
+      'birthday': _selectedBirthday,
+      'height': _selectedHeight,
+      'hometown': _enteredHometown,
+      'debut_year': _selectedDebutYear,
+      'comment': _enteredComment,
+    });
+
+    if (_selectedImage != null) {
+      await supabase.storage
+          .from('images')
+          .upload(imagePathWithCreatedAtJPG!, _selectedImage!);
+    }
+
+    setState(() {
+      _isSending = false;
+    });
+
+    if (!mounted) {
+      return;
+    }
+
+    context.pushReplacement('/group_list');
+  }
+
+  String? _nameValidator(String? value) {
     return textInputValidator(value, '名前');
   }
 
@@ -57,7 +120,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
   }
 
   String? _hometownValidator(String? value) {
-    return textInputValidator(value, '出身地');
+    return nullableTextInputValidator(value, '出身地');
   }
 
   void _pickBirthday() async {
@@ -69,11 +132,11 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
       currentTime: DateTime(2000, 6, 15),
       locale: picker.LocaleType.jp,
       onChanged: (date) {
-        _selectedBirthday = formatDateTimeToXXXX(
+        _selectedBirthday = date.toIso8601String();
+        _birthdayController.text = formatDateTimeToXXXX(
           date: date,
           formatStyle: 'yyyy/MM/dd',
         );
-        _birthdayController.text = _selectedBirthday!;
       },
     );
   }
@@ -105,11 +168,11 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         locale: picker.LocaleType.jp,
       ),
       onChanged: (date) {
-        _selectedDebutYear = formatDateTimeToXXXX(
+        _selectedDebutYear = date.toIso8601String();
+        _debutYearController.text = formatDateTimeToXXXX(
           date: date,
           formatStyle: 'yyyy',
         );
-        _debutYearController.text = _selectedDebutYear!;
       },
     );
   }
@@ -156,7 +219,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                 ),
                 InputForm(
                   label: '*名前',
-                  validator: _idolNameValidator,
+                  validator: _nameValidator,
                   onSaved: (value) {
                     _enteredIdolName = value!;
                   },
@@ -214,7 +277,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                   onSaved: (value) {
                     setState(
                       () {
-                        _heightController.text = value!;
+                        _selectedHeight = value;
                       },
                     );
                   },
@@ -251,9 +314,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                 const Gap(spaceWidthS),
                 StyledButton(
                   '登録',
-                  onPressed: () {
-                    context.go('/group_list');
-                  },
+                  onPressed: _isSending ? null : _saveIdol,
                   isSending: _isSending,
                   buttonSize: buttonL,
                 ),

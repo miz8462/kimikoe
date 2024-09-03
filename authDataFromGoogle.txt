@@ -1,0 +1,35 @@
+User(
+  id: 92d8d862-509c-4894-a7ee-b68fb7f3ba91, 
+  appMetadata: 
+  {
+    provider: email, providers: [email, google]
+  }, 
+  userMetadata: 
+  {
+  avatar_url: https://lh3.googleusercontent.com/a/ACg8ocKYRgBHV24DfY4Ulswg7eScvBA-ZZ8Hw-ICw9jznzoGo324MKkf=s96-c, 
+  email: wwr8462@gmail.com, 
+  email_verified: true, 
+  full_name: ミズキ, 
+  iss: https://accounts.google.com, 
+  name: ミズキ, 
+  phone_verified: false, 
+  picture: https://lh3.googleusercontent.com/a/ACg8ocKYRgBHV24DfY4Ulswg7eScvBA-ZZ8Hw-ICw9jznzoGo324MKkf=s96-c, 
+  provider_id: 110804115758714032024, 
+  sub: 110804115758714032024
+}, 
+aud: authenticated, 
+confirmationSentAt: 2024-06-09T21:17:23.748576Z, 
+recoverySentAt: 2024-07-03T15:52:52.985534Z,
+emailChangeSentAt: null, 
+newEmail: null, 
+invitedAt: null, 
+actionLink: null, 
+email: wwr8462@gmail.com, 
+phone: , 
+createdAt: 2024-06-09T21:17:23.720727Z, 
+confirmedAt: 2024-06-09T21:17:56.032875Z, 
+emailConfirmedAt: 2024-06-09T21:17:56.032875Z, 
+phoneConfirmedAt: null, 
+lastSignInAt: 2024-09-03T13:48:04.421583938Z, 
+role: authenticated, 
+updatedAt: 2024-09-03T13:4
