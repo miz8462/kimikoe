@@ -81,7 +81,6 @@ class _SignInScreenState extends State<SignInScreen> {
         'email': userData?['email'],
         'image_url': userData?['avatar_url']
       }).eq('id', userId);
-      ;
     }
   }
 
