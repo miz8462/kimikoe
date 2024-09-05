@@ -58,7 +58,6 @@ class _EditUserScreenState extends State<EditUserScreen> {
       });
       return;
     }
-
     // e.g. /aaa/bbb/ccc/image.png
     final imagePathWithCreatedAtJPG = createImageNameWithJPG(_selectedImage);
 
@@ -68,7 +67,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
       'username': _enteredUserName,
       'email': _enteredEmailAddress,
       'image_url': _selectedImage == null
-          ? defaultPathNoImage
+          ? widget.user!.imageUrl
           : imagePathWithCreatedAtJPG,
       'comment': _enteredComment,
     }).eq(
@@ -104,7 +103,6 @@ class _EditUserScreenState extends State<EditUserScreen> {
         context.go(RoutingPath.signIn);
       });
     }
-
     return Scaffold(
       appBar: TopBar(title: 'ユーザー編集'),
       body: Padding(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/user.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
@@ -27,6 +28,10 @@ class _UserScreenState extends State<UserScreen> {
     _noImagePath = fetchNoImage();
   }
 
+  String _getImageFromSupabase(String imageUrl) {
+    return supabase.storage.from('images').getPublicUrl(imageUrl);
+  }
+
   @override
   Widget build(context) {
     const String editButtonText = '編集する';
@@ -50,7 +55,15 @@ class _UserScreenState extends State<UserScreen> {
             imageUrl: userData['image_url'],
             comment: userData['comment'] ?? '',
           );
-          user;
+
+          var userImageUrl = user.imageUrl;
+          final isStartWithHTTP = user.imageUrl.startsWith('http');
+
+          if (!isStartWithHTTP) {
+            userImageUrl = _getImageFromSupabase(user.imageUrl);
+          }
+          var userImage = NetworkImage(userImageUrl);
+
           return Padding(
             padding: screenPadding,
             child: Column(
@@ -61,7 +74,7 @@ class _UserScreenState extends State<UserScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CircleAvatar(
-                      backgroundImage: NetworkImage(user.imageUrl),
+                      backgroundImage: userImage,
                       radius: 30,
                     ),
                     // 編集
@@ -91,7 +104,7 @@ class _UserScreenState extends State<UserScreen> {
                   ),
                 ),
                 Gap(spaceWidthS),
-                Text(user.comment!),
+                Text(user.comment),
               ],
             ),
           );
