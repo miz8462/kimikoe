@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/main.dart';
+import 'package:kimikoe_app/models/user.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/bottom_bar.dart';
 import 'package:kimikoe_app/screens/idol_group.dart';
@@ -140,8 +141,9 @@ final router = GoRouter(
                   path: RoutingPath.editUser,
                   name: RoutingPath.editUser,
                   pageBuilder: (context, state) {
+                    final user = state.extra as UserProfile;
                     return MaterialPage(
-                      child: EditUserScreen(),
+                      child: EditUserScreen(user: user),
                       key: state.pageKey,
                     );
                   },

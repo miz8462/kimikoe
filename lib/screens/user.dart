@@ -44,9 +44,10 @@ class _UserScreenState extends State<UserScreen> {
           }
           final userDataInList = List.of(snapshot.data);
           final userData = userDataInList[0];
-          final user = User(
+          final user = UserProfile(
             name: userData['username'] ?? 'タイトル未定',
-            imageUrl: userData['image_url'] ?? _noImagePath,
+            email: userData['email'],
+            imageUrl: userData['image_url'],
             comment: userData['comment'] ?? '',
           );
           user;
@@ -69,7 +70,8 @@ class _UserScreenState extends State<UserScreen> {
                       editButtonText,
                       onPressed: () {
                         context.push(
-                            '${RoutingPath.userDetails}/${RoutingPath.editUser}');
+                            '${RoutingPath.userDetails}/${RoutingPath.editUser}',
+                            extra: user);
                       },
                       isSending: _isSending,
                       textColor: textGray,

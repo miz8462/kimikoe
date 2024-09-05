@@ -7,17 +7,20 @@ class InputForm extends StatelessWidget {
     required this.label,
     required this.validator,
     required this.onSaved,
+    this.initialValue,
   });
 
   final String label;
   final String? Function(String?) validator;
   final void Function(String?) onSaved;
+  final String? initialValue;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: backgroundLightBlue,
       child: TextFormField(
+        initialValue: initialValue,
         decoration: InputDecoration(
           border: InputBorder.none,
           label: Text(label),

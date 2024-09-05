@@ -1,13 +1,15 @@
-class User {
-  const User({
+import 'package:kimikoe_app/config/config.dart';
+
+class UserProfile {
+  const UserProfile({
     required this.name,
-    this.email,
-    this.imageUrl='d',
-    this.comment,
+    required this.email,
+    this.imageUrl = defaultPathNoImage,
+    this.comment = '',
   });
 
   final String name;
-  final String? email;
+  final String email;
   final String imageUrl;
-  final String? comment;
+  final String comment;
 }
