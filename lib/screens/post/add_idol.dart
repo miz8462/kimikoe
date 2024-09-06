@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/enums/idol_colors.dart';
+import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/utils/create_image_name_with_jpg.dart';
 import 'package:kimikoe_app/utils/formatter.dart';
@@ -39,6 +40,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
 
   var _enteredIdolName = '';
   var _enteredGroup = '';
+  IdolGroup? _selectedGroup;
   Color _selectedColor = Colors.lightBlue;
   File? _selectedImage;
   String? _selectedBirthday;
@@ -47,7 +49,26 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
   String? _selectedDebutYear;
   String? _enteredComment;
 
+  late Future<List<Map<String, dynamic>>> _groupNameList;
   var _isSending = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _groupNameList = _fetchGroupNameList();
+  }
+
+  @override
+  void dispose() {
+    _birthdayController.dispose();
+    _heightController.dispose();
+    _debutYearController.dispose();
+    super.dispose();
+  }
+
+  Future<List<Map<String, dynamic>>> _fetchGroupNameList() async {
+    return await supabase.from('idol-groups').select('id, name');
+  }
 
   Future<void> _saveIdol() async {
     setState(() {
@@ -80,9 +101,9 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
       _selectedDebutYear = null;
     }
 
-    await supabase.from('idol').insert({
+    await await supabase.from('idol').insert({
       'name': _enteredIdolName,
-      'group_name': _enteredGroup,
+      'group_id': _selectedGroup?.id == null ? null : _selectedGroup!.id,
       'color': _selectedColor.toString(),
       'image_url': _selectedImage == null
           ? defaultPathNoImage
@@ -113,10 +134,6 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
 
   String? _nameValidator(String? value) {
     return textInputValidator(value, '名前');
-  }
-
-  String? _groupNameValidator(String? value) {
-    return textInputValidator(value, 'グループ名');
   }
 
   String? _hometownValidator(String? value) {
@@ -225,11 +242,39 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                   },
                 ),
                 const Gap(spaceWidthS),
-                InputForm(
-                  label: '*所属グループ',
-                  validator: _groupNameValidator,
-                  onSaved: (value) {
-                    _enteredGroup = value!;
+                // InputForm(
+                //   label: '*所属グループ',
+                //   validator: _groupNameValidator,
+                //   onSaved: (value) {
+                //     _enteredGroup = value!;
+                //   },
+                // ),
+                FutureBuilder(
+                  future: _groupNameList,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return DropdownMenu<IdolGroup>(
+                        enableFilter: true,
+                        enableSearch: true,
+                        requestFocusOnTap: true,
+                        label: Text('所属グループ'),
+                        dropdownMenuEntries: snapshot.data!.map((group) {
+                          return DropdownMenuEntry<IdolGroup>(
+                            value: IdolGroup(
+                              id: group['id'],
+                              name: group['name'],
+                            ),
+                            label: group['name'].toString(),
+                          );
+                        }).toList(),
+                        onSelected: (data) {
+                          setState(() {
+                            _selectedGroup = data!;
+                          });
+                        },
+                      );
+                    }
+                    return Text('data');
                   },
                 ),
                 const Gap(spaceWidthS),
