@@ -125,10 +125,10 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
       body: SingleChildScrollView(
         child: ConstrainedBox(
           constraints: BoxConstraints(maxHeight: screenHeight),
-          child: Form(
-            key: _formKey,
-            child: Padding(
-              padding: screenPadding,
+          child: Padding(
+            padding: screenPadding,
+            child: Form(
+              key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

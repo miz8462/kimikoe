@@ -22,3 +22,12 @@ String? nullableTextInputValidator(String? value, String? text) {
   }
   return null;
 }
+
+String? longTextInputValidator(String? value, String? text) {
+  if (value == null || value.isEmpty) {
+    return '$textを入力してください。';
+  } else if (value.trim().length > 10000) {
+    return '$textは10000文字以下にしてください。';
+  }
+  return null;
+}

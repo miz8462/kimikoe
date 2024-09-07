@@ -24,8 +24,8 @@ class _UserScreenState extends State<UserScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchedUserInfo = fetchUserInfo();
-    _noImagePath = fetchNoImage();
+    _fetchedUserInfo = fetchCurrentUserInfo();
+    _noImagePath = fetchImageOfNoImage();
   }
 
   String _getImageFromSupabase(String imageUrl) {
