@@ -14,6 +14,7 @@ class AddSongScreen extends StatefulWidget {
 }
 
 class _AddSongScreenState extends State<AddSongScreen> {
+  final _formKey = GlobalKey<FormState>();
   var _isSending = false;
 
   @override

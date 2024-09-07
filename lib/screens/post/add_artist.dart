@@ -6,9 +6,11 @@ import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
+import 'package:kimikoe_app/utils/validator/validator.dart';
 import 'package:kimikoe_app/widgets/buttons/image_input_button.dart';
 import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
 import 'package:kimikoe_app/widgets/forms/expanded_text_form.dart';
+import 'package:kimikoe_app/widgets/forms/text_input_form.dart';
 
 class AddArtistScreen extends StatefulWidget {
   const AddArtistScreen({super.key});
@@ -60,6 +62,10 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
     context.pushReplacement('/group_list');
   }
 
+  String? _nameValidator(String? value) {
+    return textInputValidator(value, 'アーティスト名');
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -83,28 +89,10 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
                     '*必須項目',
                     style: TextStyle(color: textGray),
                   ),
-                  Container(
-                    color: backgroundLightBlue,
-                    child: TextFormField(
-                      maxLength: 50,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        label: Text('*アーティスト名'),
-                        hintStyle: TextStyle(color: textGray),
-                        contentPadding: EdgeInsets.only(left: spaceWidthS),
-                      ),
-                      validator: (value) {
-                        if (value == null ||
-                            value.isEmpty ||
-                            value.length > 50) {
-                          return 'アーティスト名は50文字以下にしてください。';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _enteredName = value!;
-                      },
-                    ),
+                  InputForm(
+                    label: '*アーティスト名',
+                    validator: _nameValidator,
+                    onSaved: (value) => _enteredName = value!,
                   ),
                   Gap(spaceWidthS),
                   ImageInput(
