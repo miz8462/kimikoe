@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
+import 'package:kimikoe_app/provider/current_user.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
 
-class BottomBar extends StatefulWidget {
+class BottomBar extends ConsumerStatefulWidget {
   const BottomBar({
     super.key,
     required this.navigationShell,
@@ -13,16 +15,14 @@ class BottomBar extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
 
   @override
-  State<BottomBar> createState() => _BottomBarState();
+  ConsumerState<BottomBar> createState() => _BottomBarState();
 }
 
-class _BottomBarState extends State<BottomBar> {
+class _BottomBarState extends ConsumerState<BottomBar> {
   int homeIndex = 0;
   int addIndex = 1;
   int userIndex = 2;
   int logoutIndex = 3;
-
-  var _isSending = false;
 
   void _openAddOverlay(BuildContext context) {
     setState(() {
@@ -46,9 +46,6 @@ class _BottomBarState extends State<BottomBar> {
                     Navigator.of(context).pop();
                     context.push(RoutingPath.addSong);
                   },
-                  isSending: _isSending,
-
-                  // child: Text('Add Song'),
                 ),
                 StyledButton(
                   'Add Group',
@@ -56,7 +53,6 @@ class _BottomBarState extends State<BottomBar> {
                     Navigator.of(context).pop();
                     context.push(RoutingPath.addGroup);
                   },
-                  isSending: _isSending,
                 ),
                 StyledButton(
                   'Add Idol',
@@ -64,7 +60,6 @@ class _BottomBarState extends State<BottomBar> {
                     Navigator.of(context).pop();
                     context.push(RoutingPath.addMember);
                   },
-                  isSending: _isSending,
                 ),
                 StyledButton(
                   'Add Artist',
@@ -72,7 +67,6 @@ class _BottomBarState extends State<BottomBar> {
                     Navigator.of(context).pop();
                     context.push(RoutingPath.addArtist);
                   },
-                  isSending: _isSending,
                 ),
               ],
             ),
@@ -88,57 +82,66 @@ class _BottomBarState extends State<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
     int currentIndex = widget.navigationShell.currentIndex;
+
+    final userData = ref.watch(userDataProvider);
+    final imageUrl =
+        userData.value?.map((data) => data).toList()[0]['image_url'];
+    // if (imageUrl == null) {
+    //   return CircularProgressIndicator();
+    // }
 
     return Scaffold(
       body: widget.navigationShell,
-      bottomNavigationBar: NavigationBar(
-        backgroundColor: mainBlue,
-        selectedIndex: currentIndex,
-        onDestinationSelected: (index) {
-          if (index == addIndex) {
-            _openAddOverlay(context);
-          } else if (index == logoutIndex) {
-            _signOut();
-            context.go('/');
-          } else {
-            widget.navigationShell.goBranch(
-              index,
-              initialLocation: index == widget.navigationShell.currentIndex,
-            );
-          }
-        },
-        destinations: [
-          NavigationDestination(
-            icon: Icon(
-              Icons.home_outlined,
-              color: currentIndex == homeIndex ? textDark : textWhite,
+      bottomNavigationBar: imageUrl == null
+          ? SizedBox()
+          : NavigationBar(
+              backgroundColor: mainBlue,
+              selectedIndex: currentIndex,
+              onDestinationSelected: (index) {
+                if (index == addIndex) {
+                  _openAddOverlay(context);
+                } else if (index == logoutIndex) {
+                  _signOut();
+                  context.go('/');
+                } else {
+                  widget.navigationShell.goBranch(
+                    index,
+                    initialLocation:
+                        index == widget.navigationShell.currentIndex,
+                  );
+                }
+              },
+              destinations: [
+                NavigationDestination(
+                  icon: Icon(
+                    Icons.home_outlined,
+                    color: currentIndex == homeIndex ? textDark : textWhite,
+                  ),
+                  label: 'Home',
+                ),
+                NavigationDestination(
+                  icon: Icon(
+                    Icons.add_box_outlined,
+                    color: currentIndex == addIndex ? textDark : textWhite,
+                  ),
+                  label: 'Add',
+                ),
+                NavigationDestination(
+                  icon: CircleAvatar(
+                    // backgroundImage: ,
+                    backgroundImage: NetworkImage(imageUrl!),
+                    radius: avaterSizeS,
+                  ),
+                  label: 'User',
+                ),
+                // todo: 開発用ログアウトボタン
+                NavigationDestination(
+                  icon: Icon(Icons.logout),
+                  label: 'SignOut',
+                ),
+              ],
             ),
-            label: 'Home',
-          ),
-          NavigationDestination(
-            icon: Icon(
-              Icons.add_box_outlined,
-              color: currentIndex == addIndex ? textDark : textWhite,
-            ),
-            label: 'Add',
-          ),
-          NavigationDestination(
-            icon: CircleAvatar(
-              backgroundImage: AssetImage('assets/images/opanchu_ashiyu.jpg'),
-              radius: avaterSizeS,
-            ),
-            label: 'User',
-          ),
-          // todo: 開発用ログアウトボタン
-          NavigationDestination(
-            icon: Icon(Icons.logout),
-            label: 'SignOut',
-          ),
-        ],
-      ),
     );
   }
 }

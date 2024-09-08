@@ -17,15 +17,12 @@ class UserScreen extends StatefulWidget {
 }
 
 class _UserScreenState extends State<UserScreen> {
-  late Future _fetchedUserInfo;
-  late String _noImagePath;
-  var _isSending = false;
+  late Future _currentUserInfo;
 
   @override
   void initState() {
     super.initState();
-    _fetchedUserInfo = fetchCurrentUserInfo();
-    _noImagePath = fetchImageOfNoImage();
+    _currentUserInfo = fetchCurrentUserInfo();
   }
 
   String _getImageFromSupabase(String imageUrl) {
@@ -42,7 +39,7 @@ class _UserScreenState extends State<UserScreen> {
         title: 'ユーザー情報',
       ),
       body: FutureBuilder(
-        future: _fetchedUserInfo,
+        future: _currentUserInfo,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator();
@@ -86,7 +83,6 @@ class _UserScreenState extends State<UserScreen> {
                             '${RoutingPath.userDetails}/${RoutingPath.editUser}',
                             extra: user);
                       },
-                      isSending: _isSending,
                       textColor: textGray,
                       backgroundColor: backgroundWhite,
                       buttonSize: buttonM,

@@ -36,6 +36,5 @@ class _PickerFormState extends State<PickerForm> {
         onSaved: widget.onSaved,
       ),
     );
-    ;
   }
 }
