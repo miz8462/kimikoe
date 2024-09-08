@@ -87,9 +87,6 @@ class _BottomBarState extends ConsumerState<BottomBar> {
     final userData = ref.watch(userDataProvider);
     final imageUrl =
         userData.value?.map((data) => data).toList()[0]['image_url'];
-    // if (imageUrl == null) {
-    //   return CircularProgressIndicator();
-    // }
 
     return Scaffold(
       body: widget.navigationShell,
@@ -129,7 +126,6 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                 ),
                 NavigationDestination(
                   icon: CircleAvatar(
-                    // backgroundImage: ,
                     backgroundImage: NetworkImage(imageUrl!),
                     radius: avaterSizeS,
                   ),
