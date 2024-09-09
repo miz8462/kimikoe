@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
+import 'package:kimikoe_app/models/enums/tables.dart';
 import 'package:kimikoe_app/models/user.dart';
 import 'package:kimikoe_app/provider/current_user.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
@@ -28,7 +29,7 @@ class _UserScreenState extends ConsumerState<UserScreen> {
   }
 
   String _getImageFromSupabase(String imageUrl) {
-    return supabase.storage.from('images').getPublicUrl(imageUrl);
+    return supabase.storage.from(TableName.images.name).getPublicUrl(imageUrl);
   }
 
   @override
@@ -38,10 +39,10 @@ class _UserScreenState extends ConsumerState<UserScreen> {
     final currentUserInfo =
         _currentUserInfo.value?.map((data) => data).toList()[0];
     final user = UserProfile(
-      name: currentUserInfo?['username'] ?? 'タイトル未定',
-      email: currentUserInfo?['email'],
-      imageUrl: currentUserInfo?['image_url'],
-      comment: currentUserInfo?['comment'] ?? '',
+      name: currentUserInfo?[ColumnName.name.colname] ?? 'タイトル未定',
+      email: currentUserInfo?[ColumnName.email.colname],
+      imageUrl: currentUserInfo?[ColumnName.imageUrl.colname],
+      comment: currentUserInfo?[ColumnName.comment.colname] ?? '',
     );
 
     var userImageUrl = user.imageUrl;
@@ -67,9 +68,8 @@ class _UserScreenState extends ConsumerState<UserScreen> {
               children: [
                 CircleAvatar(
                   backgroundImage: userImage,
-                  radius: 30,
+                  radius: avaterSizeL,
                 ),
-                // 編集
                 // todo: 他のページに遷移したら編集を終了する
                 StyledButton(
                   editButtonText,
