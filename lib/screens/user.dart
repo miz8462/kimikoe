@@ -9,7 +9,7 @@ import 'package:kimikoe_app/models/user.dart';
 import 'package:kimikoe_app/provider/current_user.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
+import 'package:kimikoe_app/screens/widgets/buttons/styled_button.dart';
 
 class UserScreen extends ConsumerStatefulWidget {
   const UserScreen({super.key});

@@ -10,10 +10,10 @@ import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/utils/create_image_name_with_jpg.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
-import 'package:kimikoe_app/widgets/buttons/image_input_button.dart';
-import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
-import 'package:kimikoe_app/widgets/forms/expanded_text_form.dart';
-import 'package:kimikoe_app/widgets/forms/text_input_form.dart';
+import 'package:kimikoe_app/screens/widgets/buttons/image_input_button.dart';
+import 'package:kimikoe_app/screens/widgets/buttons/styled_button.dart';
+import 'package:kimikoe_app/screens/widgets/forms/expanded_text_form.dart';
+import 'package:kimikoe_app/screens/widgets/forms/text_input_form.dart';
 
 class EditUserScreen extends StatefulWidget {
   const EditUserScreen({

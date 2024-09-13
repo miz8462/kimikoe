@@ -15,11 +15,11 @@ import 'package:kimikoe_app/utils/dropdown_menu_group_list.dart';
 import 'package:kimikoe_app/utils/fetch_data.dart';
 import 'package:kimikoe_app/utils/formatter.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
-import 'package:kimikoe_app/widgets/buttons/image_input_button.dart';
-import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
-import 'package:kimikoe_app/widgets/forms/drum_roll_form.dart';
-import 'package:kimikoe_app/widgets/forms/expanded_text_form.dart';
-import 'package:kimikoe_app/widgets/forms/text_input_form.dart';
+import 'package:kimikoe_app/screens/widgets/buttons/image_input_button.dart';
+import 'package:kimikoe_app/screens/widgets/buttons/styled_button.dart';
+import 'package:kimikoe_app/screens/widgets/forms/drum_roll_form.dart';
+import 'package:kimikoe_app/screens/widgets/forms/expanded_text_form.dart';
+import 'package:kimikoe_app/screens/widgets/forms/text_input_form.dart';
 
 class AddSongScreen extends StatefulWidget {
   const AddSongScreen({super.key});

@@ -18,12 +18,12 @@ import 'package:kimikoe_app/utils/formatter.dart';
 import 'package:kimikoe_app/utils/pickers/int_picker.dart';
 import 'package:kimikoe_app/utils/pickers/year_picker.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
-import 'package:kimikoe_app/widgets/buttons/circular_button.dart';
-import 'package:kimikoe_app/widgets/buttons/image_input_button.dart';
-import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
-import 'package:kimikoe_app/widgets/forms/drum_roll_form.dart';
-import 'package:kimikoe_app/widgets/forms/expanded_text_form.dart';
-import 'package:kimikoe_app/widgets/forms/text_input_form.dart';
+import 'package:kimikoe_app/screens/widgets/buttons/circular_button.dart';
+import 'package:kimikoe_app/screens/widgets/buttons/image_input_button.dart';
+import 'package:kimikoe_app/screens/widgets/buttons/styled_button.dart';
+import 'package:kimikoe_app/screens/widgets/forms/drum_roll_form.dart';
+import 'package:kimikoe_app/screens/widgets/forms/expanded_text_form.dart';
+import 'package:kimikoe_app/screens/widgets/forms/text_input_form.dart';
 
 List<Color> colorsList = IdolColors.values.map((color) => color.rgb).toList();
 

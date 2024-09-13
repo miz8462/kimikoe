@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/widgets/group_info.dart';
-import 'package:kimikoe_app/widgets/song_card.dart';
+import 'package:kimikoe_app/screens/widgets/group_info.dart';
+import 'package:kimikoe_app/screens/widgets/song_card.dart';
 
 class IdolGroupScreen extends StatelessWidget {
   const IdolGroupScreen({super.key});

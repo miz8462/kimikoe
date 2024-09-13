@@ -5,7 +5,7 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/provider/current_user.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
-import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
+import 'package:kimikoe_app/screens/widgets/buttons/styled_button.dart';
 
 class BottomBar extends ConsumerStatefulWidget {
   const BottomBar({

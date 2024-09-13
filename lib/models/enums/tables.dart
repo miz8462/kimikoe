@@ -36,6 +36,5 @@ enum ColumnName {
   ;
 
   final String colname;
-
   const ColumnName(this.colname);
 }

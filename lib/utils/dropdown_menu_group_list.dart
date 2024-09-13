@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/models/enums/tables.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 
 class DropdownMenuGroupList extends StatefulWidget {
@@ -17,22 +19,37 @@ class DropdownMenuGroupList extends StatefulWidget {
 class _DropdownMenuGroupListState extends State<DropdownMenuGroupList> {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return FutureBuilder(
       future: widget.groupList,
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.hasError) {
+          return Text('エラーが発生しました: ${snapshot.error}');
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Text('データがありません');
+        } else {
           return DropdownMenu<IdolGroup>(
-            enableFilter: true,
+            // todo: 自作のFilterCallbackが必要か？
+            // enableFilter: true,
             enableSearch: true,
             requestFocusOnTap: true,
-            label: Text('所属グループ'),
+            label: Text('グループ'),
+            width: screenWidth * 2 / 3,
+            inputDecorationTheme: InputDecorationTheme(
+              border: InputBorder.none,
+              fillColor: backgroundLightBlue,
+              filled: true,
+            ),
             dropdownMenuEntries: snapshot.data!.map((group) {
               return DropdownMenuEntry<IdolGroup>(
-                value: IdolGroup(
-                  id: group['id'],
-                  name: group['name'],
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.all(backgroundLightBlue),
                 ),
-                label: group['name'].toString(),
+                value: IdolGroup(
+                  id: group[ColumnName.id.colname],
+                  name: group[ColumnName.name.colname],
+                ),
+                label: group[ColumnName.name.colname].toString(),
               );
             }).toList(),
             onSelected: (data) {
@@ -40,7 +57,6 @@ class _DropdownMenuGroupListState extends State<DropdownMenuGroupList> {
             },
           );
         }
-        return Text('data');
       },
     );
   }
