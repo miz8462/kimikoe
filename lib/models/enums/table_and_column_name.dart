@@ -30,8 +30,8 @@ enum ColumnName {
   instagramUrl('instagram_url'),
   groupId('group_id'),
   lyrics('lyrics'),
-  lyricist('lyricist'),
-  composer('composer'),
+  lyricistId('lyricist_id'),
+  composerId('composer_id'),
   releaseDate('release_date'),
   ;
 

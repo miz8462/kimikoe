@@ -8,22 +8,23 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
+import 'package:kimikoe_app/models/dropdown_id_and_name.dart';
 import 'package:kimikoe_app/models/enums/idol_colors.dart';
-import 'package:kimikoe_app/models/idol_group.dart';
+import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
+import 'package:kimikoe_app/screens/widgets/buttons/circular_button.dart';
+import 'package:kimikoe_app/screens/widgets/buttons/image_input_button.dart';
+import 'package:kimikoe_app/screens/widgets/buttons/styled_button.dart';
+import 'package:kimikoe_app/screens/widgets/forms/dropdown_menu_group_list.dart';
+import 'package:kimikoe_app/screens/widgets/forms/drum_roll_form.dart';
+import 'package:kimikoe_app/screens/widgets/forms/expanded_text_form.dart';
+import 'package:kimikoe_app/screens/widgets/forms/text_input_form.dart';
 import 'package:kimikoe_app/utils/create_image_name_with_jpg.dart';
-import 'package:kimikoe_app/utils/dropdown_menu_group_list.dart';
 import 'package:kimikoe_app/utils/fetch_data.dart';
 import 'package:kimikoe_app/utils/formatter.dart';
 import 'package:kimikoe_app/utils/pickers/int_picker.dart';
 import 'package:kimikoe_app/utils/pickers/year_picker.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
-import 'package:kimikoe_app/screens/widgets/buttons/circular_button.dart';
-import 'package:kimikoe_app/screens/widgets/buttons/image_input_button.dart';
-import 'package:kimikoe_app/screens/widgets/buttons/styled_button.dart';
-import 'package:kimikoe_app/screens/widgets/forms/drum_roll_form.dart';
-import 'package:kimikoe_app/screens/widgets/forms/expanded_text_form.dart';
-import 'package:kimikoe_app/screens/widgets/forms/text_input_form.dart';
 
 List<Color> colorsList = IdolColors.values.map((color) => color.rgb).toList();
 
@@ -41,7 +42,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
   final _debutYearController = TextEditingController();
 
   var _enteredIdolName = '';
-  IdolGroup? _selectedGroup;
+  DropdownIdAndName? _selectedGroup;
   Color _selectedColor = Colors.lightBlue;
   File? _selectedImage;
   String? _selectedBirthday;
@@ -56,7 +57,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
   @override
   void initState() {
     super.initState();
-    _groupNameList = fetchGroupIdAndNameList();
+    _groupNameList = fetchIdAndNameList(TableName.idolGroups.name);
   }
 
   @override
@@ -98,23 +99,24 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
       _selectedDebutYear = null;
     }
 
-    await await supabase.from('idol').insert({
-      'name': _enteredIdolName,
-      'group_id': _selectedGroup?.id == null ? null : _selectedGroup!.id,
-      'color': _selectedColor.toString(),
-      'image_url': _selectedImage == null
+    await await supabase.from(TableName.idol.name).insert({
+      ColumnName.name.colname: _enteredIdolName,
+      ColumnName.groupId.colname:
+          _selectedGroup?.id == null ? null : _selectedGroup!.id,
+      ColumnName.color.colname: _selectedColor.toString(),
+      ColumnName.imageUrl.colname: _selectedImage == null
           ? defaultPathNoImage
           : imagePathWithCreatedAtJPG,
-      'birthday': _selectedBirthday,
-      'height': _selectedHeight,
-      'hometown': _enteredHometown,
-      'debut_year': _selectedDebutYear,
-      'comment': _enteredComment,
+      ColumnName.birthday.colname: _selectedBirthday,
+      ColumnName.height.colname: _selectedHeight,
+      ColumnName.hometown.colname: _enteredHometown,
+      ColumnName.debutYear.colname: _selectedDebutYear,
+      ColumnName.comment.colname: _enteredComment,
     });
 
     if (_selectedImage != null) {
       await supabase.storage
-          .from('images')
+          .from(TableName.images.name)
           .upload(imagePathWithCreatedAtJPG!, _selectedImage!);
     }
 
@@ -239,11 +241,12 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                   },
                 ),
                 const Gap(spaceWidthS),
-                DropdownMenuGroupList(
-                  onGroupSelected: (value) {
+                CustomDropdownMenu(
+                  label: 'グループ選択',
+                  onSelected: (value) {
                     _selectedGroup = value;
                   },
-                  groupList: _groupNameList,
+                  dataList: _groupNameList,
                 ),
                 const Gap(spaceWidthS),
                 // 歌詞で表示する個人カラー選択

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/main.dart';
-import 'package:kimikoe_app/models/enums/tables.dart';
+import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/screens/widgets/group_card.dart';
 

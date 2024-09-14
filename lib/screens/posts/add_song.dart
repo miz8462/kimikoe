@@ -4,22 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
     as picker;
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
-import 'package:kimikoe_app/models/idol_group.dart';
-import 'package:go_router/go_router.dart';
-
+import 'package:kimikoe_app/models/dropdown_id_and_name.dart';
+import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/utils/create_image_name_with_jpg.dart';
-import 'package:kimikoe_app/utils/dropdown_menu_group_list.dart';
-import 'package:kimikoe_app/utils/fetch_data.dart';
-import 'package:kimikoe_app/utils/formatter.dart';
-import 'package:kimikoe_app/utils/validator/validator.dart';
 import 'package:kimikoe_app/screens/widgets/buttons/image_input_button.dart';
 import 'package:kimikoe_app/screens/widgets/buttons/styled_button.dart';
+import 'package:kimikoe_app/screens/widgets/forms/dropdown_menu_group_list.dart';
 import 'package:kimikoe_app/screens/widgets/forms/drum_roll_form.dart';
 import 'package:kimikoe_app/screens/widgets/forms/expanded_text_form.dart';
 import 'package:kimikoe_app/screens/widgets/forms/text_input_form.dart';
+import 'package:kimikoe_app/utils/create_image_name_with_jpg.dart';
+import 'package:kimikoe_app/utils/fetch_data.dart';
+import 'package:kimikoe_app/utils/formatter.dart';
+import 'package:kimikoe_app/utils/validator/validator.dart';
 
 class AddSongScreen extends StatefulWidget {
   const AddSongScreen({super.key});
@@ -34,22 +34,24 @@ class _AddSongScreenState extends State<AddSongScreen> {
   final _releaseDateController = TextEditingController();
 
   var _enteredTitle = '';
-  IdolGroup? _selectedGroup;
+  DropdownIdAndName? _selectedGroup;
   File? _selectedImage;
-  var _enteredLyricist = '';
-  var _enteredComposer = '';
+  DropdownIdAndName? _selectedLyricist;
+  DropdownIdAndName? _selectedComposer;
   String? _selectedReleaseDate;
   var _enteredLyric = '';
   var _enteredComment = '';
 
   late Future<List<Map<String, dynamic>>> _groupNameList;
+  late Future<List<Map<String, dynamic>>> _artistNameList;
 
   var _isSending = false;
 
   @override
   void initState() {
     super.initState();
-    _groupNameList = fetchGroupIdAndNameList();
+    _groupNameList = fetchIdAndNameList(TableName.idolGroups.name);
+    _artistNameList = fetchIdAndNameList(TableName.artists.name);
   }
 
   Future<void> _saveSong() async {
@@ -72,17 +74,20 @@ class _AddSongScreenState extends State<AddSongScreen> {
       _selectedReleaseDate = null;
     }
 
-    await await supabase.from('songs').insert({
-      'title': _enteredTitle,
-      'lyrics': _enteredLyric,
-      'group_id': _selectedGroup?.id == null ? null : _selectedGroup!.id,
-      'image_url': _selectedImage == null
+    await await supabase.from(TableName.songs.name).insert({
+      ColumnName.title.colname: _enteredTitle,
+      ColumnName.lyrics.colname: _enteredLyric,
+      ColumnName.groupId.colname:
+          _selectedGroup?.id == null ? null : _selectedGroup!.id,
+      ColumnName.imageUrl.colname: _selectedImage == null
           ? defaultPathNoImage
           : imagePathWithCreatedAtJPG,
-      'release_date': _selectedReleaseDate,
-      'lyricist': _enteredLyricist,
-      'composer': _enteredComposer,
-      'comment': _enteredComment,
+      ColumnName.releaseDate.colname: _selectedReleaseDate,
+      ColumnName.lyricistId.colname:
+          _selectedLyricist?.id == null ? null : _selectedLyricist!.id,
+      ColumnName.composerId.colname:
+          _selectedComposer?.id == null ? null : _selectedComposer!.id,
+      ColumnName.comment.colname: _enteredComment,
     });
 
     if (_selectedImage != null) {
@@ -108,11 +113,11 @@ class _AddSongScreenState extends State<AddSongScreen> {
   }
 
   String? _lyricistValidator(String? value) {
-    return textInputValidator(value, '作詞家');
+    return nullableTextInputValidator(value, '作詞家');
   }
 
   String? _composerValidator(String? value) {
-    return textInputValidator(value, '作曲家');
+    return nullableTextInputValidator(value, '作曲家');
   }
 
   void _pickReleaseDate() async {
@@ -169,11 +174,12 @@ class _AddSongScreenState extends State<AddSongScreen> {
                   label: '歌詞',
                 ),
                 Gap(spaceWidthS),
-                DropdownMenuGroupList(
-                  onGroupSelected: (value) {
+                CustomDropdownMenu(
+                  label: 'グループ選択',
+                  onSelected: (value) {
                     _selectedGroup = value;
                   },
-                  groupList: _groupNameList,
+                  dataList: _groupNameList,
                 ),
                 Gap(spaceWidthS),
                 ImageInput(
@@ -183,20 +189,20 @@ class _AddSongScreenState extends State<AddSongScreen> {
                   label: 'イメージ画像',
                 ),
                 Gap(spaceWidthS),
-                InputForm(
+                CustomDropdownMenu(
                   label: '作詞家',
-                  validator: _lyricistValidator,
-                  onSaved: (value) {
-                    _enteredLyricist = value!;
+                  onSelected: (value) {
+                    _selectedLyricist = value;
                   },
+                  dataList: _artistNameList,
                 ),
                 Gap(spaceWidthS),
-                InputForm(
+                CustomDropdownMenu(
                   label: '作曲家',
-                  validator: _composerValidator,
-                  onSaved: (value) {
-                    _enteredComposer = value!;
+                  onSelected: (value) {
+                    _selectedComposer = value;
                   },
+                  dataList: _artistNameList,
                 ),
                 Gap(spaceWidthS),
                 PickerForm(
@@ -211,7 +217,6 @@ class _AddSongScreenState extends State<AddSongScreen> {
                     );
                   },
                 ),
-                Gap(spaceWidthS),
                 Gap(spaceWidthS),
                 ExpandedTextForm(
                   onTextChanged: (value) {

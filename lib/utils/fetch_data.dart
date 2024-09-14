@@ -12,6 +12,6 @@ String fetchImageOfNoImage() {
   return noImagePath;
 }
 
-Future<List<Map<String, dynamic>>> fetchGroupIdAndNameList() async {
-  return await supabase.from('idol-groups').select('id, name');
+Future<List<Map<String, dynamic>>> fetchIdAndNameList(String tableName) async {
+  return await supabase.from(tableName).select('id, name');
 }
