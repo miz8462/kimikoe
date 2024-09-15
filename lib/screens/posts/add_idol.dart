@@ -51,13 +51,22 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
   String? _selectedDebutYear;
   String? _enteredComment;
 
-  late Future<List<Map<String, dynamic>>> _groupNameList;
+  late List<Map<String, dynamic>> _groupNameList;
   var _isSending = false;
+  var _isFetching = true;
 
   @override
   void initState() {
     super.initState();
-    _groupNameList = fetchIdAndNameList(TableName.idolGroups.name);
+    _fetchIdAndNameGroupList();
+  }
+
+  void _fetchIdAndNameGroupList() async {
+    final groupNameList = await fetchIdAndNameList(TableName.idolGroups.name);
+    setState(() {
+      _groupNameList = groupNameList;
+      _isFetching = false;
+    });
   }
 
   @override
@@ -216,130 +225,132 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: TopBar(
-        title: 'アイドル登録',
-        showLeading: false,
-      ),
-      body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Padding(
-            padding: screenPadding,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  '*必須項目',
-                  style: TextStyle(color: textGray, fontSize: fontSS),
-                ),
-                InputForm(
-                  label: '*名前',
-                  validator: _nameValidator,
-                  onSaved: (value) {
-                    _enteredIdolName = value!;
-                  },
-                ),
-                const Gap(spaceWidthS),
-                CustomDropdownMenu(
-                  label: 'グループ選択',
-                  onSelected: (value) {
-                    _selectedGroup = value;
-                  },
-                  dataList: _groupNameList,
-                ),
-                const Gap(spaceWidthS),
-                // 歌詞で表示する個人カラー選択
-                Row(
-                  children: [
-                    CircularButton(
-                      color: _selectedColor,
-                      onPressed: _pickColor,
-                    ),
-                    const Text(
-                      '*カラー選択',
-                      style: TextStyle(
-                        color: textGray,
-                        fontSize: fontM,
-                      ),
-                    ),
-                  ],
-                ),
-                const Gap(spaceWidthS),
-                ImageInput(
-                  onPickImage: (image) {
-                    _selectedImage = image;
-                  },
-                  label: 'グループ画像',
-                ),
-                const Gap(spaceWidthS),
-                PickerForm(
-                  label: '生年月日',
-                  controller: _birthdayController,
-                  picker: _pickBirthday,
-                  onSaved: (value) {
-                    setState(
-                      () {
-                        _selectedBirthday = value!;
-                      },
-                    );
-                  },
-                ),
-                const Gap(spaceWidthS),
-                PickerForm(
-                  label: '身長',
-                  controller: _heightController,
-                  picker: _pickHeight,
-                  onSaved: (value) {
-                    setState(
-                      () {
-                        _selectedHeight = value;
-                      },
-                    );
-                  },
-                ),
-                const Gap(spaceWidthS),
-                InputForm(
-                    label: '出身地',
-                    validator: _hometownValidator,
-                    onSaved: (value) {
-                      _enteredHometown = value!;
-                    }),
-                const Gap(spaceWidthS),
-                PickerForm(
-                  label: 'デビュー年',
-                  controller: _debutYearController,
-                  picker: _pickDebutYear,
-                  onSaved: (value) {
-                    setState(
-                      () {
-                        _selectedDebutYear = value!;
-                      },
-                    );
-                  },
-                ),
-                const Gap(spaceWidthS),
-                ExpandedTextForm(
-                  onTextChanged: (value) {
-                    setState(() {
-                      _enteredComment = value!;
-                    });
-                  },
-                  label: '備考',
-                ),
-                const Gap(spaceWidthS),
-                StyledButton(
-                  '登録',
-                  onPressed: _isSending ? null : _saveIdol,
-                  isSending: _isSending,
-                  buttonSize: buttonL,
-                ),
-                const Gap(spaceWidthS),
-              ],
+    return _isFetching
+        ? Center(child: CircularProgressIndicator())
+        : Scaffold(
+            appBar: TopBar(
+              title: 'アイドル登録',
+              showLeading: false,
             ),
-          ),
-        ),
-      ),
-    );
+            body: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Padding(
+                  padding: screenPadding,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        '*必須項目',
+                        style: TextStyle(color: textGray, fontSize: fontSS),
+                      ),
+                      InputForm(
+                        label: '*名前',
+                        validator: _nameValidator,
+                        onSaved: (value) {
+                          _enteredIdolName = value!;
+                        },
+                      ),
+                      const Gap(spaceWidthS),
+                      CustomDropdownMenu(
+                        label: 'グループ選択',
+                        onSelected: (value) {
+                          _selectedGroup = value;
+                        },
+                        dataList: _groupNameList,
+                      ),
+                      const Gap(spaceWidthS),
+                      // 歌詞で表示する個人カラー選択
+                      Row(
+                        children: [
+                          CircularButton(
+                            color: _selectedColor,
+                            onPressed: _pickColor,
+                          ),
+                          const Text(
+                            '*カラー選択',
+                            style: TextStyle(
+                              color: textGray,
+                              fontSize: fontM,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Gap(spaceWidthS),
+                      ImageInput(
+                        onPickImage: (image) {
+                          _selectedImage = image;
+                        },
+                        label: 'グループ画像',
+                      ),
+                      const Gap(spaceWidthS),
+                      PickerForm(
+                        label: '生年月日',
+                        controller: _birthdayController,
+                        picker: _pickBirthday,
+                        onSaved: (value) {
+                          setState(
+                            () {
+                              _selectedBirthday = value!;
+                            },
+                          );
+                        },
+                      ),
+                      const Gap(spaceWidthS),
+                      PickerForm(
+                        label: '身長',
+                        controller: _heightController,
+                        picker: _pickHeight,
+                        onSaved: (value) {
+                          setState(
+                            () {
+                              _selectedHeight = value;
+                            },
+                          );
+                        },
+                      ),
+                      const Gap(spaceWidthS),
+                      InputForm(
+                          label: '出身地',
+                          validator: _hometownValidator,
+                          onSaved: (value) {
+                            _enteredHometown = value!;
+                          }),
+                      const Gap(spaceWidthS),
+                      PickerForm(
+                        label: 'デビュー年',
+                        controller: _debutYearController,
+                        picker: _pickDebutYear,
+                        onSaved: (value) {
+                          setState(
+                            () {
+                              _selectedDebutYear = value!;
+                            },
+                          );
+                        },
+                      ),
+                      const Gap(spaceWidthS),
+                      ExpandedTextForm(
+                        onTextChanged: (value) {
+                          setState(() {
+                            _enteredComment = value!;
+                          });
+                        },
+                        label: '備考',
+                      ),
+                      const Gap(spaceWidthS),
+                      StyledButton(
+                        '登録',
+                        onPressed: _isSending ? null : _saveIdol,
+                        isSending: _isSending,
+                        buttonSize: buttonL,
+                      ),
+                      const Gap(spaceWidthS),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
   }
 }

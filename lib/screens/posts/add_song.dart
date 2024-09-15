@@ -42,16 +42,26 @@ class _AddSongScreenState extends State<AddSongScreen> {
   var _enteredLyric = '';
   var _enteredComment = '';
 
-  late Future<List<Map<String, dynamic>>> _groupNameList;
-  late Future<List<Map<String, dynamic>>> _artistNameList;
+  late List<Map<String, dynamic>> _groupNameList;
+  late List<Map<String, dynamic>> _artistNameList;
 
   var _isSending = false;
+  var _isFetching = true;
 
   @override
   void initState() {
     super.initState();
-    _groupNameList = fetchIdAndNameList(TableName.idolGroups.name);
-    _artistNameList = fetchIdAndNameList(TableName.artists.name);
+    fetchIdAndNameLists();
+  }
+
+  void fetchIdAndNameLists() async {
+    final groupNameList = await fetchIdAndNameList(TableName.idolGroups.name);
+    final artistNameList = await fetchIdAndNameList(TableName.artists.name);
+    setState(() {
+      _groupNameList = groupNameList;
+      _artistNameList = artistNameList;
+      _isFetching = false;
+    });
   }
 
   Future<void> _saveSong() async {
@@ -74,7 +84,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
       _selectedReleaseDate = null;
     }
 
-    await await supabase.from(TableName.songs.name).insert({
+    await supabase.from(TableName.songs.name).insert({
       ColumnName.title.colname: _enteredTitle,
       ColumnName.lyrics.colname: _enteredLyric,
       ColumnName.groupId.colname:
@@ -112,14 +122,6 @@ class _AddSongScreenState extends State<AddSongScreen> {
     return textInputValidator(value, 'タイトル');
   }
 
-  String? _lyricistValidator(String? value) {
-    return nullableTextInputValidator(value, '作詞家');
-  }
-
-  String? _composerValidator(String? value) {
-    return nullableTextInputValidator(value, '作曲家');
-  }
-
   void _pickReleaseDate() async {
     await picker.DatePicker.showDatePicker(
       context,
@@ -140,105 +142,107 @@ class _AddSongScreenState extends State<AddSongScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: TopBar(
-        title: '歌詞登録',
-        showLeading: false,
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: screenPadding,
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '*必須項目',
-                  style: TextStyle(color: textGray, fontSize: fontSS),
-                ),
-                InputForm(
-                  label: '*タイトル',
-                  validator: _titleValidator,
-                  onSaved: (value) {
-                    _enteredTitle = value!;
-                  },
-                ),
-                Gap(spaceWidthS),
-                ExpandedTextForm(
-                  onTextChanged: (value) {
-                    setState(() {
-                      _enteredLyric = value!;
-                    });
-                  },
-                  label: '歌詞',
-                ),
-                Gap(spaceWidthS),
-                CustomDropdownMenu(
-                  label: 'グループ選択',
-                  onSelected: (value) {
-                    _selectedGroup = value;
-                  },
-                  dataList: _groupNameList,
-                ),
-                Gap(spaceWidthS),
-                ImageInput(
-                  onPickImage: (image) {
-                    _selectedImage = image;
-                  },
-                  label: 'イメージ画像',
-                ),
-                Gap(spaceWidthS),
-                CustomDropdownMenu(
-                  label: '作詞家',
-                  onSelected: (value) {
-                    _selectedLyricist = value;
-                  },
-                  dataList: _artistNameList,
-                ),
-                Gap(spaceWidthS),
-                CustomDropdownMenu(
-                  label: '作曲家',
-                  onSelected: (value) {
-                    _selectedComposer = value;
-                  },
-                  dataList: _artistNameList,
-                ),
-                Gap(spaceWidthS),
-                PickerForm(
-                  label: '発売日',
-                  controller: _releaseDateController,
-                  picker: _pickReleaseDate,
-                  onSaved: (value) {
-                    setState(
-                      () {
-                        _selectedReleaseDate = value!;
-                      },
-                    );
-                  },
-                ),
-                Gap(spaceWidthS),
-                ExpandedTextForm(
-                  onTextChanged: (value) {
-                    setState(() {
-                      _enteredComment = value!;
-                    });
-                  },
-                  label: '備考',
-                ),
-                Gap(spaceWidthS),
-                StyledButton(
-                  '登録',
-                  onPressed: _isSending ? null : _saveSong,
-                  isSending: _isSending,
-                  buttonSize: buttonL,
-                ),
-                Gap(spaceWidthS),
-              ],
+    return _isFetching
+        ? Center(child: CircularProgressIndicator())
+        : Scaffold(
+            appBar: TopBar(
+              title: '歌詞登録',
+              showLeading: false,
             ),
-          ),
-        ),
-      ),
-    );
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: screenPadding,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '*必須項目',
+                        style: TextStyle(color: textGray, fontSize: fontSS),
+                      ),
+                      InputForm(
+                        label: '*タイトル',
+                        validator: _titleValidator,
+                        onSaved: (value) {
+                          _enteredTitle = value!;
+                        },
+                      ),
+                      Gap(spaceWidthS),
+                      ExpandedTextForm(
+                        onTextChanged: (value) {
+                          setState(() {
+                            _enteredLyric = value!;
+                          });
+                        },
+                        label: '歌詞',
+                      ),
+                      Gap(spaceWidthS),
+                      CustomDropdownMenu(
+                        label: 'グループ選択',
+                        onSelected: (value) {
+                          _selectedGroup = value;
+                        },
+                        dataList: _groupNameList,
+                      ),
+                      Gap(spaceWidthS),
+                      ImageInput(
+                        onPickImage: (image) {
+                          _selectedImage = image;
+                        },
+                        label: 'イメージ画像',
+                      ),
+                      Gap(spaceWidthS),
+                      CustomDropdownMenu(
+                        label: '作詞家',
+                        onSelected: (value) {
+                          _selectedLyricist = value;
+                        },
+                        dataList: _artistNameList,
+                      ),
+                      Gap(spaceWidthS),
+                      CustomDropdownMenu(
+                        label: '作曲家',
+                        onSelected: (value) {
+                          _selectedComposer = value;
+                        },
+                        dataList: _artistNameList,
+                      ),
+                      Gap(spaceWidthS),
+                      PickerForm(
+                        label: '発売日',
+                        controller: _releaseDateController,
+                        picker: _pickReleaseDate,
+                        onSaved: (value) {
+                          setState(
+                            () {
+                              _selectedReleaseDate = value!;
+                            },
+                          );
+                        },
+                      ),
+                      Gap(spaceWidthS),
+                      ExpandedTextForm(
+                        onTextChanged: (value) {
+                          setState(() {
+                            _enteredComment = value!;
+                          });
+                        },
+                        label: '備考',
+                      ),
+                      Gap(spaceWidthS),
+                      StyledButton(
+                        '登録',
+                        onPressed: _isSending ? null : _saveSong,
+                        isSending: _isSending,
+                        buttonSize: buttonL,
+                      ),
+                      Gap(spaceWidthS),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
   }
 }
