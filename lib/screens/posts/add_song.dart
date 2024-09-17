@@ -7,7 +7,6 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
-import 'package:kimikoe_app/models/dropdown_id_and_name.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/screens/widgets/buttons/image_input_button.dart';
@@ -30,20 +29,19 @@ class AddSongScreen extends StatefulWidget {
 
 class _AddSongScreenState extends State<AddSongScreen> {
   final _formKey = GlobalKey<FormState>();
-
+  final _groupNameController = TextEditingController();
+  final _lyricistNameController = TextEditingController();
+  final _composerNameController = TextEditingController();
   final _releaseDateController = TextEditingController();
 
   var _enteredTitle = '';
-  DropdownIdAndName? _selectedGroup;
   File? _selectedImage;
-  DropdownIdAndName? _selectedLyricist;
-  DropdownIdAndName? _selectedComposer;
   String? _selectedReleaseDate;
   var _enteredLyric = '';
   var _enteredComment = '';
 
-  late List<Map<String, dynamic>> _groupNameList;
-  late List<Map<String, dynamic>> _artistNameList;
+  late List<Map<String, dynamic>> _groupIdAndNameList;
+  late List<Map<String, dynamic>> _artistIdAndNameList;
 
   var _isSending = false;
   var _isFetching = true;
@@ -51,17 +49,35 @@ class _AddSongScreenState extends State<AddSongScreen> {
   @override
   void initState() {
     super.initState();
-    fetchIdAndNameLists();
+    _fetchIdAndNameLists();
   }
 
-  void fetchIdAndNameLists() async {
-    final groupNameList = await fetchIdAndNameList(TableName.idolGroups.name);
-    final artistNameList = await fetchIdAndNameList(TableName.artists.name);
+  Future<void> _fetchIdAndNameLists() async {
+    final groupIdAndNameList =
+        await fetchIdAndNameList(TableName.idolGroups.name);
+    final artistIdAndNameList =
+        await fetchIdAndNameList(TableName.artists.name);
     setState(() {
-      _groupNameList = groupNameList;
-      _artistNameList = artistNameList;
+      _groupIdAndNameList = groupIdAndNameList;
+      _artistIdAndNameList = artistIdAndNameList;
       _isFetching = false;
     });
+  }
+
+  bool isInList(List<Map<String, dynamic>> list, String? name) {
+    for (final item in list) {
+      if (item[ColumnName.name.colname] == name) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  int _getSelectedDataIdFromName(List<Map<String, dynamic>> list, String name) {
+    final selectedData =
+        list.where((item) => item[ColumnName.name.colname] == name).single;
+    final selectedDataId = selectedData[ColumnName.id.colname];
+    return selectedDataId;
   }
 
   Future<void> _saveSong() async {
@@ -77,6 +93,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
       });
       return;
     }
+
     // e.g. /aaa/bbb/ccc/image.png
     final imagePathWithCreatedAtJPG = createImageNameWithJPG(_selectedImage);
 
@@ -84,19 +101,57 @@ class _AddSongScreenState extends State<AddSongScreen> {
       _selectedReleaseDate = null;
     }
 
+    // 入力グループ名がDBにない場合、グループ名と画像なしを登録する
+    int? selectedGroupId;
+    int? selectedLyricistId;
+    int? selectedComposerId;
+    final isSelectedGroupInList =
+        isInList(_groupIdAndNameList, _groupNameController.text);
+    if (!isSelectedGroupInList && _groupNameController.text.isNotEmpty) {
+      await supabase.from(TableName.idolGroups.name).insert({
+        ColumnName.name.colname: _groupNameController.text,
+        ColumnName.imageUrl.colname: defaultPathNoImage
+      });
+      await _fetchIdAndNameLists();
+      selectedGroupId = _getSelectedDataIdFromName(
+          _groupIdAndNameList, _groupNameController.text);
+    }
+
+    final isSelectedLyricistInList =
+        isInList(_artistIdAndNameList, _lyricistNameController.text);
+    if (!isSelectedLyricistInList && _lyricistNameController.text.isNotEmpty) {
+      await supabase.from(TableName.artists.name).insert({
+        ColumnName.name.colname: _lyricistNameController.text,
+        ColumnName.imageUrl.colname: defaultPathNoImage
+      });
+      await _fetchIdAndNameLists();
+      selectedLyricistId = _getSelectedDataIdFromName(
+          _artistIdAndNameList, _lyricistNameController.text);
+    }
+
+    final isSelectedComposerInList =
+        isInList(_artistIdAndNameList, _composerNameController.text);
+    if (!isSelectedComposerInList && _composerNameController.text.isNotEmpty) {
+      await supabase.from(TableName.artists.name).insert({
+        ColumnName.name.colname: _composerNameController.text,
+        ColumnName.imageUrl.colname: defaultPathNoImage
+      });
+      await _fetchIdAndNameLists();
+      selectedComposerId = _getSelectedDataIdFromName(
+          _artistIdAndNameList, _composerNameController.text);
+    }
+
+    // 歌詞登録
     await supabase.from(TableName.songs.name).insert({
       ColumnName.title.colname: _enteredTitle,
       ColumnName.lyrics.colname: _enteredLyric,
-      ColumnName.groupId.colname:
-          _selectedGroup?.id == null ? null : _selectedGroup!.id,
+      ColumnName.groupId.colname: selectedGroupId,
       ColumnName.imageUrl.colname: _selectedImage == null
           ? defaultPathNoImage
           : imagePathWithCreatedAtJPG,
       ColumnName.releaseDate.colname: _selectedReleaseDate,
-      ColumnName.lyricistId.colname:
-          _selectedLyricist?.id == null ? null : _selectedLyricist!.id,
-      ColumnName.composerId.colname:
-          _selectedComposer?.id == null ? null : _selectedComposer!.id,
+      ColumnName.lyricistId.colname: selectedLyricistId,
+      ColumnName.composerId.colname: selectedComposerId,
       ColumnName.comment.colname: _enteredComment,
     });
 
@@ -180,10 +235,8 @@ class _AddSongScreenState extends State<AddSongScreen> {
                       Gap(spaceWidthS),
                       CustomDropdownMenu(
                         label: 'グループ選択',
-                        onSelected: (value) {
-                          _selectedGroup = value;
-                        },
-                        dataList: _groupNameList,
+                        dataList: _groupIdAndNameList,
+                        controller: _groupNameController,
                       ),
                       Gap(spaceWidthS),
                       ImageInput(
@@ -195,18 +248,14 @@ class _AddSongScreenState extends State<AddSongScreen> {
                       Gap(spaceWidthS),
                       CustomDropdownMenu(
                         label: '作詞家',
-                        onSelected: (value) {
-                          _selectedLyricist = value;
-                        },
-                        dataList: _artistNameList,
+                        dataList: _artistIdAndNameList,
+                        controller: _lyricistNameController,
                       ),
                       Gap(spaceWidthS),
                       CustomDropdownMenu(
                         label: '作曲家',
-                        onSelected: (value) {
-                          _selectedComposer = value;
-                        },
-                        dataList: _artistNameList,
+                        dataList: _artistIdAndNameList,
+                        controller: _composerNameController,
                       ),
                       Gap(spaceWidthS),
                       PickerForm(

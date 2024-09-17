@@ -7,13 +7,13 @@ class CustomDropdownMenu extends StatefulWidget {
   const CustomDropdownMenu({
     super.key,
     required this.label,
-    required this.onSelected,
     required this.dataList,
+    required this.controller,
   });
 
   final String label;
-  final void Function(DropdownIdAndName?) onSelected;
   final List<Map<String, dynamic>> dataList;
+  final TextEditingController controller;
 
   @override
   State<CustomDropdownMenu> createState() => _CustomDropdownMenuState();
@@ -29,6 +29,7 @@ class _CustomDropdownMenuState extends State<CustomDropdownMenu> {
       // todo: 自作のFilterCallbackが必要か？
       // enableFilter: true,
       enableSearch: true,
+      controller: widget.controller,
       requestFocusOnTap: true,
       label: Text(widget.label),
       width: screenWidth,
@@ -38,9 +39,6 @@ class _CustomDropdownMenuState extends State<CustomDropdownMenu> {
         fillColor: backgroundLightBlue,
         filled: true,
       ),
-      onSelected: (data) {
-        widget.onSelected(data);
-      },
       dropdownMenuEntries: widget.dataList.map((value) {
         return DropdownMenuEntry<DropdownIdAndName>(
           value: DropdownIdAndName(

@@ -252,13 +252,13 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                         },
                       ),
                       const Gap(spaceWidthS),
-                      CustomDropdownMenu(
-                        label: 'グループ選択',
-                        onSelected: (value) {
-                          _selectedGroup = value;
-                        },
-                        dataList: _groupNameList,
-                      ),
+                      // CustomDropdownMenu(
+                      //   label: 'グループ選択',
+                      //   onSelected: (value) {
+                      //     _selectedGroup = value;
+                      //   },
+                      //   dataList: _groupNameList,
+                      // ),
                       const Gap(spaceWidthS),
                       // 歌詞で表示する個人カラー選択
                       Row(
