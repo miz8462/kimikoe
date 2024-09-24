@@ -42,6 +42,8 @@ class GroupInfo extends StatelessWidget {
                 ),
                 Text(
                   groupInfo ?? '',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: fontSS,
                     color: textDark,
