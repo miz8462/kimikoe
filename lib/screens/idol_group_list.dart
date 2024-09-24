@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
+import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/screens/widgets/group_card.dart';
 
@@ -21,9 +22,7 @@ class _IdolGroupListScreenState extends State<IdolGroupListScreen> {
   }
 
   void _loadGroups() {
-    _groupFuture = supabase
-        .from(TableName.idolGroups.name)
-        .select('${ColumnName.name.colname}, ${ColumnName.imageUrl.colname}');
+    _groupFuture = supabase.from(TableName.idolGroups.name).select();
   }
 
   @override
@@ -56,14 +55,24 @@ class _IdolGroupListScreenState extends State<IdolGroupListScreen> {
               ),
               itemCount: groups.length,
               itemBuilder: (BuildContext context, int index) {
-                final group = groups[index];
                 // todo: バケットはパブリックでいいの？
-                var imageUrl = supabase.storage
+                // IdolGroupクラスを初期化
+                final group = groups[index];
+                final id = group[ColumnName.id.colname];
+                final name = group[ColumnName.name.colname];
+                final imageUrl = supabase.storage
                     .from(TableName.images.name)
                     .getPublicUrl(group[ColumnName.imageUrl.colname]);
-                return GroupCard(
-                  name: group[ColumnName.name.colname],
+                final comment = group[ColumnName.comment.colname];
+                final groupInfo = IdolGroup(
+                  id: id,
+                  name: name,
                   imageUrl: imageUrl,
+                  comment: comment,
+                );
+
+                return GroupCard(
+                  group: groupInfo,
                 );
               },
             );

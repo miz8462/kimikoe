@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 
 class GroupCard extends StatelessWidget {
   const GroupCard({
     super.key,
-    required this.name,
-    required this.imageUrl,
+    required this.group,
   });
-  final String name;
-  final String imageUrl;
+  final IdolGroup group;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () =>
-          context.push('${RoutingPath.groupList}/${RoutingPath.groupDetails}'),
+      onTap: () => context.push(
+        '${RoutingPath.groupList}/${RoutingPath.groupDetails}',
+        extra: group,
+      ),
       child: Container(
         decoration: BoxDecoration(
           color: backgroundWhite,
@@ -37,13 +38,13 @@ class GroupCard extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Image.network(
-                imageUrl,
+                group.imageUrl!,
                 height: 130,
                 width: 130,
               ),
             ),
             Text(
-              name,
+              group.name,
               textAlign: TextAlign.start,
               style: TextStyle(
                 color: textDark,

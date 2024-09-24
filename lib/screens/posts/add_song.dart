@@ -73,7 +73,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
     return false;
   }
 
-  int _getSelectedDataIdFromName(List<Map<String, dynamic>> list, String name) {
+  int _fetchSelectedDataIdFromName(List<Map<String, dynamic>> list, String name) {
     final selectedData =
         list.where((item) => item[ColumnName.name.colname] == name).single;
     final selectedDataId = selectedData[ColumnName.id.colname];
@@ -113,7 +113,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
         ColumnName.imageUrl.colname: defaultPathNoImage
       });
       await _fetchIdAndNameLists();
-      selectedGroupId = _getSelectedDataIdFromName(
+      selectedGroupId = _fetchSelectedDataIdFromName(
           _groupIdAndNameList, _groupNameController.text);
     }
 
@@ -125,7 +125,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
         ColumnName.imageUrl.colname: defaultPathNoImage
       });
       await _fetchIdAndNameLists();
-      selectedLyricistId = _getSelectedDataIdFromName(
+      selectedLyricistId = _fetchSelectedDataIdFromName(
           _artistIdAndNameList, _lyricistNameController.text);
     }
 
@@ -137,7 +137,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
         ColumnName.imageUrl.colname: defaultPathNoImage
       });
       await _fetchIdAndNameLists();
-      selectedComposerId = _getSelectedDataIdFromName(
+      selectedComposerId = _fetchSelectedDataIdFromName(
           _artistIdAndNameList, _composerNameController.text);
     }
 
