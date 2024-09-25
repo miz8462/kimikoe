@@ -73,14 +73,15 @@ class _AddSongScreenState extends State<AddSongScreen> {
     return false;
   }
 
-  int _fetchSelectedDataIdFromName(List<Map<String, dynamic>> list, String name) {
+  int _fetchSelectedDataIdFromName(
+      List<Map<String, dynamic>> list, String name) {
     final selectedData =
         list.where((item) => item[ColumnName.name.colname] == name).single;
     final selectedDataId = selectedData[ColumnName.id.colname];
     return selectedDataId;
   }
 
-  Future<void> _saveSong() async {
+  Future<void> _submitSong() async {
     setState(() {
       _isSending = true;
     });
@@ -101,45 +102,47 @@ class _AddSongScreenState extends State<AddSongScreen> {
       _selectedReleaseDate = null;
     }
 
-    // 入力グループ名がDBにない場合、グループ名と画像なしを登録する
+    // 入力グループ名がDBにない場合、グループ名とNo Imageを登録する
     int? selectedGroupId;
     int? selectedLyricistId;
     int? selectedComposerId;
-    final isSelectedGroupInList =
-        isInList(_groupIdAndNameList, _groupNameController.text);
-    if (!isSelectedGroupInList && _groupNameController.text.isNotEmpty) {
+    final groupName = _groupNameController.text;
+
+    final isSelectedGroupInList = isInList(_groupIdAndNameList, groupName);
+    if (!isSelectedGroupInList && groupName.isNotEmpty) {
       await supabase.from(TableName.idolGroups.name).insert({
-        ColumnName.name.colname: _groupNameController.text,
+        ColumnName.name.colname: groupName,
         ColumnName.imageUrl.colname: defaultPathNoImage
       });
       await _fetchIdAndNameLists();
-      selectedGroupId = _fetchSelectedDataIdFromName(
-          _groupIdAndNameList, _groupNameController.text);
     }
-
+    selectedGroupId =
+        _fetchSelectedDataIdFromName(_groupIdAndNameList, groupName);
+    final lyricistName = _lyricistNameController.text;
     final isSelectedLyricistInList =
-        isInList(_artistIdAndNameList, _lyricistNameController.text);
-    if (!isSelectedLyricistInList && _lyricistNameController.text.isNotEmpty) {
+        isInList(_artistIdAndNameList, lyricistName);
+    if (!isSelectedLyricistInList && lyricistName.isNotEmpty) {
       await supabase.from(TableName.artists.name).insert({
-        ColumnName.name.colname: _lyricistNameController.text,
+        ColumnName.name.colname: lyricistName,
         ColumnName.imageUrl.colname: defaultPathNoImage
       });
       await _fetchIdAndNameLists();
-      selectedLyricistId = _fetchSelectedDataIdFromName(
-          _artistIdAndNameList, _lyricistNameController.text);
     }
+    selectedLyricistId =
+        _fetchSelectedDataIdFromName(_artistIdAndNameList, lyricistName);
 
+    final composerName = _composerNameController.text;
     final isSelectedComposerInList =
-        isInList(_artistIdAndNameList, _composerNameController.text);
-    if (!isSelectedComposerInList && _composerNameController.text.isNotEmpty) {
+        isInList(_artistIdAndNameList, composerName);
+    if (!isSelectedComposerInList && composerName.isNotEmpty) {
       await supabase.from(TableName.artists.name).insert({
-        ColumnName.name.colname: _composerNameController.text,
+        ColumnName.name.colname: composerName,
         ColumnName.imageUrl.colname: defaultPathNoImage
       });
       await _fetchIdAndNameLists();
-      selectedComposerId = _fetchSelectedDataIdFromName(
-          _artistIdAndNameList, _composerNameController.text);
     }
+    selectedComposerId =
+        _fetchSelectedDataIdFromName(_artistIdAndNameList, composerName);
 
     // 歌詞登録
     await supabase.from(TableName.songs.name).insert({
@@ -282,7 +285,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                       Gap(spaceWidthS),
                       StyledButton(
                         '登録',
-                        onPressed: _isSending ? null : _saveSong,
+                        onPressed: _isSending ? null : _submitSong,
                         isSending: _isSending,
                         buttonSize: buttonL,
                       ),

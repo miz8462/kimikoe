@@ -20,6 +20,7 @@ class IdolGroupsNotifier extends StateNotifier<List<IdolGroup>> {
   }
 }
 
-final groupsProvider = StateNotifierProvider<IdolGroupsNotifier, List<IdolGroup>>(
+final idolGroupsProvider =
+    StateNotifierProvider<IdolGroupsNotifier, List<IdolGroup>>(
   (ref) => IdolGroupsNotifier(),
 );

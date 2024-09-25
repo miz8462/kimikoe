@@ -8,7 +8,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
-import 'package:kimikoe_app/provider/groups_notifier.dart';
+import 'package:kimikoe_app/provider/idol_groups_notifier.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/utils/create_image_name_with_jpg.dart';
 import 'package:kimikoe_app/utils/formatter.dart';
@@ -54,7 +54,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
 
     // e.g. /aaa/bbb/ccc/image.png
     final imagePathWithCreatedAtJPG = createImageNameWithJPG(_selectedImage);
-    ref.read(groupsProvider.notifier).addGroup(
+    ref.read(idolGroupsProvider.notifier).addGroup(
           _enteredName,
           _selectedImage == null
               ? defaultPathNoImage
@@ -78,7 +78,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
           .from('images')
           .upload(imagePathWithCreatedAtJPG!, _selectedImage!);
     }
-    
+
     setState(() {
       _isSending = false;
     });

@@ -8,11 +8,13 @@ class SongCard extends StatelessWidget {
   const SongCard({
     super.key,
   });
+  // songData;
 
   @override
   Widget build(BuildContext context) {
-    const songImage = 'assets/images/poison_palette.jpg';
-    const title = 'Sound Paradise';
+    final songImage = 'assets/images/poison_palette.jpg';
+    final title = 'Sound Paradise';
+    final lyrics = '聞こえるかい？';
     return GestureDetector(
       onTap: () =>
           context.push('${RoutingPath.groupList}/${RoutingPath.lyric}'),
@@ -22,23 +24,38 @@ class SongCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4),
         ),
-        child: const Row(
+        child: Row(
           children: [
-            // 曲のイメージ。ジャケット。
             CircleAvatar(
               backgroundImage: AssetImage(songImage),
               radius: avaterSizeM,
             ),
             Gap(spaceWidthL),
-            // 曲名
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: fontM,
-                fontWeight: FontWeight.w400,
-                color: textDark,
-              ),
-            )
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: fontM,
+                    fontWeight: FontWeight.w400,
+                    color: textDark,
+                  ),
+                ),
+                Text(
+                  lyrics,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: fontSS,
+                    fontWeight: FontWeight.w400,
+                    color: textDark,
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
