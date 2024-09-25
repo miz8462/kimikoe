@@ -3,7 +3,7 @@ import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/screens/widgets/group_card.dart';
+import 'package:kimikoe_app/screens/widgets/group_card_l.dart';
 
 class IdolGroupListScreen extends StatefulWidget {
   const IdolGroupListScreen({super.key});
@@ -71,7 +71,7 @@ class _IdolGroupListScreenState extends State<IdolGroupListScreen> {
                   comment: comment,
                 );
 
-                return GroupCard(
+                return GroupCardL(
                   group: groupInfo,
                 );
               },

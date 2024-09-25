@@ -8,7 +8,6 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
-import 'package:kimikoe_app/models/dropdown_id_and_name.dart';
 import 'package:kimikoe_app/models/enums/idol_colors.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
@@ -19,6 +18,7 @@ import 'package:kimikoe_app/screens/widgets/forms/dropdown_menu_group_list.dart'
 import 'package:kimikoe_app/screens/widgets/forms/drum_roll_form.dart';
 import 'package:kimikoe_app/screens/widgets/forms/expanded_text_form.dart';
 import 'package:kimikoe_app/screens/widgets/forms/text_input_form.dart';
+import 'package:kimikoe_app/utils/check.dart';
 import 'package:kimikoe_app/utils/create_image_name_with_jpg.dart';
 import 'package:kimikoe_app/utils/fetch_data.dart';
 import 'package:kimikoe_app/utils/formatter.dart';
@@ -37,12 +37,12 @@ class AddIdolScreen extends StatefulWidget {
 
 class _AddIdolScreenState extends State<AddIdolScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _groupNameController = TextEditingController();
   final _birthdayController = TextEditingController();
   final _heightController = TextEditingController();
   final _debutYearController = TextEditingController();
 
   var _enteredIdolName = '';
-  DropdownIdAndName? _selectedGroup;
   Color _selectedColor = Colors.lightBlue;
   File? _selectedImage;
   String? _selectedBirthday;
@@ -51,7 +51,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
   String? _selectedDebutYear;
   String? _enteredComment;
 
-  late List<Map<String, dynamic>> _groupNameList;
+  late List<Map<String, dynamic>> _groupIdAndNameList;
   var _isSending = false;
   var _isFetching = true;
 
@@ -61,10 +61,11 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     _fetchIdAndNameGroupList();
   }
 
-  void _fetchIdAndNameGroupList() async {
-    final groupNameList = await fetchIdAndNameList(TableName.idolGroups.name);
+  Future<void> _fetchIdAndNameGroupList() async {
+    final groupIdAndNameList =
+        await fetchIdAndNameList(TableName.idolGroups.name);
     setState(() {
-      _groupNameList = groupNameList;
+      _groupIdAndNameList = groupIdAndNameList;
       _isFetching = false;
     });
   }
@@ -77,7 +78,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     super.dispose();
   }
 
-  Future<void> _saveIdol() async {
+  Future<void> _submitIdol() async {
     setState(() {
       _isSending = true;
     });
@@ -108,11 +109,33 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
       _selectedDebutYear = null;
     }
 
+    // 入力グループ名がDBにない場合、グループ名とNo Imageを登録する
+    int? selectedGroupId;
+    final groupName = _groupNameController.text;
+
+    final isSelectedGroupInList = isInList(_groupIdAndNameList, groupName);
+    if (!isSelectedGroupInList && groupName.isNotEmpty) {
+      await supabase.from(TableName.idolGroups.name).insert({
+        ColumnName.name.colname: groupName,
+        ColumnName.imageUrl.colname: defaultPathNoImage
+      });
+      await _fetchIdAndNameGroupList();
+    }
+    selectedGroupId =
+        fetchSelectedDataIdFromName(_groupIdAndNameList, groupName);
+
+    final selectedColor = _selectedColor
+        .toString()
+        .split(' ')
+        .last
+        .replaceFirst('Color', '')
+        .replaceAll('(', '')
+        .replaceAll(')', '');
+
     await await supabase.from(TableName.idol.name).insert({
       ColumnName.name.colname: _enteredIdolName,
-      ColumnName.groupId.colname:
-          _selectedGroup?.id == null ? null : _selectedGroup!.id,
-      ColumnName.color.colname: _selectedColor.toString(),
+      ColumnName.groupId.colname: selectedGroupId,
+      ColumnName.color.colname: selectedColor,
       ColumnName.imageUrl.colname: _selectedImage == null
           ? defaultPathNoImage
           : imagePathWithCreatedAtJPG,
@@ -213,6 +236,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
             onColorChanged: (color) {
               setState(() {
                 _selectedColor = color;
+                print(_selectedColor.toString().split(' ').last);
               });
               context.pop();
             },
@@ -252,13 +276,11 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                         },
                       ),
                       const Gap(spaceWidthS),
-                      // CustomDropdownMenu(
-                      //   label: 'グループ選択',
-                      //   onSelected: (value) {
-                      //     _selectedGroup = value;
-                      //   },
-                      //   dataList: _groupNameList,
-                      // ),
+                      CustomDropdownMenu(
+                        label: 'グループ選択',
+                        dataList: _groupIdAndNameList,
+                        controller: _groupNameController,
+                      ),
                       const Gap(spaceWidthS),
                       // 歌詞で表示する個人カラー選択
                       Row(
@@ -281,7 +303,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                         onPickImage: (image) {
                           _selectedImage = image;
                         },
-                        label: 'グループ画像',
+                        label: 'イメージ画像',
                       ),
                       const Gap(spaceWidthS),
                       PickerForm(
@@ -341,7 +363,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       const Gap(spaceWidthS),
                       StyledButton(
                         '登録',
-                        onPressed: _isSending ? null : _saveIdol,
+                        onPressed: _isSending ? null : _submitIdol,
                         isSending: _isSending,
                         buttonSize: buttonL,
                       ),

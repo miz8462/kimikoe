@@ -4,8 +4,8 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 
-class GroupCard extends StatelessWidget {
-  const GroupCard({
+class GroupCardL extends StatelessWidget {
+  const GroupCardL({
     super.key,
     required this.group,
   });
@@ -15,7 +15,7 @@ class GroupCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => context.push(
-        '${RoutingPath.groupList}/${RoutingPath.groupDetails}',
+        '${RoutingPath.groupList}/${RoutingPath.songList}',
         extra: group,
       ),
       child: Container(

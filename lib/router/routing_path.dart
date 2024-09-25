@@ -2,8 +2,9 @@ class RoutingPath {
   static const signIn = '/';
 
   static const groupList = '/group_list';
-  static const groupDetails = 'group_details';
+  static const songList = 'song_list';
   static const lyric = 'lyric';
+  static const groupDetail = 'group_detail';
 
   static const addSong = '/add_song';
   static const addGroup = '/add_group';

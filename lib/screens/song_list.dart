@@ -5,7 +5,7 @@ import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/screens/widgets/group_info.dart';
+import 'package:kimikoe_app/screens/widgets/group_card_m.dart';
 import 'package:kimikoe_app/screens/widgets/song_card.dart';
 
 class SongListScreen extends StatefulWidget {
@@ -46,7 +46,8 @@ class _SongListScreenState extends State<SongListScreen> {
         padding: screenPadding,
         child: Column(
           children: [
-            GroupInfo(group: widget.group),
+            const Gap(spaceWidthS),
+            GroupCardM(group: widget.group),
             const Gap(spaceWidthM),
             Expanded(
               child: FutureBuilder(

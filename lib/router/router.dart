@@ -7,7 +7,7 @@ import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/user.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/bottom_bar.dart';
-import 'package:kimikoe_app/screens/idol_group.dart';
+import 'package:kimikoe_app/screens/group_detail.dart';
 import 'package:kimikoe_app/screens/idol_group_list.dart';
 import 'package:kimikoe_app/screens/lyric.dart';
 import 'package:kimikoe_app/screens/posts/add_artist.dart';
@@ -16,6 +16,7 @@ import 'package:kimikoe_app/screens/posts/add_idol.dart';
 import 'package:kimikoe_app/screens/posts/add_song.dart';
 import 'package:kimikoe_app/screens/posts/edit_user.dart';
 import 'package:kimikoe_app/screens/sign_in.dart';
+import 'package:kimikoe_app/screens/song_list.dart';
 import 'package:kimikoe_app/screens/user.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -67,8 +68,8 @@ final router = GoRouter(
               ),
               routes: [
                 GoRoute(
-                  path: RoutingPath.groupDetails,
-                  name: RoutingPath.groupDetails,
+                  path: RoutingPath.songList,
+                  name: RoutingPath.songList,
                   pageBuilder: (context, state) {
                     final groupData = state.extra as IdolGroup;
                     return MaterialPage(
@@ -76,6 +77,19 @@ final router = GoRouter(
                       key: state.pageKey,
                     );
                   },
+                  routes: [
+                    GoRoute(
+                      path: RoutingPath.groupDetail,
+                      name: RoutingPath.groupDetail,
+                      pageBuilder: (context, state) {
+                        final groupData = state.extra as IdolGroup;
+                        return MaterialPage(
+                          child: GroupDetail(group: groupData),
+                          key: state.pageKey,
+                        );
+                      },
+                    ),
+                  ],
                 ),
                 GoRoute(
                   path: RoutingPath.lyric,

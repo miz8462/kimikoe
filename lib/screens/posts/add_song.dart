@@ -15,6 +15,7 @@ import 'package:kimikoe_app/screens/widgets/forms/dropdown_menu_group_list.dart'
 import 'package:kimikoe_app/screens/widgets/forms/drum_roll_form.dart';
 import 'package:kimikoe_app/screens/widgets/forms/expanded_text_form.dart';
 import 'package:kimikoe_app/screens/widgets/forms/text_input_form.dart';
+import 'package:kimikoe_app/utils/check.dart';
 import 'package:kimikoe_app/utils/create_image_name_with_jpg.dart';
 import 'package:kimikoe_app/utils/fetch_data.dart';
 import 'package:kimikoe_app/utils/formatter.dart';
@@ -64,23 +65,6 @@ class _AddSongScreenState extends State<AddSongScreen> {
     });
   }
 
-  bool isInList(List<Map<String, dynamic>> list, String? name) {
-    for (final item in list) {
-      if (item[ColumnName.name.colname] == name) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  int _fetchSelectedDataIdFromName(
-      List<Map<String, dynamic>> list, String name) {
-    final selectedData =
-        list.where((item) => item[ColumnName.name.colname] == name).single;
-    final selectedDataId = selectedData[ColumnName.id.colname];
-    return selectedDataId;
-  }
-
   Future<void> _submitSong() async {
     setState(() {
       _isSending = true;
@@ -117,7 +101,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
       await _fetchIdAndNameLists();
     }
     selectedGroupId =
-        _fetchSelectedDataIdFromName(_groupIdAndNameList, groupName);
+        fetchSelectedDataIdFromName(_groupIdAndNameList, groupName);
     final lyricistName = _lyricistNameController.text;
     final isSelectedLyricistInList =
         isInList(_artistIdAndNameList, lyricistName);
@@ -129,7 +113,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
       await _fetchIdAndNameLists();
     }
     selectedLyricistId =
-        _fetchSelectedDataIdFromName(_artistIdAndNameList, lyricistName);
+        fetchSelectedDataIdFromName(_artistIdAndNameList, lyricistName);
 
     final composerName = _composerNameController.text;
     final isSelectedComposerInList =
@@ -142,7 +126,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
       await _fetchIdAndNameLists();
     }
     selectedComposerId =
-        _fetchSelectedDataIdFromName(_artistIdAndNameList, composerName);
+        fetchSelectedDataIdFromName(_artistIdAndNameList, composerName);
 
     // 歌詞登録
     await supabase.from(TableName.songs.name).insert({
