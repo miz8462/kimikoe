@@ -3,13 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/user.dart';
 import 'package:kimikoe_app/provider/current_user.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/screens/widgets/buttons/styled_button.dart';
+import 'package:kimikoe_app/utils/fetch_data.dart';
 
 class UserScreen extends ConsumerStatefulWidget {
   const UserScreen({super.key});
@@ -26,10 +26,6 @@ class _UserScreenState extends ConsumerState<UserScreen> {
     super.didChangeDependencies();
     // ref.watchはbuildメソッドやdidChangeDependenciesメソッド内で使用する必要がある
     _currentUserInfo = ref.watch(userDataProvider);
-  }
-
-  String _getImageFromSupabase(String imageUrl) {
-    return supabase.storage.from(TableName.images.name).getPublicUrl(imageUrl);
   }
 
   @override
@@ -49,7 +45,7 @@ class _UserScreenState extends ConsumerState<UserScreen> {
     final isStartWithHTTP = user.imageUrl.startsWith('http');
 
     if (!isStartWithHTTP) {
-      userImageUrl = _getImageFromSupabase(user.imageUrl);
+      userImageUrl = fetchImage(user.imageUrl);
     }
     var userImage = NetworkImage(userImageUrl);
 

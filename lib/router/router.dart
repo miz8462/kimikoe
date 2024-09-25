@@ -72,7 +72,7 @@ final router = GoRouter(
                   pageBuilder: (context, state) {
                     final groupData = state.extra as IdolGroup;
                     return MaterialPage(
-                      child: IdolGroupScreen(group: groupData),
+                      child: SongListScreen(group: groupData),
                       key: state.pageKey,
                     );
                   },

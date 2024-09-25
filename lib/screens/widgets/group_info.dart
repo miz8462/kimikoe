@@ -23,9 +23,12 @@ class GroupInfo extends StatelessWidget {
       ),
       child: Row(
         children: [
-          CircleAvatar(
-            backgroundImage: NetworkImage(groupImage!),
-            radius: avaterSizeL,
+          Padding(
+            padding: const EdgeInsets.all(4),
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(groupImage!),
+              radius: avaterSizeL,
+            ),
           ),
           Gap(spaceWidthL),
           Expanded(

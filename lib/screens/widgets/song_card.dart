@@ -2,19 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
+import 'package:kimikoe_app/models/song.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
+import 'package:kimikoe_app/utils/fetch_data.dart';
 
 class SongCard extends StatelessWidget {
   const SongCard({
     super.key,
+    required this.songData,
   });
-  // songData;
+  final Map<String, dynamic> songData;
 
   @override
   Widget build(BuildContext context) {
-    final songImage = 'assets/images/poison_palette.jpg';
-    final title = 'Sound Paradise';
-    final lyrics = '聞こえるかい？';
+    final song = Song(
+      title: songData[ColumnName.title.colname],
+      groupId: songData[ColumnName.groupId.colname],
+      lyrics: songData[ColumnName.lyrics.colname],
+      imageUrl: songData[ColumnName.imageUrl.colname],
+    );
+    final songImage = fetchImage(song.imageUrl!);
+    final title = song.title;
+    final lyrics = song.lyrics;
     return GestureDetector(
       onTap: () =>
           context.push('${RoutingPath.groupList}/${RoutingPath.lyric}'),
@@ -26,9 +36,12 @@ class SongCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            CircleAvatar(
-              backgroundImage: AssetImage(songImage),
-              radius: avaterSizeM,
+            Padding(
+              padding: const EdgeInsets.all(4),
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(songImage),
+                radius: avaterSizeM,
+              ),
             ),
             Gap(spaceWidthL),
             Column(
