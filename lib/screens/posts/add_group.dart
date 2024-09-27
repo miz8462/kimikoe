@@ -69,6 +69,30 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     }
   }
 
+  String? _groupNameValidator(String? value) {
+    return textInputValidator(value, 'グループ名');
+  }
+
+  void _pickYear() async {
+    await picker.DatePicker.showPicker(
+      context,
+      showTitleActions: false,
+      pickerModel: CustomYearPicker(
+        currentTime: DateTime(2020),
+        minTime: DateTime(1990),
+        maxTime: DateTime.now(),
+        locale: picker.LocaleType.jp,
+      ),
+      onChanged: (date) {
+        _selectedYear = formatDateTimeToXXXX(
+          date: date,
+          formatStyle: 'yyyy',
+        );
+        _yearController.text = _selectedYear!;
+      },
+    );
+  }
+
   Future<void> _submitGroup() async {
     setState(() {
       _isSending = true;
@@ -139,28 +163,24 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     context.pushReplacement(RoutingPath.groupList);
   }
 
-  String? _groupNameValidator(String? value) {
-    return textInputValidator(value, 'グループ名');
-  }
+  void _deleteGroup() async {
+    // todo: 確認ダイアログ
+    setState(() {
+      _isSending = true;
+    });
 
-  void _pickYear() async {
-    await picker.DatePicker.showPicker(
-      context,
-      showTitleActions: false,
-      pickerModel: CustomYearPicker(
-        currentTime: DateTime(2020),
-        minTime: DateTime(1990),
-        maxTime: DateTime.now(),
-        locale: picker.LocaleType.jp,
-      ),
-      onChanged: (date) {
-        _selectedYear = formatDateTimeToXXXX(
-          date: date,
-          formatStyle: 'yyyy',
-        );
-        _yearController.text = _selectedYear!;
-      },
-    );
+    await supabase
+        .from(TableName.idolGroups.name)
+        .delete()
+        .eq(ColumnName.id.name, (_group.id).toString());
+
+    setState(() {
+      _isSending = false;
+    });
+    if (!mounted) {
+      return;
+    }
+    context.pushReplacement(RoutingPath.groupList);
   }
 
   @override
@@ -168,7 +188,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: TopBar(
-        title: 'グループ登録',
+        title: _isEditing ? 'グループ編集' : 'グループ登録',
         showLeading: _isEditing ? true : false,
       ),
       body: SingleChildScrollView(
@@ -232,7 +252,17 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                     isSending: _isSending,
                     buttonSize: buttonL,
                   ),
-                  const Gap(spaceWidthS),
+                  const Gap(spaceWidthL),
+                  const Gap(spaceWidthL),
+                  const Gap(spaceWidthL),
+                  StyledButton(
+                    '削除',
+                    onPressed: _isSending ? null : _deleteGroup,
+                    isSending: _isSending,
+                    buttonSize: buttonS,
+                    backgroundColor: Theme.of(context).colorScheme.error,
+                    textColor: Theme.of(context).colorScheme.onError,
+                  ),
                 ],
               ),
             ),
