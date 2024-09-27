@@ -80,7 +80,8 @@ class _AddSongScreenState extends State<AddSongScreen> {
     }
 
     // e.g. /aaa/bbb/ccc/image.png
-    final imagePathWithCreatedAtJPG = createImageNameWithJPG(_selectedImage);
+    final imagePathWithCreatedAtJPG =
+        createImageNameWithJPG(image: _selectedImage);
 
     if (_selectedReleaseDate == null || _selectedReleaseDate!.isEmpty) {
       _selectedReleaseDate = null;
@@ -95,8 +96,8 @@ class _AddSongScreenState extends State<AddSongScreen> {
     final isSelectedGroupInList = isInList(_groupIdAndNameList, groupName);
     if (!isSelectedGroupInList && groupName.isNotEmpty) {
       await supabase.from(TableName.idolGroups.name).insert({
-        ColumnName.name.colname: groupName,
-        ColumnName.imageUrl.colname: defaultPathNoImage
+        ColumnName.cName.name: groupName,
+        ColumnName.imageUrl.name: defaultPathNoImage
       });
       await _fetchIdAndNameLists();
     }
@@ -107,8 +108,8 @@ class _AddSongScreenState extends State<AddSongScreen> {
         isInList(_artistIdAndNameList, lyricistName);
     if (!isSelectedLyricistInList && lyricistName.isNotEmpty) {
       await supabase.from(TableName.artists.name).insert({
-        ColumnName.name.colname: lyricistName,
-        ColumnName.imageUrl.colname: defaultPathNoImage
+        ColumnName.cName.name: lyricistName,
+        ColumnName.imageUrl.name: defaultPathNoImage
       });
       await _fetchIdAndNameLists();
     }
@@ -120,8 +121,8 @@ class _AddSongScreenState extends State<AddSongScreen> {
         isInList(_artistIdAndNameList, composerName);
     if (!isSelectedComposerInList && composerName.isNotEmpty) {
       await supabase.from(TableName.artists.name).insert({
-        ColumnName.name.colname: composerName,
-        ColumnName.imageUrl.colname: defaultPathNoImage
+        ColumnName.cName.name: composerName,
+        ColumnName.imageUrl.name: defaultPathNoImage
       });
       await _fetchIdAndNameLists();
     }
@@ -130,16 +131,16 @@ class _AddSongScreenState extends State<AddSongScreen> {
 
     // 歌詞登録
     await supabase.from(TableName.songs.name).insert({
-      ColumnName.title.colname: _enteredTitle,
-      ColumnName.lyrics.colname: _enteredLyric,
-      ColumnName.groupId.colname: selectedGroupId,
-      ColumnName.imageUrl.colname: _selectedImage == null
+      ColumnName.title.name: _enteredTitle,
+      ColumnName.lyrics.name: _enteredLyric,
+      ColumnName.groupId.name: selectedGroupId,
+      ColumnName.imageUrl.name: _selectedImage == null
           ? defaultPathNoImage
           : imagePathWithCreatedAtJPG,
-      ColumnName.releaseDate.colname: _selectedReleaseDate,
-      ColumnName.lyricistId.colname: selectedLyricistId,
-      ColumnName.composerId.colname: selectedComposerId,
-      ColumnName.comment.colname: _enteredComment,
+      ColumnName.releaseDate.name: _selectedReleaseDate,
+      ColumnName.lyricistId.name: selectedLyricistId,
+      ColumnName.composerId.name: selectedComposerId,
+      ColumnName.comment.name: _enteredComment,
     });
 
     if (_selectedImage != null) {

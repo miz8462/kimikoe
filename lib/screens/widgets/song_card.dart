@@ -17,12 +17,12 @@ class SongCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final song = Song(
-      title: songData[ColumnName.title.colname],
-      groupId: songData[ColumnName.groupId.colname],
-      lyrics: songData[ColumnName.lyrics.colname],
-      imageUrl: songData[ColumnName.imageUrl.colname],
+      title: songData[ColumnName.title.name],
+      groupId: songData[ColumnName.groupId.name],
+      lyrics: songData[ColumnName.lyrics.name],
+      imageUrl: songData[ColumnName.imageUrl.name],
     );
-    final songImage = fetchImage(song.imageUrl!);
+    final songImage = fetchPublicImageUrl(song.imageUrl!);
     final title = song.title;
     final lyrics = song.lyrics;
     return GestureDetector(

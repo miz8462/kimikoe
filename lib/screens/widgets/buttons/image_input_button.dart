@@ -10,10 +10,12 @@ class ImageInput extends StatefulWidget {
     super.key,
     required this.label,
     required this.onPickImage,
+    this.imageUrl,
   });
 
   final String label;
   final void Function(File image) onPickImage;
+  final String? imageUrl;
 
   @override
   State<ImageInput> createState() => _ImageInputState();
@@ -21,6 +23,15 @@ class ImageInput extends StatefulWidget {
 
 class _ImageInputState extends State<ImageInput> {
   File? _selectedImage;
+  bool _hasEditingImage = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.imageUrl != null) {
+      _hasEditingImage = true;
+    }
+  }
 
   Future<File?> _getImageFromMobileStrage() async {
     final picker = ImagePicker();
@@ -32,6 +43,7 @@ class _ImageInputState extends State<ImageInput> {
 
     setState(() {
       _selectedImage = File(pickedImage.path);
+      _hasEditingImage = false;
     });
 
     widget.onPickImage(_selectedImage!);
@@ -49,7 +61,7 @@ class _ImageInputState extends State<ImageInput> {
       borderSide: BorderSide(color: backgroundLightBlue, width: borderWidth),
     );
 
-    if (_selectedImage != null) {
+    if (_selectedImage != null || _hasEditingImage) {
       content = Container(
         decoration: BoxDecoration(
           border: Border.all(
@@ -62,12 +74,19 @@ class _ImageInputState extends State<ImageInput> {
         alignment: Alignment.center,
         child: GestureDetector(
           onTap: _getImageFromMobileStrage,
-          child: Image.file(
-            _selectedImage!,
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
-          ),
+          child: _hasEditingImage
+              ? Image(
+                  image: NetworkImage(widget.imageUrl!),
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: double.infinity,
+                )
+              : Image.file(
+                  _selectedImage!,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: double.infinity,
+                ),
         ),
       );
     }

@@ -58,17 +58,16 @@ class _IdolGroupListScreenState extends State<IdolGroupListScreen> {
                 // todo: バケットはパブリックでいいの？
                 // IdolGroupクラスを初期化
                 final group = groups[index];
-                final id = group[ColumnName.id.colname];
-                final name = group[ColumnName.name.colname];
+
                 final imageUrl = supabase.storage
                     .from(TableName.images.name)
-                    .getPublicUrl(group[ColumnName.imageUrl.colname]);
-                final comment = group[ColumnName.comment.colname];
+                    .getPublicUrl(group[ColumnName.imageUrl.name]);
                 final groupInfo = IdolGroup(
-                  id: id,
-                  name: name,
+                  id: group[ColumnName.id.name],
+                  name: group[ColumnName.cName.name],
                   imageUrl: imageUrl,
-                  comment: comment,
+                  year: group[ColumnName.yearFormingGroups.name],
+                  comment: group[ColumnName.comment.name],
                 );
 
                 return GroupCardL(

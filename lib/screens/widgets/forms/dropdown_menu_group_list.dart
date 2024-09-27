@@ -42,10 +42,10 @@ class _CustomDropdownMenuState extends State<CustomDropdownMenu> {
       dropdownMenuEntries: widget.dataList.map((value) {
         return DropdownMenuEntry<DropdownIdAndName>(
           value: DropdownIdAndName(
-            id: value[ColumnName.id.colname],
-            name: value[ColumnName.name.colname],
+            id: value[ColumnName.id.name],
+            name: value[ColumnName.cName.name],
           ),
-          label: value[ColumnName.name.colname].toString(),
+          label: value[ColumnName.cName.name].toString(),
         );
       }).toList(),
     );

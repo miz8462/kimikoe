@@ -93,7 +93,8 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     }
 
     // e.g. /aaa/bbb/ccc/image.png
-    final imagePathWithCreatedAtJPG = createImageNameWithJPG(_selectedImage);
+    final imagePathWithCreatedAtJPG =
+        createImageNameWithJPG(image: _selectedImage);
 
     if (_selectedHeight == null || _selectedHeight!.isEmpty) {
       _selectedHeight = null;
@@ -116,8 +117,8 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     final isSelectedGroupInList = isInList(_groupIdAndNameList, groupName);
     if (!isSelectedGroupInList && groupName.isNotEmpty) {
       await supabase.from(TableName.idolGroups.name).insert({
-        ColumnName.name.colname: groupName,
-        ColumnName.imageUrl.colname: defaultPathNoImage
+        ColumnName.cName.name: groupName,
+        ColumnName.imageUrl.name: defaultPathNoImage
       });
       await _fetchIdAndNameGroupList();
     }
@@ -133,17 +134,17 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         .replaceAll(')', '');
 
     await await supabase.from(TableName.idol.name).insert({
-      ColumnName.name.colname: _enteredIdolName,
-      ColumnName.groupId.colname: selectedGroupId,
-      ColumnName.color.colname: selectedColor,
-      ColumnName.imageUrl.colname: _selectedImage == null
+      ColumnName.cName.name: _enteredIdolName,
+      ColumnName.groupId.name: selectedGroupId,
+      ColumnName.color.name: selectedColor,
+      ColumnName.imageUrl.name: _selectedImage == null
           ? defaultPathNoImage
           : imagePathWithCreatedAtJPG,
-      ColumnName.birthday.colname: _selectedBirthday,
-      ColumnName.height.colname: _selectedHeight,
-      ColumnName.hometown.colname: _enteredHometown,
-      ColumnName.debutYear.colname: _selectedDebutYear,
-      ColumnName.comment.colname: _enteredComment,
+      ColumnName.birthday.name: _selectedBirthday,
+      ColumnName.height.name: _selectedHeight,
+      ColumnName.hometown.name: _enteredHometown,
+      ColumnName.debutYear.name: _selectedDebutYear,
+      ColumnName.comment.name: _enteredComment,
     });
 
     if (_selectedImage != null) {
@@ -236,7 +237,6 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
             onColorChanged: (color) {
               setState(() {
                 _selectedColor = color;
-                print(_selectedColor.toString().split(' ').last);
               });
               context.pop();
             },

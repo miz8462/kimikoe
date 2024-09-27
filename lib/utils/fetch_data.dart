@@ -7,31 +7,27 @@ Future fetchCurrentUserInfo() {
   final userInfo = supabase
       .from(TableName.profiles.name)
       .select()
-      .eq(ColumnName.id.colname, currentUserId);
+      .eq(ColumnName.id.name, currentUserId);
   return userInfo;
 }
 
 String fetchImageOfNoImage() {
-  final String noImagePath = supabase.storage
-      .from(TableName.images.name)
-      .getPublicUrl(noImage);
-  return noImagePath;
+  return supabase.storage.from(TableName.images.name).getPublicUrl(noImage);
 }
 
-String fetchImage(String imageUrl) {
+String fetchPublicImageUrl(String imageUrl) {
   return supabase.storage.from(TableName.images.name).getPublicUrl(imageUrl);
 }
 
 Future<List<Map<String, dynamic>>> fetchIdAndNameList(String tableName) async {
   return await supabase
       .from(tableName)
-      .select('${ColumnName.id.colname}, ${ColumnName.name.colname}');
+      .select('${ColumnName.id.name}, ${ColumnName.cName.name}');
 }
 
-int fetchSelectedDataIdFromName(
-      List<Map<String, dynamic>> list, String name) {
-    final selectedData =
-        list.where((item) => item[ColumnName.name.colname] == name).single;
-    final selectedDataId = selectedData[ColumnName.id.colname];
-    return selectedDataId;
-  }
+int fetchSelectedDataIdFromName(List<Map<String, dynamic>> list, String name) {
+  final selectedData =
+      list.where((item) => item[ColumnName.cName.name] == name).single;
+  final selectedDataId = selectedData[ColumnName.id.name];
+  return selectedDataId;
+}

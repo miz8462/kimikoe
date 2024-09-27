@@ -32,7 +32,7 @@ class _SongListScreenState extends State<SongListScreen> {
     _songListFuture = supabase
         .from(TableName.songs.name)
         .select()
-        .eq(ColumnName.groupId.colname, widget.group.id!);
+        .eq(ColumnName.groupId.name, widget.group.id!);
   }
 
   @override

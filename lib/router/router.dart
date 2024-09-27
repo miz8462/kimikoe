@@ -109,21 +109,31 @@ final router = GoRouter(
           navigatorKey: _addItemNavigatorKey,
           routes: [
             GoRoute(
-              path: RoutingPath.addSong,
-              name: RoutingPath.addSong,
-              pageBuilder: (context, state) => NoTransitionPage(
-                key: state.pageKey,
-                child: AddSongScreen(),
-              ),
-            ),
+                path: RoutingPath.addSong,
+                name: RoutingPath.addSong,
+                pageBuilder: (context, state) {
+                  return NoTransitionPage(
+                    key: state.pageKey,
+                    child: AddSongScreen(),
+                  );
+                }),
             GoRoute(
-              path: RoutingPath.addGroup,
-              name: RoutingPath.addGroup,
-              pageBuilder: (context, state) => NoTransitionPage(
-                key: state.pageKey,
-                child: AddGroupScreen(),
-              ),
-            ),
+                path: RoutingPath.addGroup,
+                name: RoutingPath.addGroup,
+                pageBuilder: (context, state) {
+                  final Map<String, dynamic>? data;
+                  data = state.extra as Map<String, dynamic>?;
+                  final IdolGroup? group =
+                      data?['group'] ?? IdolGroup(name: '');
+                  final bool? isEditing = data?['isEditing'] ?? false;
+                  return NoTransitionPage(
+                    key: state.pageKey,
+                    child: AddGroupScreen(
+                      group: group,
+                      isEditing: isEditing,
+                    ),
+                  );
+                }),
             GoRoute(
               path: RoutingPath.addMember,
               name: RoutingPath.addMember,

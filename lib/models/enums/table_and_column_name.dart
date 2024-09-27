@@ -13,7 +13,7 @@ enum TableName {
 
 enum ColumnName {
   id('id'),
-  name('name'),
+  cName('name'),
   title('title'),
   email('email'),
   imageUrl('image_url'),
@@ -23,7 +23,7 @@ enum ColumnName {
   birthday('birthday'),
   height('height'),
   hometown('hometown'),
-  yearFormingGroups('year_forming_groups'),
+  yearFormingGroups('year_forming_group'),
   debutYear('debut_year'),
   officialUrl('official_url'),
   twitterUrl('twitter_url'),
@@ -35,6 +35,6 @@ enum ColumnName {
   releaseDate('release_date'),
   ;
 
-  final String colname;
-  const ColumnName(this.colname);
+  final String name;
+  const ColumnName(this.name);
 }

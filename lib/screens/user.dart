@@ -35,17 +35,17 @@ class _UserScreenState extends ConsumerState<UserScreen> {
     final currentUserInfo =
         _currentUserInfo.value?.map((data) => data).toList()[0];
     final user = UserProfile(
-      name: currentUserInfo?[ColumnName.name.colname] ?? 'タイトル未定',
-      email: currentUserInfo?[ColumnName.email.colname],
-      imageUrl: currentUserInfo?[ColumnName.imageUrl.colname],
-      comment: currentUserInfo?[ColumnName.comment.colname] ?? '',
+      name: currentUserInfo?[ColumnName.cName.name] ?? 'タイトル未定',
+      email: currentUserInfo?[ColumnName.email.name],
+      imageUrl: currentUserInfo?[ColumnName.imageUrl.name],
+      comment: currentUserInfo?[ColumnName.comment.name] ?? '',
     );
 
     var userImageUrl = user.imageUrl;
     final isStartWithHTTP = user.imageUrl.startsWith('http');
 
     if (!isStartWithHTTP) {
-      userImageUrl = fetchImage(user.imageUrl);
+      userImageUrl = fetchPublicImageUrl(user.imageUrl);
     }
     var userImage = NetworkImage(userImageUrl);
 
