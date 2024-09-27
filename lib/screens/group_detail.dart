@@ -8,8 +8,8 @@ import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/screens/widgets/buttons/styled_button.dart';
 
-class GroupDetail extends StatefulWidget {
-  const GroupDetail({
+class GroupDetailScreen extends StatefulWidget {
+  const GroupDetailScreen({
     super.key,
     required this.group,
   });
@@ -17,10 +17,10 @@ class GroupDetail extends StatefulWidget {
   final IdolGroup group;
 
   @override
-  State<GroupDetail> createState() => _GroupDetailState();
+  State<GroupDetailScreen> createState() => _GroupDetailScreenState();
 }
 
-class _GroupDetailState extends State<GroupDetail> {
+class _GroupDetailScreenState extends State<GroupDetailScreen> {
   late Future _memberFuture;
   @override
   void initState() {
@@ -84,6 +84,15 @@ class _GroupDetailState extends State<GroupDetail> {
             Text(widget.group.comment!),
             Gap(spaceWidthS),
             // todo: メンバー表示。グループIDに一致するアイドルを表示する
+            Divider(
+              color: mainBlue.withOpacity(0.3),
+              thickness: 2,
+            ),
+            Text(
+              'メンバー',
+              style: TextStyle(fontSize: fontM),
+            ),
+            Gap(spaceWidthS),
             FutureBuilder(
               future: _memberFuture,
               builder: (context, snapshot) {
@@ -104,14 +113,26 @@ class _GroupDetailState extends State<GroupDetail> {
                               memberList[index][ColumnName.color.colname])),
                         );
 
-                        return Row(
+                        return Column(
                           children: [
-                            Container(
-                              color: idol.color,
-                              height: 20,
-                              width: 20,
+                            Row(
+                              children: [
+                                Container(
+                                  // color: idol.color,
+                                  height: 24,
+                                  width: 24,
+                                  decoration: BoxDecoration(
+                                      borderRadius: borderRadius12,
+                                      color: idol.color),
+                                ),
+                                Gap(spaceWidthS),
+                                Text(
+                                  idol.name,
+                                  style: TextStyle(fontSize: fontS),
+                                ),
+                              ],
                             ),
-                            Text(idol.name),
+                            Gap(spaceWidthSS),
                           ],
                         );
                       }),

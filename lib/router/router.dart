@@ -84,7 +84,7 @@ final router = GoRouter(
                       pageBuilder: (context, state) {
                         final groupData = state.extra as IdolGroup;
                         return MaterialPage(
-                          child: GroupDetail(group: groupData),
+                          child: GroupDetailScreen(group: groupData),
                           key: state.pageKey,
                         );
                       },

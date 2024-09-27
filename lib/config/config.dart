@@ -33,7 +33,7 @@ const double borderWidth = 2;
 
 // ボタンやカードの丸み
 var borderRadius4 = BorderRadius.circular(4);
-var borderRadius8 = BorderRadius.circular(12);
+var borderRadius12 = BorderRadius.circular(12);
 
 // テキストフォームのヒントのパディング
 const double bottomPadding = 7;
