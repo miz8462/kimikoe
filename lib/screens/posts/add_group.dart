@@ -163,26 +163,6 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     context.pushReplacement(RoutingPath.groupList);
   }
 
-  void _deleteGroup() async {
-    // todo: 確認ダイアログ
-    setState(() {
-      _isSending = true;
-    });
-
-    await supabase
-        .from(TableName.idolGroups.name)
-        .delete()
-        .eq(ColumnName.id.name, (_group.id).toString());
-
-    setState(() {
-      _isSending = false;
-    });
-    if (!mounted) {
-      return;
-    }
-    context.pushReplacement(RoutingPath.groupList);
-  }
-
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -213,7 +193,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                       _enteredName = value!;
                     },
                   ),
-                  const Gap(spaceWidthS),
+                  const Gap(spaceS),
                   ImageInput(
                     imageUrl: _group.imageUrl,
                     onPickImage: (image) {
@@ -222,7 +202,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                     },
                     label: 'グループ画像',
                   ),
-                  const Gap(spaceWidthS),
+                  const Gap(spaceS),
                   PickerForm(
                     label: '結成年',
                     controller: _yearController,
@@ -235,7 +215,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                       );
                     },
                   ),
-                  const Gap(spaceWidthS),
+                  const Gap(spaceS),
                   ExpandedTextForm(
                     initialValue: _isEditing ? _group.comment : null,
                     onTextChanged: (value) {
@@ -245,23 +225,12 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                     },
                     label: '備考',
                   ),
-                  const Gap(spaceWidthS),
+                  const Gap(spaceS),
                   StyledButton(
                     '登録',
                     onPressed: _isSending ? null : _submitGroup,
                     isSending: _isSending,
                     buttonSize: buttonL,
-                  ),
-                  const Gap(spaceWidthL),
-                  const Gap(spaceWidthL),
-                  const Gap(spaceWidthL),
-                  StyledButton(
-                    '削除',
-                    onPressed: _isSending ? null : _deleteGroup,
-                    isSending: _isSending,
-                    buttonSize: buttonS,
-                    backgroundColor: Theme.of(context).colorScheme.error,
-                    textColor: Theme.of(context).colorScheme.onError,
                   ),
                 ],
               ),

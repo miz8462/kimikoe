@@ -20,7 +20,7 @@ class TextForm extends StatelessWidget {
           hintText: hintText,
           hintStyle: const TextStyle(color: textGray, fontSize: fontM),
           contentPadding:
-              const EdgeInsets.only(left: spaceWidthS, bottom: bottomPadding),
+              const EdgeInsets.only(left: spaceS, bottom: bottomPadding),
         ),
         controller: TextEditingController(),
       ),

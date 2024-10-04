@@ -20,7 +20,7 @@ import 'package:kimikoe_app/screens/widgets/forms/expanded_text_form.dart';
 import 'package:kimikoe_app/screens/widgets/forms/text_input_form.dart';
 import 'package:kimikoe_app/utils/check.dart';
 import 'package:kimikoe_app/utils/create_image_name_with_jpg.dart';
-import 'package:kimikoe_app/utils/fetch_data.dart';
+import 'package:kimikoe_app/utils/crud_data.dart';
 import 'package:kimikoe_app/utils/formatter.dart';
 import 'package:kimikoe_app/utils/pickers/int_picker.dart';
 import 'package:kimikoe_app/utils/pickers/year_picker.dart';
@@ -275,13 +275,13 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                           _enteredIdolName = value!;
                         },
                       ),
-                      const Gap(spaceWidthS),
+                      const Gap(spaceS),
                       CustomDropdownMenu(
                         label: 'グループ選択',
                         dataList: _groupIdAndNameList,
                         controller: _groupNameController,
                       ),
-                      const Gap(spaceWidthS),
+                      const Gap(spaceS),
                       // 歌詞で表示する個人カラー選択
                       Row(
                         children: [
@@ -298,14 +298,14 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                           ),
                         ],
                       ),
-                      const Gap(spaceWidthS),
+                      const Gap(spaceS),
                       ImageInput(
                         onPickImage: (image) {
                           _selectedImage = image;
                         },
                         label: 'イメージ画像',
                       ),
-                      const Gap(spaceWidthS),
+                      const Gap(spaceS),
                       PickerForm(
                         label: '生年月日',
                         controller: _birthdayController,
@@ -318,7 +318,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                           );
                         },
                       ),
-                      const Gap(spaceWidthS),
+                      const Gap(spaceS),
                       PickerForm(
                         label: '身長',
                         controller: _heightController,
@@ -331,14 +331,14 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                           );
                         },
                       ),
-                      const Gap(spaceWidthS),
+                      const Gap(spaceS),
                       InputForm(
                           label: '出身地',
                           validator: _hometownValidator,
                           onSaved: (value) {
                             _enteredHometown = value!;
                           }),
-                      const Gap(spaceWidthS),
+                      const Gap(spaceS),
                       PickerForm(
                         label: 'デビュー年',
                         controller: _debutYearController,
@@ -351,7 +351,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                           );
                         },
                       ),
-                      const Gap(spaceWidthS),
+                      const Gap(spaceS),
                       ExpandedTextForm(
                         onTextChanged: (value) {
                           setState(() {
@@ -360,14 +360,14 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                         },
                         label: '備考',
                       ),
-                      const Gap(spaceWidthS),
+                      const Gap(spaceS),
                       StyledButton(
                         '登録',
                         onPressed: _isSending ? null : _submitIdol,
                         isSending: _isSending,
                         buttonSize: buttonL,
                       ),
-                      const Gap(spaceWidthS),
+                      const Gap(spaceS),
                     ],
                   ),
                 ),

@@ -5,7 +5,7 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/song.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
-import 'package:kimikoe_app/utils/fetch_data.dart';
+import 'package:kimikoe_app/utils/crud_data.dart';
 
 class SongCard extends StatelessWidget {
   const SongCard({
@@ -43,7 +43,7 @@ class SongCard extends StatelessWidget {
                 radius: avaterSizeM,
               ),
             ),
-            Gap(spaceWidthL),
+            Gap(spaceL),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

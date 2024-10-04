@@ -17,7 +17,7 @@ import 'package:kimikoe_app/screens/widgets/forms/expanded_text_form.dart';
 import 'package:kimikoe_app/screens/widgets/forms/text_input_form.dart';
 import 'package:kimikoe_app/utils/check.dart';
 import 'package:kimikoe_app/utils/create_image_name_with_jpg.dart';
-import 'package:kimikoe_app/utils/fetch_data.dart';
+import 'package:kimikoe_app/utils/crud_data.dart';
 import 'package:kimikoe_app/utils/formatter.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
 
@@ -211,7 +211,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                           _enteredTitle = value!;
                         },
                       ),
-                      Gap(spaceWidthS),
+                      Gap(spaceS),
                       ExpandedTextForm(
                         onTextChanged: (value) {
                           setState(() {
@@ -220,32 +220,32 @@ class _AddSongScreenState extends State<AddSongScreen> {
                         },
                         label: '歌詞',
                       ),
-                      Gap(spaceWidthS),
+                      Gap(spaceS),
                       CustomDropdownMenu(
                         label: 'グループ選択',
                         dataList: _groupIdAndNameList,
                         controller: _groupNameController,
                       ),
-                      Gap(spaceWidthS),
+                      Gap(spaceS),
                       ImageInput(
                         onPickImage: (image) {
                           _selectedImage = image;
                         },
                         label: 'イメージ画像',
                       ),
-                      Gap(spaceWidthS),
+                      Gap(spaceS),
                       CustomDropdownMenu(
                         label: '作詞家',
                         dataList: _artistIdAndNameList,
                         controller: _lyricistNameController,
                       ),
-                      Gap(spaceWidthS),
+                      Gap(spaceS),
                       CustomDropdownMenu(
                         label: '作曲家',
                         dataList: _artistIdAndNameList,
                         controller: _composerNameController,
                       ),
-                      Gap(spaceWidthS),
+                      Gap(spaceS),
                       PickerForm(
                         label: '発売日',
                         controller: _releaseDateController,
@@ -258,7 +258,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                           );
                         },
                       ),
-                      Gap(spaceWidthS),
+                      Gap(spaceS),
                       ExpandedTextForm(
                         onTextChanged: (value) {
                           setState(() {
@@ -267,14 +267,14 @@ class _AddSongScreenState extends State<AddSongScreen> {
                         },
                         label: '備考',
                       ),
-                      Gap(spaceWidthS),
+                      Gap(spaceS),
                       StyledButton(
                         '登録',
                         onPressed: _isSending ? null : _submitSong,
                         isSending: _isSending,
                         buttonSize: buttonL,
                       ),
-                      Gap(spaceWidthS),
+                      Gap(spaceS),
                     ],
                   ),
                 ),

@@ -94,14 +94,14 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
                     validator: _nameValidator,
                     onSaved: (value) => _enteredName = value!,
                   ),
-                  Gap(spaceWidthS),
+                  Gap(spaceS),
                   ImageInput(
                     onPickImage: (image) {
                       _selectedImage = image;
                     },
                     label: 'アーティスト画像',
                   ),
-                  Gap(spaceWidthS),
+                  Gap(spaceS),
                   ExpandedTextForm(
                     label: '備考',
                     onTextChanged: (value) {
@@ -110,7 +110,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
                       });
                     },
                   ),
-                  Gap(spaceWidthS),
+                  Gap(spaceS),
                   // 登録ボタン
                   StyledButton(
                     '登録',
@@ -122,7 +122,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
                     isSending: _isSending,
                     buttonSize: buttonL,
                   ),
-                  Gap(spaceWidthS),
+                  Gap(spaceS),
                 ],
               ),
             ),

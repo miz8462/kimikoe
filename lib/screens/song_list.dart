@@ -46,9 +46,9 @@ class _SongListScreenState extends State<SongListScreen> {
         padding: screenPadding,
         child: Column(
           children: [
-            const Gap(spaceWidthS),
+            const Gap(spaceS),
             GroupCardM(group: widget.group),
-            const Gap(spaceWidthM),
+            const Gap(spaceM),
             Expanded(
               child: FutureBuilder(
                 future: _songListFuture,

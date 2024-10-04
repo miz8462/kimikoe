@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
@@ -22,7 +23,12 @@ Future<void> main() async {
       providerContainer.read(sessionProvider.notifier).state = data.session;
     },
   );
-  runApp(const ProviderScope(child: KimikoeApp()));
+
+  // スマホを横にしても画面が回転しない
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((fn) {
+    runApp(const ProviderScope(child: KimikoeApp()));
+  });
 }
 
 final supabase = Supabase.instance.client;

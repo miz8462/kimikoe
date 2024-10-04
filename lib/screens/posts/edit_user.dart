@@ -125,7 +125,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
                   _enteredUserName = value!;
                 },
               ),
-              const Gap(spaceWidthS),
+              const Gap(spaceS),
               InputForm(
                 initialValue: user?.email,
                 label: '*メール',
@@ -134,7 +134,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
                   _enteredEmailAddress = value!;
                 },
               ),
-              const Gap(spaceWidthS),
+              const Gap(spaceS),
               ImageInput(
                 onPickImage: (image) {
                   _selectedImage = image;
@@ -142,7 +142,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
                 label: 'ユーザー画像',
               ),
 
-              const Gap(spaceWidthS),
+              const Gap(spaceS),
               // 備考欄
               ExpandedTextForm(
                 initialValue: user?.comment,
@@ -153,7 +153,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
                 },
                 label: '備考',
               ),
-              const Gap(spaceWidthS),
+              const Gap(spaceS),
               // 登録ボタン
               StyledButton(
                 '登録',
@@ -161,7 +161,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
                 isSending: _isSending,
                 buttonSize: buttonL,
               ),
-              const Gap(spaceWidthS),
+              const Gap(spaceS),
             ],
           ),
         ),

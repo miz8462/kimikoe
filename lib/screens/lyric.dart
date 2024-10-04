@@ -32,11 +32,11 @@ class _LyricScreenState extends State<LyricScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Gap(spaceWidthM),
+              Gap(spaceM),
               // 曲情報
               Container(
                 height: 140,
-                padding: EdgeInsets.all(spaceWidthSS),
+                padding: EdgeInsets.all(spaceSS),
                 decoration: BoxDecoration(color: backgroundLightBlue),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -54,7 +54,7 @@ class _LyricScreenState extends State<LyricScreen> {
                           'Poison Palette',
                           fontSize: fontS,
                         ),
-                        Gap(spaceWidthL),
+                        Gap(spaceL),
                         // 作詞家
                         StyledText('作詞：TEI'),
                         // 作曲家
@@ -70,7 +70,7 @@ class _LyricScreenState extends State<LyricScreen> {
                   ],
                 ),
               ),
-              Gap(spaceWidthM),
+              Gap(spaceM),
               // アーティスト一覧、追加ボタン
               Row(
                 children: [
@@ -83,10 +83,10 @@ class _LyricScreenState extends State<LyricScreen> {
                       shape: BoxShape.circle, // 円形を指定
                     ),
                   ),
-                  Gap(spaceWidthSS),
+                  Gap(spaceSS),
 
                   // 名前
-                  const Text('Momo'), Gap(spaceWidthM),
+                  const Text('Momo'), Gap(spaceM),
 
                   // 色丸
                   Container(
@@ -97,10 +97,10 @@ class _LyricScreenState extends State<LyricScreen> {
                       shape: BoxShape.circle, // 円形を指定
                     ),
                   ),
-                  Gap(spaceWidthSS),
+                  Gap(spaceSS),
 
                   // 名前
-                  const Text('Sora'), Gap(spaceWidthM),
+                  const Text('Sora'), Gap(spaceM),
 
                   Container(
                     width: circleSize,
@@ -110,10 +110,10 @@ class _LyricScreenState extends State<LyricScreen> {
                       shape: BoxShape.circle, // 円形を指定
                     ),
                   ),
-                  Gap(spaceWidthSS),
+                  Gap(spaceSS),
                   // 名前
                   const Text('Shuka'),
-                  Gap(spaceWidthM),
+                  Gap(spaceM),
                   // 色丸
                   Container(
                     width: circleSize,
@@ -123,19 +123,19 @@ class _LyricScreenState extends State<LyricScreen> {
                       shape: BoxShape.circle, // 円形を指定
                     ),
                   ),
-                  Gap(spaceWidthSS),
+                  Gap(spaceSS),
                   // 名前
                   const Text('Ami'),
                 ],
               ),
-              Gap(spaceWidthM),
+              Gap(spaceM),
               BorderButton(
                 'メンバー追加',
                 onPressed: () {},
                 isSending: _isSending,
                 width: 200,
               ),
-              Gap(spaceWidthL),
+              Gap(spaceL),
               // 歌詞
               Column(
                 children: [
@@ -145,7 +145,7 @@ class _LyricScreenState extends State<LyricScreen> {
                   ),
                 ],
               ),
-              Gap(spaceWidthM),
+              Gap(spaceM),
             ],
           ),
         ),

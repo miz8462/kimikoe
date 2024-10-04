@@ -18,11 +18,11 @@ const double fontL = 24;
 const double fontLL = 28;
 
 // 主にGap()用
-const double spaceWidthSS = 6;
-const double spaceWidthS = 8;
-const double spaceWidthM = 12;
-const double spaceWidthL = 16;
-const double spaceWidthLL = 20;
+const double spaceSS = 6;
+const double spaceS = 8;
+const double spaceM = 12;
+const double spaceL = 16;
+const double spaceLL = 20;
 
 // ボタンの高さ
 const double buttonS = 30;
@@ -44,6 +44,7 @@ const noBorder = InputBorder.none;
 const double avaterSizeS = 16;
 const double avaterSizeM = 24;
 const double avaterSizeL = 32;
+const double avaterSizeLL = 40;
 
 const screenPadding = EdgeInsets.symmetric(horizontal: 20);
 

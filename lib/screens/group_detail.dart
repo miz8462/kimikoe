@@ -8,7 +8,7 @@ import 'package:kimikoe_app/models/idol.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/screens/widgets/buttons/styled_button.dart';
+import 'package:kimikoe_app/utils/crud_data.dart';
 
 class GroupDetailScreen extends StatefulWidget {
   const GroupDetailScreen({
@@ -39,50 +39,78 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
         .eq(ColumnName.groupId.name, widget.group.id!);
   }
 
+  void _deleteGroup() {
+    // todo: 確認ダイアログ
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('本当に削除しますか？'),
+            content: Text('削除したデータは復元できません。\nそれでも削除しますか？'),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    print(TableName.idolGroups.name);
+                    print(ColumnName.id.name);
+                    print((widget.group.id).toString());
+                    deleteDataFromTable(
+                      TableName.idolGroups.name,
+                      ColumnName.id.name,
+                      (widget.group.id).toString(),
+                    );
+
+                    if (!mounted) {
+                      return;
+                    }
+                    Navigator.of(context).pop();
+                    context.replaceNamed(RoutingPath.groupList);
+                  },
+                  child: Text(
+                    'はい',
+                    style:
+                        TextStyle(color: Theme.of(context).colorScheme.error),
+                  )),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    'いいえ',
+                  ))
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
-    const double buttonWidth = 180;
+    final data = {
+      'group': widget.group,
+      'isEditing': isEditing,
+    };
 
     return Scaffold(
-      appBar: TopBar(title: widget.group.name),
+      appBar: TopBar(
+          title: widget.group.name,
+          hasEditingMode: true,
+          deleteGroup: _deleteGroup,
+          data: data),
       body: Padding(
         padding: screenPadding,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Gap(spaceWidthS),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(widget.group.imageUrl!),
-                  radius: avaterSizeL,
-                ),
-                StyledButton(
-                  '編集する',
-                  onPressed: () {
-                    // todo: グループ編集ページへ
-                    final data = {
-                      'group': widget.group,
-                      'isEditing': isEditing,
-                    };
-                    context.pushNamed(RoutingPath.addGroup, extra: data);
-                  },
-                  textColor: textGray,
-                  backgroundColor: backgroundWhite,
-                  buttonSize: buttonM,
-                  borderSide: BorderSide(
-                      color: backgroundLightBlue, width: borderWidth),
-                  width: buttonWidth,
-                ),
-              ],
+            Gap(spaceS),
+            CircleAvatar(
+              backgroundImage: NetworkImage(widget.group.imageUrl!),
+              radius: avaterSizeLL,
             ),
-            Gap(spaceWidthS),
+            Gap(spaceS),
             Text(
               widget.group.comment!,
               style: TextStyle(fontSize: fontS),
             ),
-            Gap(spaceWidthS),
+            Gap(spaceS),
             Text('結成年：${widget.group.year}'),
             // todo: メンバー表示。グループIDに一致するアイドルを表示する
             Divider(
@@ -93,7 +121,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
               'メンバー',
               style: TextStyle(fontSize: fontM),
             ),
-            Gap(spaceWidthS),
+            Gap(spaceS),
             FutureBuilder(
               future: _memberFuture,
               builder: (context, snapshot) {
@@ -125,14 +153,14 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                                       borderRadius: borderRadius12,
                                       color: idol.color),
                                 ),
-                                Gap(spaceWidthS),
+                                Gap(spaceS),
                                 Text(
                                   idol.name,
                                   style: TextStyle(fontSize: fontS),
                                 ),
                               ],
                             ),
-                            Gap(spaceWidthSS),
+                            Gap(spaceSS),
                           ],
                         );
                       }),

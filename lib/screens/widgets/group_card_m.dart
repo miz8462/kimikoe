@@ -36,7 +36,7 @@ class GroupCardM extends StatelessWidget {
                 radius: avaterSizeL,
               ),
             ),
-            Gap(spaceWidthL),
+            Gap(spaceL),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

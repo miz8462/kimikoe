@@ -31,7 +31,7 @@ class _PickerFormState extends State<PickerForm> {
           border: InputBorder.none,
           label: Text(widget.label),
           hintStyle: TextStyle(color: textGray),
-          contentPadding: EdgeInsets.only(left: spaceWidthS),
+          contentPadding: EdgeInsets.only(left: spaceS),
         ),
         readOnly: true,
         onSaved: widget.onSaved,

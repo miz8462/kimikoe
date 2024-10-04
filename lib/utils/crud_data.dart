@@ -31,3 +31,8 @@ int fetchSelectedDataIdFromName(List<Map<String, dynamic>> list, String name) {
   final selectedDataId = selectedData[ColumnName.id.name];
   return selectedDataId;
 }
+
+Future<void> deleteDataFromTable(
+    String table, String column, String value) async {
+  await supabase.from(table).delete().eq(column, value);
+}

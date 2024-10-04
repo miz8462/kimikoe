@@ -25,7 +25,7 @@ class InputForm extends StatelessWidget {
           border: InputBorder.none,
           label: Text(label),
           hintStyle: TextStyle(color: textGray),
-          contentPadding: EdgeInsets.only(left: spaceWidthS),
+          contentPadding: EdgeInsets.only(left: spaceS),
         ),
         keyboardType: TextInputType.name,
         autocorrect: false,

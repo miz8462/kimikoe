@@ -28,7 +28,7 @@ class _ExpandedTextFormState extends State<ExpandedTextForm> {
           label: Text(widget.label!),
           hintStyle: const TextStyle(color: textGray, fontSize: fontM),
           contentPadding:
-              const EdgeInsets.only(left: spaceWidthS, bottom: bottomPadding),
+              const EdgeInsets.only(left: spaceS, bottom: bottomPadding),
         ),
         maxLines: null,
         onSaved: (value) {

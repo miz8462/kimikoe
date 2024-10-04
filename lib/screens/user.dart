@@ -9,7 +9,7 @@ import 'package:kimikoe_app/provider/current_user.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/screens/widgets/buttons/styled_button.dart';
-import 'package:kimikoe_app/utils/fetch_data.dart';
+import 'package:kimikoe_app/utils/crud_data.dart';
 
 class UserScreen extends ConsumerStatefulWidget {
   const UserScreen({super.key});
@@ -58,7 +58,7 @@ class _UserScreenState extends ConsumerState<UserScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Gap(spaceWidthS),
+            Gap(spaceS),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -83,14 +83,14 @@ class _UserScreenState extends ConsumerState<UserScreen> {
                 ),
               ],
             ),
-            Gap(spaceWidthS),
+            Gap(spaceS),
             Text(
               user.name,
               style: TextStyle(
                 fontSize: fontLL,
               ),
             ),
-            Gap(spaceWidthS),
+            Gap(spaceS),
             Text(user.comment),
           ],
         ),
