@@ -13,7 +13,7 @@ class IdolGroupListScreen extends StatefulWidget {
 }
 
 class _IdolGroupListScreenState extends State<IdolGroupListScreen> {
-  late Future _groupFuture;
+  late Stream _groupStream;
 
   @override
   void initState() {
@@ -22,7 +22,9 @@ class _IdolGroupListScreenState extends State<IdolGroupListScreen> {
   }
 
   void _loadGroups() {
-    _groupFuture = supabase.from(TableName.idolGroups.name).select();
+    _groupStream = supabase
+        .from(TableName.idolGroups.name)
+        .stream(primaryKey: [ColumnName.id.name]);
   }
 
   @override
@@ -30,9 +32,10 @@ class _IdolGroupListScreenState extends State<IdolGroupListScreen> {
     return Scaffold(
       appBar: TopBar(
         imageUrl: 'assets/images/Kimikoe_Logo.png',
+        showLeading: false,
       ),
-      body: FutureBuilder(
-        future: _groupFuture,
+      body: StreamBuilder(
+        stream: _groupStream,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -70,9 +73,7 @@ class _IdolGroupListScreenState extends State<IdolGroupListScreen> {
                   comment: group[ColumnName.comment.name],
                 );
 
-                return GroupCardL(
-                  group: groupInfo,
-                );
+                return GroupCardL(group: groupInfo);
               },
             );
           }

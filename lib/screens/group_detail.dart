@@ -40,7 +40,6 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
   }
 
   void _deleteGroup() {
-    // todo: 確認ダイアログ
     showDialog(
         context: context,
         builder: (context) {
@@ -50,9 +49,6 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
             actions: [
               TextButton(
                   onPressed: () {
-                    print(TableName.idolGroups.name);
-                    print(ColumnName.id.name);
-                    print((widget.group.id).toString());
                     deleteDataFromTable(
                       TableName.idolGroups.name,
                       ColumnName.id.name,
@@ -63,7 +59,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                       return;
                     }
                     Navigator.of(context).pop();
-                    context.replaceNamed(RoutingPath.groupList);
+                    context.goNamed(RoutingPath.groupList);
                   },
                   child: Text(
                     'はい',
