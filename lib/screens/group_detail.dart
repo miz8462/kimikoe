@@ -8,6 +8,7 @@ import 'package:kimikoe_app/models/idol.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
+import 'package:kimikoe_app/screens/widgets/delete_alert_dialog.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
 
 class GroupDetailScreen extends StatefulWidget {
@@ -25,6 +26,7 @@ class GroupDetailScreen extends StatefulWidget {
 class _GroupDetailScreenState extends State<GroupDetailScreen> {
   late Future _memberFuture;
   bool isEditing = true;
+  bool isGroup = true;
 
   @override
   void initState() {
@@ -41,41 +43,19 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
 
   void _deleteGroup() {
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('本当に削除しますか？'),
-            content: Text('削除したデータは復元できません。\nそれでも削除しますか？'),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    deleteDataFromTable(
-                      TableName.idolGroups.name,
-                      ColumnName.id.name,
-                      (widget.group.id).toString(),
-                    );
-
-                    if (!mounted) {
-                      return;
-                    }
-                    Navigator.of(context).pop();
-                    context.goNamed(RoutingPath.groupList);
-                  },
-                  child: Text(
-                    'はい',
-                    style:
-                        TextStyle(color: Theme.of(context).colorScheme.error),
-                  )),
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    'いいえ',
-                  ))
-            ],
-          );
-        });
+      context: context,
+      builder: (context) {
+        return DeleteAlertDialog(
+          onDelete: () {
+            deleteDataFromTable(
+              TableName.idolGroups.name,
+              ColumnName.id.name,
+              (widget.group.id).toString(),
+            );
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -87,10 +67,12 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
 
     return Scaffold(
       appBar: TopBar(
-          title: widget.group.name,
-          hasEditingMode: true,
-          deleteGroup: _deleteGroup,
-          data: data),
+        title: widget.group.name,
+        hasEditingMode: isEditing,
+        isGroup: isGroup,
+        delete: _deleteGroup,
+        data: data,
+      ),
       body: Padding(
         padding: screenPadding,
         child: Column(
@@ -130,19 +112,37 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                 final memberList = snapshot.data as List;
                 return Expanded(
                   child: ListView.builder(
-                      itemCount: memberList.length,
-                      itemBuilder: (context, index) {
-                        final idol = Idol(
-                          name: memberList[index][ColumnName.cName.name],
-                          color: Color(int.parse(
-                              memberList[index][ColumnName.color.name])),
-                        );
-                        return Column(
-                          children: [
-                            Row(
+                    itemCount: memberList.length,
+                    itemBuilder: (context, index) {
+                      final idol = Idol(
+                        name: memberList[index][ColumnName.cName.name],
+                        imageUrl: memberList[index][ColumnName.imageUrl.name],
+                        color: Color(
+                          int.parse(memberList[index][ColumnName.color.name]),
+                        ),
+                        // birthDay: memberList[index][ColumnName.birthday.name],
+                        comment: memberList[index][ColumnName.comment.name],
+                        debutYear: memberList[index][ColumnName.debutYear.name],
+                        groupId: memberList[index][ColumnName.groupId.name],
+                        height: memberList[index][ColumnName.height.name],
+                        hometown: memberList[index][ColumnName.hometown.name],
+                        instagramUrl: memberList[index]
+                            [ColumnName.instagramUrl.name],
+                        officialUrl: memberList[index]
+                            [ColumnName.officialUrl.name],
+                        twitterUrl: memberList[index]
+                            [ColumnName.twitterUrl.name],
+                      );
+                      return Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              context.pushNamed(RoutingPath.idolDetail,
+                                  extra: idol);
+                            },
+                            child: Row(
                               children: [
                                 Container(
-                                  // color: idol.color,
                                   height: 24,
                                   width: 24,
                                   decoration: BoxDecoration(
@@ -156,10 +156,12 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                                 ),
                               ],
                             ),
-                            Gap(spaceSS),
-                          ],
-                        );
-                      }),
+                          ),
+                          Gap(spaceSS),
+                        ],
+                      );
+                    },
+                  ),
                 );
               },
             )

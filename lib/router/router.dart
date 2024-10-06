@@ -3,11 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/main.dart';
+import 'package:kimikoe_app/models/idol.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/user.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/bottom_bar.dart';
 import 'package:kimikoe_app/screens/group_detail.dart';
+import 'package:kimikoe_app/screens/idol_detail.dart';
 import 'package:kimikoe_app/screens/idol_group_list.dart';
 import 'package:kimikoe_app/screens/lyric.dart';
 import 'package:kimikoe_app/screens/posts/add_artist.dart';
@@ -79,16 +81,28 @@ final router = GoRouter(
                   },
                   routes: [
                     GoRoute(
-                      path: RoutingPath.groupDetail,
-                      name: RoutingPath.groupDetail,
-                      pageBuilder: (context, state) {
-                        final groupData = state.extra as IdolGroup;
-                        return MaterialPage(
-                          child: GroupDetailScreen(group: groupData),
-                          key: state.pageKey,
-                        );
-                      },
-                    ),
+                        path: RoutingPath.groupDetail,
+                        name: RoutingPath.groupDetail,
+                        pageBuilder: (context, state) {
+                          final groupData = state.extra as IdolGroup;
+                          return MaterialPage(
+                            child: GroupDetailScreen(group: groupData),
+                            key: state.pageKey,
+                          );
+                        },
+                        routes: [
+                          GoRoute(
+                            path: RoutingPath.idolDetail,
+                            name: RoutingPath.idolDetail,
+                            pageBuilder: (context, state) {
+                              final idolData = state.extra as Idol;
+                              return MaterialPage(
+                                child: IdolDetailScreen(idol: idolData),
+                                key: state.pageKey,
+                              );
+                            },
+                          ),
+                        ]),
                   ],
                 ),
                 GoRoute(

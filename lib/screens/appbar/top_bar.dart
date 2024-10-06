@@ -10,15 +10,17 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
     this.title,
     this.showLeading = true,
     this.hasEditingMode = false,
+    this.isGroup = false,
     this.data,
-    this.deleteGroup,
+    this.delete,
   });
   final String? imageUrl;
   final String? title;
   final bool showLeading;
   final bool hasEditingMode;
+  final bool isGroup;
   final Map<String, Object>? data;
-  final void Function()? deleteGroup;
+  final void Function()? delete;
 
   @override
   Widget build(BuildContext context) {
@@ -45,41 +47,71 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       centerTitle: true,
+      // 編集、削除機能。グループの時は削除はなし
       actions: hasEditingMode
-          ? [
-              Padding(
-                padding: const EdgeInsets.only(top: 12, right: 16),
-                child: MenuAnchor(
-                  menuChildren: [
-                    MenuItemButton(
-                      onPressed: () {
-                        context.pushNamed(RoutingPath.addGroup, extra: data);
+          ? isGroup
+              ? [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12, right: 16),
+                    child: MenuAnchor(
+                      menuChildren: [
+                        MenuItemButton(
+                          onPressed: () {
+                            context.pushNamed(RoutingPath.addGroup,
+                                extra: data);
+                          },
+                          child: Text('編集'),
+                        ),
+                      ],
+                      builder: (_, MenuController controller, Widget? child) {
+                        return IconButton(
+                            onPressed: () {
+                              if (controller.isOpen) {
+                                controller.close();
+                              } else {
+                                controller.open();
+                              }
+                            },
+                            icon: Icon(Icons.more_vert));
                       },
-                      child: Text('編集'),
                     ),
-                    MenuItemButton(
-                      onPressed: deleteGroup,
-                      child: Text(
-                        '削除',
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.error),
-                      ),
+                  ),
+                ]
+              : [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12, right: 16),
+                    child: MenuAnchor(
+                      menuChildren: [
+                        MenuItemButton(
+                          onPressed: () {
+                            context.pushNamed(RoutingPath.addGroup,
+                                extra: data);
+                          },
+                          child: Text('編集'),
+                        ),
+                        MenuItemButton(
+                          onPressed: delete,
+                          child: Text(
+                            '削除',
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.error),
+                          ),
+                        ),
+                      ],
+                      builder: (_, MenuController controller, Widget? child) {
+                        return IconButton(
+                            onPressed: () {
+                              if (controller.isOpen) {
+                                controller.close();
+                              } else {
+                                controller.open();
+                              }
+                            },
+                            icon: Icon(Icons.more_vert));
+                      },
                     ),
-                  ],
-                  builder: (_, MenuController controller, Widget? child) {
-                    return IconButton(
-                        onPressed: () {
-                          if (controller.isOpen) {
-                            controller.close();
-                          } else {
-                            controller.open();
-                          }
-                        },
-                        icon: Icon(Icons.more_vert));
-                  },
-                ),
-              ),
-            ]
+                  ),
+                ]
           : null,
       bottom: AppBarBottom(),
     );

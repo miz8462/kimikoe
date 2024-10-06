@@ -5,6 +5,7 @@ class RoutingPath {
   static const songList = 'song_list';
   static const lyric = 'lyric';
   static const groupDetail = 'group_detail';
+  static const idolDetail = 'idol_detail';
 
   static const addSong = '/add_song';
   static const addGroup = '/add_group';

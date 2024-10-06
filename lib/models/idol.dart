@@ -2,7 +2,6 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/models/artist.dart';
-import 'package:kimikoe_app/models/idol_group.dart';
 
 class Idol extends Artist {
   const Idol({
@@ -10,7 +9,7 @@ class Idol extends Artist {
     super.imageUrl,
     super.comment,
     this.color,
-    this.groupName,
+    this.groupId,
     this.birthDay,
     this.height,
     this.hometown,
@@ -21,11 +20,11 @@ class Idol extends Artist {
   });
 
   final Color? color;
-  final IdolGroup? groupName;
-  final DateTime? birthDay;
-  final double? height;
+  final int? groupId;
+  final String? birthDay;
+  final int? height;
   final String? hometown;
-  final DateTime? debutYear;
+  final int? debutYear;
   final String? officialUrl;
   final String? twitterUrl;
   final String? instagramUrl;
