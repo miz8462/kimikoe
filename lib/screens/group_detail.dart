@@ -115,6 +115,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                     itemCount: memberList.length,
                     itemBuilder: (context, index) {
                       final idol = Idol(
+                        id: memberList[index][ColumnName.id.name],
                         name: memberList[index][ColumnName.cName.name],
                         imageUrl: memberList[index][ColumnName.imageUrl.name],
                         color: Color(
