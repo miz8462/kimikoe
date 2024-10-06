@@ -54,6 +54,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
   var _enteredIdolName = '';
   Color _selectedColor = Colors.lightBlue;
   File? _selectedImage;
+  String? imageUrl;
   String? _selectedBirthday;
   String? _selectedHeight;
   String? _enteredHometown;
@@ -74,10 +75,15 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     if (widget.idol != null) {
       _idol = widget.idol!;
     }
-
     _isEditing = widget.isEditing!;
 
     if (_isEditing) {
+      _selectedColor = _idol.color!;
+
+      imageUrl = supabase.storage
+          .from(TableName.images.name)
+          .getPublicUrl(_idol.imageUrl!);
+
       _groupNameController = TextEditingController(text: _idol.group!.name);
       _birthdayController = TextEditingController(text: _idol.birthDay);
       _heightController = TextEditingController(text: _idol.height.toString());
@@ -163,19 +169,35 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         .replaceAll('(', '')
         .replaceAll(')', '');
 
-    await await supabase.from(TableName.idol.name).insert({
-      ColumnName.cName.name: _enteredIdolName,
-      ColumnName.groupId.name: selectedGroupId,
-      ColumnName.color.name: selectedColor,
-      ColumnName.imageUrl.name: _selectedImage == null
-          ? defaultPathNoImage
-          : imagePathWithCreatedAtJPG,
-      ColumnName.birthday.name: _selectedBirthday,
-      ColumnName.height.name: _selectedHeight,
-      ColumnName.hometown.name: _enteredHometown,
-      ColumnName.debutYear.name: _selectedDebutYear,
-      ColumnName.comment.name: _enteredComment,
-    });
+    if (_isEditing) {
+      await supabase.from(TableName.idol.name).update({
+        ColumnName.cName.name: _enteredIdolName,
+        ColumnName.groupId.name: selectedGroupId,
+        ColumnName.color.name: selectedColor,
+        ColumnName.imageUrl.name: _selectedImage == null
+            ? defaultPathNoImage
+            : imagePathWithCreatedAtJPG,
+        ColumnName.birthday.name: _selectedBirthday,
+        ColumnName.height.name: _selectedHeight,
+        ColumnName.hometown.name: _enteredHometown,
+        ColumnName.debutYear.name: _selectedDebutYear,
+        ColumnName.comment.name: _enteredComment,
+      }).eq(ColumnName.id.name, _idol.id!);
+    } else {
+      await supabase.from(TableName.idol.name).insert({
+        ColumnName.cName.name: _enteredIdolName,
+        ColumnName.groupId.name: selectedGroupId,
+        ColumnName.color.name: selectedColor,
+        ColumnName.imageUrl.name: _selectedImage == null
+            ? defaultPathNoImage
+            : imagePathWithCreatedAtJPG,
+        ColumnName.birthday.name: _selectedBirthday,
+        ColumnName.height.name: _selectedHeight,
+        ColumnName.hometown.name: _enteredHometown,
+        ColumnName.debutYear.name: _selectedDebutYear,
+        ColumnName.comment.name: _enteredComment,
+      });
+    }
 
     if (_selectedImage != null) {
       await supabase.storage
@@ -279,7 +301,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(_birthdayController.text);
+    print(_selectedColor);
     return _isFetching
         ? Center(child: CircularProgressIndicator())
         : Scaffold(
@@ -332,6 +354,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       ),
                       const Gap(spaceS),
                       ImageInput(
+                        imageUrl: imageUrl,
                         onPickImage: (image) {
                           _selectedImage = image;
                         },
