@@ -44,7 +44,6 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
   var _enteredName = '';
   File? _selectedImage;
   String? _selectedYear;
-  late String _initialYear;
   var _enteredComment = '';
 
   var _isSending = false;
@@ -62,8 +61,8 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     _isEditing = widget.isEditing!;
 
     if (_isEditing) {
-      _initialYear = widget.group!.year.toString();
-      _yearController = TextEditingController(text: _initialYear);
+      final initialYear = widget.group!.year.toString();
+      _yearController = TextEditingController(text: initialYear);
     } else {
       _yearController = TextEditingController(text: '2020');
     }

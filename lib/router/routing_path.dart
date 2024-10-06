@@ -9,7 +9,7 @@ class RoutingPath {
 
   static const addSong = '/add_song';
   static const addGroup = '/add_group';
-  static const addMember = '/add_member';
+  static const addIdol = '/add_member';
   static const addArtist = '/add_artist';
 
   static const userDetails = '/user_details';

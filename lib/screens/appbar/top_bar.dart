@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/router/routing_path.dart';
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
   const TopBar({
@@ -11,6 +10,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
     this.showLeading = true,
     this.hasEditingMode = false,
     this.isGroup = false,
+    this.editRoute,
     this.data,
     this.delete,
   });
@@ -19,6 +19,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showLeading;
   final bool hasEditingMode;
   final bool isGroup;
+  final String? editRoute;
   final Map<String, Object>? data;
   final void Function()? delete;
 
@@ -57,8 +58,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                       menuChildren: [
                         MenuItemButton(
                           onPressed: () {
-                            context.pushNamed(RoutingPath.addGroup,
-                                extra: data);
+                            context.pushNamed(editRoute!, extra: data);
                           },
                           child: Text('編集'),
                         ),
@@ -84,8 +84,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                       menuChildren: [
                         MenuItemButton(
                           onPressed: () {
-                            context.pushNamed(RoutingPath.addGroup,
-                                extra: data);
+                            context.pushNamed(editRoute!, extra: data);
                           },
                           child: Text('編集'),
                         ),

@@ -70,6 +70,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
         title: widget.group.name,
         hasEditingMode: isEditing,
         isGroup: isGroup,
+        editRoute: RoutingPath.addGroup,
         delete: _deleteGroup,
         data: data,
       ),
@@ -121,10 +122,10 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                         color: Color(
                           int.parse(memberList[index][ColumnName.color.name]),
                         ),
-                        // birthDay: memberList[index][ColumnName.birthday.name],
+                        birthDay: memberList[index][ColumnName.birthday.name],
                         comment: memberList[index][ColumnName.comment.name],
                         debutYear: memberList[index][ColumnName.debutYear.name],
-                        groupId: memberList[index][ColumnName.groupId.name],
+                        group: widget.group,
                         height: memberList[index][ColumnName.height.name],
                         hometown: memberList[index][ColumnName.hometown.name],
                         instagramUrl: memberList[index]

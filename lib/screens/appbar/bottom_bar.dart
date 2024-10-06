@@ -58,7 +58,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                   'Add Idol',
                   onPressed: () {
                     Navigator.of(context).pop();
-                    context.push(RoutingPath.addMember);
+                    context.push(RoutingPath.addIdol);
                   },
                 ),
                 StyledButton(

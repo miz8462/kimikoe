@@ -10,6 +10,7 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/enums/idol_colors.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
+import 'package:kimikoe_app/models/idol.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/screens/widgets/buttons/circular_button.dart';
 import 'package:kimikoe_app/screens/widgets/buttons/image_input_button.dart';
@@ -29,7 +30,14 @@ import 'package:kimikoe_app/utils/validator/validator.dart';
 List<Color> colorsList = IdolColors.values.map((color) => color.rgb).toList();
 
 class AddIdolScreen extends StatefulWidget {
-  const AddIdolScreen({super.key});
+  const AddIdolScreen({
+    super.key,
+    this.idol,
+    this.isEditing,
+  });
+
+  final Idol? idol;
+  final bool? isEditing;
 
   @override
   State<AddIdolScreen> createState() => _AddIdolScreenState();
@@ -37,10 +45,11 @@ class AddIdolScreen extends StatefulWidget {
 
 class _AddIdolScreenState extends State<AddIdolScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _groupNameController = TextEditingController();
-  final _birthdayController = TextEditingController();
-  final _heightController = TextEditingController();
-  final _debutYearController = TextEditingController();
+  late TextEditingController _groupNameController;
+  late TextEditingController _birthdayController;
+  late TextEditingController _heightController;
+  late TextEditingController _debutYearController;
+  late Idol _idol;
 
   var _enteredIdolName = '';
   Color _selectedColor = Colors.lightBlue;
@@ -54,11 +63,32 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
   late List<Map<String, dynamic>> _groupIdAndNameList;
   var _isSending = false;
   var _isFetching = true;
+  late bool _isEditing;
 
   @override
   void initState() {
     super.initState();
     _fetchIdAndNameGroupList();
+
+    // 編集の場合の初期化
+    if (widget.idol != null) {
+      _idol = widget.idol!;
+    }
+
+    _isEditing = widget.isEditing!;
+
+    if (_isEditing) {
+      _groupNameController = TextEditingController(text: _idol.group!.name);
+      _birthdayController = TextEditingController(text: _idol.birthDay);
+      _heightController = TextEditingController(text: _idol.height.toString());
+      final initialDebutYear = widget.idol!.debutYear.toString();
+      _debutYearController = TextEditingController(text: initialDebutYear);
+    } else {
+      _groupNameController = TextEditingController();
+      _birthdayController = TextEditingController();
+      _heightController = TextEditingController();
+      _debutYearController = TextEditingController();
+    }
   }
 
   Future<void> _fetchIdAndNameGroupList() async {
@@ -249,12 +279,13 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(_birthdayController.text);
     return _isFetching
         ? Center(child: CircularProgressIndicator())
         : Scaffold(
             appBar: TopBar(
-              title: 'アイドル登録',
-              showLeading: false,
+              title: _isEditing ? 'アイドル編集' : 'アイドル登録',
+              showLeading: _isEditing ? true : false,
             ),
             body: SingleChildScrollView(
               child: Form(
@@ -269,6 +300,8 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                         style: TextStyle(color: textGray, fontSize: fontSS),
                       ),
                       InputForm(
+                        initialValue:
+                            _isEditing ? _idol.name : _enteredIdolName,
                         label: '*名前',
                         validator: _nameValidator,
                         onSaved: (value) {
@@ -282,7 +315,6 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                         controller: _groupNameController,
                       ),
                       const Gap(spaceS),
-                      // 歌詞で表示する個人カラー選択
                       Row(
                         children: [
                           CircularButton(
@@ -333,6 +365,8 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       ),
                       const Gap(spaceS),
                       InputForm(
+                          initialValue:
+                              _isEditing ? _idol.hometown : _enteredHometown,
                           label: '出身地',
                           validator: _hometownValidator,
                           onSaved: (value) {
@@ -353,6 +387,8 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       ),
                       const Gap(spaceS),
                       ExpandedTextForm(
+                        initialValue:
+                            _isEditing ? _idol.comment : _enteredComment,
                         onTextChanged: (value) {
                           setState(() {
                             _enteredComment = value!;

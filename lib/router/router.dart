@@ -149,12 +149,21 @@ final router = GoRouter(
                   );
                 }),
             GoRoute(
-              path: RoutingPath.addMember,
-              name: RoutingPath.addMember,
-              pageBuilder: (context, state) => NoTransitionPage(
-                key: state.pageKey,
-                child: AddIdolScreen(),
-              ),
+              path: RoutingPath.addIdol,
+              name: RoutingPath.addIdol,
+              pageBuilder: (context, state) {
+                final Map<String, dynamic>? data;
+                data = state.extra as Map<String, dynamic>?;
+                final Idol? idol = data?['idol'] ?? Idol(name: '');
+                final bool? isEditing = data?['isEditing'] ?? false;
+                return NoTransitionPage(
+                  key: state.pageKey,
+                  child: AddIdolScreen(
+                    idol: idol,
+                    isEditing: isEditing,
+                  ),
+                );
+              },
             ),
             GoRoute(
               name: RoutingPath.addArtist,
