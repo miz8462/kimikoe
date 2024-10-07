@@ -4,13 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/main.dart';
+import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
+import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/utils/validator/validator.dart';
 import 'package:kimikoe_app/screens/widgets/buttons/image_input_button.dart';
 import 'package:kimikoe_app/screens/widgets/buttons/styled_button.dart';
 import 'package:kimikoe_app/screens/widgets/forms/expanded_text_form.dart';
 import 'package:kimikoe_app/screens/widgets/forms/text_input_form.dart';
+import 'package:kimikoe_app/utils/crud_data.dart';
+import 'package:kimikoe_app/utils/validator/validator.dart';
 
 class AddArtistScreen extends StatefulWidget {
   const AddArtistScreen({super.key});
@@ -27,7 +29,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
 
   var _isSending = false;
 
-  Future<void> _saveArtist() async {
+  Future<void> _submitArtist() async {
     setState(() {
       _isSending = true;
     });
@@ -39,17 +41,17 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
     final imagePath = _selectedImage?.path.split('/').last.split('.').first;
     final imagePathWithCreatedAtJPG =
         '$imagePath${(DateTime.now().toString()).replaceAll(' ', '-')}.jpg';
-
-    await supabase.from('artists').insert({
-      'name': _enteredName,
-      'image_url': imagePathWithCreatedAtJPG,
-      'comment': _enteredComment
-    });
+    insertArtistData(
+        name: _enteredName,
+        imageUrl: imagePathWithCreatedAtJPG,
+        comment: _enteredComment);
 
     if (_selectedImage != null) {
-      await supabase.storage
-          .from('images')
-          .upload(imagePathWithCreatedAtJPG, _selectedImage!);
+      uploadImageToStorage(
+        table: TableName.images.name,
+        path: imagePathWithCreatedAtJPG,
+        file: _selectedImage!,
+      );
     }
     setState(() {
       _isSending = false;
@@ -59,7 +61,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
       return;
     }
 
-    context.pushReplacement('/group_list');
+    context.pushReplacement(RoutingPath.groupList);
   }
 
   String? _nameValidator(String? value) {
@@ -111,14 +113,9 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
                     },
                   ),
                   Gap(spaceS),
-                  // 登録ボタン
                   StyledButton(
                     '登録',
-                    onPressed: _isSending
-                        ? null
-                        : () {
-                            _saveArtist();
-                          },
+                    onPressed: _isSending ? null : _submitArtist,
                     isSending: _isSending,
                     buttonSize: buttonL,
                   ),

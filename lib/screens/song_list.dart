@@ -61,10 +61,11 @@ class _SongListScreenState extends State<SongListScreen> {
                   }
                   final songList = snapshot.data! as List;
                   return ListView.builder(
-                      itemCount: songList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return SongCard(songData: songList[index]);
-                      });
+                    itemCount: songList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return SongCard(songData: songList[index]);
+                    },
+                  );
                 },
               ),
             ),

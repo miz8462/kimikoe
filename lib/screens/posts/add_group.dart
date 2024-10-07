@@ -7,7 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
@@ -18,6 +17,7 @@ import 'package:kimikoe_app/screens/widgets/forms/drum_roll_form.dart';
 import 'package:kimikoe_app/screens/widgets/forms/expanded_text_form.dart';
 import 'package:kimikoe_app/screens/widgets/forms/text_input_form.dart';
 import 'package:kimikoe_app/utils/create_image_name_with_jpg.dart';
+import 'package:kimikoe_app/utils/crud_data.dart';
 import 'package:kimikoe_app/utils/formatter.dart';
 import 'package:kimikoe_app/utils/pickers/year_picker.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
@@ -68,6 +68,12 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     }
   }
 
+  @override
+  void dispose() {
+    _yearController.dispose();
+    super.dispose();
+  }
+
   String? _groupNameValidator(String? value) {
     return textInputValidator(value, 'グループ名');
   }
@@ -107,14 +113,18 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     }
 
     // e.g. /aaa/bbb/ccc/image.png
-    late String? imagePathWithCreatedAtJPG;
+    late String? imagePath;
     if (_isEditing && !_isImageChanged) {
-      imagePathWithCreatedAtJPG =
-          createImageNameWithJPG(imageUrl: _group.imageUrl);
+      imagePath = createImageNameWithJPG(imageUrl: _group.imageUrl);
     } else {
-      imagePathWithCreatedAtJPG = createImageNameWithJPG(image: _selectedImage);
+      if (_selectedImage == null) {
+        imagePath = defaultPathNoImage;
+      } else {
+        imagePath = createImageNameWithJPG(image: _selectedImage);
+      }
     }
 
+    // todo: グループリストのプロバイダー化
     // ref.read(idolGroupsProvider.notifier).addGroup(
     //       _enteredName,
     //       _selectedImage == null
@@ -123,32 +133,31 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     //       _selectedYear == null ? null : int.tryParse(_selectedYear!),
     //       _enteredComment,
     //     );
+
     if (_isEditing) {
       // 修正
-      await supabase.from(TableName.idolGroups.name).update({
-        ColumnName.cName.name: _enteredName,
-        ColumnName.imageUrl.name: imagePathWithCreatedAtJPG,
-        ColumnName.yearFormingGroups.name:
-            _selectedYear == null ? null : int.tryParse(_selectedYear!),
-        ColumnName.comment.name: _enteredComment
-      }).eq(ColumnName.id.name, (_group.id).toString());
+      updateIdolGroup(
+        name: _enteredName,
+        imageUrl: imagePath,
+        year: _selectedYear,
+        comment: _enteredComment,
+        groupId: (_group.id).toString(),
+      );
     } else {
       // 登録
-      await supabase.from(TableName.idolGroups.name).insert({
-        'name': _enteredName,
-        'image_url': _selectedImage == null
-            ? defaultPathNoImage
-            : imagePathWithCreatedAtJPG,
-        'year_forming_group':
-            _selectedYear == null ? null : int.tryParse(_selectedYear!),
-        'comment': _enteredComment
-      });
+      insertIdolGroupData(
+        name: _enteredName,
+        imageUrl: imagePath,
+        year: _selectedYear,
+        comment: _enteredComment,
+      );
     }
 
     if (_selectedImage != null) {
-      await supabase.storage
-          .from('images')
-          .upload(imagePathWithCreatedAtJPG!, _selectedImage!);
+      uploadImageToStorage(
+          table: TableName.images.name,
+          path: imagePath!,
+          file: _selectedImage!);
     }
 
     setState(() {

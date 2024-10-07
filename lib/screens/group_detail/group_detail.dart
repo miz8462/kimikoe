@@ -1,0 +1,81 @@
+import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
+import 'package:kimikoe_app/models/idol_group.dart';
+import 'package:kimikoe_app/router/routing_path.dart';
+import 'package:kimikoe_app/screens/appbar/top_bar.dart';
+import 'package:kimikoe_app/screens/group_detail/widget/group_info.dart';
+import 'package:kimikoe_app/screens/group_detail/widget/group_members.dart';
+import 'package:kimikoe_app/screens/widgets/delete_alert_dialog.dart';
+import 'package:kimikoe_app/utils/crud_data.dart';
+
+class GroupDetailScreen extends StatefulWidget {
+  const GroupDetailScreen({
+    super.key,
+    required this.group,
+  });
+
+  final IdolGroup group;
+
+  @override
+  State<GroupDetailScreen> createState() => _GroupDetailScreenState();
+}
+
+class _GroupDetailScreenState extends State<GroupDetailScreen> {
+  bool isEditing = true;
+  bool isGroup = true;
+
+  void _deleteGroup() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return DeleteAlertDialog(
+          onDelete: () {
+            deleteDataFromTable(
+              table: TableName.idolGroups.name,
+              column: ColumnName.id.name,
+              value: (widget.group.id).toString(),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final data = {
+      'group': widget.group,
+      'isEditing': isEditing,
+    };
+
+    return Scaffold(
+      appBar: TopBar(
+        title: widget.group.name,
+        hasEditingMode: isEditing,
+        isGroup: isGroup,
+        editRoute: RoutingPath.addGroup,
+        delete: _deleteGroup,
+        data: data,
+      ),
+      body: Padding(
+        padding: screenPadding,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Gap(spaceS),
+            GroupInfo(
+              group: widget.group,
+            ),
+            Divider(
+              color: mainBlue.withOpacity(0.3),
+              thickness: 2,
+            ),
+            GroupMembers(group: widget.group),
+          ],
+        ),
+      ),
+    );
+  }
+}

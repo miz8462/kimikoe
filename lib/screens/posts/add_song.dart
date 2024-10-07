@@ -53,6 +53,15 @@ class _AddSongScreenState extends State<AddSongScreen> {
     _fetchIdAndNameLists();
   }
 
+  @override
+  void dispose() {
+    _groupNameController.dispose();
+    _lyricistNameController.dispose();
+    _composerNameController.dispose();
+    _releaseDateController.dispose();
+    super.dispose();
+  }
+
   Future<void> _fetchIdAndNameLists() async {
     final groupIdAndNameList =
         await fetchIdAndNameList(TableName.idolGroups.name);
@@ -102,7 +111,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
       await _fetchIdAndNameLists();
     }
     selectedGroupId =
-        fetchSelectedDataIdFromName(_groupIdAndNameList, groupName);
+        fetchSelectedDataIdFromName(list: _groupIdAndNameList, name: groupName);
     final lyricistName = _lyricistNameController.text;
     final isSelectedLyricistInList =
         isInList(_artistIdAndNameList, lyricistName);
@@ -113,8 +122,8 @@ class _AddSongScreenState extends State<AddSongScreen> {
       });
       await _fetchIdAndNameLists();
     }
-    selectedLyricistId =
-        fetchSelectedDataIdFromName(_artistIdAndNameList, lyricistName);
+    selectedLyricistId = fetchSelectedDataIdFromName(
+        list: _artistIdAndNameList, name: lyricistName);
 
     final composerName = _composerNameController.text;
     final isSelectedComposerInList =
@@ -126,8 +135,8 @@ class _AddSongScreenState extends State<AddSongScreen> {
       });
       await _fetchIdAndNameLists();
     }
-    selectedComposerId =
-        fetchSelectedDataIdFromName(_artistIdAndNameList, composerName);
+    selectedComposerId = fetchSelectedDataIdFromName(
+        list: _artistIdAndNameList, name: composerName);
 
     // 歌詞登録
     await supabase.from(TableName.songs.name).insert({

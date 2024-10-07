@@ -4,6 +4,7 @@ import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/screens/widgets/group_card_l.dart';
+import 'package:kimikoe_app/utils/crud_data.dart';
 
 class IdolGroupListScreen extends StatefulWidget {
   const IdolGroupListScreen({super.key});
@@ -22,9 +23,10 @@ class _IdolGroupListScreenState extends State<IdolGroupListScreen> {
   }
 
   void _loadGroups() {
-    _groupStream = supabase
-        .from(TableName.idolGroups.name)
-        .stream(primaryKey: [ColumnName.id.name]);
+    _groupStream = fetchDatabyStream(
+      table: TableName.idolGroups.name,
+      id: ColumnName.id.name,
+    );
   }
 
   @override
@@ -58,10 +60,8 @@ class _IdolGroupListScreenState extends State<IdolGroupListScreen> {
               ),
               itemCount: groups.length,
               itemBuilder: (BuildContext context, int index) {
-                // todo: バケットはパブリックでいいの？
                 // IdolGroupクラスを初期化
                 final group = groups[index];
-
                 final imageUrl = supabase.storage
                     .from(TableName.images.name)
                     .getPublicUrl(group[ColumnName.imageUrl.name]);

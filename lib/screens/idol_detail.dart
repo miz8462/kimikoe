@@ -26,9 +26,9 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
         return DeleteAlertDialog(
           onDelete: () {
             deleteDataFromTable(
-              TableName.idol.name,
-              ColumnName.id.name,
-              (widget.idol.id).toString(),
+              table: TableName.idol.name,
+              column: ColumnName.id.name,
+              value: (widget.idol.id).toString(),
             );
           },
         );

@@ -11,6 +11,7 @@ import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/enums/idol_colors.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol.dart';
+import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/screens/widgets/buttons/circular_button.dart';
 import 'package:kimikoe_app/screens/widgets/buttons/image_input_button.dart';
@@ -80,9 +81,10 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     if (_isEditing) {
       _selectedColor = _idol.color!;
 
-      imageUrl = supabase.storage
-          .from(TableName.images.name)
-          .getPublicUrl(_idol.imageUrl!);
+      imageUrl = fetchPublicImageUrl(_idol.imageUrl!);
+      // supabase.storage
+      //     .from(TableName.images.name)
+      //     .getPublicUrl(_idol.imageUrl!);
 
       _groupNameController = TextEditingController(text: _idol.group!.name);
       _birthdayController = TextEditingController(text: _idol.birthDay);
@@ -108,6 +110,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
 
   @override
   void dispose() {
+    _groupNameController.dispose();
     _birthdayController.dispose();
     _heightController.dispose();
     _debutYearController.dispose();
@@ -152,14 +155,18 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
 
     final isSelectedGroupInList = isInList(_groupIdAndNameList, groupName);
     if (!isSelectedGroupInList && groupName.isNotEmpty) {
-      await supabase.from(TableName.idolGroups.name).insert({
-        ColumnName.cName.name: groupName,
-        ColumnName.imageUrl.name: defaultPathNoImage
-      });
+      insertIdolGroupData(
+        name: groupName,
+        imageUrl: defaultPathNoImage,
+        year: '',
+        comment: '',
+      );
       await _fetchIdAndNameGroupList();
     }
-    selectedGroupId =
-        fetchSelectedDataIdFromName(_groupIdAndNameList, groupName);
+    selectedGroupId = fetchSelectedDataIdFromName(
+      list: _groupIdAndNameList,
+      name: groupName,
+    );
 
     final selectedColor = _selectedColor
         .toString()
@@ -200,9 +207,13 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     }
 
     if (_selectedImage != null) {
-      await supabase.storage
-          .from(TableName.images.name)
-          .upload(imagePathWithCreatedAtJPG!, _selectedImage!);
+      uploadImageToStorage(
+          table: TableName.images.name,
+          path: imagePathWithCreatedAtJPG!,
+          file: _selectedImage!);
+      // await supabase.storage
+      //     .from(TableName.images.name)
+      //     .upload(imagePathWithCreatedAtJPG!, _selectedImage!);
     }
 
     setState(() {
@@ -213,7 +224,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
       return;
     }
 
-    context.pushReplacement('/group_list');
+    context.pushReplacement(RoutingPath.groupList);
   }
 
   String? _nameValidator(String? value) {
