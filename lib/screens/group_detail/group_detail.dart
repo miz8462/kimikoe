@@ -45,14 +45,15 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final group = widget.group;
     final data = {
-      'group': widget.group,
+      'group': group,
       'isEditing': _isEditing,
     };
 
     return Scaffold(
       appBar: TopBar(
-        title: widget.group.name,
+        title: group.name,
         isEditing: _isEditing,
         isGroup: _isGroup,
         editRoute: RoutingPath.addGroup,
@@ -66,13 +67,13 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
           children: [
             Gap(spaceS),
             GroupInfo(
-              group: widget.group,
+              group: group,
             ),
             Divider(
               color: mainBlue.withOpacity(0.3),
               thickness: 2,
             ),
-            GroupMembers(group: widget.group),
+            GroupMembers(group: group),
           ],
         ),
       ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
@@ -62,9 +61,8 @@ class _IdolGroupListScreenState extends State<IdolGroupListScreen> {
               itemBuilder: (BuildContext context, int index) {
                 // IdolGroupクラスを初期化
                 final group = groups[index];
-                final imageUrl = supabase.storage
-                    .from(TableName.images.name)
-                    .getPublicUrl(group[ColumnName.imageUrl.name]);
+                final imageUrl =
+                    fetchPublicImageUrl(group[ColumnName.imageUrl.name]);
                 final groupInfo = IdolGroup(
                   id: group[ColumnName.id.name],
                   name: group[ColumnName.cName.name],

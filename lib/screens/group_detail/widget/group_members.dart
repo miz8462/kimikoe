@@ -58,24 +58,26 @@ class _GroupMembersState extends State<GroupMembers> {
                 child: ListView.builder(
                   itemCount: memberList.length,
                   itemBuilder: (context, index) {
+                    final idolData = memberList[index];
+                    final imageUrl =
+                        fetchPublicImageUrl(idolData[ColumnName.imageUrl.name]);
+
                     final idol = Idol(
-                      id: memberList[index][ColumnName.id.name],
-                      name: memberList[index][ColumnName.cName.name],
-                      imageUrl: memberList[index][ColumnName.imageUrl.name],
+                      id: idolData[ColumnName.id.name],
+                      name: idolData[ColumnName.cName.name],
+                      imageUrl: imageUrl,
                       color: Color(
-                        int.parse(memberList[index][ColumnName.color.name]),
+                        int.parse(idolData[ColumnName.color.name]),
                       ),
-                      birthDay: memberList[index][ColumnName.birthday.name],
-                      comment: memberList[index][ColumnName.comment.name],
-                      debutYear: memberList[index][ColumnName.debutYear.name],
+                      birthDay: idolData[ColumnName.birthday.name],
+                      comment: idolData[ColumnName.comment.name],
+                      debutYear: idolData[ColumnName.debutYear.name],
                       group: widget.group,
-                      height: memberList[index][ColumnName.height.name],
-                      hometown: memberList[index][ColumnName.hometown.name],
-                      instagramUrl: memberList[index]
-                          [ColumnName.instagramUrl.name],
-                      officialUrl: memberList[index]
-                          [ColumnName.officialUrl.name],
-                      twitterUrl: memberList[index][ColumnName.twitterUrl.name],
+                      height: idolData[ColumnName.height.name],
+                      hometown: idolData[ColumnName.hometown.name],
+                      instagramUrl: idolData[ColumnName.instagramUrl.name],
+                      officialUrl: idolData[ColumnName.officialUrl.name],
+                      twitterUrl: idolData[ColumnName.twitterUrl.name],
                     );
                     return Column(
                       children: [

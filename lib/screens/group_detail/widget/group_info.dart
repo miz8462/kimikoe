@@ -20,10 +20,19 @@ class GroupInfo extends StatelessWidget {
         if (group.comment != null)
           Text(
             group.comment!,
-            style: TextStyle(fontSize: fontS),
+            style: Theme.of(context).textTheme.titleLarge,
           ),
         Gap(spaceS),
-        if (group.year == null) Text('結成年：不明') else Text('結成年：${group.year}'),
+        if (group.year == null)
+          Text(
+            '結成年：不明',
+            style: Theme.of(context).textTheme.bodyLarge,
+          )
+        else
+          Text(
+            '結成年：${group.year}年',
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
       ],
     );
   }

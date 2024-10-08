@@ -21,7 +21,7 @@ import 'package:kimikoe_app/screens/widgets/forms/expanded_text_form.dart';
 import 'package:kimikoe_app/screens/widgets/forms/text_input_form.dart';
 import 'package:kimikoe_app/utils/check.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
-import 'package:kimikoe_app/utils/formatter.dart';
+import 'package:kimikoe_app/utils/date_formatter.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
 import 'package:kimikoe_app/utils/pickers/int_picker.dart';
 import 'package:kimikoe_app/utils/pickers/year_picker.dart';
@@ -80,9 +80,6 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
 
     if (_isEditing) {
       _selectedColor = _idol.color!;
-
-      imageUrl = fetchPublicImageUrl(_idol.imageUrl!);
-
       _groupNameController = TextEditingController(text: _idol.group!.name);
       _birthdayController = TextEditingController(text: _idol.birthDay);
       _heightController = TextEditingController(text: _idol.height.toString());
@@ -164,10 +161,12 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
       );
       await _fetchIdAndNameGroupList();
     }
-    selectedGroupId = fetchSelectedDataIdFromName(
-      list: _groupIdAndNameList,
-      name: groupName,
-    );
+    if (groupName.isNotEmpty) {
+      selectedGroupId = fetchSelectedDataIdFromName(
+        list: _groupIdAndNameList,
+        name: groupName,
+      );
+    }
 
     final selectedColor = _selectedColor
         .toString()
@@ -362,7 +361,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       ),
                       const Gap(spaceS),
                       ImageInput(
-                        imageUrl: imageUrl,
+                        imageUrl: _idol.imageUrl,
                         onPickImage: (image) {
                           _selectedImage = image;
                           _isImageChanged = true;

@@ -6,7 +6,6 @@ import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/song.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
@@ -19,7 +18,7 @@ import 'package:kimikoe_app/screens/widgets/forms/expanded_text_form.dart';
 import 'package:kimikoe_app/screens/widgets/forms/text_input_form.dart';
 import 'package:kimikoe_app/utils/check.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
-import 'package:kimikoe_app/utils/formatter.dart';
+import 'package:kimikoe_app/utils/date_formatter.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
 
@@ -203,7 +202,11 @@ class _AddSongScreenState extends State<AddSongScreen> {
     }
 
     if (_selectedImage != null) {
-      await supabase.storage.from('images').upload(imagePath!, _selectedImage!);
+      uploadImageToStorage(
+        table: TableName.images.name,
+        path: imagePath!,
+        file: _selectedImage!,
+      );
     }
 
     setState(() {

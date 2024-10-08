@@ -67,21 +67,14 @@ class _EditUserScreenState extends State<EditUserScreen> {
     }
 
     final userId = supabase.auth.currentUser!.id;
+    // todo: Googleアカウントの場合、初ログイン時に画像を登録するようにする。現状画像変更機能はなし。
     updateUser(
       name: _enteredUserName,
       email: _enteredEmailAddress,
+      // imageUrl: imageUrl, 
       comment: _enteredComment,
       id: userId,
     );
-    // await supabase.from(TableName.profiles.name).update({
-    //   ColumnName.cName.name: _enteredUserName,
-    //   ColumnName.email.name: _enteredEmailAddress,
-    //   // ColumnName.imageUrl.name: _selectedImage,
-    //   ColumnName.comment.name: _enteredComment,
-    // }).eq(
-    //   ColumnName.id.name,
-    //   userId,
-    // );
 
     // if (_selectedImage != null) {
     //   await supabase.storage.from('images').upload(imagePath!, _selectedImage!);
