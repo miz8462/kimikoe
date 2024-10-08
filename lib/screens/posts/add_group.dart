@@ -16,9 +16,9 @@ import 'package:kimikoe_app/screens/widgets/buttons/styled_button.dart';
 import 'package:kimikoe_app/screens/widgets/forms/drum_roll_form.dart';
 import 'package:kimikoe_app/screens/widgets/forms/expanded_text_form.dart';
 import 'package:kimikoe_app/screens/widgets/forms/text_input_form.dart';
-import 'package:kimikoe_app/utils/create_image_name_with_jpg.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
 import 'package:kimikoe_app/utils/formatter.dart';
+import 'package:kimikoe_app/utils/image_utils.dart';
 import 'package:kimikoe_app/utils/pickers/year_picker.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
 
@@ -98,7 +98,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     );
   }
 
-  Future<void> _submitGroup() async {
+  Future<void> _saveGroup() async {
     setState(() {
       _isSending = true;
     });
@@ -113,16 +113,11 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     }
 
     // e.g. /aaa/bbb/ccc/image.png
-    late String? imagePath;
-    if (_isEditing && !_isImageChanged) {
-      imagePath = createImageNameWithJPG(imageUrl: _group.imageUrl);
-    } else {
-      if (_selectedImage == null) {
-        imagePath = defaultPathNoImage;
-      } else {
-        imagePath = createImageNameWithJPG(image: _selectedImage);
-      }
-    }
+    String? imagePath = getImagePath(
+        isEditing: _isEditing,
+        isImageChanged: _isImageChanged,
+        imageUrl: _group.imageUrl,
+        imageFile: _selectedImage);
 
     // todo: グループリストのプロバイダー化
     // ref.read(idolGroupsProvider.notifier).addGroup(
@@ -141,7 +136,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
         imageUrl: imagePath,
         year: _selectedYear,
         comment: _enteredComment,
-        groupId: (_group.id).toString(),
+        id: (_group.id).toString(),
       );
     } else {
       // 登録
@@ -236,7 +231,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                   const Gap(spaceS),
                   StyledButton(
                     '登録',
-                    onPressed: _isSending ? null : _submitGroup,
+                    onPressed: _isSending ? null : _saveGroup,
                     isSending: _isSending,
                     buttonSize: buttonL,
                   ),

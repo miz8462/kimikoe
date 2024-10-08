@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -8,19 +6,20 @@ import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/user.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/screens/widgets/buttons/image_input_button.dart';
 import 'package:kimikoe_app/screens/widgets/buttons/styled_button.dart';
 import 'package:kimikoe_app/screens/widgets/forms/expanded_text_form.dart';
 import 'package:kimikoe_app/screens/widgets/forms/text_input_form.dart';
-import 'package:kimikoe_app/utils/create_image_name_with_jpg.dart';
+import 'package:kimikoe_app/utils/crud_data.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
 
 class EditUserScreen extends StatefulWidget {
   const EditUserScreen({
     super.key,
-    this.user,
+    required this.user,
+    required this.isEditing,
   });
-  final UserProfile? user;
+  final UserProfile user;
+  final bool isEditing;
 
   @override
   State<EditUserScreen> createState() => _EditUserScreenState();
@@ -31,10 +30,18 @@ class _EditUserScreenState extends State<EditUserScreen> {
 
   var _enteredUserName = '';
   var _enteredEmailAddress = '';
-  File? _selectedImage;
+  // File? _selectedImage;
   var _enteredComment = '';
 
   var _isSending = false;
+  // var _isImageChanged = false;
+  late UserProfile _user;
+
+  @override
+  void initState() {
+    super.initState();
+    _user = widget.user;
+  }
 
   String? _nameValidator(String? value) {
     return textInputValidator(value, '名前');
@@ -45,7 +52,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
     return textInputValidator(value, 'メール');
   }
 
-  void _updateUserProfile() async {
+  void _saveUserProfile() async {
     setState(() {
       _isSending = true;
     });
@@ -58,29 +65,27 @@ class _EditUserScreenState extends State<EditUserScreen> {
       });
       return;
     }
-    // e.g. /aaa/bbb/ccc/image.png
-    final imagePathWithCreatedAtJPG =
-        createImageNameWithJPG(image: _selectedImage);
 
     final userId = supabase.auth.currentUser!.id;
-
-    await supabase.from('profiles').update({
-      'username': _enteredUserName,
-      'email': _enteredEmailAddress,
-      'image_url': _selectedImage == null
-          ? widget.user!.imageUrl
-          : imagePathWithCreatedAtJPG,
-      'comment': _enteredComment,
-    }).eq(
-      'id',
-      userId,
+    updateUser(
+      name: _enteredUserName,
+      email: _enteredEmailAddress,
+      comment: _enteredComment,
+      id: userId,
     );
+    // await supabase.from(TableName.profiles.name).update({
+    //   ColumnName.cName.name: _enteredUserName,
+    //   ColumnName.email.name: _enteredEmailAddress,
+    //   // ColumnName.imageUrl.name: _selectedImage,
+    //   ColumnName.comment.name: _enteredComment,
+    // }).eq(
+    //   ColumnName.id.name,
+    //   userId,
+    // );
 
-    if (_selectedImage != null) {
-      await supabase.storage
-          .from('images')
-          .upload(imagePathWithCreatedAtJPG!, _selectedImage!);
-    }
+    // if (_selectedImage != null) {
+    //   await supabase.storage.from('images').upload(imagePath!, _selectedImage!);
+    // }
 
     setState(() {
       _isSending = false;
@@ -90,13 +95,12 @@ class _EditUserScreenState extends State<EditUserScreen> {
       return;
     }
 
-    context.pushReplacement('/group_list');
+    context.pop();
   }
 
   @override
   Widget build(BuildContext context) {
     final currentUser = supabase.auth.currentUser;
-    final user = widget.user;
     if (currentUser == null) {
       //buildが終わる前に画面遷移をしようとするとエラーになるので
       //buildが終わった後に画面遷移を実行
@@ -118,7 +122,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
                 style: TextStyle(color: textGray),
               ),
               InputForm(
-                initialValue: user?.name,
+                initialValue: _user.name,
                 label: '*名前',
                 validator: _nameValidator,
                 onSaved: (value) {
@@ -127,7 +131,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
               ),
               const Gap(spaceS),
               InputForm(
-                initialValue: user?.email,
+                initialValue: _user.email,
                 label: '*メール',
                 validator: _emailValidator,
                 onSaved: (value) {
@@ -135,17 +139,17 @@ class _EditUserScreenState extends State<EditUserScreen> {
                 },
               ),
               const Gap(spaceS),
-              ImageInput(
-                onPickImage: (image) {
-                  _selectedImage = image;
-                },
-                label: 'ユーザー画像',
-              ),
-
-              const Gap(spaceS),
-              // 備考欄
+              // todo: ユーザー画像変更
+              // ImageInput(
+              //   onPickImage: (image) {
+              //     _selectedImage = image;
+              //     _isImageChanged = true;
+              //   },
+              //   label: 'ユーザー画像',
+              // ),
+              // const Gap(spaceS),
               ExpandedTextForm(
-                initialValue: user?.comment,
+                initialValue: _user.comment,
                 onTextChanged: (value) {
                   setState(() {
                     _enteredComment = value!;
@@ -154,10 +158,9 @@ class _EditUserScreenState extends State<EditUserScreen> {
                 label: '備考',
               ),
               const Gap(spaceS),
-              // 登録ボタン
               StyledButton(
                 '登録',
-                onPressed: _isSending ? null : _updateUserProfile,
+                onPressed: _isSending ? null : _saveUserProfile,
                 isSending: _isSending,
                 buttonSize: buttonL,
               ),

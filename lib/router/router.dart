@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/idol.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
+import 'package:kimikoe_app/models/song.dart';
 import 'package:kimikoe_app/models/user.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/bottom_bar.dart';
@@ -126,9 +127,18 @@ final router = GoRouter(
                 path: RoutingPath.addSong,
                 name: RoutingPath.addSong,
                 pageBuilder: (context, state) {
+                  // todo: 編集時のdata
+                  final Map<String, dynamic>? data;
+                  data = state.extra as Map<String, dynamic>?;
+                  final Song? song =
+                      data?['song'] ?? Song(title: '', lyrics: '');
+                  final bool? isEditing = data?['isEditing'] ?? false;
                   return NoTransitionPage(
                     key: state.pageKey,
-                    child: AddSongScreen(),
+                    child: AddSongScreen(
+                      song: song,
+                      isEditing: isEditing,
+                    ),
                   );
                 }),
             GoRoute(
@@ -190,9 +200,16 @@ final router = GoRouter(
                   path: RoutingPath.editUser,
                   name: RoutingPath.editUser,
                   pageBuilder: (context, state) {
-                    final user = state.extra as UserProfile;
+                    final Map<String, dynamic>? data;
+                    data = state.extra as Map<String, dynamic>?;
+                    final UserProfile user = data?['user'];
+                    final bool? isEditing = data?['isEditing'] ?? false;
+
                     return MaterialPage(
-                      child: EditUserScreen(user: user),
+                      child: EditUserScreen(
+                        user: user,
+                        isEditing: isEditing!,
+                      ),
                       key: state.pageKey,
                     );
                   },

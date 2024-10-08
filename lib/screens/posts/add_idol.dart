@@ -7,7 +7,6 @@ import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/enums/idol_colors.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol.dart';
@@ -21,9 +20,9 @@ import 'package:kimikoe_app/screens/widgets/forms/drum_roll_form.dart';
 import 'package:kimikoe_app/screens/widgets/forms/expanded_text_form.dart';
 import 'package:kimikoe_app/screens/widgets/forms/text_input_form.dart';
 import 'package:kimikoe_app/utils/check.dart';
-import 'package:kimikoe_app/utils/create_image_name_with_jpg.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
 import 'package:kimikoe_app/utils/formatter.dart';
+import 'package:kimikoe_app/utils/image_utils.dart';
 import 'package:kimikoe_app/utils/pickers/int_picker.dart';
 import 'package:kimikoe_app/utils/pickers/year_picker.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
@@ -65,6 +64,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
   late List<Map<String, dynamic>> _groupIdAndNameList;
   var _isSending = false;
   var _isFetching = true;
+  var _isImageChanged = false;
   late bool _isEditing;
 
   @override
@@ -82,9 +82,6 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
       _selectedColor = _idol.color!;
 
       imageUrl = fetchPublicImageUrl(_idol.imageUrl!);
-      // supabase.storage
-      //     .from(TableName.images.name)
-      //     .getPublicUrl(_idol.imageUrl!);
 
       _groupNameController = TextEditingController(text: _idol.group!.name);
       _birthdayController = TextEditingController(text: _idol.birthDay);
@@ -117,7 +114,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     super.dispose();
   }
 
-  Future<void> _submitIdol() async {
+  Future<void> _saveIdol() async {
     setState(() {
       _isSending = true;
     });
@@ -132,8 +129,12 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     }
 
     // e.g. /aaa/bbb/ccc/image.png
-    final imagePathWithCreatedAtJPG =
-        createImageNameWithJPG(image: _selectedImage);
+    String? imagePath = getImagePath(
+      isEditing: _isEditing,
+      isImageChanged: _isImageChanged,
+      imageUrl: _idol.imageUrl,
+      imageFile: _selectedImage,
+    );
 
     if (_selectedHeight == null || _selectedHeight!.isEmpty) {
       _selectedHeight = null;
@@ -177,43 +178,40 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         .replaceAll(')', '');
 
     if (_isEditing) {
-      await supabase.from(TableName.idol.name).update({
-        ColumnName.cName.name: _enteredIdolName,
-        ColumnName.groupId.name: selectedGroupId,
-        ColumnName.color.name: selectedColor,
-        ColumnName.imageUrl.name: _selectedImage == null
-            ? defaultPathNoImage
-            : imagePathWithCreatedAtJPG,
-        ColumnName.birthday.name: _selectedBirthday,
-        ColumnName.height.name: _selectedHeight,
-        ColumnName.hometown.name: _enteredHometown,
-        ColumnName.debutYear.name: _selectedDebutYear,
-        ColumnName.comment.name: _enteredComment,
-      }).eq(ColumnName.id.name, _idol.id!);
+      // 編集
+      updateIdol(
+        name: _enteredIdolName,
+        id: _idol.id!,
+        groupId: selectedGroupId,
+        color: selectedColor,
+        imagePath: imagePath,
+        birthday: _selectedBirthday,
+        height: _selectedHeight,
+        hometown: _enteredHometown,
+        debutYear: _selectedDebutYear,
+        comment: _enteredComment,
+      );
     } else {
-      await supabase.from(TableName.idol.name).insert({
-        ColumnName.cName.name: _enteredIdolName,
-        ColumnName.groupId.name: selectedGroupId,
-        ColumnName.color.name: selectedColor,
-        ColumnName.imageUrl.name: _selectedImage == null
-            ? defaultPathNoImage
-            : imagePathWithCreatedAtJPG,
-        ColumnName.birthday.name: _selectedBirthday,
-        ColumnName.height.name: _selectedHeight,
-        ColumnName.hometown.name: _enteredHometown,
-        ColumnName.debutYear.name: _selectedDebutYear,
-        ColumnName.comment.name: _enteredComment,
-      });
+      // 登録
+      insertIdolData(
+        name: _enteredIdolName,
+        groupId: selectedGroupId,
+        color: selectedColor,
+        imagePath: imagePath,
+        birthday: _selectedBirthday,
+        height: _selectedHeight,
+        hometown: _enteredHometown,
+        debutYear: _selectedDebutYear,
+        comment: _enteredComment,
+      );
     }
 
     if (_selectedImage != null) {
       uploadImageToStorage(
-          table: TableName.images.name,
-          path: imagePathWithCreatedAtJPG!,
-          file: _selectedImage!);
-      // await supabase.storage
-      //     .from(TableName.images.name)
-      //     .upload(imagePathWithCreatedAtJPG!, _selectedImage!);
+        table: TableName.images.name,
+        path: imagePath!,
+        file: _selectedImage!,
+      );
     }
 
     setState(() {
@@ -312,7 +310,6 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(_selectedColor);
     return _isFetching
         ? Center(child: CircularProgressIndicator())
         : Scaffold(
@@ -368,6 +365,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                         imageUrl: imageUrl,
                         onPickImage: (image) {
                           _selectedImage = image;
+                          _isImageChanged = true;
                         },
                         label: 'イメージ画像',
                       ),
@@ -433,7 +431,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       const Gap(spaceS),
                       StyledButton(
                         '登録',
-                        onPressed: _isSending ? null : _submitIdol,
+                        onPressed: _isSending ? null : _saveIdol,
                         isSending: _isSending,
                         buttonSize: buttonL,
                       ),

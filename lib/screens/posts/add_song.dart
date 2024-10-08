@@ -8,6 +8,8 @@ import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
+import 'package:kimikoe_app/models/song.dart';
+import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/screens/widgets/buttons/image_input_button.dart';
 import 'package:kimikoe_app/screens/widgets/buttons/styled_button.dart';
@@ -16,13 +18,20 @@ import 'package:kimikoe_app/screens/widgets/forms/drum_roll_form.dart';
 import 'package:kimikoe_app/screens/widgets/forms/expanded_text_form.dart';
 import 'package:kimikoe_app/screens/widgets/forms/text_input_form.dart';
 import 'package:kimikoe_app/utils/check.dart';
-import 'package:kimikoe_app/utils/create_image_name_with_jpg.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
 import 'package:kimikoe_app/utils/formatter.dart';
+import 'package:kimikoe_app/utils/image_utils.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
 
 class AddSongScreen extends StatefulWidget {
-  const AddSongScreen({super.key});
+  const AddSongScreen({
+    super.key,
+    this.song,
+    this.isEditing,
+  });
+
+  final Song? song;
+  final bool? isEditing;
 
   @override
   State<AddSongScreen> createState() => _AddSongScreenState();
@@ -34,6 +43,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
   final _lyricistNameController = TextEditingController();
   final _composerNameController = TextEditingController();
   final _releaseDateController = TextEditingController();
+  late Song _song;
 
   var _enteredTitle = '';
   File? _selectedImage;
@@ -46,11 +56,38 @@ class _AddSongScreenState extends State<AddSongScreen> {
 
   var _isSending = false;
   var _isFetching = true;
+  var _isImageChanged = false;
+  late bool _isEditing;
 
   @override
   void initState() {
     super.initState();
     _fetchIdAndNameLists();
+
+    // 編集の場合の初期化
+    if (widget.song != null) {
+      _song = widget.song!;
+    }
+    _isEditing = widget.isEditing!;
+    // todo: 初期化
+    /* add_idolの参考
+    if (_isEditing) {
+      _selectedColor = _idol.color!;
+
+      imageUrl = fetchPublicImageUrl(_idol.imageUrl!);
+
+      _groupNameController = TextEditingController(text: _idol.group!.name);
+      _birthdayController = TextEditingController(text: _idol.birthDay);
+      _heightController = TextEditingController(text: _idol.height.toString());
+      final initialDebutYear = widget.idol!.debutYear.toString();
+      _debutYearController = TextEditingController(text: initialDebutYear);
+    } else {
+      _groupNameController = TextEditingController();
+      _birthdayController = TextEditingController();
+      _heightController = TextEditingController();
+      _debutYearController = TextEditingController();
+    }
+    */
   }
 
   @override
@@ -74,7 +111,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
     });
   }
 
-  Future<void> _submitSong() async {
+  Future<void> _saveSong() async {
     setState(() {
       _isSending = true;
     });
@@ -89,8 +126,12 @@ class _AddSongScreenState extends State<AddSongScreen> {
     }
 
     // e.g. /aaa/bbb/ccc/image.png
-    final imagePathWithCreatedAtJPG =
-        createImageNameWithJPG(image: _selectedImage);
+    String? imagePath = getImagePath(
+      isEditing: _isEditing,
+      isImageChanged: _isImageChanged,
+      imageUrl: _song.imageUrl,
+      imageFile: _selectedImage,
+    );
 
     if (_selectedReleaseDate == null || _selectedReleaseDate!.isEmpty) {
       _selectedReleaseDate = null;
@@ -104,58 +145,65 @@ class _AddSongScreenState extends State<AddSongScreen> {
 
     final isSelectedGroupInList = isInList(_groupIdAndNameList, groupName);
     if (!isSelectedGroupInList && groupName.isNotEmpty) {
-      await supabase.from(TableName.idolGroups.name).insert({
-        ColumnName.cName.name: groupName,
-        ColumnName.imageUrl.name: defaultPathNoImage
-      });
+      insertIdolGroupData(
+        name: groupName,
+        imageUrl: defaultPathNoImage,
+        year: '',
+        comment: '',
+      );
       await _fetchIdAndNameLists();
     }
     selectedGroupId =
         fetchSelectedDataIdFromName(list: _groupIdAndNameList, name: groupName);
+    // 作詞家登録
     final lyricistName = _lyricistNameController.text;
     final isSelectedLyricistInList =
         isInList(_artistIdAndNameList, lyricistName);
     if (!isSelectedLyricistInList && lyricistName.isNotEmpty) {
-      await supabase.from(TableName.artists.name).insert({
-        ColumnName.cName.name: lyricistName,
-        ColumnName.imageUrl.name: defaultPathNoImage
-      });
+      insertArtistData(name: lyricistName, imageUrl: defaultPathNoImage);
       await _fetchIdAndNameLists();
     }
     selectedLyricistId = fetchSelectedDataIdFromName(
         list: _artistIdAndNameList, name: lyricistName);
-
+    // 作曲家登録
     final composerName = _composerNameController.text;
     final isSelectedComposerInList =
         isInList(_artistIdAndNameList, composerName);
     if (!isSelectedComposerInList && composerName.isNotEmpty) {
-      await supabase.from(TableName.artists.name).insert({
-        ColumnName.cName.name: composerName,
-        ColumnName.imageUrl.name: defaultPathNoImage
-      });
+      insertArtistData(name: composerName, imageUrl: defaultPathNoImage);
       await _fetchIdAndNameLists();
     }
     selectedComposerId = fetchSelectedDataIdFromName(
         list: _artistIdAndNameList, name: composerName);
-
-    // 歌詞登録
-    await supabase.from(TableName.songs.name).insert({
-      ColumnName.title.name: _enteredTitle,
-      ColumnName.lyrics.name: _enteredLyric,
-      ColumnName.groupId.name: selectedGroupId,
-      ColumnName.imageUrl.name: _selectedImage == null
-          ? defaultPathNoImage
-          : imagePathWithCreatedAtJPG,
-      ColumnName.releaseDate.name: _selectedReleaseDate,
-      ColumnName.lyricistId.name: selectedLyricistId,
-      ColumnName.composerId.name: selectedComposerId,
-      ColumnName.comment.name: _enteredComment,
-    });
+    if (_isEditing) {
+      // 歌詞編集
+      updateSong(
+        name: _enteredTitle,
+        lyric: _enteredLyric,
+        groupId: selectedGroupId,
+        imagePath: imagePath,
+        releaseDate: _selectedReleaseDate,
+        lyricistId: selectedLyricistId,
+        composerId: selectedComposerId,
+        comment: _enteredComment,
+        id: _song.id!,
+      );
+    } else {
+      // 歌詞登録
+      insertSongData(
+        name: _enteredTitle,
+        lyric: _enteredLyric,
+        groupId: selectedGroupId,
+        imagePath: imagePath,
+        releaseDate: _selectedReleaseDate,
+        lyricistId: selectedLyricistId,
+        composerId: selectedComposerId,
+        comment: _enteredComment,
+      );
+    }
 
     if (_selectedImage != null) {
-      await supabase.storage
-          .from('images')
-          .upload(imagePathWithCreatedAtJPG!, _selectedImage!);
+      await supabase.storage.from('images').upload(imagePath!, _selectedImage!);
     }
 
     setState(() {
@@ -166,8 +214,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
       return;
     }
 
-    context.pushReplacement('/group_list');
-    // todo: 作詞家や作曲家が登録されてない場合は名前だけartistテーブルに自動的に登録されるようにする
+    context.pushReplacement(RoutingPath.groupList);
   }
 
   String? _titleValidator(String? value) {
@@ -239,6 +286,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                       ImageInput(
                         onPickImage: (image) {
                           _selectedImage = image;
+                          _isImageChanged = true;
                         },
                         label: 'イメージ画像',
                       ),
@@ -279,7 +327,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                       Gap(spaceS),
                       StyledButton(
                         '登録',
-                        onPressed: _isSending ? null : _submitSong,
+                        onPressed: _isSending ? null : _saveSong,
                         isSending: _isSending,
                         buttonSize: buttonL,
                       ),

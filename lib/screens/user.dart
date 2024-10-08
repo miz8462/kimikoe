@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/user.dart';
 import 'package:kimikoe_app/provider/current_user.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/screens/widgets/buttons/styled_button.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
 
 class UserScreen extends ConsumerStatefulWidget {
@@ -20,6 +18,7 @@ class UserScreen extends ConsumerStatefulWidget {
 
 class _UserScreenState extends ConsumerState<UserScreen> {
   late AsyncValue<List<Map<String, dynamic>>> _currentUserInfo;
+  final _isEditing = true;
 
   @override
   void didChangeDependencies() {
@@ -30,15 +29,14 @@ class _UserScreenState extends ConsumerState<UserScreen> {
 
   @override
   Widget build(context) {
-    const String editButtonText = '編集する';
-    const double buttonWidth = 180;
     final currentUserInfo =
         _currentUserInfo.value?.map((data) => data).toList()[0];
     final user = UserProfile(
-      name: currentUserInfo?[ColumnName.cName.name] ?? 'タイトル未定',
-      email: currentUserInfo?[ColumnName.email.name],
-      imageUrl: currentUserInfo?[ColumnName.imageUrl.name],
-      comment: currentUserInfo?[ColumnName.comment.name] ?? '',
+      id: currentUserInfo![ColumnName.id.name].toString(),
+      name: currentUserInfo[ColumnName.cName.name],
+      email: currentUserInfo[ColumnName.email.name],
+      imageUrl: currentUserInfo[ColumnName.imageUrl.name],
+      comment: currentUserInfo[ColumnName.comment.name] ?? '',
     );
 
     var userImageUrl = user.imageUrl;
@@ -49,9 +47,18 @@ class _UserScreenState extends ConsumerState<UserScreen> {
     }
     var userImage = NetworkImage(userImageUrl);
 
+    final data = {
+      'user': user,
+      'isEditing': _isEditing,
+    };
+
     return Scaffold(
       appBar: TopBar(
         title: 'ユーザー情報',
+        isEditing: _isEditing,
+        editRoute: RoutingPath.editUser,
+        isUser: true,
+        data: data,
       ),
       body: Padding(
         padding: screenPadding,
@@ -59,29 +66,9 @@ class _UserScreenState extends ConsumerState<UserScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Gap(spaceS),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CircleAvatar(
-                  backgroundImage: userImage,
-                  radius: avaterSizeL,
-                ),
-                // todo: 他のページに遷移したら編集を終了する
-                StyledButton(
-                  editButtonText,
-                  onPressed: () {
-                    context.push(
-                        '${RoutingPath.userDetails}/${RoutingPath.editUser}',
-                        extra: user);
-                  },
-                  textColor: textGray,
-                  backgroundColor: backgroundWhite,
-                  buttonSize: buttonM,
-                  borderSide: BorderSide(
-                      color: backgroundLightBlue, width: borderWidth),
-                  width: buttonWidth,
-                ),
-              ],
+            CircleAvatar(
+              backgroundImage: userImage,
+              radius: avaterSizeL,
             ),
             Gap(spaceS),
             Text(

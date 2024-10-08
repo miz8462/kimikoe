@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 
-
 class DeleteAlertDialog extends StatelessWidget {
   const DeleteAlertDialog({
     super.key,
@@ -36,6 +35,5 @@ class DeleteAlertDialog extends StatelessWidget {
         ),
       ],
     );
-    ;
   }
 }

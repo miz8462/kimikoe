@@ -23,8 +23,8 @@ class GroupDetailScreen extends StatefulWidget {
 }
 
 class _GroupDetailScreenState extends State<GroupDetailScreen> {
-  bool isEditing = true;
-  bool isGroup = true;
+  final _isEditing = true;
+  final _isGroup = true;
 
   void _deleteGroup() {
     showDialog(
@@ -47,14 +47,14 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
   Widget build(BuildContext context) {
     final data = {
       'group': widget.group,
-      'isEditing': isEditing,
+      'isEditing': _isEditing,
     };
 
     return Scaffold(
       appBar: TopBar(
         title: widget.group.name,
-        hasEditingMode: isEditing,
-        isGroup: isGroup,
+        isEditing: _isEditing,
+        isGroup: _isGroup,
         editRoute: RoutingPath.addGroup,
         delete: _deleteGroup,
         data: data,

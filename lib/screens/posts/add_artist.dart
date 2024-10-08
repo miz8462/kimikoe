@@ -29,7 +29,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
 
   var _isSending = false;
 
-  Future<void> _submitArtist() async {
+  Future<void> _saveArtist() async {
     setState(() {
       _isSending = true;
     });
@@ -115,7 +115,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
                   Gap(spaceS),
                   StyledButton(
                     '登録',
-                    onPressed: _isSending ? null : _submitArtist,
+                    onPressed: _isSending ? null : _saveArtist,
                     isSending: _isSending,
                     buttonSize: buttonL,
                   ),

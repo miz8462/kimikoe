@@ -8,8 +8,9 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
     this.imageUrl,
     this.title,
     this.showLeading = true,
-    this.hasEditingMode = false,
+    this.isEditing = false,
     this.isGroup = false,
+    this.isUser = false,
     this.editRoute,
     this.data,
     this.delete,
@@ -17,8 +18,9 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   final String? imageUrl;
   final String? title;
   final bool showLeading;
-  final bool hasEditingMode;
+  final bool isEditing;
   final bool isGroup;
+  final bool isUser;
   final String? editRoute;
   final Map<String, Object>? data;
   final void Function()? delete;
@@ -49,8 +51,8 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       centerTitle: true,
       // 編集、削除機能。グループの時は削除はなし
-      actions: hasEditingMode
-          ? isGroup
+      actions: isEditing
+          ? isGroup || isUser
               ? [
                   Padding(
                     padding: const EdgeInsets.only(top: 12, right: 16),

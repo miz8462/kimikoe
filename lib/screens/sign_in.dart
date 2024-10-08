@@ -7,6 +7,8 @@ import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
+import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
+import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/widgets/buttons/social_login_button.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -73,7 +75,10 @@ class _SignInScreenState extends State<SignInScreen> {
     final userId = supabase.auth.currentUser!.id;
     final userData = supabase.auth.currentUser!.userMetadata;
 
-    final response = await supabase.from('profiles').select().eq('id', userId);
+    final response = await supabase
+        .from(TableName.profiles.name)
+        .select()
+        .eq(ColumnName.id.name, userId);
 
     if (response[0]['email'] == null) {
       await supabase.from('profiles').update({
@@ -94,7 +99,7 @@ class _SignInScreenState extends State<SignInScreen> {
           _redirecting = true;
           await Future.delayed(Duration.zero);
           if (mounted) {
-            context.go('/group_list');
+            context.go(RoutingPath.groupList);
           }
         }
       },

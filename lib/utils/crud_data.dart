@@ -7,8 +7,8 @@ import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 // CREATE
 Future<void> insertArtistData({
   required String name,
-  required String imageUrl,
-  required String comment,
+  String? imageUrl,
+  String? comment,
 }) async {
   await supabase.from(TableName.artists.name).insert({
     ColumnName.cName.name: name,
@@ -27,6 +27,52 @@ Future<void> insertIdolGroupData({
     ColumnName.cName.name: name,
     ColumnName.imageUrl.name: imageUrl,
     ColumnName.yearFormingGroups.name: year == null ? null : int.tryParse(year),
+    ColumnName.comment.name: comment,
+  });
+}
+
+Future<void> insertIdolData({
+  required String name,
+  int? groupId,
+  String? color,
+  String? imagePath,
+  String? birthday,
+  String? height,
+  String? hometown,
+  String? debutYear,
+  String? comment,
+}) async {
+  await supabase.from(TableName.idol.name).insert({
+    ColumnName.cName.name: name,
+    ColumnName.groupId.name: groupId,
+    ColumnName.color.name: color,
+    ColumnName.imageUrl.name: imagePath,
+    ColumnName.birthday.name: birthday,
+    ColumnName.height.name: height,
+    ColumnName.hometown.name: hometown,
+    ColumnName.debutYear.name: debutYear,
+    ColumnName.comment.name: comment,
+  });
+}
+
+Future<void> insertSongData({
+  required String name,
+  required String lyric,
+  int? groupId,
+  String? imagePath,
+  String? releaseDate,
+  int? lyricistId,
+  int? composerId,
+  String? comment,
+}) async {
+  await supabase.from(TableName.songs.name).insert({
+    ColumnName.title.name: name,
+    ColumnName.lyrics.name: lyric,
+    ColumnName.groupId.name: groupId,
+    ColumnName.imageUrl.name: imagePath,
+    ColumnName.releaseDate.name: releaseDate,
+    ColumnName.lyricistId.name: lyricistId,
+    ColumnName.composerId.name: composerId,
     ColumnName.comment.name: comment,
   });
 }
@@ -94,14 +140,79 @@ Future<void> updateIdolGroup({
   String? imageUrl,
   String? year,
   String? comment,
-  required String groupId,
+  required String id,
 }) async {
   await supabase.from(TableName.idolGroups.name).update({
     ColumnName.cName.name: name,
     ColumnName.imageUrl.name: imageUrl,
     ColumnName.yearFormingGroups.name: year == null ? null : int.tryParse(year),
     ColumnName.comment.name: comment,
-  }).eq(ColumnName.id.name, groupId);
+  }).eq(ColumnName.id.name, id);
+}
+
+Future<void> updateIdol({
+  required String name,
+  int? groupId,
+  String? color,
+  String? imagePath,
+  String? birthday,
+  String? height,
+  String? hometown,
+  String? debutYear,
+  String? comment,
+  required int id,
+}) async {
+  await supabase.from(TableName.idol.name).update({
+    ColumnName.cName.name: name,
+    ColumnName.groupId.name: groupId,
+    ColumnName.color.name: color,
+    ColumnName.imageUrl.name: imagePath,
+    ColumnName.birthday.name: birthday,
+    ColumnName.height.name: height,
+    ColumnName.hometown.name: hometown,
+    ColumnName.debutYear.name: debutYear,
+    ColumnName.comment.name: comment,
+  }).eq(ColumnName.id.name, id);
+}
+
+Future<void> updateSong({
+  required String name,
+  required String lyric,
+  int? groupId,
+  String? imagePath,
+  String? releaseDate,
+  int? lyricistId,
+  int? composerId,
+  String? comment,
+  required int id,
+}) async {
+  await supabase.from(TableName.songs.name).update({
+    ColumnName.title.name: name,
+    ColumnName.lyrics.name: lyric,
+    ColumnName.groupId.name: groupId,
+    ColumnName.imageUrl.name: imagePath,
+    ColumnName.releaseDate.name: releaseDate,
+    ColumnName.lyricistId.name: lyricistId,
+    ColumnName.composerId.name: composerId,
+    ColumnName.comment.name: comment,
+  }).eq(ColumnName.id.name, id);
+}
+
+Future<void> updateUser({
+  required String name,
+  required String email,
+  String? comment,
+  required String id,
+}) async {
+  await supabase.from(TableName.profiles.name).update({
+    ColumnName.cName.name: name,
+    ColumnName.email.name: email,
+    // ColumnName.imageUrl.name: imageUrl,
+    ColumnName.comment.name: comment,
+  }).eq(
+    ColumnName.id.name,
+    id,
+  );
 }
 
 // DELETE
