@@ -23,14 +23,7 @@ class _GroupMembersState extends State<GroupMembers> {
   @override
   void initState() {
     super.initState();
-    _loadMembers();
-  }
-
-  void _loadMembers() {
-    _memberFuture = fetchGroupMemberbyStream(
-        table: TableName.idol.name,
-        column: ColumnName.groupId.name,
-        id: widget.group.id!);
+    _memberFuture = loadMembers(widget.group.id!);
   }
 
   @override

@@ -86,6 +86,13 @@ Future<void> uploadImageToStorage({
 }
 
 // READ
+Future<List<Map<String, dynamic>>> loadMembers(int groupId) {
+  return fetchGroupMemberbyStream(
+      table: TableName.idol.name,
+      column: ColumnName.groupId.name,
+      groupId: groupId);
+}
+
 Future fetchCurrentUserInfo() {
   final currentUserId = supabase.auth.currentUser!.id;
   final userInfo = supabase
@@ -126,12 +133,12 @@ Stream fetchDatabyStream({
   return supabase.from(table).stream(primaryKey: [id]);
 }
 
-Future fetchGroupMemberbyStream({
+Future<List<Map<String, dynamic>>> fetchGroupMemberbyStream({
   required String table,
   required String column,
-  required int id,
+  required int groupId,
 }) async {
-  return await supabase.from(table).select().eq(column, id);
+  return await supabase.from(table).select().eq(column, groupId);
 }
 
 // UPDATE

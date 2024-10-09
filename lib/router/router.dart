@@ -12,7 +12,7 @@ import 'package:kimikoe_app/screens/appbar/bottom_bar.dart';
 import 'package:kimikoe_app/screens/group_detail/group_detail.dart';
 import 'package:kimikoe_app/screens/idol_detail.dart';
 import 'package:kimikoe_app/screens/idol_group_list.dart';
-import 'package:kimikoe_app/screens/lyric.dart';
+import 'package:kimikoe_app/screens/lyric/lyric.dart';
 import 'package:kimikoe_app/screens/posts/add_artist.dart';
 import 'package:kimikoe_app/screens/posts/add_group.dart';
 import 'package:kimikoe_app/screens/posts/add_idol.dart';
@@ -110,8 +110,12 @@ final router = GoRouter(
                   path: RoutingPath.lyric,
                   name: RoutingPath.lyric,
                   pageBuilder: (context, state) {
+                    final Map<String, dynamic> data;
+                    data = state.extra as Map<String, dynamic>;
+                    final Song song = data['song'];
+                    final IdolGroup group = data['group'];
                     return MaterialPage(
-                      child: LyricScreen(),
+                      child: LyricScreen(song: song, group: group),
                       key: state.pageKey,
                     );
                   },

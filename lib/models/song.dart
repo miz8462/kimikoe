@@ -1,21 +1,24 @@
+import 'package:kimikoe_app/models/artist.dart';
+import 'package:kimikoe_app/models/idol_group.dart';
+
 class Song {
   const Song({
     required this.title,
     required this.lyrics,
     this.id,
-    this.groupId,
+    this.group,
     this.imageUrl,
-    this.lyricistId,
-    this.composerId,
+    this.lyricist,
+    this.composer,
     this.releaseDate,
   });
 
   final String title;
   final String lyrics;
   final int? id;
-  final int? groupId;
+  final IdolGroup? group;
   final String? imageUrl;
-  final int? lyricistId;
-  final int? composerId;
-  final DateTime? releaseDate;
+  final Artist? lyricist;
+  final Artist? composer;
+  final String? releaseDate;
 }

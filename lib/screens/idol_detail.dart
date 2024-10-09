@@ -5,7 +5,7 @@ import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/screens/widgets/delete_alert_dialog.dart';
+import 'package:kimikoe_app/widgets/delete_alert_dialog.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
 

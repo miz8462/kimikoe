@@ -13,3 +13,9 @@ String formatStringDateToJapanese(String date) {
   DateFormat formatter = DateFormat("yyyy年MM月dd日");
   return formatter.format(birthDay);
 }
+
+String formatStringDateToSlash(String date) {
+  final birthDay = DateTime.parse(date);
+  DateFormat formatter = DateFormat("yyyy/MM/dd");
+  return formatter.format(birthDay);
+}

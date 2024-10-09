@@ -5,8 +5,8 @@ import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/screens/widgets/group_card_m.dart';
-import 'package:kimikoe_app/screens/widgets/song_card.dart';
+import 'package:kimikoe_app/widgets/group_card_m.dart';
+import 'package:kimikoe_app/widgets/song_card.dart';
 
 class SongListScreen extends StatefulWidget {
   const SongListScreen({
@@ -21,7 +21,7 @@ class SongListScreen extends StatefulWidget {
 
 class _SongListScreenState extends State<SongListScreen> {
   late Future _songListFuture;
-
+  late IdolGroup _group;
   @override
   void initState() {
     super.initState();
@@ -37,7 +37,8 @@ class _SongListScreenState extends State<SongListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // todo: グループidから曲のリストを取得する。それをマップしSongCardに表示する
+    _group = widget.group;
+
     return Scaffold(
       appBar: TopBar(
         title: 'ソングリスト',
@@ -47,7 +48,7 @@ class _SongListScreenState extends State<SongListScreen> {
         child: Column(
           children: [
             const Gap(spaceS),
-            GroupCardM(group: widget.group),
+            GroupCardM(group: _group),
             const Gap(spaceM),
             Expanded(
               child: FutureBuilder(
@@ -63,7 +64,10 @@ class _SongListScreenState extends State<SongListScreen> {
                   return ListView.builder(
                     itemCount: songList.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return SongCard(songData: songList[index]);
+                      return SongCard(
+                        songData: songList[index],
+                        group: _group,
+                      );
                     },
                   );
                 },

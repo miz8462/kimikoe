@@ -6,9 +6,9 @@ import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/user.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/screens/widgets/buttons/styled_button.dart';
-import 'package:kimikoe_app/screens/widgets/forms/expanded_text_form.dart';
-import 'package:kimikoe_app/screens/widgets/forms/text_input_form.dart';
+import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
+import 'package:kimikoe_app/widgets/forms/expanded_text_form.dart';
+import 'package:kimikoe_app/widgets/forms/text_input_form.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
 
