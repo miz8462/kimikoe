@@ -35,15 +35,16 @@ class _SongCardState extends State<SongCard> {
   }
 
   Future<void> _fetchArtist() async {
+    final song = widget.songData;
     final composerData = await supabase
         .from(TableName.artists.name)
         .select()
-        .eq(ColumnName.id.name, widget.songData[ColumnName.composerId.name])
+        .eq(ColumnName.id.name, song[ColumnName.composerId.name])
         .single();
     final lyricistData = await supabase
         .from(TableName.artists.name)
         .select()
-        .eq(ColumnName.id.name, widget.songData[ColumnName.lyricistId.name])
+        .eq(ColumnName.id.name, song[ColumnName.lyricistId.name])
         .single();
     setState(() {
       _lyricist = Artist(name: lyricistData[ColumnName.cName.name]);

@@ -86,11 +86,11 @@ Future<void> uploadImageToStorage({
 }
 
 // READ
-Future<List<Map<String, dynamic>>> loadMembers(int groupId) {
-  return fetchGroupMemberbyStream(
-      table: TableName.idol.name,
-      column: ColumnName.groupId.name,
-      groupId: groupId);
+Future<List<Map<String, dynamic>>> fetchGroupMembers(int groupId) async {
+  return await supabase
+      .from(TableName.idol.name)
+      .select()
+      .eq(ColumnName.groupId.name, groupId);
 }
 
 Future fetchCurrentUserInfo() {
@@ -126,19 +126,19 @@ int fetchSelectedDataIdFromName({
   return selectedDataId;
 }
 
+Future<Map<String, dynamic>> fetchComposer(String id) async {
+  return await supabase
+      .from(TableName.artists.name)
+      .select()
+      .eq(ColumnName.id.name, id)
+      .single();
+}
+
 Stream fetchDatabyStream({
   required String table,
   required String id,
 }) {
   return supabase.from(table).stream(primaryKey: [id]);
-}
-
-Future<List<Map<String, dynamic>>> fetchGroupMemberbyStream({
-  required String table,
-  required String column,
-  required int groupId,
-}) async {
-  return await supabase.from(table).select().eq(column, groupId);
 }
 
 // UPDATE

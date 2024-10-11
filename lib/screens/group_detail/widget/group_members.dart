@@ -23,7 +23,7 @@ class _GroupMembersState extends State<GroupMembers> {
   @override
   void initState() {
     super.initState();
-    _memberFuture = loadMembers(widget.group.id!);
+    _memberFuture = fetchGroupMembers(widget.group.id!);
   }
 
   @override

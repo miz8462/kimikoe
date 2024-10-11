@@ -33,7 +33,7 @@ class _LyricScreenState extends State<LyricScreen> {
   @override
   void initState() {
     super.initState();
-    _memberFuture = loadMembers(widget.group.id!);
+    _memberFuture = fetchGroupMembers(widget.group.id!);
   }
 
   void _deleteSong(BuildContext context) {

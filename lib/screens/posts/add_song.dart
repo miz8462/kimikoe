@@ -46,7 +46,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
   late TextEditingController _releaseDateController;
 
   // 歌詞とそこを歌う歌手
-  final List<Map<String, String>> _lyricAndSingerList = [];
+  final List<Map<String, dynamic>> _lyricAndSingerList = [];
   final List<TextEditingController> _lyricListControllers = [];
   final List<TextEditingController> _singerListControllers = [];
 
@@ -58,6 +58,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
   var _enteredComment = '';
 
   late List<Map<String, dynamic>> _groupIdAndNameList;
+  late List<Map<String, dynamic>> _idolIdAndNameList;
   late List<Map<String, dynamic>> _artistIdAndNameList;
 
   var _isSending = false;
@@ -75,10 +76,8 @@ class _AddSongScreenState extends State<AddSongScreen> {
       _song = widget.song!;
     }
     _isEditing = widget.isEditing!;
-    // todo: 初期化
+    // todo: 初期化。歌詞・歌手リスト（なんかいい名前つけたい）
     if (_isEditing) {
-      // imageUrl = fetchPublicImageUrl(_song.imageUrl!);
-
       _groupNameController = TextEditingController(text: _song.group!.name);
       _lyricistNameController =
           TextEditingController(text: _song.lyricist!.name);
@@ -109,21 +108,22 @@ class _AddSongScreenState extends State<AddSongScreen> {
   }
 
   Future<void> _fetchIdAndNameLists() async {
-    final groupIdAndNameList =
-        await fetchIdAndNameList(TableName.idolGroups.name);
-    final artistIdAndNameList =
-        await fetchIdAndNameList(TableName.artists.name);
+    final groupList = await fetchIdAndNameList(TableName.idolGroups.name);
+    // todo:
+    final idolList = await fetchIdAndNameList(TableName.idol.name);
+    final artistList = await fetchIdAndNameList(TableName.artists.name);
     setState(() {
-      _groupIdAndNameList = groupIdAndNameList;
-      _artistIdAndNameList = artistIdAndNameList;
+      _groupIdAndNameList = groupList;
+      _idolIdAndNameList = idolList;
+      _artistIdAndNameList = artistList;
       _isFetching = false;
     });
   }
 
   Future<void> _saveSong() async {
-    setState(() {
-      _isSending = true;
-    });
+    // setState(() {
+    //   _isSending = true;
+    // });
 
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
@@ -133,6 +133,14 @@ class _AddSongScreenState extends State<AddSongScreen> {
       });
       return;
     }
+
+    // 「歌詞追加」の歌詞と歌手をjson形式でまとめる e.g. {'':,'singerId':idolId}
+    for (var index = 0; index < _lyricAndSingerList.length; index++) {
+      final idolId = fetchSelectedDataIdFromName(
+          list: _idolIdAndNameList, name: _singerListControllers[index].text);
+      _lyricAndSingerList[index]['singerId'] = idolId;
+    }
+    print(_lyricAndSingerList);
 
     // 歌詞と歌手のセットをjsonにする
     String jsonStringLyrics = jsonEncode(_lyricAndSingerList);
@@ -259,12 +267,13 @@ class _AddSongScreenState extends State<AddSongScreen> {
     setState(() {
       _lyricListControllers.add(TextEditingController());
       _singerListControllers.add(TextEditingController());
-      _lyricAndSingerList.add({'lyric': '', 'singer': ''});
+      _lyricAndSingerList.add({'lyric': '', 'singerId': int});
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final buttonWidth = MediaQuery.of(context).size.width / 3;
     return _isFetching
         ? Center(child: CircularProgressIndicator())
         : Scaffold(
@@ -293,9 +302,16 @@ class _AddSongScreenState extends State<AddSongScreen> {
                         },
                       ),
                       Gap(spaceS),
-                      Text('歌詞と歌手はセットで登録してください。'),
+                      // Text('グループを選ぶと歌手を絞り込めます。'),
+                      // Gap(spaceS),
+                      CustomDropdownMenu(
+                        label: '*グループ選択',
+                        dataList: _groupIdAndNameList,
+                        controller: _groupNameController,
+                      ),
                       Gap(spaceS),
-
+                      Text('歌詞と歌手は一行単位のセットで登録してください。'),
+                      Gap(spaceS),
                       for (int i = 0; i < _lyricAndSingerList.length; i++)
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -310,30 +326,23 @@ class _AddSongScreenState extends State<AddSongScreen> {
                               },
                             ),
                             Gap(spaceS),
-                            TextFormWithController(
-                              controller: _singerListControllers[i],
+                            CustomDropdownMenu(
                               label: '*歌手',
-                              validator: _titleValidator,
-                              onSaved: (value) {
-                                _lyricAndSingerList[i]['singer'] = value ?? '';
-                              },
+                              dataList: _idolIdAndNameList,
+                              controller: _singerListControllers[i],
                             ),
                             Gap(spaceS),
                           ],
                         ),
-                      ElevatedButton(
+                      StyledButton(
+                        '歌詞追加',
                         onPressed: _addNewLyricItem,
-                        child: Text('行を追加'),
-                      ),
-                      // ElevatedButton(
-                      //   onPressed: _saveForm,
-                      //   child: Text('保存'),
-                      // ),
-                      Gap(spaceS),
-                      CustomDropdownMenu(
-                        label: 'グループ選択',
-                        dataList: _groupIdAndNameList,
-                        controller: _groupNameController,
+                        textColor: textGray,
+                        backgroundColor: backgroundWhite,
+                        buttonSize: buttonS,
+                        borderSide: BorderSide(
+                            color: backgroundLightBlue, width: borderWidth),
+                        width: buttonWidth,
                       ),
                       Gap(spaceS),
                       ImageInput(
