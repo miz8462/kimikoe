@@ -42,10 +42,8 @@ class _GroupColorAndNameListState extends State<GroupColorAndNameList> {
           final members = snapshot.data!;
           return Row(
             children: members.map<Widget>((member) {
-              print(member);
               final color = Color(int.parse(member[ColumnName.color.name]));
               final name = member[ColumnName.cName.name];
-              print(color);
               return Row(
                 children: [
                   Container(

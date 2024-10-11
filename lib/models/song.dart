@@ -11,6 +11,7 @@ class Song {
     this.lyricist,
     this.composer,
     this.releaseDate,
+    this.comment,
   });
 
   final String title;
@@ -21,4 +22,5 @@ class Song {
   final Artist? lyricist;
   final Artist? composer;
   final String? releaseDate;
+  final String? comment;
 }

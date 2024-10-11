@@ -50,7 +50,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       centerTitle: true,
-      // 編集、削除機能。グループの時は削除はなし
+      // 編集、削除機能。グループ、ユーザーの時は削除なし
       actions: isEditing
           ? isGroup || isUser
               ? [

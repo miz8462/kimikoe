@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/song.dart';
-import 'package:kimikoe_app/utils/crud_data.dart';
 import 'package:kimikoe_app/widgets/styled_text.dart';
 
 class SongInfoCard extends StatelessWidget {
@@ -13,7 +12,6 @@ class SongInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageUrl = fetchPublicImageUrl(song.imageUrl!);
     return Container(
       height: 140,
       decoration: BoxDecoration(color: backgroundLightBlue),
@@ -26,26 +24,45 @@ class SongInfoCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 StyledText(
-                  song.title,
+                  song.group!.name,
                   fontSize: fontL,
                 ),
-                // アーティスト
-                StyledText(
-                  song.group!.name,
-                  fontSize: fontS,
-                ),
                 Spacer(),
-                if (song.lyricist != null)
-                  StyledText('作詞：${song.lyricist!.name}'),
-                if (song.composer != null)
-                  StyledText('作曲：${song.composer!.name}'),
-                if (song.releaseDate != null)
-                  StyledText('発売日：${song.releaseDate}'),
+                if (song.lyricist == null || song.lyricist!.name.isEmpty)
+                  StyledText(
+                    '作詞：不明',
+                    fontSize: fontS,
+                  )
+                else
+                  StyledText(
+                    '作詞：${song.lyricist!.name}',
+                    fontSize: fontS,
+                  ),
+                if (song.composer == null || song.composer!.name.isEmpty)
+                  StyledText(
+                    '作曲：不明',
+                    fontSize: fontS,
+                  )
+                else
+                  StyledText(
+                    '作曲：${song.composer!.name}',
+                    fontSize: fontS,
+                  ),
+                if (song.releaseDate == null || song.releaseDate!.isEmpty)
+                  StyledText(
+                    '発売日：不明',
+                    fontSize: fontS,
+                  )
+                else
+                  StyledText(
+                    '発売日：${song.releaseDate}',
+                    fontSize: fontS,
+                  ),
               ],
             ),
           ),
           Image.network(
-            imageUrl,
+            song.imageUrl!,
             height: 140,
           ),
         ],

@@ -61,19 +61,26 @@ class _SongCardState extends State<SongCard> {
         } else {
           final songData = widget.songData;
           final group = widget.group;
-          final formattedDate =
-              formatStringDateToSlash(songData[ColumnName.releaseDate.name]);
+
+          String? formattedDate;
+          if (songData[ColumnName.releaseDate.name] != null) {
+            formattedDate =
+                formatStringDateToSlash(songData[ColumnName.releaseDate.name]);
+          }
+          final imageUrl =
+              fetchPublicImageUrl(songData[ColumnName.imageUrl.name]);
+
           final song = Song(
             id: songData[ColumnName.id.name],
             title: songData[ColumnName.title.name],
             group: group,
             lyrics: songData[ColumnName.lyrics.name],
-            imageUrl: songData[ColumnName.imageUrl.name],
+            imageUrl: imageUrl,
             composer: _composer,
             lyricist: _lyricist,
             releaseDate: formattedDate,
+            comment: songData[ColumnName.comment.name],
           );
-          final songImage = fetchPublicImageUrl(song.imageUrl!);
           final title = song.title;
           final lyrics = song.lyrics;
 
@@ -95,7 +102,7 @@ class _SongCardState extends State<SongCard> {
                   Padding(
                     padding: const EdgeInsets.all(4),
                     child: CircleAvatar(
-                      backgroundImage: NetworkImage(songImage),
+                      backgroundImage: NetworkImage(song.imageUrl!),
                       radius: avaterSizeM,
                     ),
                   ),

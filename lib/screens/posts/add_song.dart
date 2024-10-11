@@ -10,17 +10,17 @@ import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/song.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
+import 'package:kimikoe_app/utils/check.dart';
+import 'package:kimikoe_app/utils/crud_data.dart';
+import 'package:kimikoe_app/utils/date_formatter.dart';
+import 'package:kimikoe_app/utils/image_utils.dart';
+import 'package:kimikoe_app/utils/validator/validator.dart';
 import 'package:kimikoe_app/widgets/buttons/image_input_button.dart';
 import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
 import 'package:kimikoe_app/widgets/forms/dropdown_menu_group_list.dart';
 import 'package:kimikoe_app/widgets/forms/drum_roll_form.dart';
 import 'package:kimikoe_app/widgets/forms/expanded_text_form.dart';
 import 'package:kimikoe_app/widgets/forms/text_input_form.dart';
-import 'package:kimikoe_app/utils/check.dart';
-import 'package:kimikoe_app/utils/crud_data.dart';
-import 'package:kimikoe_app/utils/date_formatter.dart';
-import 'package:kimikoe_app/utils/image_utils.dart';
-import 'package:kimikoe_app/utils/validator/validator.dart';
 
 class AddSongScreen extends StatefulWidget {
   const AddSongScreen({
@@ -38,10 +38,10 @@ class AddSongScreen extends StatefulWidget {
 
 class _AddSongScreenState extends State<AddSongScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _groupNameController = TextEditingController();
-  final _lyricistNameController = TextEditingController();
-  final _composerNameController = TextEditingController();
-  final _releaseDateController = TextEditingController();
+  late TextEditingController _groupNameController;
+  late TextEditingController _lyricistNameController;
+  late TextEditingController _composerNameController;
+  late TextEditingController _releaseDateController;
   late Song _song;
 
   var _enteredTitle = '';
@@ -69,24 +69,21 @@ class _AddSongScreenState extends State<AddSongScreen> {
     }
     _isEditing = widget.isEditing!;
     // todo: 初期化
-    /* add_idolの参考
     if (_isEditing) {
-      _selectedColor = _idol.color!;
+      // imageUrl = fetchPublicImageUrl(_song.imageUrl!);
 
-      imageUrl = fetchPublicImageUrl(_idol.imageUrl!);
-
-      _groupNameController = TextEditingController(text: _idol.group!.name);
-      _birthdayController = TextEditingController(text: _idol.birthDay);
-      _heightController = TextEditingController(text: _idol.height.toString());
-      final initialDebutYear = widget.idol!.debutYear.toString();
-      _debutYearController = TextEditingController(text: initialDebutYear);
+      _groupNameController = TextEditingController(text: _song.group!.name);
+      _lyricistNameController =
+          TextEditingController(text: _song.lyricist!.name);
+      _composerNameController =
+          TextEditingController(text: _song.composer!.name);
+      _releaseDateController = TextEditingController(text: _song.releaseDate);
     } else {
       _groupNameController = TextEditingController();
-      _birthdayController = TextEditingController();
-      _heightController = TextEditingController();
-      _debutYearController = TextEditingController();
+      _lyricistNameController = TextEditingController();
+      _composerNameController = TextEditingController();
+      _releaseDateController = TextEditingController();
     }
-    */
   }
 
   @override
@@ -248,8 +245,8 @@ class _AddSongScreenState extends State<AddSongScreen> {
         ? Center(child: CircularProgressIndicator())
         : Scaffold(
             appBar: TopBar(
-              title: '歌詞登録',
-              showLeading: false,
+              title: _isEditing ? '歌詞編集' : '歌詞登録',
+              showLeading: _isEditing ? true : false,
             ),
             body: SingleChildScrollView(
               child: Padding(
@@ -264,6 +261,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                         style: TextStyle(color: textGray, fontSize: fontSS),
                       ),
                       InputForm(
+                        initialValue: _isEditing ? _song.title : _enteredTitle,
                         label: '*タイトル',
                         validator: _titleValidator,
                         onSaved: (value) {
@@ -272,6 +270,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                       ),
                       Gap(spaceS),
                       ExpandedTextForm(
+                        initialValue: _isEditing ? _song.lyrics : _enteredLyric,
                         onTextChanged: (value) {
                           setState(() {
                             _enteredLyric = value!;
@@ -287,6 +286,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                       ),
                       Gap(spaceS),
                       ImageInput(
+                        imageUrl: _song.imageUrl,
                         onPickImage: (image) {
                           _selectedImage = image;
                           _isImageChanged = true;
@@ -320,6 +320,8 @@ class _AddSongScreenState extends State<AddSongScreen> {
                       ),
                       Gap(spaceS),
                       ExpandedTextForm(
+                        initialValue:
+                            _isEditing ? _song.comment : _enteredComment,
                         onTextChanged: (value) {
                           setState(() {
                             _enteredComment = value!;

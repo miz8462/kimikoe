@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/song.dart';
+import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/screens/lyric/widget/member_color_and_name_list.dart';
 import 'package:kimikoe_app/screens/lyric/widget/song_info_card.dart';
+import 'package:kimikoe_app/utils/crud_data.dart';
+import 'package:kimikoe_app/widgets/delete_alert_dialog.dart';
 import 'package:kimikoe_app/widgets/highlighted_text.dart';
 
 // HylightedTextクラスを作成し行単位でハイライトできるようにする
@@ -20,11 +24,39 @@ class LyricScreen extends StatelessWidget {
   final IdolGroup group;
   final Song song;
 
+  void _deleteSong(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return DeleteAlertDialog(
+          onDelete: () {
+            deleteDataFromTable(
+              table: TableName.songs.name,
+              column: ColumnName.id.name,
+              value: (song.id).toString(),
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final bool isEditing = true;
+    final data = {
+      'song': song,
+      'isEditing': isEditing,
+    };
     return Scaffold(
       appBar: TopBar(
-        title: '歌詞',
+        title: song.title,
+        isEditing: isEditing,
+        editRoute: RoutingPath.addSong,
+        delete: () {
+          _deleteSong(context);
+        },
+        data: data,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -33,7 +65,6 @@ class LyricScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Gap(spaceM),
-              // 曲情報
               SongInfoCard(song: song),
               Gap(spaceM),
               GroupColorAndNameList(
