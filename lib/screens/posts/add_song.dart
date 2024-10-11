@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
 import 'package:kimikoe_app/widgets/forms/dropdown_menu_group_list.dart';
 import 'package:kimikoe_app/widgets/forms/drum_roll_form.dart';
 import 'package:kimikoe_app/widgets/forms/expanded_text_form.dart';
+import 'package:kimikoe_app/widgets/forms/text_form_with_controller.dart';
 import 'package:kimikoe_app/widgets/forms/text_input_form.dart';
 
 class AddSongScreen extends StatefulWidget {
@@ -42,12 +44,17 @@ class _AddSongScreenState extends State<AddSongScreen> {
   late TextEditingController _lyricistNameController;
   late TextEditingController _composerNameController;
   late TextEditingController _releaseDateController;
+
+  // 歌詞とそこを歌う歌手
+  final List<Map<String, String>> _lyricAndSingerList = [];
+  final List<TextEditingController> _lyricListControllers = [];
+  final List<TextEditingController> _singerListControllers = [];
+
   late Song _song;
 
   var _enteredTitle = '';
   File? _selectedImage;
   String? _selectedReleaseDate;
-  var _enteredLyric = '';
   var _enteredComment = '';
 
   late List<Map<String, dynamic>> _groupIdAndNameList;
@@ -92,6 +99,12 @@ class _AddSongScreenState extends State<AddSongScreen> {
     _lyricistNameController.dispose();
     _composerNameController.dispose();
     _releaseDateController.dispose();
+    for (var controller in _lyricListControllers) {
+      controller.dispose();
+    }
+    for (var controller in _singerListControllers) {
+      controller.dispose();
+    }
     super.dispose();
   }
 
@@ -120,6 +133,9 @@ class _AddSongScreenState extends State<AddSongScreen> {
       });
       return;
     }
+
+    // 歌詞と歌手のセットをjsonにする
+    String jsonStringLyrics = jsonEncode(_lyricAndSingerList);
 
     // e.g. /aaa/bbb/ccc/image.png
     String? imagePath = getImagePath(
@@ -175,7 +191,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
       // 歌詞編集
       updateSong(
         name: _enteredTitle,
-        lyric: _enteredLyric,
+        lyric: jsonStringLyrics,
         groupId: selectedGroupId,
         imagePath: imagePath,
         releaseDate: _selectedReleaseDate,
@@ -188,7 +204,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
       // 歌詞登録
       insertSongData(
         name: _enteredTitle,
-        lyric: _enteredLyric,
+        lyric: jsonStringLyrics,
         groupId: selectedGroupId,
         imagePath: imagePath,
         releaseDate: _selectedReleaseDate,
@@ -239,6 +255,14 @@ class _AddSongScreenState extends State<AddSongScreen> {
     );
   }
 
+  void _addNewLyricItem() {
+    setState(() {
+      _lyricListControllers.add(TextEditingController());
+      _singerListControllers.add(TextEditingController());
+      _lyricAndSingerList.add({'lyric': '', 'singer': ''});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return _isFetching
@@ -269,15 +293,42 @@ class _AddSongScreenState extends State<AddSongScreen> {
                         },
                       ),
                       Gap(spaceS),
-                      ExpandedTextForm(
-                        initialValue: _isEditing ? _song.lyrics : _enteredLyric,
-                        onTextChanged: (value) {
-                          setState(() {
-                            _enteredLyric = value!;
-                          });
-                        },
-                        label: '歌詞',
+                      Text('歌詞と歌手はセットで登録してください。'),
+                      Gap(spaceS),
+
+                      for (int i = 0; i < _lyricAndSingerList.length; i++)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('${i + 1}'),
+                            TextFormWithController(
+                              controller: _lyricListControllers[i],
+                              label: '*歌詞',
+                              validator: _titleValidator,
+                              onSaved: (value) {
+                                _lyricAndSingerList[i]['lyric'] = value ?? '';
+                              },
+                            ),
+                            Gap(spaceS),
+                            TextFormWithController(
+                              controller: _singerListControllers[i],
+                              label: '*歌手',
+                              validator: _titleValidator,
+                              onSaved: (value) {
+                                _lyricAndSingerList[i]['singer'] = value ?? '';
+                              },
+                            ),
+                            Gap(spaceS),
+                          ],
+                        ),
+                      ElevatedButton(
+                        onPressed: _addNewLyricItem,
+                        child: Text('行を追加'),
                       ),
+                      // ElevatedButton(
+                      //   onPressed: _saveForm,
+                      //   child: Text('保存'),
+                      // ),
                       Gap(spaceS),
                       CustomDropdownMenu(
                         label: 'グループ選択',

@@ -6,16 +6,16 @@ import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/song.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
+import 'package:kimikoe_app/screens/lyric/widget/lyrics.dart';
 import 'package:kimikoe_app/screens/lyric/widget/member_color_and_name_list.dart';
 import 'package:kimikoe_app/screens/lyric/widget/song_info_card.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
 import 'package:kimikoe_app/widgets/delete_alert_dialog.dart';
-import 'package:kimikoe_app/widgets/highlighted_text.dart';
 
 // HylightedTextクラスを作成し行単位でハイライトできるようにする
 // 文字が見やすい用に色を調節
 
-class LyricScreen extends StatelessWidget {
+class LyricScreen extends StatefulWidget {
   const LyricScreen({
     super.key,
     required this.song,
@@ -23,6 +23,18 @@ class LyricScreen extends StatelessWidget {
   });
   final IdolGroup group;
   final Song song;
+
+  @override
+  State<LyricScreen> createState() => _LyricScreenState();
+}
+
+class _LyricScreenState extends State<LyricScreen> {
+  late Future<List<Map<String, dynamic>>> _memberFuture;
+  @override
+  void initState() {
+    super.initState();
+    _memberFuture = loadMembers(widget.group.id!);
+  }
 
   void _deleteSong(BuildContext context) {
     showDialog(
@@ -33,7 +45,7 @@ class LyricScreen extends StatelessWidget {
             deleteDataFromTable(
               table: TableName.songs.name,
               column: ColumnName.id.name,
-              value: (song.id).toString(),
+              value: (widget.song.id).toString(),
             );
           },
         );
@@ -44,6 +56,8 @@ class LyricScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isEditing = true;
+    final song = widget.song;
+    final group = widget.group;
     final data = {
       'song': song,
       'isEditing': isEditing,
@@ -67,18 +81,11 @@ class LyricScreen extends StatelessWidget {
               Gap(spaceM),
               SongInfoCard(song: song),
               Gap(spaceM),
-              GroupColorAndNameList(
-                group: group,
-              ),
+              GroupColorAndNameList(group: group, memberFuture: _memberFuture),
               Gap(spaceL),
-              // 歌詞
-              Column(
-                children: [
-                  HighlightedText(
-                    'miuちゃん、大好き',
-                    highlightColor: Color.fromARGB(78, 79, 195, 241),
-                  ),
-                ],
+              Lyrics(
+                memberFuture: _memberFuture,
+                lyrics: song.lyrics,
               ),
               Gap(spaceM),
             ],
