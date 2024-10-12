@@ -69,26 +69,20 @@ class _AddSongScreenState extends State<AddSongScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchIdAndNameLists();
+    _initializeState();
+  }
 
-    // 編集の場合の初期化
-    if (widget.song != null) {
+  Future<void> _initializeState() async {
+    _isEditing = widget.isEditing ?? false;
+
+    if (_isEditing && widget.song != null) {
       _song = widget.song!;
     }
-    _isEditing = widget.isEditing!;
-    // todo: 初期化。歌詞・歌手リスト（なんかいい名前つけたい）
+    await _fetchIdAndNameLists();
     if (_isEditing) {
-      _groupNameController = TextEditingController(text: _song.group!.name);
-      _lyricistNameController =
-          TextEditingController(text: _song.lyricist!.name);
-      _composerNameController =
-          TextEditingController(text: _song.composer!.name);
-      _releaseDateController = TextEditingController(text: _song.releaseDate);
+      _initializeEditingFields();
     } else {
-      _groupNameController = TextEditingController();
-      _lyricistNameController = TextEditingController();
-      _composerNameController = TextEditingController();
-      _releaseDateController = TextEditingController();
+      _initializeNewFields();
     }
   }
 
@@ -107,9 +101,36 @@ class _AddSongScreenState extends State<AddSongScreen> {
     super.dispose();
   }
 
+  void _initializeEditingFields() {
+    final jsonLyrics = jsonDecode(_song.lyrics);
+    _groupNameController = TextEditingController(text: _song.group!.name);
+    _lyricistNameController = TextEditingController(text: _song.lyricist!.name);
+    _composerNameController = TextEditingController(text: _song.composer!.name);
+    _releaseDateController = TextEditingController(text: _song.releaseDate);
+    // 歌詞と担当歌手データ
+    for (var lyricData in jsonLyrics) {
+      // singerIdから歌手の名前を取得
+      final singerId = lyricData['singerId'];
+      final selectedMember =
+          _idolIdAndNameList.firstWhere((member) => member['id'] == singerId);
+
+      _lyricAndSingerList.add(lyricData);
+      _lyricListControllers
+          .add(TextEditingController(text: lyricData['lyric']));
+      _singerListControllers
+          .add(TextEditingController(text: selectedMember['name'].toString()));
+    }
+  }
+
+  void _initializeNewFields() {
+    _groupNameController = TextEditingController();
+    _lyricistNameController = TextEditingController();
+    _composerNameController = TextEditingController();
+    _releaseDateController = TextEditingController();
+  }
+
   Future<void> _fetchIdAndNameLists() async {
     final groupList = await fetchIdAndNameList(TableName.idolGroups.name);
-    // todo:
     final idolList = await fetchIdAndNameList(TableName.idol.name);
     final artistList = await fetchIdAndNameList(TableName.artists.name);
     setState(() {
@@ -140,7 +161,6 @@ class _AddSongScreenState extends State<AddSongScreen> {
           list: _idolIdAndNameList, name: _singerListControllers[index].text);
       _lyricAndSingerList[index]['singerId'] = idolId;
     }
-    print(_lyricAndSingerList);
 
     // 歌詞と歌手のセットをjsonにする
     String jsonStringLyrics = jsonEncode(_lyricAndSingerList);
