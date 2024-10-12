@@ -62,6 +62,7 @@ class _GroupMembersState extends State<GroupMembers> {
                       color: Color(
                         int.parse(idolData[ColumnName.color.name]),
                       ),
+                      birthYear: idolData[ColumnName.birthYear.name],
                       birthDay: idolData[ColumnName.birthday.name],
                       comment: idolData[ColumnName.comment.name],
                       debutYear: idolData[ColumnName.debutYear.name],

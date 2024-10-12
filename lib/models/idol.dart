@@ -12,6 +12,7 @@ class Idol extends Artist {
     this.id,
     this.color,
     this.group,
+    this.birthYear,
     this.birthDay,
     this.height,
     this.hometown,
@@ -24,6 +25,7 @@ class Idol extends Artist {
   final int? id;
   final Color? color;
   final IdolGroup? group;
+  final int? birthYear;
   final String? birthDay;
   final int? height;
   final String? hometown;

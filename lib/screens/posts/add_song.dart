@@ -75,7 +75,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
   Future<void> _initializeState() async {
     _isEditing = widget.isEditing ?? false;
 
-    if (_isEditing && widget.song != null) {
+    if (widget.song != null) {
       _song = widget.song!;
     }
     await _fetchIdAndNameLists();
@@ -271,7 +271,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
       showTitleActions: false,
       minTime: DateTime(1900),
       maxTime: DateTime.now(),
-      currentTime: DateTime(2020, 6, 15),
+      currentTime: DateTime.now(),
       locale: picker.LocaleType.jp,
       onChanged: (date) {
         _selectedReleaseDate = date.toIso8601String();

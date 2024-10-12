@@ -12,13 +12,6 @@ import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/widgets/buttons/circular_button.dart';
-import 'package:kimikoe_app/widgets/buttons/image_input_button.dart';
-import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
-import 'package:kimikoe_app/widgets/forms/dropdown_menu_group_list.dart';
-import 'package:kimikoe_app/widgets/forms/drum_roll_form.dart';
-import 'package:kimikoe_app/widgets/forms/expanded_text_form.dart';
-import 'package:kimikoe_app/widgets/forms/text_input_form.dart';
 import 'package:kimikoe_app/utils/check.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
@@ -26,6 +19,13 @@ import 'package:kimikoe_app/utils/image_utils.dart';
 import 'package:kimikoe_app/utils/pickers/int_picker.dart';
 import 'package:kimikoe_app/utils/pickers/year_picker.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
+import 'package:kimikoe_app/widgets/buttons/circular_button.dart';
+import 'package:kimikoe_app/widgets/buttons/image_input_button.dart';
+import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
+import 'package:kimikoe_app/widgets/forms/dropdown_menu_group_list.dart';
+import 'package:kimikoe_app/widgets/forms/drum_roll_form.dart';
+import 'package:kimikoe_app/widgets/forms/expanded_text_form.dart';
+import 'package:kimikoe_app/widgets/forms/text_input_form.dart';
 
 List<Color> colorsList = IdolColors.values.map((color) => color.rgb).toList();
 
@@ -46,7 +46,8 @@ class AddIdolScreen extends StatefulWidget {
 class _AddIdolScreenState extends State<AddIdolScreen> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _groupNameController;
-  late TextEditingController _birthdayController;
+  late TextEditingController _birthYearController;
+  late TextEditingController _birthDayController;
   late TextEditingController _heightController;
   late TextEditingController _debutYearController;
   late Idol _idol;
@@ -55,7 +56,8 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
   Color _selectedColor = Colors.lightBlue;
   File? _selectedImage;
   String? imageUrl;
-  String? _selectedBirthday;
+  String? _selectedBirthYear;
+  String? _selectedBirthDay;
   String? _selectedHeight;
   String? _enteredHometown;
   String? _selectedDebutYear;
@@ -81,13 +83,15 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     if (_isEditing) {
       _selectedColor = _idol.color!;
       _groupNameController = TextEditingController(text: _idol.group!.name);
-      _birthdayController = TextEditingController(text: _idol.birthDay);
+      _birthYearController = TextEditingController(text: _idol.birthDay);
+      _birthDayController = TextEditingController(text: _idol.birthDay);
       _heightController = TextEditingController(text: _idol.height.toString());
       final initialDebutYear = widget.idol!.debutYear.toString();
       _debutYearController = TextEditingController(text: initialDebutYear);
     } else {
       _groupNameController = TextEditingController();
-      _birthdayController = TextEditingController();
+      _birthYearController = TextEditingController();
+      _birthDayController = TextEditingController();
       _heightController = TextEditingController();
       _debutYearController = TextEditingController();
     }
@@ -105,7 +109,8 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
   @override
   void dispose() {
     _groupNameController.dispose();
-    _birthdayController.dispose();
+    _birthYearController.dispose();
+    _birthDayController.dispose();
     _heightController.dispose();
     _debutYearController.dispose();
     super.dispose();
@@ -139,8 +144,16 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
       int.parse(_selectedHeight!);
     }
 
-    if (_selectedBirthday == null || _selectedBirthday!.isEmpty) {
-      _selectedBirthday = null;
+    int? birthYear;
+
+    if (_selectedBirthYear == null || _selectedBirthYear!.isEmpty) {
+      birthYear = null;
+    } else {
+      birthYear = int.parse(_selectedBirthYear!);
+    }
+
+    if (_selectedBirthDay == null || _selectedBirthDay!.isEmpty) {
+      _selectedBirthDay = null;
     }
 
     if (_selectedDebutYear == null || _selectedDebutYear!.isEmpty) {
@@ -184,7 +197,8 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         groupId: selectedGroupId,
         color: selectedColor,
         imagePath: imagePath,
-        birthday: _selectedBirthday,
+        birthday: _selectedBirthDay,
+        birthYear: birthYear,
         height: _selectedHeight,
         hometown: _enteredHometown,
         debutYear: _selectedDebutYear,
@@ -197,7 +211,8 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         groupId: selectedGroupId,
         color: selectedColor,
         imagePath: imagePath,
-        birthday: _selectedBirthday,
+        birthday: _selectedBirthDay,
+        birthYear: birthYear,
         height: _selectedHeight,
         hometown: _enteredHometown,
         debutYear: _selectedDebutYear,
@@ -232,20 +247,39 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     return nullableTextInputValidator(value, '出身地');
   }
 
-  void _pickBirthday() async {
-    await picker.DatePicker.showDatePicker(
+  void _pickBirthYear() async {
+    await picker.DatePicker.showPicker(
       context,
       showTitleActions: false,
-      minTime: DateTime(1900),
-      maxTime: DateTime.now(),
-      currentTime: DateTime(2000, 6, 15),
-      locale: picker.LocaleType.jp,
+      pickerModel: CustomYearPicker(
+        currentTime: DateTime(2000),
+        minTime: DateTime(1990),
+        maxTime: DateTime.now(),
+        locale: picker.LocaleType.jp,
+      ),
       onChanged: (date) {
-        _selectedBirthday = date.toIso8601String();
-        _birthdayController.text = formatDateTimeToXXXX(
+        _selectedBirthYear = date.toIso8601String();
+        _birthYearController.text = formatDateTimeToXXXX(
           date: date,
-          formatStyle: 'yyyy/MM/dd',
+          formatStyle: 'yyyy',
         );
+      },
+    );
+  }
+
+  void _pickBirthday() async {
+    await picker.DatePicker.showPicker(
+      context,
+      showTitleActions: false,
+      pickerModel: CustomMonthDayPicker(
+        currentTime: DateTime(2000, 6, 15),
+        minTime: DateTime(1990),
+        maxTime: DateTime.now(),
+        locale: picker.LocaleType.jp,
+      ),
+      onChanged: (date) {
+        _selectedBirthDay = date.toIso8601String();
+        _birthDayController.text = formatStringDateToMMdd(date.toString());
       },
     );
   }
@@ -370,13 +404,26 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       ),
                       const Gap(spaceS),
                       PickerForm(
-                        label: '生年月日',
-                        controller: _birthdayController,
+                        label: '生まれた年',
+                        controller: _birthYearController,
+                        picker: _pickBirthYear,
+                        onSaved: (value) {
+                          setState(
+                            () {
+                              _selectedBirthYear = value!;
+                            },
+                          );
+                        },
+                      ),
+                      const Gap(spaceS),
+                      PickerForm(
+                        label: '生まれた日付',
+                        controller: _birthDayController,
                         picker: _pickBirthday,
                         onSaved: (value) {
                           setState(
                             () {
-                              _selectedBirthday = value!;
+                              _selectedBirthDay = value!;
                             },
                           );
                         },

@@ -8,9 +8,21 @@ String formatDateTimeToXXXX({
   return formatter.format(date);
 }
 
-String formatStringDateToJapanese(String date) {
+String formatStringDateToJapaneseOnlyMonthAndDay(String date) {
+  final birthDay = DateTime.parse(date);
+  DateFormat formatter = DateFormat("MM月dd日");
+  return formatter.format(birthDay);
+}
+
+String formatStringDateToJapaneseWithYear(String date) {
   final birthDay = DateTime.parse(date);
   DateFormat formatter = DateFormat("yyyy年MM月dd日");
+  return formatter.format(birthDay);
+}
+
+String formatStringDateToMMdd(String date) {
+  final birthDay = DateTime.parse(date);
+  DateFormat formatter = DateFormat("MM-dd");
   return formatter.format(birthDay);
 }
 

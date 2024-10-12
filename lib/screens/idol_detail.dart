@@ -5,9 +5,9 @@ import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/widgets/delete_alert_dialog.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
+import 'package:kimikoe_app/widgets/delete_alert_dialog.dart';
 
 class IdolDetailScreen extends StatefulWidget {
   const IdolDetailScreen({
@@ -49,10 +49,25 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
     };
 
     late String formattedBirthDay;
+    if (idol.birthDay != null && idol.birthYear != null) {
+      final birthday = '${idol.birthYear}-${idol.birthDay}';
+      formattedBirthDay = formatStringDateToJapaneseWithYear(birthday);
+    } else if (idol.birthYear != null) {
+      formattedBirthDay = '${idol.birthYear}年';
+    } else if (idol.birthDay != null) {
+      final birthday = '0000-${idol.birthDay}';
+      if (idol.birthDay != null) {
+        formattedBirthDay = formatStringDateToJapaneseOnlyMonthAndDay(birthday);
+      }
+    } else {
+      formattedBirthDay = '不明';
+    }
 
-    //
-    if (idol.birthDay != null) {
-      formattedBirthDay = formatStringDateToJapanese(idol.birthDay!);
+    late String hometown;
+    if (idol.hometown == null || idol.hometown!.isEmpty) {
+      hometown = '不明';
+    } else {
+      hometown = idol.hometown!;
     }
 
     return Scaffold(
@@ -107,7 +122,7 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
             ),
             Gap(spaceS),
             Text(
-              '出身地：${idol.hometown}',
+              '出身地：$hometown',
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             Gap(spaceS),

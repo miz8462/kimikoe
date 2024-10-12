@@ -21,6 +21,7 @@ enum ColumnName {
   createdAt('created_at'),
   color('color'),
   birthday('birthday'),
+  birthYear('birth_year'),
   height('height'),
   hometown('hometown'),
   yearFormingGroups('year_forming_group'),
