@@ -41,6 +41,7 @@ class GroupCardL extends StatelessWidget {
                 group.imageUrl!,
                 height: 130,
                 width: 130,
+                fit: BoxFit.cover,
               ),
             ),
             Text(
