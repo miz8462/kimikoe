@@ -8,8 +8,8 @@ String? intInputValidator(String? value, String? text) {
 String? textInputValidator(String? value, String? text) {
   if (value == null || value.isEmpty) {
     return '$textを入力してください。';
-  } else if (value.trim().length > 50) {
-    return '$textは50文字以下にしてください。';
+  } else if (value.trim().length > 300) {
+    return '$textは300文字以下にしてください。';
   }
   return null;
 }

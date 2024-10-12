@@ -38,15 +38,17 @@ class Lyrics extends StatelessWidget {
             final lyricsJson = jsonDecode(lyrics);
 
             return Row(children: [
-              Column(
-                children: [
-                  for (var i = 0; i < lyricsJson.length; i++)
-                    CustomTextForLyrics(
-                      lyricsJson[i]['lyric'],
-                      color: memberList.firstWhere((member) =>
-                          member['id'] == lyricsJson[i]['singerId'])['color'],
-                    ),
-                ],
+              Expanded(
+                child: Column(
+                  children: [
+                    for (var i = 0; i < lyricsJson.length; i++)
+                      CustomTextForLyrics(
+                        lyricsJson[i]['lyric'],
+                        color: memberList.firstWhere((member) =>
+                            member['id'] == lyricsJson[i]['singerId'])['color'],
+                      ),
+                  ],
+                ),
               ),
             ]);
           }

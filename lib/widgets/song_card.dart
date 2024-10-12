@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -85,6 +87,13 @@ class _SongCardState extends State<SongCard> {
           final title = song.title;
           final lyrics = song.lyrics;
 
+          // 一行ごとの歌詞と歌手のjsonから歌詞だけを抽出
+          final lyricsJson = jsonDecode(lyrics);
+          var allLyrics = '';
+          for (var lyric in lyricsJson) {
+            allLyrics += (lyric['lyric'] + ' ');
+          }
+
           final data = {
             'song': song,
             'group': group,
@@ -108,30 +117,32 @@ class _SongCardState extends State<SongCard> {
                     ),
                   ),
                   Gap(spaceL),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: fontM,
-                          fontWeight: FontWeight.w400,
-                          color: textDark,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: fontM,
+                            fontWeight: FontWeight.w400,
+                            color: textDark,
+                          ),
                         ),
-                      ),
-                      Text(
-                        lyrics,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: fontSS,
-                          fontWeight: FontWeight.w400,
-                          color: textDark,
+                        Text(
+                          allLyrics,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: fontSS,
+                            fontWeight: FontWeight.w400,
+                            color: textDark,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),

@@ -16,19 +16,29 @@ class CustomTextForLyrics extends StatelessWidget {
     return Column(
       children: [
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: circleSize,
-              height: circleSize,
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(100),
+            Padding(
+              padding: const EdgeInsets.only(top: 2),
+              child: Container(
+                width: circleSize,
+                height: circleSize,
+                decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: BorderRadius.circular(100),
+                ),
               ),
             ),
             Gap(8),
-            Text(
-              text,
-              style: TextStyle(color: textDark),
+            Expanded(
+              child: Text(
+                text,
+                style: TextStyle(
+                  color: textDark,
+                  fontSize: 16,
+                ),
+                softWrap: true,
+              ),
             ),
           ],
         ),

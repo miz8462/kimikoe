@@ -82,7 +82,7 @@ class _LyricScreenState extends State<LyricScreen> {
               SongInfoCard(song: song),
               Gap(spaceM),
               GroupColorAndNameList(group: group, memberFuture: _memberFuture),
-              Gap(spaceL),
+              Gap(spaceLL),
               Lyrics(
                 memberFuture: _memberFuture,
                 lyrics: song.lyrics,
