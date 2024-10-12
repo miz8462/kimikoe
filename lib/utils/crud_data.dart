@@ -38,9 +38,9 @@ Future<void> insertIdolData({
   String? imagePath,
   String? birthday,
   int? birthYear,
-  String? height,
+  int? height,
   String? hometown,
-  String? debutYear,
+  int? debutYear,
   String? comment,
 }) async {
   await supabase.from(TableName.idol.name).insert({
@@ -166,9 +166,9 @@ Future<void> updateIdol({
   String? imagePath,
   String? birthday,
   int? birthYear,
-  String? height,
+  int? height,
   String? hometown,
-  String? debutYear,
+  int? debutYear,
   String? comment,
   required int id,
 }) async {

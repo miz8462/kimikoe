@@ -49,16 +49,19 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
     };
 
     late String formattedBirthDay;
-    if (idol.birthDay != null && idol.birthYear != null) {
+    if (idol.birthDay != null &&
+        idol.birthDay!.isNotEmpty &&
+        idol.birthYear != null &&
+        idol.birthYear != 0) {
       final birthday = '${idol.birthYear}-${idol.birthDay}';
       formattedBirthDay = formatStringDateToJapaneseWithYear(birthday);
-    } else if (idol.birthYear != null) {
-      formattedBirthDay = '${idol.birthYear}年';
-    } else if (idol.birthDay != null) {
+    } else if (idol.birthDay != null && idol.birthDay!.isNotEmpty) {
       final birthday = '0000-${idol.birthDay}';
       if (idol.birthDay != null) {
         formattedBirthDay = formatStringDateToJapaneseOnlyMonthAndDay(birthday);
       }
+    } else if (idol.birthYear != null && idol.birthYear != 0) {
+      formattedBirthDay = '${idol.birthYear}年';
     } else {
       formattedBirthDay = '不明';
     }
@@ -121,12 +124,23 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             Gap(spaceS),
+            if (idol.height == null || idol.height == 0)
+              Text(
+                '身長：不明',
+                style: Theme.of(context).textTheme.bodyLarge,
+              )
+            else
+              Text(
+                '身長：${idol.height}cm',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            Gap(spaceS),
             Text(
               '出身地：$hometown',
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             Gap(spaceS),
-            if (idol.debutYear == null)
+            if (idol.debutYear == null || idol.debutYear == 0)
               Text(
                 'デビュー：不明',
                 style: Theme.of(context).textTheme.bodyLarge,

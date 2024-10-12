@@ -138,26 +138,29 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
       imageFile: _selectedImage,
     );
 
-    if (_selectedHeight == null || _selectedHeight!.isEmpty) {
-      _selectedHeight = null;
-    } else {
-      int.parse(_selectedHeight!);
-    }
-
-    int? birthYear;
-
+    int birthYear;
     if (_selectedBirthYear == null || _selectedBirthYear!.isEmpty) {
-      birthYear = null;
+      birthYear = 0;
     } else {
       birthYear = int.parse(_selectedBirthYear!);
     }
 
     if (_selectedBirthDay == null || _selectedBirthDay!.isEmpty) {
-      _selectedBirthDay = null;
+      _selectedBirthDay = '';
     }
 
+    int height;
+    if (_selectedHeight == null || _selectedHeight!.isEmpty) {
+      height = 0;
+    } else {
+      height = int.parse(_selectedHeight!);
+    }
+
+    int debutYear;
     if (_selectedDebutYear == null || _selectedDebutYear!.isEmpty) {
-      _selectedDebutYear = null;
+      debutYear = 0;
+    } else {
+      debutYear = int.parse(_selectedDebutYear!);
     }
 
     // 入力グループ名がDBにない場合、グループ名とNo Imageを登録する
@@ -199,9 +202,9 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         imagePath: imagePath,
         birthday: _selectedBirthDay,
         birthYear: birthYear,
-        height: _selectedHeight,
+        height: height,
         hometown: _enteredHometown,
-        debutYear: _selectedDebutYear,
+        debutYear: debutYear,
         comment: _enteredComment,
       );
     } else {
@@ -213,9 +216,9 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         imagePath: imagePath,
         birthday: _selectedBirthDay,
         birthYear: birthYear,
-        height: _selectedHeight,
+        height: height,
         hometown: _enteredHometown,
-        debutYear: _selectedDebutYear,
+        debutYear: debutYear,
         comment: _enteredComment,
       );
     }
