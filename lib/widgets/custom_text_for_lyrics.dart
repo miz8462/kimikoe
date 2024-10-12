@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
 
 class CustomTextForLyrics extends StatelessWidget {
@@ -12,20 +13,26 @@ class CustomTextForLyrics extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       children: [
-        Container(
-          width: circleSize,
-          height: circleSize,
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(100),
-          ),
+        Row(
+          children: [
+            Container(
+              width: circleSize,
+              height: circleSize,
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.circular(100),
+              ),
+            ),
+            Gap(8),
+            Text(
+              text,
+              style: TextStyle(color: textDark),
+            ),
+          ],
         ),
-        Text(
-          text,
-          style: TextStyle(color: textDark),
-        ),
+        Gap(8),
       ],
     );
   }
