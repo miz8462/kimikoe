@@ -16,13 +16,13 @@ class GroupInfo extends StatelessWidget {
           backgroundImage: NetworkImage(group.imageUrl!),
           radius: avaterSizeLL,
         ),
-        Gap(spaceS),
+        const Gap(spaceS),
         if (group.comment != null)
           Text(
             group.comment!,
             style: Theme.of(context).textTheme.titleLarge,
           ),
-        Gap(spaceS),
+        const Gap(spaceS),
         if (group.year == null)
           Text(
             '結成年：不明',

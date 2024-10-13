@@ -60,7 +60,7 @@ class _SongCardState extends State<SongCard> {
       future: _artistFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else {
           final songData = widget.songData;
           final group = widget.group;
@@ -116,7 +116,7 @@ class _SongCardState extends State<SongCard> {
                       radius: avaterSizeM,
                     ),
                   ),
-                  Gap(spaceL),
+                  const Gap(spaceL),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,7 +125,7 @@ class _SongCardState extends State<SongCard> {
                           title,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: fontM,
                             fontWeight: FontWeight.w400,
                             color: textDark,
@@ -135,7 +135,7 @@ class _SongCardState extends State<SongCard> {
                           allLyrics,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: fontSS,
                             fontWeight: FontWeight.w400,
                             color: textDark,

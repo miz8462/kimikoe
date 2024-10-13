@@ -24,7 +24,7 @@ class _GroupColorAndNameListState extends State<GroupColorAndNameList> {
       future: widget.memberFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
@@ -45,15 +45,15 @@ class _GroupColorAndNameListState extends State<GroupColorAndNameList> {
                       shape: BoxShape.circle, // 円形を指定
                     ),
                   ),
-                  Gap(spaceSS),
+                  const Gap(spaceSS),
                   Text(name),
-                  Gap(spaceM),
+                  const Gap(spaceM),
                 ],
               );
             }).toList(),
           );
         } else {
-          return Center(child: Text('No members found'));
+          return const Center(child: Text('No members found'));
         }
       },
     );

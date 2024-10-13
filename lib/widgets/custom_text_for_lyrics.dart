@@ -29,11 +29,11 @@ class CustomTextForLyrics extends StatelessWidget {
                 ),
               ),
             ),
-            Gap(8),
+            const Gap(8),
             Expanded(
               child: Text(
                 text,
-                style: TextStyle(
+                style: const TextStyle(
                   color: textDark,
                   fontSize: 16,
                 ),
@@ -42,7 +42,7 @@ class CustomTextForLyrics extends StatelessWidget {
             ),
           ],
         ),
-        Gap(8),
+        const Gap(8),
       ],
     );
   }

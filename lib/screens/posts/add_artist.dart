@@ -73,7 +73,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: TopBar(
+      appBar: const TopBar(
         title: 'アーティスト登録',
         showLeading: false,
       ),
@@ -87,7 +87,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     '*必須項目',
                     style: TextStyle(color: textGray),
                   ),
@@ -96,14 +96,14 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
                     validator: _nameValidator,
                     onSaved: (value) => _enteredName = value!,
                   ),
-                  Gap(spaceS),
+                  const Gap(spaceS),
                   ImageInput(
                     onPickImage: (image) {
                       _selectedImage = image;
                     },
                     label: 'アーティスト画像',
                   ),
-                  Gap(spaceS),
+                  const Gap(spaceS),
                   ExpandedTextForm(
                     label: '備考',
                     onTextChanged: (value) {
@@ -112,14 +112,14 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
                       });
                     },
                   ),
-                  Gap(spaceS),
+                  const Gap(spaceS),
                   StyledButton(
                     '登録',
                     onPressed: _isSending ? null : _saveArtist,
                     isSending: _isSending,
                     buttonSize: buttonL,
                   ),
-                  Gap(spaceS),
+                  const Gap(spaceS),
                 ],
               ),
             ),

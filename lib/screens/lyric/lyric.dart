@@ -78,16 +78,16 @@ class _LyricScreenState extends State<LyricScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Gap(spaceM),
+              const Gap(spaceM),
               SongInfoCard(song: song),
-              Gap(spaceM),
+              const Gap(spaceM),
               GroupColorAndNameList(group: group, memberFuture: _memberFuture),
-              Gap(spaceLL),
+              const Gap(spaceLL),
               Lyrics(
                 memberFuture: _memberFuture,
                 lyrics: song.lyrics,
               ),
-              Gap(spaceM),
+              const Gap(spaceM),
             ],
           ),
         ),

@@ -91,7 +91,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
     return Scaffold(
       body: widget.navigationShell,
       bottomNavigationBar: imageUrl == null
-          ? SizedBox()
+          ? const SizedBox()
           : NavigationBar(
               backgroundColor: mainBlue,
               selectedIndex: currentIndex,

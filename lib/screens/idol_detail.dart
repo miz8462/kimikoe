@@ -86,13 +86,13 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Gap(spaceS),
+            const Gap(spaceS),
             CircleAvatar(
               backgroundImage: NetworkImage(idol.imageUrl!),
               radius: avaterSizeLL,
             ),
             // todo: Twitterやインスタのリンク
-            Gap(spaceS),
+            const Gap(spaceS),
             Row(
               children: [
                 Container(
@@ -101,7 +101,7 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
                   decoration: BoxDecoration(
                       borderRadius: borderRadius12, color: idol.color),
                 ),
-                Gap(spaceS),
+                const Gap(spaceS),
                 if (idol.group != null)
                   Text(
                     idol.group!.name,
@@ -109,7 +109,7 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
                   )
               ],
             ),
-            Gap(spaceS),
+            const Gap(spaceS),
             if (idol.comment != null)
               Text(
                 idol.comment!,
@@ -123,7 +123,7 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
               '誕生日：$formattedBirthDay',
               style: Theme.of(context).textTheme.bodyLarge,
             ),
-            Gap(spaceS),
+            const Gap(spaceS),
             if (idol.height == null || idol.height == 0)
               Text(
                 '身長：不明',
@@ -134,12 +134,12 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
                 '身長：${idol.height}cm',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
-            Gap(spaceS),
+            const Gap(spaceS),
             Text(
               '出身地：$hometown',
               style: Theme.of(context).textTheme.bodyLarge,
             ),
-            Gap(spaceS),
+            const Gap(spaceS),
             if (idol.debutYear == null || idol.debutYear == 0)
               Text(
                 'デビュー：不明',

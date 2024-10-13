@@ -295,7 +295,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
   Widget build(BuildContext context) {
     final buttonWidth = MediaQuery.of(context).size.width / 3;
     return _isFetching
-        ? Center(child: CircularProgressIndicator())
+        ? const Center(child: CircularProgressIndicator())
         : Scaffold(
             appBar: TopBar(
               title: _isEditing ? '歌詞編集' : '歌詞登録',
@@ -309,7 +309,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         '*必須項目',
                         style: TextStyle(color: textGray, fontSize: fontSS),
                       ),
@@ -321,7 +321,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                           _enteredTitle = value!;
                         },
                       ),
-                      Gap(spaceS),
+                      const Gap(spaceS),
                       // Text('グループを選ぶと歌手を絞り込めます。'),
                       // Gap(spaceS),
                       CustomDropdownMenu(
@@ -329,9 +329,9 @@ class _AddSongScreenState extends State<AddSongScreen> {
                         dataList: _groupIdAndNameList,
                         controller: _groupNameController,
                       ),
-                      Gap(spaceS),
-                      Text('歌詞と歌手は一行単位のセットで登録してください。'),
-                      Gap(spaceS),
+                      const Gap(spaceS),
+                      const Text('歌詞と歌手は一行単位のセットで登録してください。'),
+                      const Gap(spaceS),
                       for (int i = 0; i < _lyricAndSingerList.length; i++)
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -345,13 +345,13 @@ class _AddSongScreenState extends State<AddSongScreen> {
                                 _lyricAndSingerList[i]['lyric'] = value ?? '';
                               },
                             ),
-                            Gap(spaceS),
+                            const Gap(spaceS),
                             CustomDropdownMenu(
                               label: '*歌手',
                               dataList: _idolIdAndNameList,
                               controller: _singerListControllers[i],
                             ),
-                            Gap(spaceS),
+                            const Gap(spaceS),
                           ],
                         ),
                       StyledButton(
@@ -360,11 +360,11 @@ class _AddSongScreenState extends State<AddSongScreen> {
                         textColor: textGray,
                         backgroundColor: backgroundWhite,
                         buttonSize: buttonS,
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                             color: backgroundLightBlue, width: borderWidth),
                         width: buttonWidth,
                       ),
-                      Gap(spaceS),
+                      const Gap(spaceS),
                       ImageInput(
                         imageUrl: _song.imageUrl,
                         onPickImage: (image) {
@@ -373,19 +373,19 @@ class _AddSongScreenState extends State<AddSongScreen> {
                         },
                         label: 'イメージ画像',
                       ),
-                      Gap(spaceS),
+                      const Gap(spaceS),
                       CustomDropdownMenu(
                         label: '作詞家',
                         dataList: _artistIdAndNameList,
                         controller: _lyricistNameController,
                       ),
-                      Gap(spaceS),
+                      const Gap(spaceS),
                       CustomDropdownMenu(
                         label: '作曲家',
                         dataList: _artistIdAndNameList,
                         controller: _composerNameController,
                       ),
-                      Gap(spaceS),
+                      const Gap(spaceS),
                       PickerForm(
                         label: '発売日',
                         controller: _releaseDateController,
@@ -398,7 +398,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                           );
                         },
                       ),
-                      Gap(spaceS),
+                      const Gap(spaceS),
                       ExpandedTextForm(
                         initialValue:
                             _isEditing ? _song.comment : _enteredComment,
@@ -409,14 +409,14 @@ class _AddSongScreenState extends State<AddSongScreen> {
                         },
                         label: '備考',
                       ),
-                      Gap(spaceS),
+                      const Gap(spaceS),
                       StyledButton(
                         '登録',
                         onPressed: _isSending ? null : _saveSong,
                         isSending: _isSending,
                         buttonSize: buttonL,
                       ),
-                      Gap(spaceS),
+                      const Gap(spaceS),
                     ],
                   ),
                 ),

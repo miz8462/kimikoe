@@ -47,7 +47,7 @@ class GroupCardL extends StatelessWidget {
             Text(
               group.name,
               textAlign: TextAlign.start,
-              style: TextStyle(
+              style: const TextStyle(
                 color: textDark,
               ),
             ),

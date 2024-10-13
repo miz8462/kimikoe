@@ -65,19 +65,19 @@ class _UserScreenState extends ConsumerState<UserScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Gap(spaceS),
+            const Gap(spaceS),
             CircleAvatar(
               backgroundImage: userImage,
               radius: avaterSizeL,
             ),
-            Gap(spaceS),
+            const Gap(spaceS),
             Text(
               user.name,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: fontLL,
               ),
             ),
-            Gap(spaceS),
+            const Gap(spaceS),
             Text(user.comment),
           ],
         ),

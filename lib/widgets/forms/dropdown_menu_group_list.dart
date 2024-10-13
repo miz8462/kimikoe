@@ -33,7 +33,7 @@ class _CustomDropdownMenuState extends State<CustomDropdownMenu> {
       requestFocusOnTap: true,
       label: Text(widget.label),
       width: screenWidth,
-      inputDecorationTheme: InputDecorationTheme(
+      inputDecorationTheme: const InputDecorationTheme(
         isDense: true,
         border: InputBorder.none,
         fillColor: backgroundLightBlue,

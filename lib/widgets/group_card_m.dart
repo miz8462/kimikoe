@@ -36,14 +36,14 @@ class GroupCardM extends StatelessWidget {
                 radius: avaterSizeL,
               ),
             ),
-            Gap(spaceL),
+            const Gap(spaceL),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     groupName,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: fontLL,
                       fontWeight: FontWeight.w600,
                       color: textDark,
@@ -53,7 +53,7 @@ class GroupCardM extends StatelessWidget {
                     groupInfo ?? '',
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: fontSS,
                       color: textDark,
                     ),

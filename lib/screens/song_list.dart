@@ -40,7 +40,7 @@ class _SongListScreenState extends State<SongListScreen> {
     _group = widget.group;
 
     return Scaffold(
-      appBar: TopBar(
+      appBar: const TopBar(
         title: 'ソングリスト',
       ),
       body: Padding(
@@ -55,10 +55,10 @@ class _SongListScreenState extends State<SongListScreen> {
                 future: _songListFuture,
                 builder: (ctx, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   }
                   if (snapshot.data.toString().length == 2) {
-                    return Center(child: Text('登録データはありません'));
+                    return const Center(child: Text('登録データはありません'));
                   }
                   final songList = snapshot.data! as List;
                   return ListView.builder(

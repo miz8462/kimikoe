@@ -18,7 +18,7 @@ class KimikoeApp extends StatelessWidget {
         primaryColor: mainBlue,
         navigationBarTheme: NavigationBarThemeData(
           labelTextStyle: WidgetStateProperty .all(
-            TextStyle(color: textWhite),
+            const TextStyle(color: textWhite),
           ),
         ),
       ),

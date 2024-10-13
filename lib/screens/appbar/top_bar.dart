@@ -32,7 +32,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       automaticallyImplyLeading: showLeading,
       title: Padding(
-        padding: EdgeInsets.only(top: 8.0),
+        padding: const EdgeInsets.only(top: 8.0),
         child: Column(
           children: [
             if (imageUrl != null)
@@ -44,7 +44,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
               Text(
                 localTitle,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 25, color: mainBlue),
+                style: const TextStyle(fontSize: 25, color: mainBlue),
               ),
           ],
         ),
@@ -62,7 +62,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                           onPressed: () {
                             context.pushNamed(editRoute!, extra: data);
                           },
-                          child: Text('編集'),
+                          child: const Text('編集'),
                         ),
                       ],
                       builder: (_, MenuController controller, Widget? child) {
@@ -74,7 +74,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                                 controller.open();
                               }
                             },
-                            icon: Icon(Icons.more_vert));
+                            icon: const Icon(Icons.more_vert));
                       },
                     ),
                   ),
@@ -88,7 +88,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                           onPressed: () {
                             context.pushNamed(editRoute!, extra: data);
                           },
-                          child: Text('編集'),
+                          child: const Text('編集'),
                         ),
                         MenuItemButton(
                           onPressed: delete,
@@ -108,13 +108,13 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                                 controller.open();
                               }
                             },
-                            icon: Icon(Icons.more_vert));
+                            icon: const Icon(Icons.more_vert));
                       },
                     ),
                   ),
                 ]
           : null,
-      bottom: AppBarBottom(),
+      bottom: const AppBarBottom(),
     );
   }
 

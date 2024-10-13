@@ -31,7 +31,7 @@ class _IdolGroupListScreenState extends State<IdolGroupListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopBar(
+      appBar: const TopBar(
         imageUrl: 'assets/images/Kimikoe_Logo.png',
         showLeading: false,
       ),
@@ -39,14 +39,14 @@ class _IdolGroupListScreenState extends State<IdolGroupListScreen> {
         stream: _groupStream,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           /* 
           テーブルにデータが一件も無い状態の snapshot.data は "[]" となる。snapshot.dataに対しhasDataすると "[]" というデータがあると判断される。なので空のリストを文字列にすることでlengthが2になりデータがないことを判断する。
           */
           if (snapshot.data.toString().length == 2) {
-            return Center(child: Text('登録データはありません'));
+            return const Center(child: Text('登録データはありません'));
           } else {
             final groups = snapshot.data!;
             return GridView.builder(

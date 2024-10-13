@@ -58,7 +58,7 @@ class _ImageInputState extends State<ImageInput> {
       textColor: textGray,
       backgroundColor: backgroundWhite,
       buttonSize: buttonS,
-      borderSide: BorderSide(color: backgroundLightBlue, width: borderWidth),
+      borderSide: const BorderSide(color: backgroundLightBlue, width: borderWidth),
     );
 
     if (_selectedImage != null || _hasEditingImage) {

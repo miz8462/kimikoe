@@ -38,7 +38,7 @@ class StyledButton extends StatelessWidget {
           fixedSize: Size.fromWidth(width),
         ),
         child: isSending!
-            ? SizedBox(
+            ? const SizedBox(
                 height: 20,
                 width: 20,
                 child: CircularProgressIndicator(),

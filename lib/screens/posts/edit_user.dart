@@ -102,7 +102,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
       });
     }
     return Scaffold(
-      appBar: TopBar(title: 'ユーザー編集'),
+      appBar: const TopBar(title: 'ユーザー編集'),
       body: Padding(
         padding: screenPadding,
         child: Form(

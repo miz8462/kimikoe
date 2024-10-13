@@ -347,7 +347,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
   @override
   Widget build(BuildContext context) {
     return _isFetching
-        ? Center(child: CircularProgressIndicator())
+        ? const Center(child: CircularProgressIndicator())
         : Scaffold(
             appBar: TopBar(
               title: _isEditing ? 'アイドル編集' : 'アイドル登録',

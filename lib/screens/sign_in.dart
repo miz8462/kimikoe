@@ -28,8 +28,8 @@ class _SignInScreenState extends State<SignInScreen> {
   // マジックリンク
   Future<void> _signIn() async {
     await supabase.auth.signInWithOtp(
-      email: 'wwr8462@gmail.com',
-      // email: _emailController.text.trim(),
+      // email: 'wwr8462@gmail.com',
+      email: _emailController.text.trim(),
       emailRedirectTo: 'io.supabase.kimikoe://login-callback/',
     );
     if (mounted) {
@@ -157,7 +157,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         const Gap(60),
                         TextFormField(
                           controller: _emailController,
-                          style: TextStyle(color: textWhite),
+                          style: const TextStyle(color: textWhite),
                           decoration: const InputDecoration(
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(

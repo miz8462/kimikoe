@@ -12,8 +12,8 @@ class DeleteAlertDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('本当に削除しますか？'),
-      content: Text('削除したデータは復元できません。\nそれでも削除しますか？'),
+      title: const Text('本当に削除しますか？'),
+      content: const Text('削除したデータは復元できません。\nそれでも削除しますか？'),
       actions: [
         TextButton(
             onPressed: () {
@@ -29,7 +29,7 @@ class DeleteAlertDialog extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text(
+          child: const Text(
             'いいえ',
           ),
         ),

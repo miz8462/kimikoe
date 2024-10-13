@@ -50,7 +50,7 @@ final router = GoRouter(
     GoRoute(
       path: '/',
       name: 'signin',
-      builder: (cotext, state) => SignInScreen(),
+      builder: (cotext, state) => const SignInScreen(),
     ),
     StatefulShellRoute.indexedStack(
       parentNavigatorKey: _rootNavigatorKey,
@@ -67,7 +67,7 @@ final router = GoRouter(
               name: RoutingPath.groupList,
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
-                child: IdolGroupListScreen(),
+                child: const IdolGroupListScreen(),
               ),
               routes: [
                 GoRoute(
@@ -135,7 +135,7 @@ final router = GoRouter(
                   final Map<String, dynamic>? data;
                   data = state.extra as Map<String, dynamic>?;
                   final Song? song =
-                      data?['song'] ?? Song(title: '', lyrics: '');
+                      data?['song'] ?? const Song(title: '', lyrics: '');
                   final bool? isEditing = data?['isEditing'] ?? false;
                   return NoTransitionPage(
                     key: state.pageKey,
@@ -152,7 +152,7 @@ final router = GoRouter(
                   final Map<String, dynamic>? data;
                   data = state.extra as Map<String, dynamic>?;
                   final IdolGroup? group =
-                      data?['group'] ?? IdolGroup(name: '');
+                      data?['group'] ?? const IdolGroup(name: '');
                   final bool? isEditing = data?['isEditing'] ?? false;
                   return NoTransitionPage(
                     key: state.pageKey,
@@ -168,7 +168,7 @@ final router = GoRouter(
               pageBuilder: (context, state) {
                 final Map<String, dynamic>? data;
                 data = state.extra as Map<String, dynamic>?;
-                final Idol? idol = data?['idol'] ?? Idol(name: '');
+                final Idol? idol = data?['idol'] ?? const Idol(name: '');
                 final bool? isEditing = data?['isEditing'] ?? false;
                 return NoTransitionPage(
                   key: state.pageKey,
@@ -184,7 +184,7 @@ final router = GoRouter(
               path: RoutingPath.addArtist,
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
-                child: AddArtistScreen(),
+                child: const AddArtistScreen(),
               ),
             ),
           ],
@@ -197,7 +197,7 @@ final router = GoRouter(
               name: RoutingPath.userDetails,
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
-                child: UserScreen(),
+                child: const UserScreen(),
               ),
               routes: [
                 GoRoute(
@@ -231,7 +231,7 @@ final router = GoRouter(
               name: RoutingPath.signOut,
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
-                child: SignInScreen(),
+                child: const SignInScreen(),
               ),
             ),
           ],

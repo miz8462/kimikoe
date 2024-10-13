@@ -14,7 +14,7 @@ class SongInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 140,
-      decoration: BoxDecoration(color: backgroundLightBlue),
+      decoration: const BoxDecoration(color: backgroundLightBlue),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -27,9 +27,9 @@ class SongInfoCard extends StatelessWidget {
                   song.group!.name,
                   fontSize: fontL,
                 ),
-                Spacer(),
+                const Spacer(),
                 if (song.lyricist == null || song.lyricist!.name.isEmpty)
-                  StyledText(
+                  const StyledText(
                     '作詞：不明',
                     fontSize: fontS,
                   )
@@ -39,7 +39,7 @@ class SongInfoCard extends StatelessWidget {
                     fontSize: fontS,
                   ),
                 if (song.composer == null || song.composer!.name.isEmpty)
-                  StyledText(
+                  const StyledText(
                     '作曲：不明',
                     fontSize: fontS,
                   )
@@ -49,7 +49,7 @@ class SongInfoCard extends StatelessWidget {
                     fontSize: fontS,
                   ),
                 if (song.releaseDate == null || song.releaseDate!.isEmpty)
-                  StyledText(
+                  const StyledText(
                     '発売日：不明',
                     fontSize: fontS,
                   )

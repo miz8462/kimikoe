@@ -32,19 +32,19 @@ class _GroupMembersState extends State<GroupMembers> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'メンバー',
             style: TextStyle(fontSize: fontM),
           ),
-          Gap(spaceS),
+          const Gap(spaceS),
           FutureBuilder(
             future: _memberFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               }
               if (snapshot.data.toString().length == 2) {
-                return Center(child: Text('登録データはありません'));
+                return const Center(child: Text('登録データはありません'));
               }
               final memberList = snapshot.data as List;
               return Expanded(
@@ -89,15 +89,15 @@ class _GroupMembersState extends State<GroupMembers> {
                                     borderRadius: borderRadius12,
                                     color: idol.color),
                               ),
-                              Gap(spaceS),
+                              const Gap(spaceS),
                               Text(
                                 idol.name,
-                                style: TextStyle(fontSize: fontS),
+                                style: const TextStyle(fontSize: fontS),
                               ),
                             ],
                           ),
                         ),
-                        Gap(spaceSS),
+                        const Gap(spaceSS),
                       ],
                     );
                   },

@@ -64,4 +64,4 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {implementation files('libs/appstore-sdk-3.0.5.jar')}

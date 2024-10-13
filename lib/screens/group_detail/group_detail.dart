@@ -65,7 +65,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Gap(spaceS),
+            const Gap(spaceS),
             GroupInfo(
               group: group,
             ),
