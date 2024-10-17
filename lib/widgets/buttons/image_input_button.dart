@@ -56,7 +56,7 @@ class _ImageInputState extends State<ImageInput> {
       widget.label,
       onPressed: _getImageFromMobileStrage,
       textColor: textWhite,
-      backgroundColor: mainBlue.withOpacity(0.9),
+      backgroundColor: mainBlue.withOpacity(0.7),
     );
 
     if (_selectedImage != null || _hasEditingImage) {

@@ -57,7 +57,7 @@ class _IdolGroupListScreenState extends State<IdolGroupListScreen> {
                 mainAxisSpacing: 15, // 縦のスペース
                 childAspectRatio: 1.0, // カードのアスペクト比
               ),
-              itemCount: groups.length,
+              itemCount: groups!.length,
               itemBuilder: (BuildContext context, int index) {
                 // IdolGroupクラスを初期化
                 final group = groups[index];

@@ -26,10 +26,11 @@ class TextFormWithController extends StatelessWidget {
           hintStyle: const TextStyle(color: textGray),
           contentPadding: const EdgeInsets.only(left: spaceS),
         ),
-        keyboardType: TextInputType.name,
+        keyboardType: TextInputType.multiline,
         autocorrect: false,
         validator: validator,
         onSaved: onSaved,
+        maxLines: null,
       ),
     );
   }

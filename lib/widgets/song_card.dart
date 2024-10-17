@@ -28,8 +28,8 @@ class SongCard extends StatefulWidget {
 
 class _SongCardState extends State<SongCard> {
   late Future<void> _artistFuture;
-  late Artist _lyricist;
-  late Artist _composer;
+  Artist? _lyricist;
+  Artist? _composer;
   @override
   void initState() {
     super.initState();
@@ -38,19 +38,26 @@ class _SongCardState extends State<SongCard> {
 
   Future<void> _fetchArtist() async {
     final song = widget.songData;
-    final composerData = await supabase
-        .from(TableName.artists.name)
-        .select()
-        .eq(ColumnName.id.name, song[ColumnName.composerId.name])
-        .single();
     final lyricistData = await supabase
         .from(TableName.artists.name)
         .select()
         .eq(ColumnName.id.name, song[ColumnName.lyricistId.name])
         .single();
+    final composerData = await supabase
+        .from(TableName.artists.name)
+        .select()
+        .eq(ColumnName.id.name, song[ColumnName.composerId.name])
+        .single();
+
+    final lyricistName = lyricistData[ColumnName.cName.name];
+    final composerName = composerData[ColumnName.cName.name];
     setState(() {
-      _lyricist = Artist(name: lyricistData[ColumnName.cName.name]);
-      _composer = Artist(name: composerData[ColumnName.cName.name]);
+      if (lyricistName != null) {
+        _lyricist = Artist(name: lyricistData[ColumnName.cName.name]);
+      }
+      if (composerName != null) {
+        _composer = Artist(name: composerData[ColumnName.cName.name]);
+      }
     });
   }
 

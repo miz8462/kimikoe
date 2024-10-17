@@ -104,8 +104,18 @@ class _AddSongScreenState extends State<AddSongScreen> {
   void _initializeEditingFields() {
     final jsonLyrics = jsonDecode(_song.lyrics);
     _groupNameController = TextEditingController(text: _song.group!.name);
-    _lyricistNameController = TextEditingController(text: _song.lyricist!.name);
-    _composerNameController = TextEditingController(text: _song.composer!.name);
+    if (_song.lyricist?.name == null) {
+      _lyricistNameController = TextEditingController();
+    } else {
+      _lyricistNameController =
+          TextEditingController(text: _song.lyricist!.name);
+    }
+    if (_song.lyricist?.name == null) {
+      _composerNameController = TextEditingController();
+    } else {
+      _composerNameController =
+          TextEditingController(text: _song.composer!.name);
+    }
     _releaseDateController = TextEditingController(text: _song.releaseDate);
     // 歌詞と担当歌手データ
     for (var lyricData in jsonLyrics) {
@@ -205,6 +215,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
     }
     selectedLyricistId = fetchSelectedDataIdFromName(
         list: _artistIdAndNameList, name: lyricistName);
+
     // 作曲家登録
     final composerName = _composerNameController.text;
     final isSelectedComposerInList =
@@ -213,8 +224,11 @@ class _AddSongScreenState extends State<AddSongScreen> {
       insertArtistData(name: composerName, imageUrl: defaultPathNoImage);
       await _fetchIdAndNameLists();
     }
-    selectedComposerId = fetchSelectedDataIdFromName(
-        list: _artistIdAndNameList, name: composerName);
+    if (composerName.isNotEmpty) {
+      selectedComposerId = fetchSelectedDataIdFromName(
+          list: _artistIdAndNameList, name: composerName);
+    }
+
     if (_isEditing) {
       // 歌詞編集
       updateSong(

@@ -120,10 +120,14 @@ Future<List<Map<String, dynamic>>> fetchIdAndNameList(String tableName) async {
 
 int fetchSelectedDataIdFromName({
   required List<Map<String, dynamic>> list,
-  required String name,
+  required String? name,
 }) {
-  final selectedData =
-      list.where((item) => item[ColumnName.cName.name] == name).single;
+  final selectedDataList =
+      list.where((item) => item[ColumnName.cName.name] == name).toList();
+  if (selectedDataList.isEmpty) {
+    throw StateError('No element found for the given name: $name');
+  }
+  final selectedData = selectedDataList.single;
   final selectedDataId = selectedData[ColumnName.id.name];
   return selectedDataId;
 }
