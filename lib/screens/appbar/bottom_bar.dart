@@ -41,28 +41,28 @@ class _BottomBarState extends ConsumerState<BottomBar> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 StyledButton(
-                  'Add Song',
+                  '歌詞登録',
                   onPressed: () {
                     Navigator.of(context).pop();
                     context.push(RoutingPath.addSong);
                   },
                 ),
                 StyledButton(
-                  'Add Group',
+                  'グループ登録',
                   onPressed: () {
                     Navigator.of(context).pop();
                     context.push(RoutingPath.addGroup);
                   },
                 ),
                 StyledButton(
-                  'Add Idol',
+                  '歌手登録',
                   onPressed: () {
                     Navigator.of(context).pop();
                     context.push(RoutingPath.addIdol);
                   },
                 ),
                 StyledButton(
-                  'Add Artist',
+                  '作詞・作曲家登録',
                   onPressed: () {
                     Navigator.of(context).pop();
                     context.push(RoutingPath.addArtist);

@@ -64,4 +64,7 @@ flutter {
     source '../..'
 }
 
-dependencies {implementation files('libs/appstore-sdk-3.0.5.jar')}
+dependencies {
+    implementation files('libs/appstore-sdk-3.0.5.jar')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}

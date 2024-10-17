@@ -233,7 +233,6 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                     '登録',
                     onPressed: _isSending ? null : _saveGroup,
                     isSending: _isSending,
-                    buttonSize: buttonL,
                   ),
                 ],
               ),

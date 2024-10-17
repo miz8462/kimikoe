@@ -32,8 +32,10 @@ class GroupCardM extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(4),
               child: CircleAvatar(
-                backgroundImage: NetworkImage(groupImage!),
+                backgroundImage:
+                    groupImage != null ? NetworkImage(groupImage) : null,
                 radius: avaterSizeL,
+                child: groupImage == null ? Icon(Icons.person) : null,
               ),
             ),
             const Gap(spaceL),

@@ -117,7 +117,6 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
                     '登録',
                     onPressed: _isSending ? null : _saveArtist,
                     isSending: _isSending,
-                    buttonSize: buttonL,
                   ),
                   const Gap(spaceS),
                 ],

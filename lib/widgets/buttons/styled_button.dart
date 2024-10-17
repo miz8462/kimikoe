@@ -10,7 +10,6 @@ class StyledButton extends StatelessWidget {
     this.backgroundColor = mainBlue,
     this.buttonSize = buttonS,
     this.borderSide = BorderSide.none,
-    this.width = double.maxFinite,
     super.key,
   });
 
@@ -21,36 +20,32 @@ class StyledButton extends StatelessWidget {
   final Color backgroundColor;
   final double buttonSize;
   final BorderSide borderSide;
-  final double width;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: buttonSize,
-      child: OutlinedButton(
-        onPressed: onPressed,
-        style: OutlinedButton.styleFrom(
-          backgroundColor: backgroundColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: borderRadius4,
-          ),
-          side: borderSide,
-          fixedSize: Size.fromWidth(width),
+    return OutlinedButton(
+      onPressed: onPressed,
+      style: OutlinedButton.styleFrom(
+        backgroundColor: backgroundColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: borderRadius4,
         ),
-        child: isSending!
-            ? const SizedBox(
-                height: 20,
-                width: 20,
-                child: CircularProgressIndicator(),
-              )
-            : Text(
-                text,
-                style: TextStyle(
-                  color: textColor,
-                  fontSize: 20,
-                ),
-              ),
+        side: borderSide,
+        fixedSize: Size.fromWidth(double.maxFinite),
       ),
+      child: isSending!
+          ? const SizedBox(
+              height: 20,
+              width: 20,
+              child: CircularProgressIndicator(),
+            )
+          : Text(
+              text,
+              style: TextStyle(
+                color: textColor,
+                fontSize: 20,
+              ),
+            ),
     );
   }
 }

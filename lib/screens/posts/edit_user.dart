@@ -155,7 +155,6 @@ class _EditUserScreenState extends State<EditUserScreen> {
                 '登録',
                 onPressed: _isSending ? null : _saveUserProfile,
                 isSending: _isSending,
-                buttonSize: buttonL,
               ),
               const Gap(spaceS),
             ],

@@ -20,7 +20,7 @@ class GroupInfo extends StatelessWidget {
         if (group.comment != null)
           Text(
             group.comment!,
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
         const Gap(spaceS),
         if (group.year == null)

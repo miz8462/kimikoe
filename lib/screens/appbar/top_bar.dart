@@ -55,14 +55,17 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
           ? isGroup || isUser
               ? [
                   Padding(
-                    padding: const EdgeInsets.only(top: 12, right: 16),
+                    padding: const EdgeInsets.only(top: 12),
                     child: MenuAnchor(
                       menuChildren: [
-                        MenuItemButton(
-                          onPressed: () {
-                            context.pushNamed(editRoute!, extra: data);
-                          },
-                          child: const Text('編集'),
+                        SizedBox(
+                          width: 100,
+                          child: MenuItemButton(
+                            onPressed: () {
+                              context.pushNamed(editRoute!, extra: data);
+                            },
+                            child: const Text('編集'),
+                          ),
                         ),
                       ],
                       builder: (_, MenuController controller, Widget? child) {
@@ -81,21 +84,39 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                 ]
               : [
                   Padding(
-                    padding: const EdgeInsets.only(top: 12, right: 16),
+                    padding: const EdgeInsets.only(top: 12),
                     child: MenuAnchor(
                       menuChildren: [
-                        MenuItemButton(
-                          onPressed: () {
-                            context.pushNamed(editRoute!, extra: data);
-                          },
-                          child: const Text('編集'),
+                        SizedBox(
+                          width: 80,
+                          child: MenuItemButton(
+                            onPressed: () {
+                              context.pushNamed(editRoute!, extra: data);
+                            },
+                            child: Center(
+                              child: Text(
+                                '編集',
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                            ),
+                          ),
                         ),
-                        MenuItemButton(
-                          onPressed: delete,
-                          child: Text(
-                            '削除',
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.error),
+                        SizedBox(
+                          width: 80,
+                          child: MenuItemButton(
+                            onPressed: delete,
+                            child: Center(
+                              child: Text(
+                                '削除',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .error),
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -127,17 +148,17 @@ class AppBarBottom extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Container(
-        height: 2.0,
-        decoration: BoxDecoration(color: mainBlue.withOpacity(0.3), boxShadow: [
+    return Container(
+      height: 2.0,
+      decoration: BoxDecoration(
+        color: mainBlue.withOpacity(0.9),
+        boxShadow: [
           BoxShadow(
             color: mainBlue.withOpacity(0.5),
             spreadRadius: 0,
             blurRadius: 2,
           )
-        ]),
+        ],
       ),
     );
   }

@@ -293,7 +293,6 @@ class _AddSongScreenState extends State<AddSongScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final buttonWidth = MediaQuery.of(context).size.width / 3;
     return _isFetching
         ? const Center(child: CircularProgressIndicator())
         : Scaffold(
@@ -357,12 +356,8 @@ class _AddSongScreenState extends State<AddSongScreen> {
                       StyledButton(
                         '歌詞追加',
                         onPressed: _addNewLyricItem,
-                        textColor: textGray,
-                        backgroundColor: backgroundWhite,
-                        buttonSize: buttonS,
-                        borderSide: const BorderSide(
-                            color: backgroundLightBlue, width: borderWidth),
-                        width: buttonWidth,
+                        textColor: textWhite,
+                        backgroundColor: mainBlue.withOpacity(0.7),
                       ),
                       const Gap(spaceS),
                       ImageInput(
@@ -414,7 +409,6 @@ class _AddSongScreenState extends State<AddSongScreen> {
                         '登録',
                         onPressed: _isSending ? null : _saveSong,
                         isSending: _isSending,
-                        buttonSize: buttonL,
                       ),
                       const Gap(spaceS),
                     ],

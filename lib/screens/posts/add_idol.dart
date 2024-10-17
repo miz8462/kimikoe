@@ -10,7 +10,6 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/enums/idol_colors.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol.dart';
-import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/utils/check.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
@@ -117,9 +116,9 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
   }
 
   Future<void> _saveIdol() async {
-    setState(() {
-      _isSending = true;
-    });
+    // setState(() {
+    //   _isSending = true;
+    // });
 
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
@@ -183,7 +182,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         name: groupName,
       );
     }
-
+    print(_selectedColor);
     final selectedColor = _selectedColor
         .toString()
         .split(' ')
@@ -192,54 +191,54 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         .replaceAll('(', '')
         .replaceAll(')', '');
 
-    if (_isEditing) {
-      // 編集
-      updateIdol(
-        name: _enteredIdolName,
-        id: _idol.id!,
-        groupId: selectedGroupId,
-        color: selectedColor,
-        imagePath: imagePath,
-        birthday: _selectedBirthDay,
-        birthYear: birthYear,
-        height: height,
-        hometown: _enteredHometown,
-        debutYear: debutYear,
-        comment: _enteredComment,
-      );
-    } else {
-      // 登録
-      insertIdolData(
-        name: _enteredIdolName,
-        groupId: selectedGroupId,
-        color: selectedColor,
-        imagePath: imagePath,
-        birthday: _selectedBirthDay,
-        birthYear: birthYear,
-        height: height,
-        hometown: _enteredHometown,
-        debutYear: debutYear,
-        comment: _enteredComment,
-      );
-    }
+    // if (_isEditing) {
+    //   // 編集
+    //   updateIdol(
+    //     name: _enteredIdolName,
+    //     id: _idol.id!,
+    //     groupId: selectedGroupId,
+    //     color: selectedColor,
+    //     imagePath: imagePath,
+    //     birthday: _selectedBirthDay,
+    //     birthYear: birthYear,
+    //     height: height,
+    //     hometown: _enteredHometown,
+    //     debutYear: debutYear,
+    //     comment: _enteredComment,
+    //   );
+    // } else {
+    //   // 登録
+    //   insertIdolData(
+    //     name: _enteredIdolName,
+    //     groupId: selectedGroupId,
+    //     color: selectedColor,
+    //     imagePath: imagePath,
+    //     birthday: _selectedBirthDay,
+    //     birthYear: birthYear,
+    //     height: height,
+    //     hometown: _enteredHometown,
+    //     debutYear: debutYear,
+    //     comment: _enteredComment,
+    //   );
+    // }
 
-    if (_selectedImage != null) {
-      uploadImageToStorage(
-        table: TableName.images.name,
-        path: imagePath!,
-        file: _selectedImage!,
-      );
-    }
+    // if (_selectedImage != null) {
+    //   uploadImageToStorage(
+    //     table: TableName.images.name,
+    //     path: imagePath!,
+    //     file: _selectedImage!,
+    //   );
+    // }
 
-    setState(() {
-      _isSending = false;
-    });
+    // setState(() {
+    //   _isSending = false;
+    // });
 
-    if (!mounted) {
-      return;
-    }
+    // if (!mounted) {
+    //   return;
+    // }
 
-    context.pushReplacement(RoutingPath.groupList);
+    // context.pushReplacement(RoutingPath.groupList);
   }
 
   String? _nameValidator(String? value) {
@@ -482,7 +481,6 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                         '登録',
                         onPressed: _isSending ? null : _saveIdol,
                         isSending: _isSending,
-                        buttonSize: buttonL,
                       ),
                       const Gap(spaceS),
                     ],

@@ -7,8 +7,8 @@ import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/screens/group_detail/widget/group_info.dart';
 import 'package:kimikoe_app/screens/group_detail/widget/group_members.dart';
-import 'package:kimikoe_app/widgets/delete_alert_dialog.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
+import 'package:kimikoe_app/widgets/delete_alert_dialog.dart';
 
 class GroupDetailScreen extends StatefulWidget {
   const GroupDetailScreen({
@@ -62,19 +62,22 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
       ),
       body: Padding(
         padding: screenPadding,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Gap(spaceS),
-            GroupInfo(
-              group: group,
-            ),
-            Divider(
-              color: mainBlue.withOpacity(0.3),
-              thickness: 2,
-            ),
-            GroupMembers(group: group),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Gap(spaceS),
+              GroupInfo(
+                group: group,
+              ),
+              Divider(
+                color: mainBlue.withOpacity(0.3),
+                thickness: 2,
+              ),
+              GroupMembers(group: group),
+            ],
+          ),
         ),
       ),
     );

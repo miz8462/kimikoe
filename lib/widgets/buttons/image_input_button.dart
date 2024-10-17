@@ -55,10 +55,8 @@ class _ImageInputState extends State<ImageInput> {
     Widget content = StyledButton(
       widget.label,
       onPressed: _getImageFromMobileStrage,
-      textColor: textGray,
-      backgroundColor: backgroundWhite,
-      buttonSize: buttonS,
-      borderSide: const BorderSide(color: backgroundLightBlue, width: borderWidth),
+      textColor: textWhite,
+      backgroundColor: mainBlue.withOpacity(0.9),
     );
 
     if (_selectedImage != null || _hasEditingImage) {

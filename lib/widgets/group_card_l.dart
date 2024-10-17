@@ -19,6 +19,7 @@ class GroupCardL extends StatelessWidget {
         extra: group,
       ),
       child: Container(
+        padding: EdgeInsets.only(top: 8),
         decoration: BoxDecoration(
           color: backgroundWhite,
           borderRadius: BorderRadius.circular(10),
@@ -35,17 +36,21 @@ class GroupCardL extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // 画像をClipRRectで囲って角を丸くする
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-                group.imageUrl!,
-                height: 130,
-                width: 130,
-                fit: BoxFit.cover,
+            Expanded(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(
+                  group.imageUrl!,
+                  height: 130,
+                  width: 130,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             Text(
               group.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.start,
               style: const TextStyle(
                 color: textDark,

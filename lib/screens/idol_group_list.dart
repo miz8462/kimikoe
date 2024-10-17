@@ -48,7 +48,7 @@ class _IdolGroupListScreenState extends State<IdolGroupListScreen> {
           if (snapshot.data.toString().length == 2) {
             return const Center(child: Text('登録データはありません'));
           } else {
-            final groups = snapshot.data!;
+            final groups = snapshot.data;
             return GridView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

@@ -9,8 +9,6 @@ class BorderButton extends StyledButton {
     super.onPressed,
     super.textColor = textGray,
     super.backgroundColor = backgroundWhite,
-    super.buttonSize,
-    super.width,
     super.borderSide = const BorderSide(
       color: backgroundLightBlue,
       width: borderWidth,
