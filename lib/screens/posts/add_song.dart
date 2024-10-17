@@ -213,8 +213,10 @@ class _AddSongScreenState extends State<AddSongScreen> {
       insertArtistData(name: lyricistName, imageUrl: defaultPathNoImage);
       await _fetchIdAndNameLists();
     }
-    selectedLyricistId = fetchSelectedDataIdFromName(
-        list: _artistIdAndNameList, name: lyricistName);
+    if (lyricistName.isNotEmpty) {
+      selectedLyricistId = fetchSelectedDataIdFromName(
+          list: _artistIdAndNameList, name: lyricistName);
+    }
 
     // 作曲家登録
     final composerName = _composerNameController.text;
