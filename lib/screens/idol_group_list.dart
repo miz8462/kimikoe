@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/widgets/group_card_l.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
+import 'package:kimikoe_app/widgets/group_card_l.dart';
 
 class IdolGroupListScreen extends StatefulWidget {
   const IdolGroupListScreen({super.key});
