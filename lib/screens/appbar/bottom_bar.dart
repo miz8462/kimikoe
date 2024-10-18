@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
-import 'package:kimikoe_app/providers/current_user.dart';
+import 'package:kimikoe_app/providers/current_user_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
 
@@ -83,7 +83,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
   Widget build(BuildContext context) {
     int currentIndex = widget.navigationShell.currentIndex;
 
-    final userData = ref.watch(userDataProvider);
+    final userData = ref.watch(currentUserProvider);
     final imageUrl =
         userData.value?.map((data) => data).toList()[0]['image_url'];
 

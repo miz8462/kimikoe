@@ -118,9 +118,9 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
   }
 
   Future<void> _saveIdol() async {
-    // setState(() {
-    //   _isSending = true;
-    // });
+    setState(() {
+      _isSending = true;
+    });
 
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
@@ -186,13 +186,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     }
 
     // MaterialColor(primary value: Color(0xff2196f3))という表記から"0xff2196f3"を抜き出す
-    final selectedColor = _selectedColor
-        .toString()
-        .split(' ')
-        .last
-        .replaceFirst('Color', '')
-        .replaceAll('(', '')
-        .replaceAll(')', '');
+    final selectedColor = formatStringColorCode(_selectedColor);
 
     if (_isEditing) {
       // 編集
