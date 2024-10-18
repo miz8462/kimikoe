@@ -9,18 +9,19 @@ import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
+import 'package:kimikoe_app/providers/idol_groups_providere.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/widgets/buttons/image_input_button.dart';
-import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
-import 'package:kimikoe_app/widgets/forms/drum_roll_form.dart';
-import 'package:kimikoe_app/widgets/forms/expanded_text_form.dart';
-import 'package:kimikoe_app/widgets/forms/text_input_form.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
 import 'package:kimikoe_app/utils/pickers/year_picker.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
+import 'package:kimikoe_app/widgets/buttons/image_input_button.dart';
+import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
+import 'package:kimikoe_app/widgets/forms/drum_roll_form.dart';
+import 'package:kimikoe_app/widgets/forms/expanded_text_form.dart';
+import 'package:kimikoe_app/widgets/forms/text_input_form.dart';
 
 class AddGroupScreen extends ConsumerStatefulWidget {
   const AddGroupScreen({
@@ -112,28 +113,35 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
       return;
     }
 
-    // e.g. /aaa/bbb/ccc/image.png
-    String? imagePath = getImagePath(
-        isEditing: _isEditing,
-        isImageChanged: _isImageChanged,
-        imageUrl: _group.imageUrl,
-        imageFile: _selectedImage);
+    String? imageFileName;
+    String? imageUrl;
+    // 画像を登録しない場合
+    if (_selectedImage == null) {
+      imageFileName = defaultPathNoImage;
+      imageUrl = fetchImageOfNoImage();
+    } else {
+      // e.g. /aaa/bbb/ccc/image.png
+      imageFileName = getImagePath(
+          isEditing: _isEditing,
+          isImageChanged: _isImageChanged,
+          imageUrl: _group.imageUrl,
+          imageFile: _selectedImage);
+    }
 
-    // todo: グループリストのプロバイダー化
-    // ref.read(idolGroupsProvider.notifier).addGroup(
-    //       _enteredName,
-    //       _selectedImage == null
-    //           ? defaultPathNoImage
-    //           : imagePathWithCreatedAtJPG,
-    //       _selectedYear == null ? null : int.tryParse(_selectedYear!),
-    //       _enteredComment,
-    //     );
+    final group = IdolGroup(
+      name: _enteredName,
+      imageUrl: imageUrl,
+      year: _selectedYear == null ? null : int.tryParse(_selectedYear!),
+      comment: _enteredComment,
+    );
+
+    ref.read(idolGroupListProvider.notifier).addGroup(group);
 
     if (_isEditing) {
       // 修正
       updateIdolGroup(
         name: _enteredName,
-        imageUrl: imagePath,
+        imageUrl: imageFileName,
         year: _selectedYear,
         comment: _enteredComment,
         id: (_group.id).toString(),
@@ -142,7 +150,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
       // 登録
       insertIdolGroupData(
         name: _enteredName,
-        imageUrl: imagePath,
+        imageUrl: imageFileName,
         year: _selectedYear,
         comment: _enteredComment,
       );
@@ -151,7 +159,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     if (_selectedImage != null) {
       uploadImageToStorage(
           table: TableName.images.name,
-          path: imagePath!,
+          path: imageFileName!,
           file: _selectedImage!);
     }
 

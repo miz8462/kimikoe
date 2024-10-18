@@ -105,7 +105,7 @@ Future fetchCurrentUserInfo() {
 }
 
 String fetchImageOfNoImage() {
-  return supabase.storage.from(TableName.images.name).getPublicUrl(noImage);
+  return supabase.storage.from(TableName.images.name).getPublicUrl(defaultPathNoImage);
 }
 
 String fetchPublicImageUrl(String imageUrl) {
