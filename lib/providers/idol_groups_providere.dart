@@ -13,6 +13,12 @@ class IdolGroupListNotifier extends StateNotifier<List<IdolGroup>> {
   void removeGroup(IdolGroup group) {
     state = state.where((g) => g.id != group.id).toList();
   }
+
+  IdolGroup? getGroupById(int id) {
+    return state.firstWhere((group) => group.id == id, orElse: () {
+      throw StateError('Group with id:$id not fount');
+    });
+  }
 }
 
 final idolGroupListProvider =

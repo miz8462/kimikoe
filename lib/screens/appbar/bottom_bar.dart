@@ -54,7 +54,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                   },
                 ),
                 StyledButton(
-                  '歌手登録',
+                  'アイドル登録',
                   onPressed: () {
                     Navigator.of(context).pop();
                     context.push(RoutingPath.addIdol);

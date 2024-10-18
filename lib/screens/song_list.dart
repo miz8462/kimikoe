@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/main.dart';
-import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
+import 'package:kimikoe_app/providers/songs_provider.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/widgets/group_card_m.dart';
 import 'package:kimikoe_app/widgets/song_card.dart';
 
-class SongListScreen extends StatefulWidget {
+class SongListScreen extends ConsumerStatefulWidget {
   const SongListScreen({
     super.key,
     required this.group,
@@ -16,28 +16,14 @@ class SongListScreen extends StatefulWidget {
   final IdolGroup group;
 
   @override
-  State<SongListScreen> createState() => _SongListScreenState();
+  ConsumerState<SongListScreen> createState() => _SongListScreenState();
 }
 
-class _SongListScreenState extends State<SongListScreen> {
-  late Future _songListFuture;
-  late IdolGroup _group;
-  @override
-  void initState() {
-    super.initState();
-    _loadSongList();
-  }
-
-  void _loadSongList() {
-    _songListFuture = supabase
-        .from(TableName.songs.name)
-        .select()
-        .eq(ColumnName.groupId.name, widget.group.id!);
-  }
-
+class _SongListScreenState extends ConsumerState<SongListScreen> {
   @override
   Widget build(BuildContext context) {
-    _group = widget.group;
+    final group = widget.group;
+    final songsList = ref.watch(songsProvider(group.id!));
 
     return Scaffold(
       appBar: const TopBar(
@@ -48,29 +34,25 @@ class _SongListScreenState extends State<SongListScreen> {
         child: Column(
           children: [
             const Gap(spaceS),
-            GroupCardM(group: _group),
+            GroupCardM(group: group),
             const Gap(spaceM),
             Expanded(
-              child: FutureBuilder(
-                future: _songListFuture,
-                builder: (ctx, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (snapshot.data.toString().length == 2) {
-                    return const Center(child: Text('登録データはありません'));
-                  }
-                  final songList = snapshot.data! as List;
+              child: songsList.when(
+                data: (songs) {
                   return ListView.builder(
-                    itemCount: songList.length,
-                    itemBuilder: (BuildContext context, int index) {
+                    itemCount: songs.length,
+                    itemBuilder: (ctx, index) {
                       return SongCard(
-                        songData: songList[index],
-                        group: _group,
+                        song: songs[index],
+                        group: group,
                       );
                     },
                   );
                 },
+                error: (error, stack) => Center(
+                  child: Text('エラー発生: $error'),
+                ),
+                loading: () => Center(child: CircularProgressIndicator()),
               ),
             ),
           ],

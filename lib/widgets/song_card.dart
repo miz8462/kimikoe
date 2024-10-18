@@ -10,16 +10,14 @@ import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/song.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
-import 'package:kimikoe_app/utils/crud_data.dart';
-import 'package:kimikoe_app/utils/date_formatter.dart';
 
 class SongCard extends StatefulWidget {
   const SongCard({
     super.key,
-    required this.songData,
+    required this.song,
     required this.group,
   });
-  final Map<String, dynamic> songData;
+  final Song song;
   final IdolGroup group;
 
   @override
@@ -37,26 +35,34 @@ class _SongCardState extends State<SongCard> {
   }
 
   Future<void> _fetchArtist() async {
-    final song = widget.songData;
-    final lyricistData = await supabase
-        .from(TableName.artists.name)
-        .select()
-        .eq(ColumnName.id.name, song[ColumnName.lyricistId.name])
-        .single();
-    final composerData = await supabase
-        .from(TableName.artists.name)
-        .select()
-        .eq(ColumnName.id.name, song[ColumnName.composerId.name])
-        .single();
+    final song = widget.song;
+    Map<String, dynamic>? lyricistData;
+    Map<String, dynamic>? composerData;
+    String? lyricistName;
+    String? composerName;
+    if (song.lyricist != null) {
+      lyricistData = await supabase
+          .from(TableName.artists.name)
+          .select()
+          .eq(ColumnName.id.name, song.lyricist!.id!)
+          .single();
+      lyricistName = lyricistData[ColumnName.cName.name];
+    }
+    if (song.composer != null) {
+      composerData = await supabase
+          .from(TableName.artists.name)
+          .select()
+          .eq(ColumnName.id.name, song.composer!.id!)
+          .single();
+      composerName = composerData[ColumnName.cName.name];
+    }
 
-    final lyricistName = lyricistData[ColumnName.cName.name];
-    final composerName = composerData[ColumnName.cName.name];
     setState(() {
       if (lyricistName != null) {
-        _lyricist = Artist(name: lyricistData[ColumnName.cName.name]);
+        _lyricist = Artist(name: lyricistData?[ColumnName.cName.name]);
       }
       if (composerName != null) {
-        _composer = Artist(name: composerData[ColumnName.cName.name]);
+        _composer = Artist(name: composerData?[ColumnName.cName.name]);
       }
     });
   }
@@ -69,28 +75,9 @@ class _SongCardState extends State<SongCard> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else {
-          final songData = widget.songData;
+          final song = widget.song;
           final group = widget.group;
 
-          String? formattedDate;
-          if (songData[ColumnName.releaseDate.name] != null) {
-            formattedDate =
-                formatStringDateToSlash(songData[ColumnName.releaseDate.name]);
-          }
-          final imageUrl =
-              fetchPublicImageUrl(songData[ColumnName.imageUrl.name]);
-
-          final song = Song(
-            id: songData[ColumnName.id.name],
-            title: songData[ColumnName.title.name],
-            group: group,
-            lyrics: songData[ColumnName.lyrics.name],
-            imageUrl: imageUrl,
-            composer: _composer,
-            lyricist: _lyricist,
-            releaseDate: formattedDate,
-            comment: songData[ColumnName.comment.name],
-          );
           final title = song.title;
           final lyrics = song.lyrics;
 

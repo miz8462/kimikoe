@@ -105,7 +105,9 @@ Future fetchCurrentUserInfo() {
 }
 
 String fetchImageOfNoImage() {
-  return supabase.storage.from(TableName.images.name).getPublicUrl(defaultPathNoImage);
+  return supabase.storage
+      .from(TableName.images.name)
+      .getPublicUrl(defaultPathNoImage);
 }
 
 String fetchPublicImageUrl(String imageUrl) {
@@ -132,7 +134,11 @@ int fetchSelectedDataIdFromName({
   return selectedDataId;
 }
 
-Future<Map<String, dynamic>> fetchComposer(String id) async {
+Future<List<Map<String, dynamic>>> fetchArtists() async {
+  return await supabase.from(TableName.artists.name).select();
+}
+
+Future<Map<String, dynamic>> fetchArtistById(String id) async {
   return await supabase
       .from(TableName.artists.name)
       .select()
