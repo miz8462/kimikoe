@@ -1,12 +1,7 @@
-import 'package:kimikoe_app/models/idol.dart';
-import 'package:kimikoe_app/models/song.dart';
-
 class IdolGroup {
   const IdolGroup({
     required this.name,
     this.id,
-    this.members,
-    this.songs,
     this.imageUrl,
     this.year,
     this.comment,
@@ -17,8 +12,6 @@ class IdolGroup {
 
   final String name;
   final int? id;
-  final List<Idol>? members;
-  final List<Song>? songs;
   final String? imageUrl;
   final int? year;
   final String? comment;
