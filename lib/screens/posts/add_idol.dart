@@ -10,6 +10,7 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/enums/idol_colors.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol.dart';
+import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/utils/check.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
@@ -82,7 +83,8 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     if (_isEditing) {
       _selectedColor = _idol.color!;
       _groupNameController = TextEditingController(text: _idol.group!.name);
-      _birthYearController = TextEditingController(text: _idol.birthDay);
+      _birthYearController =
+          TextEditingController(text: _idol.birthYear.toString());
       _birthDayController = TextEditingController(text: _idol.birthDay);
       _heightController = TextEditingController(text: _idol.height.toString());
       final initialDebutYear = widget.idol!.debutYear.toString();
@@ -182,7 +184,8 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         name: groupName,
       );
     }
-    print(_selectedColor);
+
+    // MaterialColor(primary value: Color(0xff2196f3))という表記から"0xff2196f3"を抜き出す
     final selectedColor = _selectedColor
         .toString()
         .split(' ')
@@ -191,54 +194,54 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         .replaceAll('(', '')
         .replaceAll(')', '');
 
-    // if (_isEditing) {
-    //   // 編集
-    //   updateIdol(
-    //     name: _enteredIdolName,
-    //     id: _idol.id!,
-    //     groupId: selectedGroupId,
-    //     color: selectedColor,
-    //     imagePath: imagePath,
-    //     birthday: _selectedBirthDay,
-    //     birthYear: birthYear,
-    //     height: height,
-    //     hometown: _enteredHometown,
-    //     debutYear: debutYear,
-    //     comment: _enteredComment,
-    //   );
-    // } else {
-    //   // 登録
-    //   insertIdolData(
-    //     name: _enteredIdolName,
-    //     groupId: selectedGroupId,
-    //     color: selectedColor,
-    //     imagePath: imagePath,
-    //     birthday: _selectedBirthDay,
-    //     birthYear: birthYear,
-    //     height: height,
-    //     hometown: _enteredHometown,
-    //     debutYear: debutYear,
-    //     comment: _enteredComment,
-    //   );
-    // }
+    if (_isEditing) {
+      // 編集
+      updateIdol(
+        name: _enteredIdolName,
+        id: _idol.id!,
+        groupId: selectedGroupId,
+        color: selectedColor,
+        imagePath: imagePath,
+        birthday: _selectedBirthDay,
+        birthYear: birthYear,
+        height: height,
+        hometown: _enteredHometown,
+        debutYear: debutYear,
+        comment: _enteredComment,
+      );
+    } else {
+      // 登録
+      insertIdolData(
+        name: _enteredIdolName,
+        groupId: selectedGroupId,
+        color: selectedColor,
+        imagePath: imagePath,
+        birthday: _selectedBirthDay,
+        birthYear: birthYear,
+        height: height,
+        hometown: _enteredHometown,
+        debutYear: debutYear,
+        comment: _enteredComment,
+      );
+    }
 
-    // if (_selectedImage != null) {
-    //   uploadImageToStorage(
-    //     table: TableName.images.name,
-    //     path: imagePath!,
-    //     file: _selectedImage!,
-    //   );
-    // }
+    if (_selectedImage != null) {
+      uploadImageToStorage(
+        table: TableName.images.name,
+        path: imagePath!,
+        file: _selectedImage!,
+      );
+    }
 
-    // setState(() {
-    //   _isSending = false;
-    // });
+    setState(() {
+      _isSending = false;
+    });
 
-    // if (!mounted) {
-    //   return;
-    // }
+    if (!mounted) {
+      return;
+    }
 
-    // context.pushReplacement(RoutingPath.groupList);
+    context.pushReplacement(RoutingPath.groupList);
   }
 
   String? _nameValidator(String? value) {

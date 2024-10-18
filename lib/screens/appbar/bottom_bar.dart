@@ -30,10 +30,9 @@ class _BottomBarState extends ConsumerState<BottomBar> {
     });
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder: (context) {
-        return SizedBox(
-          width: double.infinity,
-          height: MediaQuery.of(context).size.height * 0.3,
+        return SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 10),
             child: Column(

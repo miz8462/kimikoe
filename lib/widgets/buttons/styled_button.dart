@@ -8,7 +8,6 @@ class StyledButton extends StatelessWidget {
     this.onPressed,
     this.textColor = textWhite,
     this.backgroundColor = mainBlue,
-    this.buttonSize = buttonS,
     this.borderSide = BorderSide.none,
     super.key,
   });
@@ -18,7 +17,6 @@ class StyledButton extends StatelessWidget {
   final void Function()? onPressed;
   final Color textColor;
   final Color backgroundColor;
-  final double buttonSize;
   final BorderSide borderSide;
 
   @override

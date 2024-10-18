@@ -345,7 +345,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                         controller: _groupNameController,
                       ),
                       const Gap(spaceS),
-                      const Text('歌詞と歌手は一行単位のセットで登録してください。'),
+                      const Text('歌詞と歌手はワンフレーム単位のセットで登録してください。'),
                       const Gap(spaceS),
                       for (int i = 0; i < _lyricAndSingerList.length; i++)
                         Column(
