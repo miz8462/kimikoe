@@ -9,7 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
-import 'package:kimikoe_app/providers/idol_groups_providere.dart';
+import 'package:kimikoe_app/providers/idol_group_list_providere.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';

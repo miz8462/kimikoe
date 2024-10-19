@@ -15,8 +15,8 @@ import 'package:kimikoe_app/widgets/delete_alert_dialog.dart';
 // HylightedTextクラスを作成し行単位でハイライトできるようにする
 // 文字が見やすい用に色を調節
 
-class LyricScreen extends StatefulWidget {
-  const LyricScreen({
+class SongScreen extends StatefulWidget {
+  const SongScreen({
     super.key,
     required this.song,
     required this.group,
@@ -25,10 +25,10 @@ class LyricScreen extends StatefulWidget {
   final Song song;
 
   @override
-  State<LyricScreen> createState() => _LyricScreenState();
+  State<SongScreen> createState() => _SongScreenState();
 }
 
-class _LyricScreenState extends State<LyricScreen> {
+class _SongScreenState extends State<SongScreen> {
   late Future<List<Map<String, dynamic>>> _memberFuture;
   @override
   void initState() {

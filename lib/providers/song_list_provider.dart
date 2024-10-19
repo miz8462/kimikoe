@@ -2,11 +2,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/song.dart';
-import 'package:kimikoe_app/providers/artists_provider.dart';
-import 'package:kimikoe_app/providers/idol_groups_providere.dart';
+import 'package:kimikoe_app/providers/artist_list_provider.dart';
+import 'package:kimikoe_app/providers/idol_group_list_providere.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
 
-final songsProvider =
+final songListOfGroupProvider =
     FutureProvider.family<List<Song>, int>((ref, groupId) async {
   final group = ref.watch(idolGroupListProvider.notifier).getGroupById(groupId);
 

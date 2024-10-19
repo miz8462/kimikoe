@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
-import 'package:kimikoe_app/providers/songs_provider.dart';
+import 'package:kimikoe_app/providers/song_list_provider.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/widgets/group_card_m.dart';
 import 'package:kimikoe_app/widgets/song_card.dart';
@@ -23,7 +23,7 @@ class _SongListScreenState extends ConsumerState<SongListScreen> {
   @override
   Widget build(BuildContext context) {
     final group = widget.group;
-    final songsList = ref.watch(songsProvider(group.id!));
+    final songsList = ref.watch(songListOfGroupProvider(group.id!));
 
     return Scaffold(
       appBar: const TopBar(
