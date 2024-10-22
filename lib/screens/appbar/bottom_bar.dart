@@ -83,9 +83,8 @@ class _BottomBarState extends ConsumerState<BottomBar> {
   Widget build(BuildContext context) {
     int currentIndex = widget.navigationShell.currentIndex;
 
-    final userData = ref.watch(currentUserProvider);
-    final imageUrl =
-        userData.value?.map((data) => data).toList()[0]['image_url'];
+    final user = ref.watch(currentUserProvider).value;
+    final imageUrl = user?.imageUrl;
 
     return Scaffold(
       body: widget.navigationShell,
@@ -125,16 +124,16 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                 ),
                 NavigationDestination(
                   icon: CircleAvatar(
-                    backgroundImage: NetworkImage(imageUrl!),
+                    backgroundImage: NetworkImage(imageUrl),
                     radius: avaterSizeS,
                   ),
                   label: 'User',
                 ),
                 // todo: 開発用ログアウトボタン
-                // NavigationDestination(
-                //   icon: Icon(Icons.logout),
-                //   label: 'SignOut',
-                // ),p
+                NavigationDestination(
+                  icon: Icon(Icons.logout),
+                  label: 'SignOut',
+                ),
               ],
             ),
     );

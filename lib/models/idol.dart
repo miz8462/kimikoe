@@ -7,9 +7,9 @@ import 'package:kimikoe_app/models/idol_group.dart';
 class Idol extends Artist {
   const Idol({
     required super.name,
+    super.id,
     super.imageUrl,
     super.comment,
-    this.id,
     this.color,
     this.group,
     this.birthYear,
@@ -22,7 +22,6 @@ class Idol extends Artist {
     this.instagramUrl,
   });
 
-  final int? id;
   final Color? color;
   final IdolGroup? group;
   final int? birthYear;

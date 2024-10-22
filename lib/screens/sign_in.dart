@@ -28,7 +28,6 @@ class _SignInScreenState extends State<SignInScreen> {
   // マジックリンク
   Future<void> _signIn() async {
     await supabase.auth.signInWithOtp(
-      // email: 'wwr8462@gmail.com',
       email: _emailController.text.trim(),
       emailRedirectTo: 'io.supabase.kimikoe://login-callback/',
     );
@@ -58,7 +57,6 @@ class _SignInScreenState extends State<SignInScreen> {
     final googleAuth = await googleUser!.authentication;
     final accessToken = googleAuth.accessToken;
     final idToken = googleAuth.idToken;
-
     if (accessToken == null) {
       throw 'No Access Token found.';
     }

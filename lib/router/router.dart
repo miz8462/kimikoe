@@ -6,7 +6,6 @@ import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/idol.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/song.dart';
-import 'package:kimikoe_app/models/user.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/bottom_bar.dart';
 import 'package:kimikoe_app/screens/group_detail/group_detail.dart';
@@ -36,9 +35,7 @@ final router = GoRouter(
   debugLogDiagnostics: true,
   initialLocation: '/',
   redirect: (context, state) {
-    // todo: 開発用自動ログイン
     final currentSession = supabase.auth.currentSession;
-    // final currentSession = 'true';
     if (currentSession == null && state.matchedLocation != '/') {
       return '/';
     } else if (currentSession != null && state.matchedLocation == '/') {
@@ -206,12 +203,9 @@ final router = GoRouter(
                   pageBuilder: (context, state) {
                     final Map<String, dynamic>? data;
                     data = state.extra as Map<String, dynamic>?;
-                    final UserProfile user = data?['user'];
                     final bool? isEditing = data?['isEditing'] ?? false;
-
                     return MaterialPage(
                       child: EditUserScreen(
-                        user: user,
                         isEditing: isEditing!,
                       ),
                       key: state.pageKey,

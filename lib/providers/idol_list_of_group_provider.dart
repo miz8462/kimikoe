@@ -9,14 +9,6 @@ import 'package:kimikoe_app/utils/crud_data.dart';
 class IdolListOfGroupNotifier extends StateNotifier<List<Idol>> {
   IdolListOfGroupNotifier(super.state);
 
-  void addIdol(Idol idol) {
-    state = [...state, idol];
-  }
-
-  void removeIdol(Idol idol) {
-    state = state.where((i) => i.id != idol.id).toList();
-  }
-
   Idol? getIdolById(int id) {
     return state.firstWhere((idol) => idol.id == id, orElse: () {
       throw StateError('Idol with id:$id not fount');

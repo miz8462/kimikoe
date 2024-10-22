@@ -1,31 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
-import 'package:kimikoe_app/models/user.dart';
+import 'package:kimikoe_app/providers/current_user_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
+import 'package:kimikoe_app/utils/crud_data.dart';
+import 'package:kimikoe_app/utils/validator/validator.dart';
 import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
 import 'package:kimikoe_app/widgets/forms/expanded_text_form.dart';
 import 'package:kimikoe_app/widgets/forms/text_input_form.dart';
-import 'package:kimikoe_app/utils/crud_data.dart';
-import 'package:kimikoe_app/utils/validator/validator.dart';
 
-class EditUserScreen extends StatefulWidget {
+class EditUserScreen extends ConsumerStatefulWidget {
   const EditUserScreen({
     super.key,
-    required this.user,
     required this.isEditing,
   });
-  final UserProfile user;
   final bool isEditing;
 
   @override
-  State<EditUserScreen> createState() => _EditUserScreenState();
+  ConsumerState<EditUserScreen> createState() => _EditUserScreenState();
 }
 
-class _EditUserScreenState extends State<EditUserScreen> {
+class _EditUserScreenState extends ConsumerState<EditUserScreen> {
   final _formKey = GlobalKey<FormState>();
 
   var _enteredUserName = '';
@@ -35,13 +34,6 @@ class _EditUserScreenState extends State<EditUserScreen> {
 
   var _isSending = false;
   // var _isImageChanged = false;
-  late UserProfile _user;
-
-  @override
-  void initState() {
-    super.initState();
-    _user = widget.user;
-  }
 
   String? _nameValidator(String? value) {
     return textInputValidator(value, '名前');
@@ -71,7 +63,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
     updateUser(
       name: _enteredUserName,
       email: _enteredEmailAddress,
-      // imageUrl: imageUrl, 
+      // imageUrl: imageUrl,
       comment: _enteredComment,
       id: userId,
     );
@@ -93,6 +85,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final user = ref.watch(currentUserProvider).value;
     final currentUser = supabase.auth.currentUser;
     if (currentUser == null) {
       //buildが終わる前に画面遷移をしようとするとエラーになるので
@@ -115,7 +108,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
                 style: TextStyle(color: textGray),
               ),
               InputForm(
-                initialValue: _user.name,
+                initialValue: user!.name,
                 label: '*名前',
                 validator: _nameValidator,
                 onSaved: (value) {
@@ -124,7 +117,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
               ),
               const Gap(spaceS),
               InputForm(
-                initialValue: _user.email,
+                initialValue: user.email,
                 label: '*メール',
                 validator: _emailValidator,
                 onSaved: (value) {
@@ -142,7 +135,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
               // ),
               // const Gap(spaceS),
               ExpandedTextForm(
-                initialValue: _user.comment,
+                initialValue: user.comment,
                 onTextChanged: (value) {
                   setState(() {
                     _enteredComment = value!;

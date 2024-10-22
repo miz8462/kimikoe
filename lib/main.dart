@@ -6,6 +6,7 @@ import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final sessionProvider = StateProvider<Session?>((ref) => null);
+final providerContainer = ProviderContainer();
 
 Future<void> main() async {
   // Flutterの初期化
@@ -19,7 +20,6 @@ Future<void> main() async {
   );
   Supabase.instance.client.auth.onAuthStateChange.listen(
     (data) {
-      final providerContainer = ProviderContainer();
       providerContainer.read(sessionProvider.notifier).state = data.session;
     },
   );
