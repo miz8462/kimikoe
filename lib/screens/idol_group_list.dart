@@ -40,7 +40,7 @@ class IdolGroupListScreen extends ConsumerWidget {
                 );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) => Center(child: Text('再起動してください')),
+        error: (error, stack) => const Center(child: Text('再起動してください')),
       ),
     );
   }

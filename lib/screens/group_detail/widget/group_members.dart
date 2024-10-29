@@ -62,7 +62,7 @@ class GroupMembers extends ConsumerWidget {
                               ],
                             ),
                           ),
-                          Gap(spaceSS)
+                          const Gap(spaceSS)
                         ],
                       );
                     },

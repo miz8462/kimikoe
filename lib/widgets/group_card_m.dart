@@ -35,7 +35,7 @@ class GroupCardM extends StatelessWidget {
                 backgroundImage:
                     groupImage != null ? NetworkImage(groupImage) : null,
                 radius: avaterSizeL,
-                child: groupImage == null ? Icon(Icons.person) : null,
+                child: groupImage == null ? const Icon(Icons.person) : null,
               ),
             ),
             const Gap(spaceL),

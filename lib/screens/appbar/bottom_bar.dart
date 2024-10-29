@@ -130,10 +130,10 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                   label: 'User',
                 ),
                 // todo: 開発用ログアウトボタン
-                NavigationDestination(
-                  icon: Icon(Icons.logout),
-                  label: 'SignOut',
-                ),
+                // NavigationDestination(
+                //   icon: Icon(Icons.logout),
+                //   label: 'SignOut',
+                // ),
               ],
             ),
     );

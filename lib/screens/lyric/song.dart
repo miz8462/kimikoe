@@ -55,7 +55,7 @@ class _SongScreenState extends State<SongScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isEditing = true;
+    const bool isEditing = true;
     final song = widget.song;
     final group = widget.group;
     final data = {

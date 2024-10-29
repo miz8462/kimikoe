@@ -11,7 +11,7 @@ class UserScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isEditing = true;
+    const isEditing = true;
 
     final userAsyncValue = ref.refresh(currentUserProvider);
 

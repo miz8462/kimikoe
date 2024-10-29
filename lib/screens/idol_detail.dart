@@ -42,7 +42,7 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final idol = widget.idol;
-    final isEditing = true;
+    const isEditing = true;
     final data = {
       'idol': idol,
       'isEditing': isEditing,

@@ -29,7 +29,7 @@ class StyledButton extends StatelessWidget {
           borderRadius: borderRadius4,
         ),
         side: borderSide,
-        fixedSize: Size.fromWidth(double.maxFinite),
+        fixedSize: const Size.fromWidth(double.maxFinite),
       ),
       child: isSending!
           ? const SizedBox(

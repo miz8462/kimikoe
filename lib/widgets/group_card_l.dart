@@ -19,7 +19,7 @@ class GroupCardL extends StatelessWidget {
         extra: group,
       ),
       child: Container(
-        padding: EdgeInsets.only(top: 8),
+        padding: const EdgeInsets.only(top: 8),
         decoration: BoxDecoration(
           color: backgroundWhite,
           borderRadius: BorderRadius.circular(10),

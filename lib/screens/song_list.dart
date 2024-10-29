@@ -52,7 +52,7 @@ class _SongListScreenState extends ConsumerState<SongListScreen> {
                 error: (error, stack) => Center(
                   child: Text('エラー発生: $error'),
                 ),
-                loading: () => Center(child: CircularProgressIndicator()),
+                loading: () => const Center(child: CircularProgressIndicator()),
               ),
             ),
           ],
