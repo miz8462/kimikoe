@@ -222,13 +222,14 @@ Future<void> updateSong({
 Future<void> updateUser({
   required String name,
   required String email,
+  required String imageUrl,
   String? comment,
   required String id,
 }) async {
   await supabase.from(TableName.profiles.name).update({
     ColumnName.cName.name: name,
     ColumnName.email.name: email,
-    // ColumnName.imageUrl.name: imageUrl,
+    ColumnName.imageUrl.name: imageUrl,
     ColumnName.comment.name: comment,
   }).eq(
     ColumnName.id.name,

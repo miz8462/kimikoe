@@ -29,7 +29,7 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
 
   var _enteredUserName = '';
   var _enteredEmailAddress = '';
-  // File? _selectedImage;
+  String? _selectedImage;
   var _enteredComment = '';
 
   var _isSending = false;
@@ -64,7 +64,7 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
       id: userId,
       name: _enteredUserName,
       email: _enteredEmailAddress,
-      // imageUrl: imageUrl,
+      imageUrl: _selectedImage!,
       comment: _enteredComment,
     );
 
@@ -96,6 +96,7 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
         context.go(RoutingPath.signIn);
       });
     }
+    _selectedImage = user!.imageUrl;
     return Scaffold(
       appBar: const TopBar(title: 'ユーザー編集'),
       body: Padding(
@@ -110,7 +111,7 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
                 style: TextStyle(color: textGray),
               ),
               InputForm(
-                initialValue: user!.name,
+                initialValue: user.name,
                 label: '*名前',
                 validator: _nameValidator,
                 onSaved: (value) {

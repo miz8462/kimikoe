@@ -29,7 +29,7 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
       id: currentUserId,
       name: newUser.name,
       email: newUser.email,
-      // imageUrl: newUser.imageUrl,
+      imageUrl: newUser.imageUrl,
       comment: newUser.comment,
     );
 
