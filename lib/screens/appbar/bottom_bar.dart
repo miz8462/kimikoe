@@ -83,7 +83,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
   Widget build(BuildContext context) {
     int currentIndex = widget.navigationShell.currentIndex;
 
-    final user = ref.watch(currentUserProvider).value;
+    final user = ref.watch(userProfileProvider);
     final imageUrl = user?.imageUrl;
 
     return Scaffold(

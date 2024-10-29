@@ -113,7 +113,7 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
             if (idol.comment != null)
               Text(
                 idol.comment!,
-                style: Theme.of(context).textTheme.titleLarge,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
             Divider(
               color: mainBlue.withOpacity(0.3),

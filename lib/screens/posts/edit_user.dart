@@ -4,10 +4,10 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
+import 'package:kimikoe_app/models/user.dart';
 import 'package:kimikoe_app/providers/current_user_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/utils/crud_data.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
 import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
 import 'package:kimikoe_app/widgets/forms/expanded_text_form.dart';
@@ -60,13 +60,15 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
 
     final userId = supabase.auth.currentUser!.id;
     // todo: Googleアカウントの場合、初ログイン時に画像を登録するようにする。現状画像変更機能はなし。
-    updateUser(
+    final user = UserProfile(
+      id: userId,
       name: _enteredUserName,
       email: _enteredEmailAddress,
       // imageUrl: imageUrl,
       comment: _enteredComment,
-      id: userId,
     );
+
+    await ref.read(userProfileProvider.notifier).updateUserProfile(user);
 
     // if (_selectedImage != null) {
     //   await supabase.storage.from('images').upload(imagePath!, _selectedImage!);
@@ -85,9 +87,9 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(currentUserProvider).value;
-    final currentUser = supabase.auth.currentUser;
-    if (currentUser == null) {
+    final user = ref.watch(userProfileProvider);
+    // final currentUser = supabase.auth.currentUser;
+    if (user == null) {
       //buildが終わる前に画面遷移をしようとするとエラーになるので
       //buildが終わった後に画面遷移を実行
       WidgetsBinding.instance.addPostFrameCallback((_) {
