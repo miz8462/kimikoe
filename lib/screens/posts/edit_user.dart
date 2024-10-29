@@ -101,59 +101,61 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
       appBar: const TopBar(title: 'ユーザー編集'),
       body: Padding(
         padding: screenPadding,
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                '*必須項目',
-                style: TextStyle(color: textGray),
-              ),
-              InputForm(
-                initialValue: user.name,
-                label: '*名前',
-                validator: _nameValidator,
-                onSaved: (value) {
-                  _enteredUserName = value!;
-                },
-              ),
-              const Gap(spaceS),
-              InputForm(
-                initialValue: user.email,
-                label: '*メール',
-                validator: _emailValidator,
-                onSaved: (value) {
-                  _enteredEmailAddress = value!;
-                },
-              ),
-              const Gap(spaceS),
-              // todo: ユーザー画像変更
-              // ImageInput(
-              //   onPickImage: (image) {
-              //     _selectedImage = image;
-              //     _isImageChanged = true;
-              //   },
-              //   label: 'ユーザー画像',
-              // ),
-              // const Gap(spaceS),
-              ExpandedTextForm(
-                initialValue: user.comment,
-                onTextChanged: (value) {
-                  setState(() {
-                    _enteredComment = value!;
-                  });
-                },
-                label: '備考',
-              ),
-              const Gap(spaceS),
-              StyledButton(
-                '登録',
-                onPressed: _isSending ? null : _saveUserProfile,
-                isSending: _isSending,
-              ),
-              const Gap(spaceS),
-            ],
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  '*必須項目',
+                  style: TextStyle(color: textGray),
+                ),
+                InputForm(
+                  initialValue: user.name,
+                  label: '*名前',
+                  validator: _nameValidator,
+                  onSaved: (value) {
+                    _enteredUserName = value!;
+                  },
+                ),
+                const Gap(spaceS),
+                InputForm(
+                  initialValue: user.email,
+                  label: '*メール',
+                  validator: _emailValidator,
+                  onSaved: (value) {
+                    _enteredEmailAddress = value!;
+                  },
+                ),
+                const Gap(spaceS),
+                // todo: ユーザー画像変更
+                // ImageInput(
+                //   onPickImage: (image) {
+                //     _selectedImage = image;
+                //     _isImageChanged = true;
+                //   },
+                //   label: 'ユーザー画像',
+                // ),
+                // const Gap(spaceS),
+                ExpandedTextForm(
+                  initialValue: user.comment,
+                  onTextChanged: (value) {
+                    setState(() {
+                      _enteredComment = value!;
+                    });
+                  },
+                  label: '備考',
+                ),
+                const Gap(spaceS),
+                StyledButton(
+                  '登録',
+                  onPressed: _isSending ? null : _saveUserProfile,
+                  isSending: _isSending,
+                ),
+                const Gap(spaceS),
+              ],
+            ),
           ),
         ),
       ),
