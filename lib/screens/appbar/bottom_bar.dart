@@ -5,6 +5,7 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/providers/current_user_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
+import 'package:kimikoe_app/utils/crud_data.dart';
 import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
 
 class BottomBar extends ConsumerStatefulWidget {
@@ -84,58 +85,56 @@ class _BottomBarState extends ConsumerState<BottomBar> {
     int currentIndex = widget.navigationShell.currentIndex;
 
     final user = ref.watch(userProfileProvider);
-    final imageUrl = user?.imageUrl;
+    final imageUrl = user!.imageUrl;
+    final userImage = fetchPublicImageUrl(imageUrl);
 
     return Scaffold(
       body: widget.navigationShell,
-      bottomNavigationBar: imageUrl == null
-          ? const SizedBox()
-          : NavigationBar(
-              backgroundColor: mainBlue,
-              selectedIndex: currentIndex,
-              onDestinationSelected: (index) {
-                if (index == addIndex) {
-                  _openAddOverlay(context);
-                } else if (index == logoutIndex) {
-                  _signOut();
-                  context.go('/');
-                } else {
-                  widget.navigationShell.goBranch(
-                    index,
-                    initialLocation:
-                        index == widget.navigationShell.currentIndex,
-                  );
-                }
-              },
-              destinations: [
-                NavigationDestination(
-                  icon: Icon(
-                    Icons.home_outlined,
-                    color: currentIndex == homeIndex ? textDark : textWhite,
-                  ),
-                  label: 'Home',
-                ),
-                NavigationDestination(
-                  icon: Icon(
-                    Icons.add_box_outlined,
-                    color: currentIndex == addIndex ? textDark : textWhite,
-                  ),
-                  label: 'Add',
-                ),
-                NavigationDestination(
-                  icon: CircleAvatar(
-                    backgroundImage: NetworkImage(imageUrl),
-                    radius: avaterSizeS,
-                  ),
-                  label: 'User',
-                ),
-                // todo: 開発用ログアウトボタン
-                NavigationDestination(
-                  icon: Icon(Icons.logout),
-                  label: 'SignOut',
-                ),
-              ],
+      bottomNavigationBar: NavigationBar(
+        backgroundColor: mainBlue,
+        selectedIndex: currentIndex,
+        onDestinationSelected: (index) {
+          if (index == addIndex) {
+            _openAddOverlay(context);
+          } else if (index == logoutIndex) {
+            _signOut();
+            context.go('/');
+          } else {
+            widget.navigationShell.goBranch(
+              index,
+              initialLocation: index == widget.navigationShell.currentIndex,
+            );
+          }
+        },
+        destinations: [
+          NavigationDestination(
+            icon: Icon(
+              Icons.home_outlined,
+              color: currentIndex == homeIndex ? textDark : textWhite,
             ),
+            label: 'Home',
+          ),
+          NavigationDestination(
+            icon: Icon(
+              Icons.add_box_outlined,
+              color: currentIndex == addIndex ? textDark : textWhite,
+            ),
+            label: 'Add',
+          ),
+          NavigationDestination(
+            icon: CircleAvatar(
+              backgroundImage: NetworkImage(userImage),
+              radius: avaterSizeS,
+            ),
+            label: 'User',
+          ),
+          // todo: 開発用ログアウトボタン
+          NavigationDestination(
+            icon: Icon(Icons.logout),
+            label: 'SignOut',
+          ),
+        ],
+      ),
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/providers/current_user_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
+import 'package:kimikoe_app/utils/crud_data.dart';
 
 class UserScreen extends ConsumerWidget {
   const UserScreen({super.key});
@@ -14,8 +15,8 @@ class UserScreen extends ConsumerWidget {
     const isEditing = true;
 
     final user = ref.watch(userProfileProvider);
-
-    var userImage = NetworkImage(user!.imageUrl);
+    final imageUrl = fetchPublicImageUrl(user!.imageUrl);
+    var userImage = NetworkImage(imageUrl);
 
     final data = {
       'user': user,

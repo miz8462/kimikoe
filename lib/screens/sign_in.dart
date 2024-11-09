@@ -23,29 +23,80 @@ class _SignInScreenState extends State<SignInScreen> {
   bool _redirecting = false;
 
   final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _nameController = TextEditingController();
+  var _isLogin = true;
+
   late final StreamSubscription<AuthState> _authStateSubscription;
 
-  // マジックリンク
-  Future<void> _sendMagicLink() async {
+  Future<void> _signUp() async {
     try {
-      await supabase.auth.signInWithOtp(
+      if (_nameController.text.trim().isEmpty) {
+        _nameController.text = 'ユーザーネーム未定';
+      }
+      final response = await supabase.auth.signUp(
         email: _emailController.text.trim(),
-        emailRedirectTo: 'io.supabase.kimikoe://login-callback/',
+        password: _passwordController.text.trim(),
+        data: {
+          'username': _nameController.text.trim(),
+        },
       );
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Check your email for a login link!')),
+      final userId = response.user?.id;
+      final userData = response.user?.userMetadata;
+      if (userId != null) {
+        await supabase.from(TableName.profiles.name).update({
+          ColumnName.cName.name: userData!['username'],
+          ColumnName.imageUrl.name: noImage,
+        }).eq(
+          ColumnName.id.name,
+          userId,
         );
-        _emailController.clear();
       }
-    } catch (e) {
-      print('Failed to send magic link: $e');
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to send magic link: $e')));
+        context.goNamed(RoutingPath.groupList);
       }
-    }
+      // todo: エラー処理
+    } on AuthException catch (e) {
+    } on Exception catch (e) {}
   }
+
+  Future<void> _logIn() async {
+    try {
+      await supabase.auth.signInWithPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      await Future.delayed(Duration(milliseconds: 200));
+
+      if (mounted) {
+        context.go(RoutingPath.groupList);
+      }
+      // todo: エラー処理
+    } on AuthException catch (e) {
+    } on Exception catch (e) {}
+  }
+
+  // // マジックリンク
+  // Future<void> _sendMagicLink() async {
+  //   try {
+  //     await supabase.auth.signInWithOtp(
+  //       email: _emailController.text.trim(),
+  //       emailRedirectTo: 'io.supabase.kimikoe://login-callback/',
+  //     );
+  //     if (mounted) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //       Glogin link!')),
+  //       );
+  //       _emailController.clear();
+  //     }
+  //   } catch (e) {
+  //     print('Failed to send magic link: $e');
+  //     if (mounted) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //           SnackBar(content: Text('Failed to send magic link: $e')));
+  //     }
+  //   }
+  // }
 
   Future<void> _googleSignIn() async {
     /// Web Client ID that you registered with Google Cloud.
@@ -167,7 +218,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     child: Column(
                       children: [
                         const Gap(60),
-                        TextField(
+                        TextFormField(
                           controller: _emailController,
                           style: const TextStyle(color: textWhite),
                           autocorrect: false,
@@ -191,18 +242,66 @@ class _SignInScreenState extends State<SignInScreen> {
                           ),
                         ),
                         const Gap(20),
-                        // MagicLinkボタン
+                        TextFormField(
+                          controller: _passwordController,
+                          style: const TextStyle(color: textWhite),
+                          autocorrect: false,
+                          keyboardType: TextInputType.visiblePassword,
+                          decoration: const InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: textWhite,
+                              ),
+                            ),
+                            hintText: 'Password',
+                            hintStyle: TextStyle(
+                              fontSize: fontL,
+                              color: textWhite,
+                            ),
+                            prefixIcon: Icon(
+                              Icons.lock,
+                              color: textWhite,
+                              size: fontL,
+                            ),
+                          ),
+                        ),
+                        Gap(spaceS),
+                        if (!_isLogin)
+                          TextFormField(
+                            controller: _nameController,
+                            style: const TextStyle(color: textWhite),
+                            autocorrect: false,
+                            keyboardType: TextInputType.name,
+                            decoration: const InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: textWhite,
+                                ),
+                              ),
+                              hintText: 'name',
+                              hintStyle: TextStyle(
+                                fontSize: fontL,
+                                color: textWhite,
+                              ),
+                              prefixIcon: Icon(
+                                Icons.person,
+                                color: textWhite,
+                                size: fontL,
+                              ),
+                            ),
+                          ),
+                        const Gap(20),
                         FractionallySizedBox(
-                          widthFactor: 1.0,
+                          widthFactor: 1,
                           child: ElevatedButton(
-                            onPressed: _sendMagicLink,
+                            onPressed: _isLogin ? _logIn : _signUp,
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
-                            child: const Text(
-                              "Send Magic Link",
+                            child: Text(
+                              _isLogin ? "Login" : "Signup",
                               style: TextStyle(
                                 color: mainBlue,
                                 fontSize: fontL,
@@ -210,7 +309,24 @@ class _SignInScreenState extends State<SignInScreen> {
                             ),
                           ),
                         ),
-                        const Gap(30),
+                        const Gap(6),
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              _isLogin = !_isLogin;
+                            });
+                          },
+                          child: Text(
+                            _isLogin ? '新規登録する' : 'アカウントを持っている',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.onError),
+                          ),
+                        ),
+                        const Gap(12),
                         const Row(
                           children: <Widget>[
                             Expanded(
