@@ -9,12 +9,14 @@ class IdolGroupListScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final idolGroupList = ref.watch(idolGroupListProvider);
-    final isLoading = ref.watch(idolGroupListProvider.notifier).isLoading;
+    final state = ref.watch(idolGroupListProvider);
+    final isLoading = state.isLoading;
+    final groups = state.groups;
+
     late Widget content;
     if (isLoading) {
       content = const Center(child: CircularProgressIndicator());
-    } else if (idolGroupList.isEmpty) {
+    } else if (groups.isEmpty) {
       content = const Center(child: Text('登録データはありません'));
     } else {
       content = RefreshIndicator(
@@ -29,10 +31,10 @@ class IdolGroupListScreen extends ConsumerWidget {
             mainAxisSpacing: 15, // 縦のスペース
             childAspectRatio: 1.0, // カードのアスペクト比
           ),
-          itemCount: idolGroupList.length,
+          itemCount: groups.length,
           itemBuilder: (BuildContext context, int index) {
-            final groupInfo = idolGroupList[index];
-            return GroupCardL(group: groupInfo);
+            final group = groups[index];
+            return GroupCardL(group: group);
           },
         ),
       );

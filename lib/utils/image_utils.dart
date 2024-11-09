@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:kimikoe_app/config/config.dart';
 
@@ -8,14 +9,7 @@ String? createImageNameWithJPG({File? image, String? imageUrl}) {
     return null;
   }
   late String imagePathWithCreatedAtJPG;
-
-  if (image != null) {
-    final imagePath = image.path.split('/').last.split('.').first;
-    imagePathWithCreatedAtJPG =
-        '$imagePath${(DateTime.now().toString()).replaceAll(' ', '-')}.jpg';
-  } else {
-    imagePathWithCreatedAtJPG = imageUrl!.split('/').last;
-  }
+  imagePathWithCreatedAtJPG = '${generateSimpleRandomString(20)}.jpg';
 
   return imagePathWithCreatedAtJPG;
 }
@@ -35,4 +29,15 @@ String? getImagePath({
       return createImageNameWithJPG(image: imageFile);
     }
   }
+}
+
+String generateSimpleRandomString(int length) {
+  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  final random = Random();
+  return String.fromCharCodes(
+    Iterable.generate(
+      length,
+      (_) => chars.codeUnitAt(random.nextInt(chars.length)),
+    ),
+  );
 }

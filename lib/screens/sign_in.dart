@@ -26,16 +26,24 @@ class _SignInScreenState extends State<SignInScreen> {
   late final StreamSubscription<AuthState> _authStateSubscription;
 
   // マジックリンク
-  Future<void> _signIn() async {
-    await supabase.auth.signInWithOtp(
-      email: _emailController.text.trim(),
-      emailRedirectTo: 'io.supabase.kimikoe://login-callback/',
-    );
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Check your email for a login link!')),
+  Future<void> _sendMagicLink() async {
+    try {
+      await supabase.auth.signInWithOtp(
+        email: _emailController.text.trim(),
+        emailRedirectTo: 'io.supabase.kimikoe://login-callback/',
       );
-      _emailController.clear();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Check your email for a login link!')),
+        );
+        _emailController.clear();
+      }
+    } catch (e) {
+      print('Failed to send magic link: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to send magic link: $e')));
+      }
     }
   }
 
@@ -49,41 +57,47 @@ class _SignInScreenState extends State<SignInScreen> {
     // Google sign in on Android will work without providing the Android
     // Client ID registered on Google Cloud.
 
-    final GoogleSignIn googleSignIn = GoogleSignIn(
-      clientId: iosClientId,
-      serverClientId: webClientId,
-    );
-    final googleUser = await googleSignIn.signIn();
-    final googleAuth = await googleUser!.authentication;
-    final accessToken = googleAuth.accessToken;
-    final idToken = googleAuth.idToken;
-    if (accessToken == null) {
-      throw 'No Access Token found.';
-    }
-    if (idToken == null) {
-      throw 'No ID Token found.';
-    }
+    try {
+      final GoogleSignIn googleSignIn = GoogleSignIn(
+        clientId: iosClientId,
+        serverClientId: webClientId,
+      );
+      final googleUser = await googleSignIn.signIn();
+      final googleAuth = await googleUser!.authentication;
+      final accessToken = googleAuth.accessToken;
+      final idToken = googleAuth.idToken;
+      if (accessToken == null) {
+        throw 'No Access Token found.';
+      }
+      if (idToken == null) {
+        throw 'No ID Token found.';
+      }
 
-    await supabase.auth.signInWithIdToken(
-      provider: OAuthProvider.google,
-      idToken: idToken,
-      accessToken: accessToken,
-    );
+      await supabase.auth.signInWithIdToken(
+        provider: OAuthProvider.google,
+        idToken: idToken,
+        accessToken: accessToken,
+      );
 
-    final userId = supabase.auth.currentUser!.id;
-    final userData = supabase.auth.currentUser!.userMetadata;
+      final userId = supabase.auth.currentUser!.id;
+      final userData = supabase.auth.currentUser!.userMetadata;
 
-    final response = await supabase
-        .from(TableName.profiles.name)
-        .select()
-        .eq(ColumnName.id.name, userId);
+      final response = await supabase
+          .from(TableName.profiles.name)
+          .select()
+          .eq(ColumnName.id.name, userId);
 
-    if (response[0]['email'] == null) {
-      await supabase.from('profiles').update({
-        'username': userData?['name'],
-        'email': userData?['email'],
-        'image_url': userData?['avatar_url']
-      }).eq('id', userId);
+      if (response[0]['email'] == null) {
+        await supabase.from('profiles').update({
+          'name': userData?['name'],
+          'email': userData?['email'],
+          'image_url': userData?['image_url']
+        }).eq('id', userId);
+      }
+
+      await Future.delayed(Duration(microseconds: 500));
+    } catch (e) {
+      print('Google Sign-In Error: $e');
     }
   }
 
@@ -125,27 +139,27 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Expanded(
-              flex: 4,
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 80),
-                    Image(
-                      image: AssetImage('assets/images/Kimikoe_Logo.png'),
-                    ),
-                  ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 400,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 80),
+                      Image(
+                        image: AssetImage('assets/images/Kimikoe_Logo.png'),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              flex: 6,
-              child: Container(
+              Container(
+                height: 600,
                 color: mainBlue,
                 child: Center(
                   child: FractionallySizedBox(
@@ -153,9 +167,11 @@ class _SignInScreenState extends State<SignInScreen> {
                     child: Column(
                       children: [
                         const Gap(60),
-                        TextFormField(
+                        TextField(
                           controller: _emailController,
                           style: const TextStyle(color: textWhite),
+                          autocorrect: false,
+                          keyboardType: TextInputType.emailAddress,
                           decoration: const InputDecoration(
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
@@ -179,13 +195,12 @@ class _SignInScreenState extends State<SignInScreen> {
                         FractionallySizedBox(
                           widthFactor: 1.0,
                           child: ElevatedButton(
-                            onPressed: _signIn,
+                            onPressed: _sendMagicLink,
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
-                            // childは引数リストの最後に書く
                             child: const Text(
                               "Send Magic Link",
                               style: TextStyle(
@@ -238,8 +253,8 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
