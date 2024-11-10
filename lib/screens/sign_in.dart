@@ -20,27 +20,69 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  final _formKey = GlobalKey<FormState>();
+
   bool _redirecting = false;
 
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _nameController = TextEditingController();
+  var _enteredEmail = '';
+  var _enteredPassword = '';
+  var _enteredName = '';
   var _isLogin = true;
 
   late final StreamSubscription<AuthState> _authStateSubscription;
 
+  bool _validateAndSaveForm() {
+    final isValid = _formKey.currentState!.validate();
+
+    if (!isValid) {
+      return false;
+    }
+
+    _formKey.currentState!.save();
+    return true;
+  }
+
+  void _showErrorMessage(AuthException error) {
+    String errorMessage;
+    switch (error.code) {
+      case 'email_exists':
+        errorMessage = 'メールアドレスは既に登録されています。別のメールアドレスを使用してください。';
+        break;
+      case 'user_already_exists':
+        errorMessage = 'ユーザーはすでに存在しています。ログインを試してください。';
+        break;
+      case 'user_not_found':
+        errorMessage = 'ユーザーが見つかりません。メールアドレスを確認するか、新しいアカウントを作成してください。';
+        break;
+      case 'invalid_credentials':
+        errorMessage = 'メールアドレスまたはパスワードが正しくありません。もう一度確認してください。';
+        break;
+      default:
+        errorMessage = 'エラーが発生しました: ${error.message}';
+    }
+
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(errorMessage),
+      ),
+    );
+  }
+
   Future<void> _signUp() async {
+    if (!_validateAndSaveForm()) {
+      return;
+    }
+
     try {
-      if (_nameController.text.trim().isEmpty) {
-        _nameController.text = 'ユーザーネーム未定';
-      }
       final response = await supabase.auth.signUp(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
+        email: _enteredEmail,
+        password: _enteredPassword,
         data: {
-          'username': _nameController.text.trim(),
+          'username': _enteredName,
         },
       );
+
       final userId = response.user?.id;
       final userData = response.user?.userMetadata;
       if (userId != null) {
@@ -52,28 +94,36 @@ class _SignInScreenState extends State<SignInScreen> {
           userId,
         );
       }
-      if (mounted) {
-        context.goNamed(RoutingPath.groupList);
-      }
-      // todo: エラー処理
+      await Future.delayed(Duration(milliseconds: 200));
     } on AuthException catch (e) {
-    } on Exception catch (e) {}
+      if (!mounted) return;
+      _showErrorMessage(e);
+    }
+
+    if (mounted) {
+      context.goNamed(RoutingPath.groupList);
+    }
   }
 
   Future<void> _logIn() async {
+    if (!_validateAndSaveForm()) {
+      return;
+    }
+
     try {
       await supabase.auth.signInWithPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
+        email: _enteredEmail,
+        password: _enteredPassword,
       );
       await Future.delayed(Duration(milliseconds: 200));
-
-      if (mounted) {
-        context.go(RoutingPath.groupList);
-      }
-      // todo: エラー処理
     } on AuthException catch (e) {
-    } on Exception catch (e) {}
+      if (!mounted) return;
+      _showErrorMessage(e);
+    }
+
+    if (mounted) {
+      context.go(RoutingPath.groupList);
+    }
   }
 
   // // マジックリンク
@@ -182,7 +232,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   void dispose() {
-    _emailController.dispose();
     _authStateSubscription.cancel();
     super.dispose();
   }
@@ -196,7 +245,7 @@ class _SignInScreenState extends State<SignInScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                height: 400,
+                height: 300,
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -210,161 +259,201 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
               Container(
-                height: 600,
+                height: 800,
                 color: mainBlue,
                 child: Center(
                   child: FractionallySizedBox(
                     widthFactor: 0.8,
-                    child: Column(
-                      children: [
-                        const Gap(60),
-                        TextFormField(
-                          controller: _emailController,
-                          style: const TextStyle(color: textWhite),
-                          autocorrect: false,
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: const InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: textWhite,
-                              ),
-                            ),
-                            hintText: 'E-Mail',
-                            hintStyle: TextStyle(
-                              fontSize: fontL,
-                              color: textWhite,
-                            ),
-                            prefixIcon: Icon(
-                              Icons.mail_outline,
-                              color: textWhite,
-                              size: fontL,
-                            ),
-                          ),
-                        ),
-                        const Gap(20),
-                        TextFormField(
-                          controller: _passwordController,
-                          style: const TextStyle(color: textWhite),
-                          autocorrect: false,
-                          keyboardType: TextInputType.visiblePassword,
-                          decoration: const InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: textWhite,
-                              ),
-                            ),
-                            hintText: 'Password',
-                            hintStyle: TextStyle(
-                              fontSize: fontL,
-                              color: textWhite,
-                            ),
-                            prefixIcon: Icon(
-                              Icons.lock,
-                              color: textWhite,
-                              size: fontL,
-                            ),
-                          ),
-                        ),
-                        Gap(spaceS),
-                        if (!_isLogin)
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          const Gap(60),
                           TextFormField(
-                            controller: _nameController,
                             style: const TextStyle(color: textWhite),
                             autocorrect: false,
-                            keyboardType: TextInputType.name,
+                            keyboardType: TextInputType.emailAddress,
                             decoration: const InputDecoration(
+                              errorStyle: TextStyle(
+                                  color: Colors.yellowAccent, fontSize: 16),
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
                                   color: textWhite,
                                 ),
                               ),
-                              hintText: 'name',
+                              hintText: 'E-Mail',
                               hintStyle: TextStyle(
                                 fontSize: fontL,
                                 color: textWhite,
                               ),
                               prefixIcon: Icon(
-                                Icons.person,
+                                Icons.mail_outline,
                                 color: textWhite,
                                 size: fontL,
                               ),
                             ),
+                            validator: (value) {
+                              if (value == null ||
+                                  value.isEmpty ||
+                                  !value.contains('@')) {
+                                return '正しいE-Mailを入力してください';
+                              }
+                              return null;
+                            },
+                            onSaved: (newValue) {
+                              _enteredEmail = newValue!;
+                            },
                           ),
-                        const Gap(20),
-                        FractionallySizedBox(
-                          widthFactor: 1,
-                          child: ElevatedButton(
-                            onPressed: _isLogin ? _logIn : _signUp,
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                          const Gap(20),
+                          TextFormField(
+                            style: const TextStyle(color: textWhite),
+                            autocorrect: false,
+                            keyboardType: TextInputType.visiblePassword,
+                            decoration: const InputDecoration(
+                              errorStyle: TextStyle(
+                                  color: Colors.yellowAccent, fontSize: 16),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: textWhite,
+                                ),
                               ),
-                            ),
-                            child: Text(
-                              _isLogin ? "Login" : "Signup",
-                              style: TextStyle(
-                                color: mainBlue,
+                              hintText: 'Password',
+                              hintStyle: TextStyle(
                                 fontSize: fontL,
+                                color: textWhite,
+                              ),
+                              prefixIcon: Icon(
+                                Icons.lock,
+                                color: textWhite,
+                                size: fontL,
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.trim().length < 8) {
+                                return _isLogin
+                                    ? '正しいパスワードを入力してください'
+                                    : 'パスワードは8文字以上入力してください';
+                              }
+                              return null;
+                            },
+                            onSaved: (newValue) {
+                              _enteredPassword = newValue!;
+                            },
+                          ),
+                          Gap(spaceS),
+                          if (!_isLogin)
+                            TextFormField(
+                              style: const TextStyle(color: textWhite),
+                              autocorrect: false,
+                              keyboardType: TextInputType.name,
+                              decoration: const InputDecoration(
+                                errorStyle: TextStyle(
+                                    color: Colors.yellowAccent, fontSize: 16),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: textWhite,
+                                  ),
+                                ),
+                                hintText: 'name',
+                                hintStyle: TextStyle(
+                                  fontSize: fontL,
+                                  color: textWhite,
+                                ),
+                                prefixIcon: Icon(
+                                  Icons.person,
+                                  color: textWhite,
+                                  size: fontL,
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null ||
+                                    value.isEmpty ||
+                                    value.trim().length < 2) {
+                                  return '名前は2文字以上入力してください';
+                                }
+                                return null;
+                              },
+                              onSaved: (newValue) {
+                                _enteredName = newValue!;
+                              },
+                            ),
+                          const Gap(20),
+                          FractionallySizedBox(
+                            widthFactor: 1,
+                            child: ElevatedButton(
+                              onPressed: _isLogin ? _logIn : _signUp,
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              child: Text(
+                                _isLogin ? "Login" : "Signup",
+                                style: TextStyle(
+                                  color: mainBlue,
+                                  fontSize: fontL,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        const Gap(6),
-                        TextButton(
-                          onPressed: () {
-                            setState(() {
-                              _isLogin = !_isLogin;
-                            });
-                          },
-                          child: Text(
-                            _isLogin ? '新規登録する' : 'アカウントを持っている',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium!
-                                .copyWith(
-                                    color:
-                                        Theme.of(context).colorScheme.onError),
+                          const Gap(6),
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                _isLogin = !_isLogin;
+                              });
+                            },
+                            child: Text(
+                              _isLogin ? '新規登録する' : 'アカウントを持っている',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium!
+                                  .copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onError),
+                            ),
                           ),
-                        ),
-                        const Gap(12),
-                        const Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: Divider(
-                                color: textWhite,
-                                thickness: 2,
+                          const Gap(12),
+                          const Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Divider(
+                                  color: textWhite,
+                                  thickness: 2,
+                                ),
                               ),
-                            ),
-                            Text(
-                              "    Social Login    ",
-                              style: TextStyle(
-                                color: textWhite,
-                                fontSize: fontS,
+                              Text(
+                                "    Social Login    ",
+                                style: TextStyle(
+                                  color: textWhite,
+                                  fontSize: fontS,
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: Divider(
-                                color: textWhite,
-                                thickness: 2,
+                              Expanded(
+                                child: Divider(
+                                  color: textWhite,
+                                  thickness: 2,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const Gap(10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SocialLoginButton(
-                              _googleSignIn,
-                              imagePath: 'assets/images/google.svg',
-                            ),
-                            // SocialLoginButton(
-                            //   _twitterSignIn,
-                            //   imagePath: 'assets/images/twitter.svg',
-                            // ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                          const Gap(10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SocialLoginButton(
+                                _googleSignIn,
+                                imagePath: 'assets/images/google.svg',
+                              ),
+                              // SocialLoginButton(
+                              //   _twitterSignIn,
+                              //   imagePath: 'assets/images/twitter.svg',
+                              // ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
