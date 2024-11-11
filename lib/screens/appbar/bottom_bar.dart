@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/main.dart';
-import 'package:kimikoe_app/providers/current_user_provider.dart';
+import 'package:kimikoe_app/providers/auth.dart';
+import 'package:kimikoe_app/providers/user_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
 import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
@@ -77,7 +77,10 @@ class _BottomBarState extends ConsumerState<BottomBar> {
   }
 
   void _signOut() async {
-    await supabase.auth.signOut();
+    await ref.read(authProvider.notifier).signOut(ref);
+    if (mounted) {
+      context.go('/');
+    }
   }
 
   @override
@@ -107,7 +110,6 @@ class _BottomBarState extends ConsumerState<BottomBar> {
             _openAddOverlay(context);
           } else if (index == logoutIndex) {
             _signOut();
-            context.go('/');
           } else {
             widget.navigationShell.goBranch(
               index,

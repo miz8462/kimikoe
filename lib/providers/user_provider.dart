@@ -9,6 +9,8 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
 
   Future<void> fetchUserProfile() async {
     final currentUserId = supabase.auth.currentUser!.id;
+    print('--------------------------------------');
+    print('Fetching profile for user ID: $currentUserId'); // ログを追加
     final currentUser = await supabase
         .from(TableName.profiles.name)
         .select()
@@ -21,6 +23,10 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
         email: currentUser[ColumnName.email.name],
         imageUrl: currentUser[ColumnName.imageUrl.name],
         comment: currentUser[ColumnName.comment.name]);
+  }
+
+  void clearUserProfile() {
+    state = null;
   }
 
   Future<void> updateUserProfile(UserProfile newUser) async {
@@ -40,4 +46,3 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
 final userProfileProvider =
     StateNotifierProvider<UserProfileNotifier, UserProfile?>(
         (ref) => UserProfileNotifier()..fetchUserProfile());
-

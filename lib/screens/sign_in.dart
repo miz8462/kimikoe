@@ -2,27 +2,30 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
+import 'package:kimikoe_app/providers/auth.dart';
+import 'package:kimikoe_app/providers/user_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/widgets/buttons/social_login_button.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class SignInScreen extends StatefulWidget {
+class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({super.key});
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  ConsumerState<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _SignInScreenState extends ConsumerState<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  bool _redirecting = false;
+  bool _isRedirecting = false;
 
   var _enteredEmail = '';
   var _enteredPassword = '';
@@ -111,10 +114,11 @@ class _SignInScreenState extends State<SignInScreen> {
     }
 
     try {
-      await supabase.auth.signInWithPassword(
-        email: _enteredEmail,
-        password: _enteredPassword,
-      );
+      await ref.read(authProvider.notifier).signIn(
+            _enteredEmail,
+            _enteredPassword,
+            ref,
+          );
       await Future.delayed(Duration(milliseconds: 200));
     } on AuthException catch (e) {
       if (!mounted) return;
@@ -149,14 +153,8 @@ class _SignInScreenState extends State<SignInScreen> {
   // }
 
   Future<void> _googleSignIn() async {
-    /// Web Client ID that you registered with Google Cloud.
     final webClientId = dotenv.env['GOOGLE_OAUTH_WEB_CLIENT_ID'];
-
-    /// iOS Client ID that you registered with Google Cloud.
     final iosClientId = dotenv.env['GOOGLE_OAUTH_IOS_CLIENT_ID'];
-
-    // Google sign in on Android will work without providing the Android
-    // Client ID registered on Google Cloud.
 
     try {
       final GoogleSignIn googleSignIn = GoogleSignIn(
@@ -196,7 +194,9 @@ class _SignInScreenState extends State<SignInScreen> {
         }).eq('id', userId);
       }
 
-      await Future.delayed(Duration(microseconds: 500));
+      await ref.read(userProfileProvider.notifier).fetchUserProfile();
+
+      await Future.delayed(Duration(microseconds: 200));
     } catch (e) {
       print('Google Sign-In Error: $e');
     }
@@ -206,11 +206,10 @@ class _SignInScreenState extends State<SignInScreen> {
   void initState() {
     _authStateSubscription = supabase.auth.onAuthStateChange.listen(
       (data) async {
-        if (_redirecting) return;
+        if (_isRedirecting) return;
         final session = data.session;
         if (session != null) {
-          _redirecting = true;
-          await Future.delayed(Duration.zero);
+          _isRedirecting = true;
           if (mounted) {
             context.go(RoutingPath.groupList);
           }
@@ -223,7 +222,7 @@ class _SignInScreenState extends State<SignInScreen> {
         if (error is AuthException) {
           context.showSnackBar(error.message, isError: true);
         } else {
-          context.showSnackBar('Unexpected error occurrded', isError: true);
+          context.showSnackBar('Unexpected error occurred', isError: true);
         }
       },
     );
@@ -300,8 +299,8 @@ class _SignInScreenState extends State<SignInScreen> {
                               }
                               return null;
                             },
-                            onSaved: (newValue) {
-                              _enteredEmail = newValue!;
+                            onSaved: (value) {
+                              _enteredEmail = value!;
                             },
                           ),
                           const Gap(20),
@@ -336,8 +335,8 @@ class _SignInScreenState extends State<SignInScreen> {
                               }
                               return null;
                             },
-                            onSaved: (newValue) {
-                              _enteredPassword = newValue!;
+                            onSaved: (value) {
+                              _enteredPassword = value!;
                             },
                           ),
                           Gap(spaceS),
@@ -373,8 +372,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                 }
                                 return null;
                               },
-                              onSaved: (newValue) {
-                                _enteredName = newValue!;
+                              onSaved: (value) {
+                                _enteredName = value!;
                               },
                             ),
                           const Gap(20),
