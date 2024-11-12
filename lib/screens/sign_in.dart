@@ -178,21 +178,21 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
         accessToken: accessToken,
       );
 
-      final userId = supabase.auth.currentUser!.id;
-      final userData = supabase.auth.currentUser!.userMetadata;
+      // final userId = supabase.auth.currentUser!.id;
+      // final userData = supabase.auth.currentUser!.userMetadata;
 
-      final response = await supabase
-          .from(TableName.profiles.name)
-          .select()
-          .eq(ColumnName.id.name, userId);
+      // final response = await supabase
+      //     .from(TableName.profiles.name)
+      //     .select()
+      //     .eq(ColumnName.id.name, userId);
 
-      if (response[0]['email'] == null) {
-        await supabase.from('profiles').update({
-          'name': userData?['name'],
-          'email': userData?['email'],
-          'image_url': userData?['image_url']
-        }).eq('id', userId);
-      }
+      // if (response[0]['email'] == null) {
+      //   await supabase.from('profiles').update({
+      //     'name': userData?['name'],
+      //     'email': userData?['email'],
+      //     'image_url': userData?['image_url']
+      //   }).eq('id', userId);
+      // }
 
       await ref.read(userProfileProvider.notifier).fetchUserProfile();
 

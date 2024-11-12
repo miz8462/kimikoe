@@ -5,7 +5,6 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/providers/auth.dart';
 import 'package:kimikoe_app/providers/user_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
-import 'package:kimikoe_app/utils/crud_data.dart';
 import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
 
 class BottomBar extends ConsumerStatefulWidget {
@@ -86,9 +85,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
   @override
   Widget build(BuildContext context) {
     int currentIndex = widget.navigationShell.currentIndex;
-
     final user = ref.watch(userProfileProvider);
-
     if (user == null) {
       return Scaffold(
         body: Center(
@@ -98,7 +95,6 @@ class _BottomBarState extends ConsumerState<BottomBar> {
     }
 
     final imageUrl = user.imageUrl;
-    final userImage = fetchPublicImageUrl(imageUrl);
 
     return Scaffold(
       body: widget.navigationShell,
@@ -134,7 +130,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
           ),
           NavigationDestination(
             icon: CircleAvatar(
-              backgroundImage: NetworkImage(userImage),
+              backgroundImage: NetworkImage(imageUrl),
               radius: avaterSizeS,
             ),
             label: 'User',

@@ -9,8 +9,6 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
 
   Future<void> fetchUserProfile() async {
     final currentUserId = supabase.auth.currentUser!.id;
-    print('--------------------------------------');
-    print('Fetching profile for user ID: $currentUserId'); // ログを追加
     final currentUser = await supabase
         .from(TableName.profiles.name)
         .select()
