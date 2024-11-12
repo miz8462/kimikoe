@@ -183,6 +183,16 @@ class _AddSongScreenState extends State<AddSongScreen> {
       imageFile: _selectedImage,
     );
 
+    if (_selectedImage != null) {
+      uploadImageToStorage(
+        table: TableName.images.name,
+        path: imagePath!,
+        file: _selectedImage!,
+      );
+    }
+
+    final imageUrl = fetchImageUrl(imagePath!);
+
     if (_selectedReleaseDate == null || _selectedReleaseDate!.isEmpty) {
       _selectedReleaseDate = null;
     }
@@ -197,7 +207,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
     if (!isSelectedGroupInList && groupName.isNotEmpty) {
       insertIdolGroupData(
         name: groupName,
-        imageUrl: defaultPathNoImage,
+        imageUrl: noImage,
         year: '',
         comment: '',
       );
@@ -210,7 +220,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
     final isSelectedLyricistInList =
         isInList(_artistIdAndNameList, lyricistName);
     if (!isSelectedLyricistInList && lyricistName.isNotEmpty) {
-      insertArtistData(name: lyricistName, imageUrl: defaultPathNoImage);
+      insertArtistData(name: lyricistName, imageUrl: noImage);
       await _fetchIdAndNameLists();
     }
     if (lyricistName.isNotEmpty) {
@@ -223,7 +233,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
     final isSelectedComposerInList =
         isInList(_artistIdAndNameList, composerName);
     if (!isSelectedComposerInList && composerName.isNotEmpty) {
-      insertArtistData(name: composerName, imageUrl: defaultPathNoImage);
+      insertArtistData(name: composerName, imageUrl: noImage);
       await _fetchIdAndNameLists();
     }
     if (composerName.isNotEmpty) {
@@ -237,7 +247,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
         name: _enteredTitle,
         lyric: jsonStringLyrics,
         groupId: selectedGroupId,
-        imagePath: imagePath,
+        imageUrl: imageUrl,
         releaseDate: _selectedReleaseDate,
         lyricistId: selectedLyricistId,
         composerId: selectedComposerId,
@@ -250,19 +260,11 @@ class _AddSongScreenState extends State<AddSongScreen> {
         name: _enteredTitle,
         lyric: jsonStringLyrics,
         groupId: selectedGroupId,
-        imagePath: imagePath,
+        imageUrl: imageUrl,
         releaseDate: _selectedReleaseDate,
         lyricistId: selectedLyricistId,
         composerId: selectedComposerId,
         comment: _enteredComment,
-      );
-    }
-
-    if (_selectedImage != null) {
-      uploadImageToStorage(
-        table: TableName.images.name,
-        path: imagePath!,
-        file: _selectedImage!,
       );
     }
 

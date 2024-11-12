@@ -9,7 +9,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
-import 'package:kimikoe_app/providers/auth.dart';
+import 'package:kimikoe_app/providers/auth_provider.dart';
 import 'package:kimikoe_app/providers/user_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/widgets/buttons/social_login_button.dart';
@@ -97,10 +97,12 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
           userId,
         );
       }
+
       await Future.delayed(Duration(milliseconds: 200));
     } on AuthException catch (e) {
       if (!mounted) return;
       _showErrorMessage(e);
+      return;
     }
 
     if (mounted) {
@@ -177,22 +179,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
         idToken: idToken,
         accessToken: accessToken,
       );
-
-      // final userId = supabase.auth.currentUser!.id;
-      // final userData = supabase.auth.currentUser!.userMetadata;
-
-      // final response = await supabase
-      //     .from(TableName.profiles.name)
-      //     .select()
-      //     .eq(ColumnName.id.name, userId);
-
-      // if (response[0]['email'] == null) {
-      //   await supabase.from('profiles').update({
-      //     'name': userData?['name'],
-      //     'email': userData?['email'],
-      //     'image_url': userData?['image_url']
-      //   }).eq('id', userId);
-      // }
 
       await ref.read(userProfileProvider.notifier).fetchUserProfile();
 

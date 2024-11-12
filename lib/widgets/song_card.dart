@@ -19,7 +19,7 @@ class SongCard extends ConsumerWidget {
   final IdolGroup group;
 
   @override
-  Widget build(BuildContext context,WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final title = song.title;
     final lyrics = song.lyrics;
 

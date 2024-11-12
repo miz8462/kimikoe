@@ -48,9 +48,8 @@ const double avaterSizeLL = 40;
 
 const screenPadding = EdgeInsets.symmetric(horizontal: 20);
 
-const String defaultPathNoImage = 'no-images.png';
-
-const String noImage = 'no-images.png';
+const String noImage =
+    'https://inngzyruhkuljrsvujfw.supabase.co/storage/v1/object/public/images/no-images.png';
 
 // アイドルから―のサイズ
 const double circleSize = 20.0;

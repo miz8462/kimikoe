@@ -10,7 +10,6 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/enums/idol_colors.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol.dart';
-import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/utils/check.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
@@ -139,6 +138,16 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
       imageFile: _selectedImage,
     );
 
+    if (_selectedImage != null) {
+      await uploadImageToStorage(
+        table: TableName.images.name,
+        path: imagePath!,
+        file: _selectedImage!,
+      );
+    }
+
+    final imageUrl = fetchImageUrl(imagePath!);
+
     int birthYear;
     if (_selectedBirthYear == null || _selectedBirthYear!.isEmpty) {
       birthYear = 0;
@@ -172,7 +181,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     if (!isSelectedGroupInList && groupName.isNotEmpty) {
       insertIdolGroupData(
         name: groupName,
-        imageUrl: defaultPathNoImage,
+        imageUrl: noImage,
         year: '',
         comment: '',
       );
@@ -195,7 +204,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         id: _idol.id!,
         groupId: selectedGroupId,
         color: selectedColor,
-        imagePath: imagePath,
+        imageUrl: imageUrl,
         birthday: _selectedBirthDay,
         birthYear: birthYear,
         height: height,
@@ -209,21 +218,13 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         name: _enteredIdolName,
         groupId: selectedGroupId,
         color: selectedColor,
-        imagePath: imagePath,
+        imageUrl: imageUrl,
         birthday: _selectedBirthDay,
         birthYear: birthYear,
         height: height,
         hometown: _enteredHometown,
         debutYear: debutYear,
         comment: _enteredComment,
-      );
-    }
-
-    if (_selectedImage != null) {
-      uploadImageToStorage(
-        table: TableName.images.name,
-        path: imagePath!,
-        file: _selectedImage!,
       );
     }
 
@@ -235,7 +236,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
       return;
     }
 
-    context.pushReplacement(RoutingPath.groupList);
+    // context.pushReplacement(RoutingPath.groupList);
   }
 
   String? _nameValidator(String? value) {

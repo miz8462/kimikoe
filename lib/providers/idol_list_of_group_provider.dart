@@ -34,12 +34,11 @@ final idolListOfGroupFromSupabaseProvider =
       .select()
       .eq(ColumnName.groupId.name, groupId);
   return response.map((idol) {
-    final imageUrl = fetchPublicImageUrl(idol[ColumnName.imageUrl.name]);
     return Idol(
       id: idol[ColumnName.id.name],
       name: idol[ColumnName.cName.name],
       group: group,
-      imageUrl: imageUrl,
+      imageUrl: idol[ColumnName.imageUrl.name],
       birthDay: idol[ColumnName.birthday.name],
       birthYear: idol[ColumnName.birthYear.name],
       color: Color(int.parse(idol[ColumnName.color.name])),

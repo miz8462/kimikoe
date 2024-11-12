@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
+import 'package:kimikoe_app/providers/idol_group_list_providere.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
@@ -112,24 +113,32 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
       return;
     }
 
-    String? imageFileName;
+    String? imagePath;
+    late String? imageUrl;
     // 画像を登録しない場合
     if (_selectedImage == null && !_isEditing) {
-      imageFileName = defaultPathNoImage;
+      imageUrl = noImage;
     } else {
       // e.g. /aaa/bbb/ccc/image.png
-      imageFileName = getImagePath(
+      imagePath = getImagePath(
           isEditing: _isEditing,
           isImageChanged: _isImageChanged,
           imageUrl: _group.imageUrl,
           imageFile: _selectedImage);
     }
+    if (_selectedImage != null) {
+      await uploadImageToStorage(
+          table: TableName.images.name,
+          path: imagePath!,
+          file: _selectedImage!);
+    }
+    imageUrl = fetchImageUrl(imagePath!);
 
     if (_isEditing) {
       // 修正
       updateIdolGroup(
         name: _enteredName,
-        imageUrl: imageFileName,
+        imageUrl: imageUrl,
         year: _selectedYear,
         comment: _enteredComment,
         id: (_group.id).toString(),
@@ -138,17 +147,10 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
       // 登録
       insertIdolGroupData(
         name: _enteredName,
-        imageUrl: imageFileName,
+        imageUrl: imageUrl,
         year: _selectedYear,
         comment: _enteredComment,
       );
-    }
-
-    if (_selectedImage != null) {
-      uploadImageToStorage(
-          table: TableName.images.name,
-          path: imageFileName!,
-          file: _selectedImage!);
     }
 
     setState(() {
@@ -158,6 +160,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     if (!mounted) {
       return;
     }
+    ref.read(idolGroupListProvider.notifier).fetchGroupList();
 
     context.pushReplacement(RoutingPath.groupList);
   }

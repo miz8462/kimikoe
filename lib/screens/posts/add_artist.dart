@@ -7,12 +7,13 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
+import 'package:kimikoe_app/utils/crud_data.dart';
+import 'package:kimikoe_app/utils/image_utils.dart';
+import 'package:kimikoe_app/utils/validator/validator.dart';
 import 'package:kimikoe_app/widgets/buttons/image_input_button.dart';
 import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
 import 'package:kimikoe_app/widgets/forms/expanded_text_form.dart';
 import 'package:kimikoe_app/widgets/forms/text_input_form.dart';
-import 'package:kimikoe_app/utils/crud_data.dart';
-import 'package:kimikoe_app/utils/validator/validator.dart';
 
 class AddArtistScreen extends StatefulWidget {
   const AddArtistScreen({super.key});
@@ -38,21 +39,23 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
     }
 
     // e.g. /aaa/bbb/ccc/image.png
-    final imagePath = _selectedImage?.path.split('/').last.split('.').first;
-    final imagePathWithCreatedAtJPG =
-        '$imagePath${(DateTime.now().toString()).replaceAll(' ', '-')}.jpg';
-    insertArtistData(
-        name: _enteredName,
-        imageUrl: imagePathWithCreatedAtJPG,
-        comment: _enteredComment);
+    String? imagePath = getImagePath(
+      imageFile: _selectedImage,
+    );
 
     if (_selectedImage != null) {
       uploadImageToStorage(
         table: TableName.images.name,
-        path: imagePathWithCreatedAtJPG,
+        path: imagePath!,
         file: _selectedImage!,
       );
     }
+
+    final imageUrl = fetchImageUrl(imagePath!);
+
+    insertArtistData(
+        name: _enteredName, imageUrl: imageUrl, comment: _enteredComment);
+
     setState(() {
       _isSending = false;
     });

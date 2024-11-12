@@ -35,7 +35,7 @@ Future<void> insertIdolData({
   required String name,
   int? groupId,
   String? color,
-  String? imagePath,
+  String? imageUrl,
   String? birthday,
   int? birthYear,
   int? height,
@@ -47,7 +47,7 @@ Future<void> insertIdolData({
     ColumnName.cName.name: name,
     ColumnName.groupId.name: groupId,
     ColumnName.color.name: color,
-    ColumnName.imageUrl.name: imagePath,
+    ColumnName.imageUrl.name: imageUrl,
     ColumnName.birthday.name: birthday,
     ColumnName.birthYear.name: birthYear,
     ColumnName.height.name: height,
@@ -61,7 +61,7 @@ Future<void> insertSongData({
   required String name,
   required String lyric,
   int? groupId,
-  String? imagePath,
+  String? imageUrl,
   String? releaseDate,
   int? lyricistId,
   int? composerId,
@@ -71,7 +71,7 @@ Future<void> insertSongData({
     ColumnName.title.name: name,
     ColumnName.lyrics.name: lyric,
     ColumnName.groupId.name: groupId,
-    ColumnName.imageUrl.name: imagePath,
+    ColumnName.imageUrl.name: imageUrl,
     ColumnName.releaseDate.name: releaseDate,
     ColumnName.lyricistId.name: lyricistId,
     ColumnName.composerId.name: composerId,
@@ -104,14 +104,8 @@ Future fetchCurrentUserInfo() {
   return userInfo;
 }
 
-String fetchImageOfNoImage() {
-  return supabase.storage
-      .from(TableName.images.name)
-      .getPublicUrl(defaultPathNoImage);
-}
-
-String fetchPublicImageUrl(String imageUrl) {
-  return supabase.storage.from(TableName.images.name).getPublicUrl(imageUrl);
+String? fetchImageUrl(String imagePath) {
+  return supabase.storage.from(TableName.images.name).getPublicUrl(imagePath);
 }
 
 Future<List<Map<String, dynamic>>> fetchIdAndNameList(String tableName) async {
@@ -173,7 +167,7 @@ Future<void> updateIdol({
   required String name,
   int? groupId,
   String? color,
-  String? imagePath,
+  String? imageUrl,
   String? birthday,
   int? birthYear,
   int? height,
@@ -186,7 +180,7 @@ Future<void> updateIdol({
     ColumnName.cName.name: name,
     ColumnName.groupId.name: groupId,
     ColumnName.color.name: color,
-    ColumnName.imageUrl.name: imagePath,
+    ColumnName.imageUrl.name: imageUrl,
     ColumnName.birthday.name: birthday,
     ColumnName.birthYear.name: birthYear,
     ColumnName.height.name: height,
@@ -200,7 +194,7 @@ Future<void> updateSong({
   required String name,
   required String lyric,
   int? groupId,
-  String? imagePath,
+  String? imageUrl,
   String? releaseDate,
   int? lyricistId,
   int? composerId,
@@ -211,7 +205,7 @@ Future<void> updateSong({
     ColumnName.title.name: name,
     ColumnName.lyrics.name: lyric,
     ColumnName.groupId.name: groupId,
-    ColumnName.imageUrl.name: imagePath,
+    ColumnName.imageUrl.name: imageUrl,
     ColumnName.releaseDate.name: releaseDate,
     ColumnName.lyricistId.name: lyricistId,
     ColumnName.composerId.name: composerId,

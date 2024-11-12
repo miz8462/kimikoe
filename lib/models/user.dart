@@ -5,7 +5,7 @@ class UserProfile {
     required this.id,
     required this.name,
     required this.email,
-    this.imageUrl = defaultPathNoImage,
+    this.imageUrl = noImage,
     this.comment = '',
   });
 

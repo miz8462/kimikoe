@@ -6,9 +6,12 @@ import 'package:kimikoe_app/utils/crud_data.dart';
 class ArtistListNotifier extends StateNotifier<List<Artist>> {
   ArtistListNotifier(super.state);
 
-  Artist? getArtistById(int id) {
+  Artist? getArtistById(int? id) {
+    if (id == null) {
+      return null;
+    }
     return state.firstWhere((artist) => artist.id == id, orElse: () {
-      throw StateError('Group with id:$id not fount');
+      throw StateError('Group with id:$id not found');
     });
   }
 }
@@ -25,7 +28,7 @@ final artistListFromSupabaseProvider =
     FutureProvider<List<Artist>>((ref) async {
   final response = await fetchArtists();
   return response.map<Artist>((artist) {
-    final imageUrl = fetchPublicImageUrl(artist[ColumnName.imageUrl.name]);
+    final imageUrl = fetchImageUrl(artist[ColumnName.imageUrl.name]);
     return Artist(
         id: artist[ColumnName.id.name],
         name: artist[ColumnName.cName.name],

@@ -35,11 +35,10 @@ class IdolGroupListNotifier extends StateNotifier<IdolGroupListState> {
       id: ColumnName.id.name,
     ).first;
     final groups = data.map<IdolGroup>((group) {
-      final imageUrl = fetchPublicImageUrl(group[ColumnName.imageUrl.name]);
       return IdolGroup(
         id: group[ColumnName.id.name],
         name: group[ColumnName.cName.name],
-        imageUrl: imageUrl,
+        imageUrl: group[ColumnName.imageUrl.name],
         year: group[ColumnName.yearFormingGroups.name],
         comment: group[ColumnName.comment.name],
       );

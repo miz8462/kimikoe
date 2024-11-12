@@ -4,7 +4,6 @@ import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/song.dart';
 import 'package:kimikoe_app/providers/artist_list_provider.dart';
 import 'package:kimikoe_app/providers/idol_group_list_providere.dart';
-import 'package:kimikoe_app/utils/crud_data.dart';
 
 final songListOfGroupProvider =
     FutureProvider.family<List<Song>, int>((ref, groupId) async {
@@ -17,7 +16,6 @@ final songListOfGroupProvider =
       .select()
       .eq(ColumnName.groupId.name, groupId);
   return response.map((song) {
-    final imageUrl = fetchPublicImageUrl(song[ColumnName.imageUrl.name]);
     final lyricist = artistList.getArtistById(song[ColumnName.lyricistId.name]);
     final composer = artistList.getArtistById(song[ColumnName.composerId.name]);
     return Song(
@@ -25,7 +23,7 @@ final songListOfGroupProvider =
       title: song[ColumnName.title.name],
       lyrics: song[ColumnName.lyrics.name],
       group: group,
-      imageUrl: imageUrl,
+      imageUrl: song[ColumnName.imageUrl.name],
       lyricist: lyricist,
       composer: composer,
       releaseDate: song[ColumnName.releaseDate.name],

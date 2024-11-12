@@ -33,7 +33,7 @@ class _ImageInputState extends State<ImageInput> {
     }
   }
 
-  Future<File?> _getImageFromMobileStrage() async {
+  Future<File?> _getImageFromMobileStorage() async {
     final picker = ImagePicker();
 
     final pickedImage = await picker.pickImage(source: ImageSource.gallery);
@@ -54,7 +54,7 @@ class _ImageInputState extends State<ImageInput> {
   Widget build(BuildContext context) {
     Widget content = StyledButton(
       widget.label,
-      onPressed: _getImageFromMobileStrage,
+      onPressed: _getImageFromMobileStorage,
       textColor: textWhite,
       backgroundColor: mainBlue.withOpacity(0.8),
     );
@@ -71,7 +71,7 @@ class _ImageInputState extends State<ImageInput> {
         width: double.infinity,
         alignment: Alignment.center,
         child: GestureDetector(
-          onTap: _getImageFromMobileStrage,
+          onTap: _getImageFromMobileStorage,
           child: _hasEditingImage
               ? Image(
                   image: NetworkImage(widget.imageUrl!),
