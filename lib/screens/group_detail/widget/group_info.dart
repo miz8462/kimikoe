@@ -11,6 +11,11 @@ class GroupInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Uri? officialUrl;
+    if (group.officialUrl != null && group.officialUrl!.isNotEmpty) {
+      officialUrl = Uri.parse(group.officialUrl!);
+    }
+
     Uri? twitterWebUrl;
     Uri? twitterDeepLinkUrl;
     if (group.twitterUrl != null && group.twitterUrl!.isNotEmpty) {
@@ -39,6 +44,16 @@ class GroupInfo extends StatelessWidget {
             ),
             Row(
               children: [
+                if (officialUrl != null)
+                  IconButton(
+                    onPressed: () {
+                      openOfficialSite(officialUrl!);
+                    },
+                    icon: Icon(
+                      FontAwesomeIcons.house,
+                      color: mainBlue,
+                    ),
+                  ),
                 if (twitterWebUrl != null)
                   IconButton(
                     onPressed: () {
