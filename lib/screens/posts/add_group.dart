@@ -46,6 +46,9 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
   File? _selectedImage;
   String? _selectedYear;
   var _enteredComment = '';
+  var _enteredOfficialUrl = '';
+  var _enteredTwitterUrl = '';
+  var _enteredInstagramUrl = '';
 
   var _isSending = false;
   var _isImageChanged = false;
@@ -132,7 +135,9 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
           path: imagePath!,
           file: _selectedImage!);
     }
-    imageUrl = fetchImageUrl(imagePath!);
+    if (imagePath != null) {
+      imageUrl = fetchImageUrl(imagePath);
+    }
 
     if (_isEditing) {
       // 修正
@@ -140,6 +145,9 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
         name: _enteredName,
         imageUrl: imageUrl,
         year: _selectedYear,
+        officialUrl: _enteredOfficialUrl,
+        twitterUrl: _enteredTwitterUrl,
+        instagramUrl: _enteredInstagramUrl,
         comment: _enteredComment,
         id: (_group.id).toString(),
       );
@@ -149,6 +157,9 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
         name: _enteredName,
         imageUrl: imageUrl,
         year: _selectedYear,
+        officialUrl: _enteredOfficialUrl,
+        twitterUrl: _enteredTwitterUrl,
+        instagramUrl: _enteredInstagramUrl,
         comment: _enteredComment,
       );
     }
@@ -210,20 +221,44 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                     controller: _yearController,
                     picker: _pickYear,
                     onSaved: (value) {
-                      setState(
-                        () {
-                          _selectedYear = value;
-                        },
-                      );
+                      _selectedYear = value;
+                    },
+                  ),
+                  const Gap(spaceS),
+                  InputForm(
+                    initialValue: _isEditing ? _group.officialUrl : '',
+                    label: '公式サイト URL',
+                    keyboardType: TextInputType.url,
+                    validator: (value) => urlValidator(value),
+                    onSaved: (value) {
+                      _enteredOfficialUrl = value!;
+                    },
+                  ),
+                  const Gap(spaceS),
+                  InputForm(
+                    initialValue: _isEditing ? _group.twitterUrl : '',
+                    label: 'Twitter URL',
+                    keyboardType: TextInputType.url,
+                    validator: (value) => urlValidator(value),
+                    onSaved: (value) {
+                      _enteredTwitterUrl = value!;
+                    },
+                  ),
+                  const Gap(spaceS),
+                  InputForm(
+                    initialValue: _isEditing ? _group.instagramUrl : '',
+                    label: 'Instagram Url',
+                    keyboardType: TextInputType.url,
+                    validator: (value) => urlValidator(value),
+                    onSaved: (value) {
+                      _enteredInstagramUrl = value!;
                     },
                   ),
                   const Gap(spaceS),
                   ExpandedTextForm(
                     initialValue: _isEditing ? _group.comment : null,
                     onTextChanged: (value) {
-                      setState(() {
-                        _enteredComment = value!;
-                      });
+                      _enteredComment = value!;
                     },
                     label: '備考',
                   ),

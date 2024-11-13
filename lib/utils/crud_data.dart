@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 
@@ -21,12 +20,18 @@ Future<void> insertIdolGroupData({
   required String name,
   String? imageUrl,
   String? year,
+  String? officialUrl,
+  String? twitterUrl,
+  String? instagramUrl,
   String? comment,
 }) async {
   await supabase.from(TableName.idolGroups.name).insert({
     ColumnName.cName.name: name,
     ColumnName.imageUrl.name: imageUrl,
     ColumnName.yearFormingGroups.name: year == null ? null : int.tryParse(year),
+    ColumnName.officialUrl.name: officialUrl,
+    ColumnName.twitterUrl.name: twitterUrl,
+    ColumnName.instagramUrl.name: instagramUrl,
     ColumnName.comment.name: comment,
   });
 }
@@ -152,6 +157,9 @@ Future<void> updateIdolGroup({
   required String name,
   String? imageUrl,
   String? year,
+  String? officialUrl,
+  String? twitterUrl,
+  String? instagramUrl,
   String? comment,
   required String id,
 }) async {
@@ -159,6 +167,9 @@ Future<void> updateIdolGroup({
     ColumnName.cName.name: name,
     ColumnName.imageUrl.name: imageUrl,
     ColumnName.yearFormingGroups.name: year == null ? null : int.tryParse(year),
+    ColumnName.officialUrl.name: officialUrl,
+    ColumnName.twitterUrl.name: twitterUrl,
+    ColumnName.instagramUrl.name: instagramUrl,
     ColumnName.comment.name: comment,
   }).eq(ColumnName.id.name, id);
 }

@@ -5,15 +5,17 @@ class InputForm extends StatelessWidget {
   const InputForm({
     super.key,
     required this.label,
-    required this.validator,
+    this.validator,
     required this.onSaved,
     this.initialValue,
+    this.keyboardType = TextInputType.text,
   });
 
   final String label;
-  final String? Function(String?) validator;
+  final String? Function(String?)? validator;
   final void Function(String?) onSaved;
   final String? initialValue;
+  final TextInputType? keyboardType;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class InputForm extends StatelessWidget {
           hintStyle: const TextStyle(color: textGray),
           contentPadding: const EdgeInsets.only(left: spaceS),
         ),
-        keyboardType: TextInputType.name,
+        keyboardType: keyboardType,
         autocorrect: false,
         validator: validator,
         onSaved: onSaved,

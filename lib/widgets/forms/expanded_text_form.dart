@@ -32,9 +32,7 @@ class _ExpandedTextFormState extends State<ExpandedTextForm> {
         ),
         maxLines: null,
         onSaved: (value) {
-          setState(() {
-            _enteredText = value!;
-          });
+          _enteredText = value!;
           widget.onTextChanged(_enteredText);
         },
       ),
