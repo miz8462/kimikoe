@@ -132,12 +132,8 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
           imageFile: _selectedImage);
     }
     if (_selectedImage != null && imagePath != null) {
-      try {
-        await uploadImageToStorage(
-            table: TableName.images.name,
-            path: imagePath,
-            file: _selectedImage!);
-      } catch (e) {}
+      await uploadImageToStorage(
+          table: TableName.images.name, path: imagePath, file: _selectedImage!);
     }
     if (imagePath != null) {
       imageUrl = fetchImageUrl(imagePath);

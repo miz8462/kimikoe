@@ -53,3 +53,7 @@ const String noImage =
 
 // アイドルから―のサイズ
 const double circleSize = 20.0;
+
+// リンクURL
+const String twitterScheme='twitter://user?screen_name=';
+const String instagramScheme='instagram://user?username_name=';
