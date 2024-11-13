@@ -77,7 +77,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
 
     return Scaffold(
       appBar: const TopBar(
-        title: 'アーティスト登録',
+        pageTitle: 'アーティスト登録',
         showLeading: false,
       ),
       body: SingleChildScrollView(

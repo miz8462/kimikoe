@@ -40,6 +40,9 @@ class IdolGroupListNotifier extends StateNotifier<IdolGroupListState> {
         name: group[ColumnName.cName.name],
         imageUrl: group[ColumnName.imageUrl.name],
         year: group[ColumnName.yearFormingGroups.name],
+        officialUrl: group[ColumnName.officialUrl.name],
+        twitterUrl: group[ColumnName.twitterUrl.name],
+        instagramUrl: group[ColumnName.instagramUrl.name],
         comment: group[ColumnName.comment.name],
       );
     }).toList();

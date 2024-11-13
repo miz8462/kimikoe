@@ -27,7 +27,7 @@ class _SongListScreenState extends ConsumerState<SongListScreen> {
 
     return Scaffold(
       appBar: const TopBar(
-        title: 'ソングリスト',
+        pageTitle: 'ソングリスト',
       ),
       body: Padding(
         padding: screenPadding,

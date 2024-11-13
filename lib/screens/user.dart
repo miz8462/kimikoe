@@ -23,7 +23,7 @@ class UserScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: TopBar(
-        title: 'ユーザー情報',
+        pageTitle: 'ユーザー情報',
         isEditing: isEditing,
         editRoute: RoutingPath.editUser,
         isUser: true,

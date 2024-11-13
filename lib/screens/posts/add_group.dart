@@ -121,6 +121,8 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     // 画像を登録しない場合
     if (_selectedImage == null && !_isEditing) {
       imageUrl = noImage;
+    } else if (_isEditing && !_isImageChanged) {
+      imageUrl = _group.imageUrl;
     } else {
       // e.g. /aaa/bbb/ccc/image.png
       imagePath = getImagePath(
@@ -129,11 +131,13 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
           imageUrl: _group.imageUrl,
           imageFile: _selectedImage);
     }
-    if (_selectedImage != null) {
-      await uploadImageToStorage(
-          table: TableName.images.name,
-          path: imagePath!,
-          file: _selectedImage!);
+    if (_selectedImage != null && imagePath != null) {
+      try {
+        await uploadImageToStorage(
+            table: TableName.images.name,
+            path: imagePath,
+            file: _selectedImage!);
+      } catch (e) {}
     }
     if (imagePath != null) {
       imageUrl = fetchImageUrl(imagePath);
@@ -181,7 +185,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: TopBar(
-        title: _isEditing ? 'グループ編集' : 'グループ登録',
+        pageTitle: _isEditing ? 'グループ編集' : 'グループ登録',
         showLeading: _isEditing ? true : false,
       ),
       body: SingleChildScrollView(

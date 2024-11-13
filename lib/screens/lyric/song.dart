@@ -64,7 +64,7 @@ class _SongScreenState extends State<SongScreen> {
     };
     return Scaffold(
       appBar: TopBar(
-        title: song.title,
+        pageTitle: song.title,
         isEditing: isEditing,
         editRoute: RoutingPath.addSong,
         delete: () {

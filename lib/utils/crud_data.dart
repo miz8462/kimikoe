@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 // CREATE
 Future<void> insertArtistData({
@@ -89,7 +90,19 @@ Future<void> uploadImageToStorage({
   required String path,
   required File file,
 }) async {
-  await supabase.storage.from(TableName.images.name).upload(path, file);
+  try {
+    await supabase.storage.from(TableName.images.name).upload(path, file);
+  } catch (e) {
+    if (e is StorageException) {
+      print('Storage error: ${e.message}');
+    } else if (e is SocketException) {
+      print('Network error: ${e.message}');
+    } else if (e is HttpException) {
+      print('HTTP error: ${e.message}');
+    } else {
+      print('Error: $e');
+    }
+  }
 }
 
 // READ

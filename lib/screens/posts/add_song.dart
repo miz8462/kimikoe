@@ -315,7 +315,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
         ? const Center(child: CircularProgressIndicator())
         : Scaffold(
             appBar: TopBar(
-              title: _isEditing ? '歌詞編集' : '歌詞登録',
+              pageTitle: _isEditing ? '歌詞編集' : '歌詞登録',
               showLeading: _isEditing ? true : false,
             ),
             body: SingleChildScrollView(

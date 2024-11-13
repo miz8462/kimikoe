@@ -6,7 +6,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   const TopBar({
     super.key,
     this.imageUrl,
-    this.title,
+    this.pageTitle,
     this.showLeading = true,
     this.isEditing = false,
     this.isGroup = false,
@@ -16,7 +16,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
     this.delete,
   });
   final String? imageUrl;
-  final String? title;
+  final String? pageTitle;
   final bool showLeading;
   final bool isEditing;
   final bool isGroup;
@@ -27,8 +27,6 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localImage = imageUrl;
-    final localTitle = title;
     return AppBar(
       automaticallyImplyLeading: showLeading,
       title: Padding(
@@ -37,12 +35,12 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
           children: [
             if (imageUrl != null)
               Image(
-                image: AssetImage(localImage!),
+                image: AssetImage(imageUrl!),
                 height: 40,
               ),
-            if (localTitle != null)
+            if (pageTitle != null)
               Text(
-                localTitle,
+                pageTitle!,
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 25, color: mainBlue),
               ),

@@ -53,7 +53,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
 
     return Scaffold(
       appBar: TopBar(
-        title: group.name,
+        pageTitle: group.name,
         isEditing: _isEditing,
         isGroup: _isGroup,
         editRoute: RoutingPath.addGroup,

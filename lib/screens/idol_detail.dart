@@ -75,7 +75,7 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
 
     return Scaffold(
       appBar: TopBar(
-        title: idol.name,
+        pageTitle: idol.name,
         isEditing: isEditing,
         delete: _deleteIdol,
         editRoute: RoutingPath.addIdol,

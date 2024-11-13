@@ -347,7 +347,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         ? const Center(child: CircularProgressIndicator())
         : Scaffold(
             appBar: TopBar(
-              title: _isEditing ? 'アイドル編集' : 'アイドル登録',
+              pageTitle: _isEditing ? 'アイドル編集' : 'アイドル登録',
               showLeading: _isEditing ? true : false,
             ),
             body: SingleChildScrollView(

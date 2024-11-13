@@ -98,7 +98,7 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
     }
     _selectedImage = user!.imageUrl;
     return Scaffold(
-      appBar: const TopBar(title: 'ユーザー編集'),
+      appBar: const TopBar(pageTitle: 'ユーザー編集'),
       body: Padding(
         padding: screenPadding,
         child: SingleChildScrollView(
