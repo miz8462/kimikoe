@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
@@ -7,6 +8,7 @@ import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
+import 'package:kimikoe_app/utils/open_links.dart';
 import 'package:kimikoe_app/widgets/delete_alert_dialog.dart';
 
 class IdolDetailScreen extends StatefulWidget {
@@ -22,6 +24,45 @@ class IdolDetailScreen extends StatefulWidget {
 }
 
 class _IdolDetailScreenState extends State<IdolDetailScreen> {
+  Uri? twitterWebUrl;
+  Uri? twitterDeepLinkUrl;
+  Uri? instagramWebUrl;
+  Uri? instagramDeepLinkUrl;
+  Uri? otherUrl;
+
+  Future<void> getTwitterUrls(String? url) async {
+    final urls = await fetchWebUrlAndDeepLinkUrl(url, twitterScheme);
+    twitterWebUrl = urls.webUrl;
+    twitterDeepLinkUrl = urls.deepLinkUrl;
+
+    setState(() {});
+  }
+
+  Future<void> getInstagramUrls(String? url) async {
+    final urls = await fetchWebUrlAndDeepLinkUrl(url, instagramScheme);
+    instagramWebUrl = urls.webUrl;
+    instagramDeepLinkUrl = urls.deepLinkUrl;
+
+    setState(() {});
+  }
+
+  Future<void> getOtherUrl(String? url) async {
+    otherUrl = await convertUrlStringToUri(url);
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    final idol = widget.idol;
+    print(idol.twitterUrl);
+    print(idol.instagramUrl);
+    print(idol.otherUrl);
+    getTwitterUrls(idol.twitterUrl);
+    getInstagramUrls(idol.instagramUrl);
+    getOtherUrl(idol.otherUrl);
+  }
+
   void _deleteIdol() {
     showDialog(
       context: context,
@@ -87,11 +128,50 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Gap(spaceS),
-            CircleAvatar(
-              backgroundImage: NetworkImage(idol.imageUrl!),
-              radius: avaterSizeLL,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CircleAvatar(
+                  backgroundImage: NetworkImage(widget.idol.imageUrl!),
+                  radius: avaterSizeLL,
+                ),
+                Row(
+                  children: [
+                    if (twitterWebUrl != null)
+                      IconButton(
+                        onPressed: () {
+                          openTwitter(twitterDeepLinkUrl!, twitterWebUrl!);
+                        },
+                        icon: Icon(
+                          FontAwesomeIcons.twitter,
+                          color: mainBlue,
+                        ),
+                      ),
+                    if (instagramWebUrl != null)
+                      IconButton(
+                        onPressed: () {
+                          openInstagram(
+                              instagramDeepLinkUrl!, instagramWebUrl!);
+                        },
+                        icon: Icon(
+                          FontAwesomeIcons.instagram,
+                          color: mainBlue,
+                        ),
+                      ),
+                    if (otherUrl != null)
+                      IconButton(
+                        onPressed: () {
+                          openOfficialSite(otherUrl!);
+                        },
+                        icon: Icon(
+                          FontAwesomeIcons.link,
+                          color: mainBlue,
+                        ),
+                      ),
+                  ],
+                ),
+              ],
             ),
-            // todo: Twitterやインスタのリンク
             const Gap(spaceS),
             Row(
               children: [

@@ -20,6 +20,7 @@ class Idol extends Artist {
     this.officialUrl,
     this.twitterUrl,
     this.instagramUrl,
+    this.otherUrl,
   });
 
   final Color? color;
@@ -32,4 +33,5 @@ class Idol extends Artist {
   final String? officialUrl;
   final String? twitterUrl;
   final String? instagramUrl;
+  final String? otherUrl;
 }

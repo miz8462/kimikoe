@@ -44,9 +44,10 @@ final idolListOfGroupFromSupabaseProvider =
       debutYear: idol[ColumnName.debutYear.name],
       height: idol[ColumnName.height.name],
       hometown: idol[ColumnName.hometown.name],
-      instagramUrl: idol[ColumnName.instagramUrl.name],
       officialUrl: idol[ColumnName.officialUrl.name],
       twitterUrl: idol[ColumnName.twitterUrl.name],
+      instagramUrl: idol[ColumnName.instagramUrl.name],
+      otherUrl: idol[ColumnName.otherUrl.name],
       comment: idol[ColumnName.comment.name],
     );
   }).toList();
