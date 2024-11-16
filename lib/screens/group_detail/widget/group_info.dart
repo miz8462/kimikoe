@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
+import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/utils/open_links.dart';
 
@@ -20,24 +20,34 @@ class _GroupInfoState extends State<GroupInfo> {
   Uri? twitterDeepLinkUrl;
   Uri? instagramWebUrl;
   Uri? instagramDeepLinkUrl;
+  Uri? scheduleWebUrl;
+  Uri? scheduleDeepLinkUrl;
 
-  Future<void> getOfficialUrl(String? url) async {
+  Future<void> _getOfficialUrl(String? url) async {
     officialUrl = await convertUrlStringToUri(url);
     setState(() {});
   }
 
-  Future<void> getTwitterUrls(String? url) async {
-    final urls = await fetchWebUrlAndDeepLinkUrl(url, twitterScheme);
+  Future<void> _getTwitterUrls(String? url) async {
+    final urls = await fetchWebUrlAndDeepLinkUrl(url, scheme: twitterScheme);
     twitterWebUrl = urls.webUrl;
     twitterDeepLinkUrl = urls.deepLinkUrl;
 
     setState(() {});
   }
 
-  Future<void> getInstagramUrls(String? url) async {
-    final urls = await fetchWebUrlAndDeepLinkUrl(url, instagramScheme);
+  Future<void> _getInstagramUrls(String? url) async {
+    final urls = await fetchWebUrlAndDeepLinkUrl(url, scheme: instagramScheme);
     instagramWebUrl = urls.webUrl;
     instagramDeepLinkUrl = urls.deepLinkUrl;
+
+    setState(() {});
+  }
+
+  Future<void> _getScheduleUrls(String? url) async {
+    final urls = await fetchWebUrlAndDeepLinkUrl(url);
+    scheduleWebUrl = urls.webUrl;
+    scheduleDeepLinkUrl = urls.deepLinkUrl;
 
     setState(() {});
   }
@@ -46,9 +56,10 @@ class _GroupInfoState extends State<GroupInfo> {
   void initState() {
     super.initState();
     final group = widget.group;
-    getOfficialUrl(group.officialUrl);
-    getTwitterUrls(group.twitterUrl);
-    getInstagramUrls(group.instagramUrl);
+    _getOfficialUrl(group.officialUrl);
+    _getTwitterUrls(group.twitterUrl);
+    _getInstagramUrls(group.instagramUrl);
+    _getScheduleUrls(group.scheduleUrl);
   }
 
   @override
@@ -68,31 +79,41 @@ class _GroupInfoState extends State<GroupInfo> {
                 if (officialUrl != null)
                   IconButton(
                     onPressed: () {
-                      openOfficialSite(officialUrl!);
+                      openWebSite(officialUrl!);
                     },
                     icon: Icon(
                       FontAwesomeIcons.house,
-                      color: mainBlue,
+                      color: mainColor,
                     ),
                   ),
                 if (twitterWebUrl != null)
                   IconButton(
                     onPressed: () {
-                      openTwitter(twitterDeepLinkUrl!, twitterWebUrl!);
+                      openAppOrWeb(twitterDeepLinkUrl!, twitterWebUrl!);
                     },
                     icon: Icon(
                       FontAwesomeIcons.twitter,
-                      color: mainBlue,
+                      color: mainColor,
                     ),
                   ),
                 if (instagramWebUrl != null)
                   IconButton(
                     onPressed: () {
-                      openInstagram(instagramDeepLinkUrl!, instagramWebUrl!);
+                      openAppOrWeb(instagramDeepLinkUrl!, instagramWebUrl!);
                     },
                     icon: Icon(
                       FontAwesomeIcons.instagram,
-                      color: mainBlue,
+                      color: mainColor,
+                    ),
+                  ),
+                if (scheduleWebUrl != null)
+                  IconButton(
+                    onPressed: () {
+                      openAppOrWeb(scheduleDeepLinkUrl!, scheduleWebUrl!);
+                    },
+                    icon: Icon(
+                      FontAwesomeIcons.calendarCheck,
+                      color: mainColor,
                     ),
                   ),
               ],

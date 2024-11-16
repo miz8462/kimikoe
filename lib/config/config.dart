@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-// イメージカラー
-const Color mainBlue = Color(0xFF38B6FF);
 // テキストカラー
 const Color textDark = Color.fromARGB(255, 65, 67, 66);
 const Color textGray = Color(0xFF7D8B93);
@@ -55,5 +53,5 @@ const String noImage =
 const double circleSize = 20.0;
 
 // リンクURL
-const String twitterScheme='twitter://user?screen_name=';
-const String instagramScheme='instagram://user?username_name=';
+const String twitterScheme = 'twitter://user?screen_name=';
+const String instagramScheme = 'instagram://user?username_name=';

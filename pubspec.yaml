@@ -44,7 +44,7 @@ dependencies:
   google_sign_in: ^6.2.1
   # other
   cupertino_icons: ^1.0.6
-  flutter_svg: ^2.0.10+1
+  flutter_svg: ^2.0.14
   flutter_datetime_picker_plus: ^2.2.0
   flutter_colorpicker: ^1.1.0
   flutter_launcher_icons: ^0.14.1

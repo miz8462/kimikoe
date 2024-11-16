@@ -99,7 +99,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
     return Scaffold(
       body: widget.navigationShell,
       bottomNavigationBar: NavigationBar(
-        backgroundColor: mainBlue,
+        backgroundColor: Theme.of(context).primaryColor,
         selectedIndex: currentIndex,
         onDestinationSelected: (index) {
           if (index == addIndex) {

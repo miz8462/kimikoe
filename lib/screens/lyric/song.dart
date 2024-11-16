@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/song.dart';
@@ -84,7 +85,7 @@ class _SongScreenState extends State<SongScreen> {
               GroupColorAndNameList(group: group, memberFuture: _memberFuture),
               const Gap(spaceS),
               Divider(
-                color: mainBlue.withOpacity(0.3),
+                color: mainColor.withOpacity(0.3),
                 thickness: 2,
               ),
               const Gap(spaceS),

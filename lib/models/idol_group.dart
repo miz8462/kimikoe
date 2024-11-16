@@ -8,6 +8,7 @@ class IdolGroup {
     this.officialUrl,
     this.twitterUrl,
     this.instagramUrl,
+    this.scheduleUrl,
   });
 
   final String name;
@@ -18,4 +19,5 @@ class IdolGroup {
   final String? officialUrl;
   final String? twitterUrl;
   final String? instagramUrl;
+  final String? scheduleUrl;
 }

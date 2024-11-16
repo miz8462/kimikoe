@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
 
 class ImageInput extends StatefulWidget {
@@ -56,7 +57,7 @@ class _ImageInputState extends State<ImageInput> {
       widget.label,
       onPressed: _getImageFromMobileStorage,
       textColor: textWhite,
-      backgroundColor: mainBlue.withOpacity(0.8),
+      backgroundColor: mainColor.withOpacity(0.8),
     );
 
     if (_selectedImage != null || _hasEditingImage) {

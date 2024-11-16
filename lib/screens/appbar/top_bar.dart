@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/kimikoe_app.dart';
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
   const TopBar({
@@ -31,20 +31,10 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: showLeading,
       title: Padding(
         padding: const EdgeInsets.only(top: 8.0),
-        child: Column(
-          children: [
-            if (imageUrl != null)
-              Image(
-                image: AssetImage(imageUrl!),
-                height: 40,
-              ),
-            if (pageTitle != null)
-              Text(
-                pageTitle!,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 25, color: mainBlue),
-              ),
-          ],
+        child: Text(
+          pageTitle!,
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 25, color: mainColor),
         ),
       ),
       centerTitle: true,
@@ -149,10 +139,10 @@ class AppBarBottom extends StatelessWidget implements PreferredSizeWidget {
     return Container(
       height: 2.0,
       decoration: BoxDecoration(
-        color: mainBlue.withOpacity(0.9),
+        color: mainColor.withOpacity(0.9),
         boxShadow: [
           BoxShadow(
-            color: mainBlue.withOpacity(0.5),
+            color: mainColor.withOpacity(0.5),
             spreadRadius: 0,
             blurRadius: 2,
           )

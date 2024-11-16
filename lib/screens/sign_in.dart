@@ -7,6 +7,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/auth_provider.dart';
@@ -245,7 +246,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               ),
               Container(
                 height: 800,
-                color: mainBlue,
+                color: mainColor,
                 child: Center(
                   child: FractionallySizedBox(
                     widthFactor: 0.8,
@@ -375,7 +376,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                               child: Text(
                                 _isLogin ? "Login" : "Signup",
                                 style: TextStyle(
-                                  color: mainBlue,
+                                  color: mainColor,
                                   fontSize: fontL,
                                 ),
                               ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
@@ -31,7 +32,7 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
   Uri? otherUrl;
 
   Future<void> getTwitterUrls(String? url) async {
-    final urls = await fetchWebUrlAndDeepLinkUrl(url, twitterScheme);
+    final urls = await fetchWebUrlAndDeepLinkUrl(url, scheme: twitterScheme);
     twitterWebUrl = urls.webUrl;
     twitterDeepLinkUrl = urls.deepLinkUrl;
 
@@ -39,7 +40,7 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
   }
 
   Future<void> getInstagramUrls(String? url) async {
-    final urls = await fetchWebUrlAndDeepLinkUrl(url, instagramScheme);
+    final urls = await fetchWebUrlAndDeepLinkUrl(url, scheme: instagramScheme);
     instagramWebUrl = urls.webUrl;
     instagramDeepLinkUrl = urls.deepLinkUrl;
 
@@ -55,9 +56,6 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
   void initState() {
     super.initState();
     final idol = widget.idol;
-    print(idol.twitterUrl);
-    print(idol.instagramUrl);
-    print(idol.otherUrl);
     getTwitterUrls(idol.twitterUrl);
     getInstagramUrls(idol.instagramUrl);
     getOtherUrl(idol.otherUrl);
@@ -140,32 +138,31 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
                     if (twitterWebUrl != null)
                       IconButton(
                         onPressed: () {
-                          openTwitter(twitterDeepLinkUrl!, twitterWebUrl!);
+                          openAppOrWeb(twitterDeepLinkUrl!, twitterWebUrl!);
                         },
                         icon: Icon(
                           FontAwesomeIcons.twitter,
-                          color: mainBlue,
+                          color: mainColor,
                         ),
                       ),
                     if (instagramWebUrl != null)
                       IconButton(
                         onPressed: () {
-                          openInstagram(
-                              instagramDeepLinkUrl!, instagramWebUrl!);
+                          openAppOrWeb(instagramDeepLinkUrl!, instagramWebUrl!);
                         },
                         icon: Icon(
                           FontAwesomeIcons.instagram,
-                          color: mainBlue,
+                          color: mainColor,
                         ),
                       ),
                     if (otherUrl != null)
                       IconButton(
                         onPressed: () {
-                          openOfficialSite(otherUrl!);
+                          openWebSite(otherUrl!);
                         },
                         icon: Icon(
                           FontAwesomeIcons.link,
-                          color: mainBlue,
+                          color: mainColor,
                         ),
                       ),
                   ],
@@ -175,6 +172,13 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
             const Gap(spaceS),
             Row(
               children: [
+                Text(
+                  'data',
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge!
+                      .copyWith(color: Colors.blue),
+                ),
                 Container(
                   height: 24,
                   width: 24,
@@ -196,7 +200,7 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
             Divider(
-              color: mainBlue.withOpacity(0.3),
+              color: mainColor.withOpacity(0.3),
               thickness: 2,
             ),
             Text(

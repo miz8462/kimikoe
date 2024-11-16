@@ -7,6 +7,7 @@ import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/song.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
@@ -375,7 +376,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                         '歌詞追加',
                         onPressed: _addNewLyricItem,
                         textColor: textWhite,
-                        backgroundColor: mainBlue.withOpacity(0.7),
+                        backgroundColor: mainColor.withOpacity(0.7),
                       ),
                       const Gap(spaceS),
                       ImageInput(

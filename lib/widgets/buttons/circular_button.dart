@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/kimikoe_app.dart';
 
 class CircularButton extends StatelessWidget {
   const CircularButton({
     super.key,
-    this.color = mainBlue,
+    this.color = mainColor,
     required this.onPressed,
   });
 

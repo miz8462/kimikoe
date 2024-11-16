@@ -29,6 +29,7 @@ enum ColumnName {
   officialUrl('official_url'),
   twitterUrl('twitter_url'),
   instagramUrl('instagram_url'),
+  scheduleUrl('schedule_url'),
   otherUrl('other_url'),
   groupId('group_id'),
   lyrics('lyrics'),

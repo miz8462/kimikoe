@@ -42,7 +42,8 @@ class IdolGroupListScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: const TopBar(
-        imageUrl: 'assets/images/Kimikoe_Logo.png',
+        // imageUrl: 'assets/images/Kimikoe_Logo_S.svg',
+        pageTitle: 'グループリスト',
         showLeading: false,
       ),
       body: content,

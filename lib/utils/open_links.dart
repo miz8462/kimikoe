@@ -2,40 +2,23 @@ import 'package:http/http.dart' as http;
 import 'package:kimikoe_app/models/link_pair.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-Future<void> openTwitter(Uri twitterDeepLinkUrl, Uri twitterWebUrl) async {
-  if (await canLaunchUrl(twitterDeepLinkUrl)) {
+Future<void> openAppOrWeb(Uri deepLinkUrl, Uri webUrl) async {
+  if (await canLaunchUrl(deepLinkUrl)) {
     await launchUrl(
-      twitterDeepLinkUrl,
+      deepLinkUrl,
       mode: LaunchMode.externalApplication,
     );
-  } else if (await canLaunchUrl(twitterWebUrl)) {
+  } else if (await canLaunchUrl(webUrl)) {
     await launchUrl(
-      twitterWebUrl,
+      webUrl,
       mode: LaunchMode.platformDefault,
     );
   } else {
-    throw 'どちらのURLも開くことができません: $twitterDeepLinkUrl, $twitterWebUrl';
+    throw 'どちらのURLも開くことができません: $deepLinkUrl, $webUrl';
   }
 }
 
-Future<void> openInstagram(
-    Uri instagramDeepLinkUrl, Uri instagramWebUrl) async {
-  if (await canLaunchUrl(instagramDeepLinkUrl)) {
-    await launchUrl(
-      instagramDeepLinkUrl,
-      mode: LaunchMode.externalApplication,
-    );
-  } else if (await canLaunchUrl(instagramWebUrl)) {
-    await launchUrl(
-      instagramWebUrl,
-      mode: LaunchMode.platformDefault,
-    );
-  } else {
-    throw 'どちらのURLも開くことができません: $instagramDeepLinkUrl, $instagramWebUrl';
-  }
-}
-
-Future<void> openOfficialSite(Uri url) async {
+Future<void> openWebSite(Uri url) async {
   if (await canLaunchUrl(url)) {
     await launchUrl(
       url,
@@ -76,17 +59,19 @@ Future<Uri?> convertUrlStringToUri(String? url) async {
   return null;
 }
 
-Uri? createDeepLinkFromWebUrl(Uri? webUrl, String scheme) {
-  if (webUrl != null) {
-    final userName = webUrl.pathSegments.last;
+Uri? createDeepLinkFromWebUrl(Uri? webUrl, String? scheme) {
+  if (webUrl != null || scheme != null) {
+    final userName = webUrl!.pathSegments.last;
     return Uri.parse('$scheme$userName');
   }
   return null;
 }
 
-Future<LinkPair> fetchWebUrlAndDeepLinkUrl(
-    String? url, String scheme) async {
+Future<LinkPair> fetchWebUrlAndDeepLinkUrl(String? url, {String? scheme}) async {
   Uri? webUrl = await convertUrlStringToUri(url);
+  if (scheme == null) {
+    return LinkPair(webUrl: webUrl, deepLinkUrl: null);
+  }
   Uri? deepLinkUrl = createDeepLinkFromWebUrl(webUrl, scheme);
   return LinkPair(webUrl: webUrl, deepLinkUrl: deepLinkUrl);
 }

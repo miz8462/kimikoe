@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/kimikoe_app.dart';
 
 class StyledButton extends StatelessWidget {
   const StyledButton(
@@ -7,7 +8,7 @@ class StyledButton extends StatelessWidget {
     this.isSending = false,
     this.onPressed,
     this.textColor = textWhite,
-    this.backgroundColor = mainBlue,
+    this.backgroundColor = mainColor,
     this.borderSide = BorderSide.none,
     super.key,
   });
