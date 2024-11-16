@@ -24,6 +24,7 @@ Future<void> insertIdolGroupData({
   String? officialUrl,
   String? twitterUrl,
   String? instagramUrl,
+  String? scheduleUrl,
   String? comment,
 }) async {
   await supabase.from(TableName.idolGroups.name).insert({
@@ -33,6 +34,7 @@ Future<void> insertIdolGroupData({
     ColumnName.officialUrl.name: officialUrl,
     ColumnName.twitterUrl.name: twitterUrl,
     ColumnName.instagramUrl.name: instagramUrl,
+    ColumnName.scheduleUrl.name: scheduleUrl,
     ColumnName.comment.name: comment,
   });
 }
@@ -173,6 +175,7 @@ Future<void> updateIdolGroup({
   String? officialUrl,
   String? twitterUrl,
   String? instagramUrl,
+  String? scheduleUrl,
   String? comment,
   required String id,
 }) async {
@@ -183,6 +186,7 @@ Future<void> updateIdolGroup({
     ColumnName.officialUrl.name: officialUrl,
     ColumnName.twitterUrl.name: twitterUrl,
     ColumnName.instagramUrl.name: instagramUrl,
+    ColumnName.scheduleUrl.name: scheduleUrl,
     ColumnName.comment.name: comment,
   }).eq(ColumnName.id.name, id);
 }

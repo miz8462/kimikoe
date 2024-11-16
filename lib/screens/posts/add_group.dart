@@ -49,6 +49,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
   var _enteredOfficialUrl = '';
   var _enteredTwitterUrl = '';
   var _enteredInstagramUrl = '';
+  var _enteredScheduleUrl = '';
 
   var _isSending = false;
   var _isImageChanged = false;
@@ -148,6 +149,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
         officialUrl: _enteredOfficialUrl,
         twitterUrl: _enteredTwitterUrl,
         instagramUrl: _enteredInstagramUrl,
+        scheduleUrl: _enteredScheduleUrl,
         comment: _enteredComment,
         id: (_group.id).toString(),
       );
@@ -160,6 +162,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
         officialUrl: _enteredOfficialUrl,
         twitterUrl: _enteredTwitterUrl,
         instagramUrl: _enteredInstagramUrl,
+        scheduleUrl: _enteredScheduleUrl,
         comment: _enteredComment,
       );
     }
@@ -252,6 +255,16 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                     validator: (value) => urlValidator(value),
                     onSaved: (value) {
                       _enteredInstagramUrl = value!;
+                    },
+                  ),
+                  const Gap(spaceS),
+                  InputForm(
+                    initialValue: _isEditing ? _group.scheduleUrl : '',
+                    label: 'Schedule Url',
+                    keyboardType: TextInputType.url,
+                    validator: (value) => urlValidator(value),
+                    onSaved: (value) {
+                      _enteredScheduleUrl = value!;
                     },
                   ),
                   const Gap(spaceS),
