@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/dropdown_id_and_name.dart';
-import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
+import 'package:kimikoe_app/models/table_and_column_name.dart';
 
 class CustomDropdownMenu extends StatefulWidget {
   const  CustomDropdownMenu({
@@ -42,10 +42,10 @@ class _CustomDropdownMenuState extends State<CustomDropdownMenu> {
       dropdownMenuEntries: widget.dataList.map((value) {
         return DropdownMenuEntry<DropdownIdAndName>(
           value: DropdownIdAndName(
-            id: value[ColumnName.id.name],
-            name: value[ColumnName.cName.name],
+            id: value[ColumnName.id],
+            name: value[ColumnName.name],
           ),
-          label: value[ColumnName.cName.name].toString(),
+          label: value[ColumnName.name].toString(),
         );
       }).toList(),
     );

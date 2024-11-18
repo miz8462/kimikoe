@@ -3,8 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
-import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol.dart';
+import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
@@ -68,8 +68,8 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
         return DeleteAlertDialog(
           onDelete: () {
             deleteDataFromTable(
-              table: TableName.idol.name,
-              column: ColumnName.id.name,
+              table: TableName.idol,
+              column: ColumnName.id,
               value: (widget.idol.id).toString(),
             );
           },
@@ -172,13 +172,6 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
             const Gap(spaceS),
             Row(
               children: [
-                Text(
-                  'data',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge!
-                      .copyWith(color: Colors.blue),
-                ),
                 Container(
                   height: 24,
                   width: 24,

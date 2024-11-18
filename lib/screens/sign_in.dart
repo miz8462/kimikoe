@@ -9,7 +9,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:kimikoe_app/main.dart';
-import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
+import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/auth_provider.dart';
 import 'package:kimikoe_app/providers/user_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
@@ -90,11 +90,11 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
       final userId = response.user?.id;
       final userData = response.user?.userMetadata;
       if (userId != null) {
-        await supabase.from(TableName.profiles.name).update({
-          ColumnName.cName.name: userData!['username'],
-          ColumnName.imageUrl.name: noImage,
+        await supabase.from(TableName.profiles).update({
+          ColumnName.name: userData!['username'],
+          ColumnName.imageUrl: noImage,
         }).eq(
-          ColumnName.id.name,
+          ColumnName.id,
           userId,
         );
       }

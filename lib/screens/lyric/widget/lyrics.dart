@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
+import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/widgets/custom_text_for_lyrics.dart';
 
 class Lyrics extends StatelessWidget {
@@ -28,10 +28,9 @@ class Lyrics extends StatelessWidget {
             final members = snapshot.data!;
             final memberList = members.map((member) {
               return {
-                ColumnName.id.name: member[ColumnName.id.name],
-                ColumnName.cName.name: member[ColumnName.cName.name],
-                ColumnName.color.name:
-                    Color(int.parse(member[ColumnName.color.name])),
+                ColumnName.id: member[ColumnName.id],
+                ColumnName.name: member[ColumnName.name],
+                ColumnName.color: Color(int.parse(member[ColumnName.color])),
               };
             }).toList();
 

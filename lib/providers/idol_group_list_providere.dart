@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
+import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
 
 // 二つ以上の状態を管理する場合Stateクラスを別に作って管理するといい
@@ -31,20 +31,20 @@ class IdolGroupListNotifier extends StateNotifier<IdolGroupListState> {
   Future<void> fetchGroupList() async {
     state = state.copyWith(isLoading: true);
     final data = await fetchDatabyStream(
-      table: TableName.idolGroups.name,
-      id: ColumnName.id.name,
+      table: TableName.idolGroups,
+      id: ColumnName.id,
     ).first;
     final groups = data.map<IdolGroup>((group) {
       return IdolGroup(
-        id: group[ColumnName.id.name],
-        name: group[ColumnName.cName.name],
-        imageUrl: group[ColumnName.imageUrl.name],
-        year: group[ColumnName.yearFormingGroups.name],
-        officialUrl: group[ColumnName.officialUrl.name],
-        twitterUrl: group[ColumnName.twitterUrl.name],
-        instagramUrl: group[ColumnName.instagramUrl.name],
-        scheduleUrl: group[ColumnName.scheduleUrl.name],
-        comment: group[ColumnName.comment.name],
+        id: group[ColumnName.id],
+        name: group[ColumnName.name],
+        imageUrl: group[ColumnName.imageUrl],
+        year: group[ColumnName.yearFormingGroups],
+        officialUrl: group[ColumnName.officialUrl],
+        twitterUrl: group[ColumnName.twitterUrl],
+        instagramUrl: group[ColumnName.instagramUrl],
+        scheduleUrl: group[ColumnName.scheduleUrl],
+        comment: group[ColumnName.comment],
       );
     }).toList();
     state = state.copyWith(groups: groups, isLoading: false);

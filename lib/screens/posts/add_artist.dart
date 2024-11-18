@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
+import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
@@ -47,7 +47,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
 
     if (_selectedImage != null) {
       uploadImageToStorage(
-        table: TableName.images.name,
+        table: TableName.images,
         path: imagePath!,
         file: _selectedImage!,
       );

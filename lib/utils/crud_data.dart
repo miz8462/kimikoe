@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:kimikoe_app/main.dart';
-import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
+import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 // CREATE
@@ -10,10 +10,10 @@ Future<void> insertArtistData({
   String? imageUrl,
   String? comment,
 }) async {
-  await supabase.from(TableName.artists.name).insert({
-    ColumnName.cName.name: name,
-    ColumnName.imageUrl.name: imageUrl,
-    ColumnName.comment.name: comment,
+  await supabase.from(TableName.artists).insert({
+    ColumnName.name: name,
+    ColumnName.imageUrl: imageUrl,
+    ColumnName.comment: comment,
   });
 }
 
@@ -27,15 +27,15 @@ Future<void> insertIdolGroupData({
   String? scheduleUrl,
   String? comment,
 }) async {
-  await supabase.from(TableName.idolGroups.name).insert({
-    ColumnName.cName.name: name,
-    ColumnName.imageUrl.name: imageUrl,
-    ColumnName.yearFormingGroups.name: year == null ? null : int.tryParse(year),
-    ColumnName.officialUrl.name: officialUrl,
-    ColumnName.twitterUrl.name: twitterUrl,
-    ColumnName.instagramUrl.name: instagramUrl,
-    ColumnName.scheduleUrl.name: scheduleUrl,
-    ColumnName.comment.name: comment,
+  await supabase.from(TableName.idolGroups).insert({
+    ColumnName.name: name,
+    ColumnName.imageUrl: imageUrl,
+    ColumnName.yearFormingGroups: year == null ? null : int.tryParse(year),
+    ColumnName.officialUrl: officialUrl,
+    ColumnName.twitterUrl: twitterUrl,
+    ColumnName.instagramUrl: instagramUrl,
+    ColumnName.scheduleUrl: scheduleUrl,
+    ColumnName.comment: comment,
   });
 }
 
@@ -51,17 +51,17 @@ Future<void> insertIdolData({
   int? debutYear,
   String? comment,
 }) async {
-  await supabase.from(TableName.idol.name).insert({
-    ColumnName.cName.name: name,
-    ColumnName.groupId.name: groupId,
-    ColumnName.color.name: color,
-    ColumnName.imageUrl.name: imageUrl,
-    ColumnName.birthday.name: birthday,
-    ColumnName.birthYear.name: birthYear,
-    ColumnName.height.name: height,
-    ColumnName.hometown.name: hometown,
-    ColumnName.debutYear.name: debutYear,
-    ColumnName.comment.name: comment,
+  await supabase.from(TableName.idol).insert({
+    ColumnName.name: name,
+    ColumnName.groupId: groupId,
+    ColumnName.color: color,
+    ColumnName.imageUrl: imageUrl,
+    ColumnName.birthday: birthday,
+    ColumnName.birthYear: birthYear,
+    ColumnName.height: height,
+    ColumnName.hometown: hometown,
+    ColumnName.debutYear: debutYear,
+    ColumnName.comment: comment,
   });
 }
 
@@ -75,15 +75,15 @@ Future<void> insertSongData({
   int? composerId,
   String? comment,
 }) async {
-  await supabase.from(TableName.songs.name).insert({
-    ColumnName.title.name: name,
-    ColumnName.lyrics.name: lyric,
-    ColumnName.groupId.name: groupId,
-    ColumnName.imageUrl.name: imageUrl,
-    ColumnName.releaseDate.name: releaseDate,
-    ColumnName.lyricistId.name: lyricistId,
-    ColumnName.composerId.name: composerId,
-    ColumnName.comment.name: comment,
+  await supabase.from(TableName.songs).insert({
+    ColumnName.title: name,
+    ColumnName.lyrics: lyric,
+    ColumnName.groupId: groupId,
+    ColumnName.imageUrl: imageUrl,
+    ColumnName.releaseDate: releaseDate,
+    ColumnName.lyricistId: lyricistId,
+    ColumnName.composerId: composerId,
+    ColumnName.comment: comment,
   });
 }
 
@@ -93,7 +93,7 @@ Future<void> uploadImageToStorage({
   required File file,
 }) async {
   try {
-    await supabase.storage.from(TableName.images.name).upload(path, file);
+    await supabase.storage.from(TableName.images).upload(path, file);
   } catch (e) {
     if (e is StorageException) {
       print('Storage error: ${e.message}');
@@ -110,28 +110,28 @@ Future<void> uploadImageToStorage({
 // READ
 Future<List<Map<String, dynamic>>> fetchGroupMembers(int groupId) async {
   return await supabase
-      .from(TableName.idol.name)
+      .from(TableName.idol)
       .select()
-      .eq(ColumnName.groupId.name, groupId);
+      .eq(ColumnName.groupId, groupId);
 }
 
 Future fetchCurrentUserInfo() {
   final currentUserId = supabase.auth.currentUser!.id;
   final userInfo = supabase
-      .from(TableName.profiles.name)
+      .from(TableName.profiles)
       .select()
-      .eq(ColumnName.id.name, currentUserId);
+      .eq(ColumnName.id, currentUserId);
   return userInfo;
 }
 
 String? fetchImageUrl(String imagePath) {
-  return supabase.storage.from(TableName.images.name).getPublicUrl(imagePath);
+  return supabase.storage.from(TableName.images).getPublicUrl(imagePath);
 }
 
 Future<List<Map<String, dynamic>>> fetchIdAndNameList(String tableName) async {
   return await supabase
       .from(tableName)
-      .select('${ColumnName.id.name}, ${ColumnName.cName.name}');
+      .select('${ColumnName.id}, ${ColumnName.name}');
 }
 
 int fetchSelectedDataIdFromName({
@@ -139,24 +139,24 @@ int fetchSelectedDataIdFromName({
   required String? name,
 }) {
   final selectedDataList =
-      list.where((item) => item[ColumnName.cName.name] == name).toList();
+      list.where((item) => item[ColumnName.name] == name).toList();
   if (selectedDataList.isEmpty) {
     throw StateError('No element found for the given name: $name');
   }
   final selectedData = selectedDataList.single;
-  final selectedDataId = selectedData[ColumnName.id.name];
+  final selectedDataId = selectedData[ColumnName.id];
   return selectedDataId;
 }
 
 Future<List<Map<String, dynamic>>> fetchArtists() async {
-  return await supabase.from(TableName.artists.name).select();
+  return await supabase.from(TableName.artists).select();
 }
 
 Future<Map<String, dynamic>> fetchArtistById(String id) async {
   return await supabase
-      .from(TableName.artists.name)
+      .from(TableName.artists)
       .select()
-      .eq(ColumnName.id.name, id)
+      .eq(ColumnName.id, id)
       .single();
 }
 
@@ -179,16 +179,16 @@ Future<void> updateIdolGroup({
   String? comment,
   required String id,
 }) async {
-  await supabase.from(TableName.idolGroups.name).update({
-    ColumnName.cName.name: name,
-    ColumnName.imageUrl.name: imageUrl,
-    ColumnName.yearFormingGroups.name: year == null ? null : int.tryParse(year),
-    ColumnName.officialUrl.name: officialUrl,
-    ColumnName.twitterUrl.name: twitterUrl,
-    ColumnName.instagramUrl.name: instagramUrl,
-    ColumnName.scheduleUrl.name: scheduleUrl,
-    ColumnName.comment.name: comment,
-  }).eq(ColumnName.id.name, id);
+  await supabase.from(TableName.idolGroups).update({
+    ColumnName.name: name,
+    ColumnName.imageUrl: imageUrl,
+    ColumnName.yearFormingGroups: year == null ? null : int.tryParse(year),
+    ColumnName.officialUrl: officialUrl,
+    ColumnName.twitterUrl: twitterUrl,
+    ColumnName.instagramUrl: instagramUrl,
+    ColumnName.scheduleUrl: scheduleUrl,
+    ColumnName.comment: comment,
+  }).eq(ColumnName.id, id);
 }
 
 Future<void> updateIdol({
@@ -204,18 +204,18 @@ Future<void> updateIdol({
   String? comment,
   required int id,
 }) async {
-  await supabase.from(TableName.idol.name).update({
-    ColumnName.cName.name: name,
-    ColumnName.groupId.name: groupId,
-    ColumnName.color.name: color,
-    ColumnName.imageUrl.name: imageUrl,
-    ColumnName.birthday.name: birthday,
-    ColumnName.birthYear.name: birthYear,
-    ColumnName.height.name: height,
-    ColumnName.hometown.name: hometown,
-    ColumnName.debutYear.name: debutYear,
-    ColumnName.comment.name: comment,
-  }).eq(ColumnName.id.name, id);
+  await supabase.from(TableName.idol).update({
+    ColumnName.name: name,
+    ColumnName.groupId: groupId,
+    ColumnName.color: color,
+    ColumnName.imageUrl: imageUrl,
+    ColumnName.birthday: birthday,
+    ColumnName.birthYear: birthYear,
+    ColumnName.height: height,
+    ColumnName.hometown: hometown,
+    ColumnName.debutYear: debutYear,
+    ColumnName.comment: comment,
+  }).eq(ColumnName.id, id);
 }
 
 Future<void> updateSong({
@@ -229,16 +229,16 @@ Future<void> updateSong({
   String? comment,
   required int id,
 }) async {
-  await supabase.from(TableName.songs.name).update({
-    ColumnName.title.name: name,
-    ColumnName.lyrics.name: lyric,
-    ColumnName.groupId.name: groupId,
-    ColumnName.imageUrl.name: imageUrl,
-    ColumnName.releaseDate.name: releaseDate,
-    ColumnName.lyricistId.name: lyricistId,
-    ColumnName.composerId.name: composerId,
-    ColumnName.comment.name: comment,
-  }).eq(ColumnName.id.name, id);
+  await supabase.from(TableName.songs).update({
+    ColumnName.title: name,
+    ColumnName.lyrics: lyric,
+    ColumnName.groupId: groupId,
+    ColumnName.imageUrl: imageUrl,
+    ColumnName.releaseDate: releaseDate,
+    ColumnName.lyricistId: lyricistId,
+    ColumnName.composerId: composerId,
+    ColumnName.comment: comment,
+  }).eq(ColumnName.id, id);
 }
 
 Future<void> updateUser({
@@ -248,13 +248,13 @@ Future<void> updateUser({
   String? comment,
   required String id,
 }) async {
-  await supabase.from(TableName.profiles.name).update({
-    ColumnName.cName.name: name,
-    ColumnName.email.name: email,
-    ColumnName.imageUrl.name: imageUrl,
-    ColumnName.comment.name: comment,
+  await supabase.from(TableName.profiles).update({
+    ColumnName.name: name,
+    ColumnName.email: email,
+    ColumnName.imageUrl: imageUrl,
+    ColumnName.comment: comment,
   }).eq(
-    ColumnName.id.name,
+    ColumnName.id,
     id,
   );
 }

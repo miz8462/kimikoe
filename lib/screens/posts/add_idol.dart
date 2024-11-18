@@ -8,8 +8,8 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/enums/idol_colors.dart';
-import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol.dart';
+import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/utils/check.dart';
@@ -99,8 +99,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
   }
 
   Future<void> _fetchIdAndNameGroupList() async {
-    final groupIdAndNameList =
-        await fetchIdAndNameList(TableName.idolGroups.name);
+    final groupIdAndNameList = await fetchIdAndNameList(TableName.idolGroups);
     setState(() {
       _groupIdAndNameList = groupIdAndNameList;
       _isFetching = false;
@@ -143,7 +142,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
 
     if (_selectedImage != null) {
       await uploadImageToStorage(
-        table: TableName.images.name,
+        table: TableName.images,
         path: imagePath!,
         file: _selectedImage!,
       );

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/main.dart';
-import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol.dart';
+import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/idol_group_list_providere.dart';
 
 class IdolListOfGroupNotifier extends StateNotifier<List<Idol>> {
@@ -29,26 +29,26 @@ final idolListOfGroupFromSupabaseProvider =
   final group = ref.watch(idolGroupListProvider.notifier).getGroupById(groupId);
 
   final response = await supabase
-      .from(TableName.idol.name)
+      .from(TableName.idol)
       .select()
-      .eq(ColumnName.groupId.name, groupId);
+      .eq(ColumnName.groupId, groupId);
   return response.map((idol) {
     return Idol(
-      id: idol[ColumnName.id.name],
-      name: idol[ColumnName.cName.name],
+      id: idol[ColumnName.id],
+      name: idol[ColumnName.name],
       group: group,
-      imageUrl: idol[ColumnName.imageUrl.name],
-      birthDay: idol[ColumnName.birthday.name],
-      birthYear: idol[ColumnName.birthYear.name],
-      color: Color(int.parse(idol[ColumnName.color.name])),
-      debutYear: idol[ColumnName.debutYear.name],
-      height: idol[ColumnName.height.name],
-      hometown: idol[ColumnName.hometown.name],
-      officialUrl: idol[ColumnName.officialUrl.name],
-      twitterUrl: idol[ColumnName.twitterUrl.name],
-      instagramUrl: idol[ColumnName.instagramUrl.name],
-      otherUrl: idol[ColumnName.otherUrl.name],
-      comment: idol[ColumnName.comment.name],
+      imageUrl: idol[ColumnName.imageUrl],
+      birthDay: idol[ColumnName.birthday],
+      birthYear: idol[ColumnName.birthYear],
+      color: Color(int.parse(idol[ColumnName.color])),
+      debutYear: idol[ColumnName.debutYear],
+      height: idol[ColumnName.height],
+      hometown: idol[ColumnName.hometown],
+      officialUrl: idol[ColumnName.officialUrl],
+      twitterUrl: idol[ColumnName.twitterUrl],
+      instagramUrl: idol[ColumnName.instagramUrl],
+      otherUrl: idol[ColumnName.otherUrl],
+      comment: idol[ColumnName.comment],
     );
   }).toList();
 });

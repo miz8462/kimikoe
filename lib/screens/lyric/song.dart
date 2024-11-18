@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
-import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/song.dart';
+import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/screens/lyric/widget/lyrics.dart';
@@ -44,8 +44,8 @@ class _SongScreenState extends State<SongScreen> {
         return DeleteAlertDialog(
           onDelete: () {
             deleteDataFromTable(
-              table: TableName.songs.name,
-              column: ColumnName.id.name,
+              table: TableName.songs,
+              column: ColumnName.id,
               value: (widget.song.id).toString(),
             );
           },

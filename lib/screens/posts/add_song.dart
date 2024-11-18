@@ -8,8 +8,8 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
-import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/song.dart';
+import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/utils/check.dart';
@@ -141,9 +141,9 @@ class _AddSongScreenState extends State<AddSongScreen> {
   }
 
   Future<void> _fetchIdAndNameLists() async {
-    final groupList = await fetchIdAndNameList(TableName.idolGroups.name);
-    final idolList = await fetchIdAndNameList(TableName.idol.name);
-    final artistList = await fetchIdAndNameList(TableName.artists.name);
+    final groupList = await fetchIdAndNameList(TableName.idolGroups);
+    final idolList = await fetchIdAndNameList(TableName.idol);
+    final artistList = await fetchIdAndNameList(TableName.artists);
     setState(() {
       _groupIdAndNameList = groupList;
       _idolIdAndNameList = idolList;
@@ -189,7 +189,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
 
     if (_selectedImage != null) {
       uploadImageToStorage(
-        table: TableName.images.name,
+        table: TableName.images,
         path: imagePath!,
         file: _selectedImage!,
       );

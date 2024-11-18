@@ -7,8 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
+import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/idol_group_list_providere.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
@@ -136,7 +136,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     }
     if (_selectedImage != null && imagePath != null) {
       await uploadImageToStorage(
-          table: TableName.images.name, path: imagePath, file: _selectedImage!);
+          table: TableName.images, path: imagePath, file: _selectedImage!);
     }
     if (imagePath != null) {
       imageUrl = fetchImageUrl(imagePath);

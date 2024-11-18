@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
+import 'package:kimikoe_app/models/table_and_column_name.dart';
 
 class GroupColorAndNameList extends StatefulWidget {
   const GroupColorAndNameList({
@@ -33,8 +33,8 @@ class _GroupColorAndNameListState extends State<GroupColorAndNameList> {
           final members = snapshot.data!;
           return Row(
             children: members.map<Widget>((member) {
-              final color = Color(int.parse(member[ColumnName.color.name]));
-              final name = member[ColumnName.cName.name];
+              final color = Color(int.parse(member[ColumnName.color]));
+              final name = member[ColumnName.name];
               return Row(
                 children: [
                   Container(
