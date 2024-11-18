@@ -103,7 +103,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     );
   }
 
-  Future<void> _saveGroup() async {
+  Future<void> _submitGroup() async {
     setState(() {
       _isSending = true;
     });
@@ -116,6 +116,8 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
       });
       return;
     }
+
+    FocusScope.of(context).unfocus();
 
     String? imagePath;
     late String? imageUrl;
@@ -171,10 +173,10 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
       _isSending = false;
     });
 
+    await ref.read(idolGroupListProvider.notifier).fetchGroupList();
     if (!mounted) {
       return;
     }
-    ref.read(idolGroupListProvider.notifier).fetchGroupList();
 
     context.pushReplacement(RoutingPath.groupList);
   }
@@ -278,7 +280,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                   const Gap(spaceS),
                   StyledButton(
                     '登録',
-                    onPressed: _isSending ? null : _saveGroup,
+                    onPressed: _isSending ? null : _submitGroup,
                     isSending: _isSending,
                   ),
                 ],

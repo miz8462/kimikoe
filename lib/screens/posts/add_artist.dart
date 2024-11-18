@@ -30,13 +30,15 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
 
   var _isSending = false;
 
-  Future<void> _saveArtist() async {
+  Future<void> _submitArtist() async {
     setState(() {
       _isSending = true;
     });
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
     }
+
+    FocusScope.of(context).unfocus();
 
     // e.g. /aaa/bbb/ccc/image.png
     String? imagePath = getImagePath(
@@ -118,7 +120,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
                   const Gap(spaceS),
                   StyledButton(
                     '登録',
-                    onPressed: _isSending ? null : _saveArtist,
+                    onPressed: _isSending ? null : _submitArtist,
                     isSending: _isSending,
                   ),
                   const Gap(spaceS),

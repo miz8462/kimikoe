@@ -67,7 +67,10 @@ Uri? createDeepLinkFromWebUrl(Uri? webUrl, String? scheme) {
   return null;
 }
 
-Future<LinkPair> fetchWebUrlAndDeepLinkUrl(String? url, {String? scheme}) async {
+Future<LinkPair> fetchWebUrlAndDeepLinkUrl(
+  String? url, {
+  String? scheme,
+}) async {
   Uri? webUrl = await convertUrlStringToUri(url);
   if (scheme == null) {
     return LinkPair(webUrl: webUrl, deepLinkUrl: null);

@@ -10,6 +10,7 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/enums/idol_colors.dart';
 import 'package:kimikoe_app/models/enums/table_and_column_name.dart';
 import 'package:kimikoe_app/models/idol.dart';
+import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/utils/check.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
@@ -116,7 +117,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     super.dispose();
   }
 
-  Future<void> _saveIdol() async {
+  Future<void> _submitIdol() async {
     setState(() {
       _isSending = true;
     });
@@ -129,6 +130,8 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
       });
       return;
     }
+
+    FocusScope.of(context).unfocus();
 
     // e.g. /aaa/bbb/ccc/image.png
     String? imagePath = getImagePath(
@@ -236,7 +239,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
       return;
     }
 
-    // context.pushReplacement(RoutingPath.groupList);
+    context.pushReplacement(RoutingPath.groupList);
   }
 
   String? _nameValidator(String? value) {
@@ -477,7 +480,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       const Gap(spaceS),
                       StyledButton(
                         '登録',
-                        onPressed: _isSending ? null : _saveIdol,
+                        onPressed: _isSending ? null : _submitIdol,
                         isSending: _isSending,
                       ),
                       const Gap(spaceS),

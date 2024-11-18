@@ -152,10 +152,10 @@ class _AddSongScreenState extends State<AddSongScreen> {
     });
   }
 
-  Future<void> _saveSong() async {
-    // setState(() {
-    //   _isSending = true;
-    // });
+  Future<void> _submitSong() async {
+    setState(() {
+      _isSending = true;
+    });
 
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
@@ -165,6 +165,9 @@ class _AddSongScreenState extends State<AddSongScreen> {
       });
       return;
     }
+
+        FocusScope.of(context).unfocus();
+
 
     // 「歌詞追加」の歌詞と歌手をjson形式でまとめる e.g. {'':,'singerId':idolId}
     for (var index = 0; index < _lyricAndSingerList.length; index++) {
@@ -426,7 +429,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                       const Gap(spaceS),
                       StyledButton(
                         '登録',
-                        onPressed: _isSending ? null : _saveSong,
+                        onPressed: _isSending ? null : _submitSong,
                         isSending: _isSending,
                       ),
                       const Gap(spaceS),
