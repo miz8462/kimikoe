@@ -3,10 +3,17 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
+import 'package:logger/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final sessionProvider = StateProvider<Session?>((ref) => null);
 final providerContainer = ProviderContainer();
+final logger = Logger(
+  printer: PrettyPrinter(
+    methodCount: 0,
+    errorMethodCount: 10,
+  ),
+);
 
 Future<void> main() async {
   // Flutterの初期化
