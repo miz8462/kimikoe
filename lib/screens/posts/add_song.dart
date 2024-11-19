@@ -8,6 +8,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
+import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/song.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
@@ -153,21 +154,25 @@ class _AddSongScreenState extends State<AddSongScreen> {
   }
 
   Future<void> _submitSong() async {
+    logger.i('フォーム送信開始');
+
     setState(() {
       _isSending = true;
     });
 
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+      logger.i('ヴァリデーション成功');
     } else {
+      logger.w('ヴァリデーション失敗');
+
       setState(() {
         _isSending = false;
       });
       return;
     }
 
-        FocusScope.of(context).unfocus();
-
+    FocusScope.of(context).unfocus();
 
     // 「歌詞追加」の歌詞と歌手をjson形式でまとめる e.g. {'':,'singerId':idolId}
     for (var index = 0; index < _lyricAndSingerList.length; index++) {
@@ -192,7 +197,8 @@ class _AddSongScreenState extends State<AddSongScreen> {
         table: TableName.images,
         path: imagePath!,
         file: _selectedImage!,
-      );
+      );      logger.i('画像をストレージにアップロード');
+
     }
 
     final imageUrl = fetchImageUrl(imagePath!);
@@ -215,16 +221,19 @@ class _AddSongScreenState extends State<AddSongScreen> {
         year: '',
         comment: '',
       );
+      logger.i('新規グループを登録: $groupName');
       await _fetchIdAndNameLists();
     }
     selectedGroupId =
         fetchSelectedDataIdFromName(list: _groupIdAndNameList, name: groupName);
+
     // 作詞家登録
     final lyricistName = _lyricistNameController.text;
     final isSelectedLyricistInList =
         isInList(_artistIdAndNameList, lyricistName);
     if (!isSelectedLyricistInList && lyricistName.isNotEmpty) {
       insertArtistData(name: lyricistName, imageUrl: noImage);
+      logger.i('作詞家を登録: $lyricistName');
       await _fetchIdAndNameLists();
     }
     if (lyricistName.isNotEmpty) {
@@ -238,6 +247,8 @@ class _AddSongScreenState extends State<AddSongScreen> {
         isInList(_artistIdAndNameList, composerName);
     if (!isSelectedComposerInList && composerName.isNotEmpty) {
       insertArtistData(name: composerName, imageUrl: noImage);
+            logger.i('作曲家を登録: $lyricistName');
+
       await _fetchIdAndNameLists();
     }
     if (composerName.isNotEmpty) {
@@ -258,6 +269,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
         comment: _enteredComment,
         id: _song.id!,
       );
+      logger.i('歌詞更新完了: $_enteredTitle');
     } else {
       // 歌詞登録
       insertSongData(
@@ -270,6 +282,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
         composerId: selectedComposerId,
         comment: _enteredComment,
       );
+      logger.i('歌詞新規登録完了: $_enteredTitle');
     }
 
     setState(() {

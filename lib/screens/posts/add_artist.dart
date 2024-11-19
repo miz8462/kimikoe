@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
@@ -31,11 +32,20 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
   var _isSending = false;
 
   Future<void> _submitArtist() async {
+    logger.i('フォーム送信開始');
+
     setState(() {
       _isSending = true;
     });
+
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+      logger.i('ヴァリデーション成功');
+    } else {
+      logger.w('ヴァリデーション失敗');
+      setState(() {
+        _isSending = false;
+      });
     }
 
     FocusScope.of(context).unfocus();
@@ -51,12 +61,14 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
         path: imagePath!,
         file: _selectedImage!,
       );
+      logger.i('画像をストレージにアップロード');
     }
 
     final imageUrl = fetchImageUrl(imagePath!);
 
     insertArtistData(
         name: _enteredName, imageUrl: imageUrl, comment: _enteredComment);
+    logger.i('アーティスト登録完了: $_enteredName');
 
     setState(() {
       _isSending = false;

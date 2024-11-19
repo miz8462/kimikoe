@@ -7,6 +7,7 @@ import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/enums/idol_colors.dart';
 import 'package:kimikoe_app/models/idol.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
@@ -117,13 +118,17 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
   }
 
   Future<void> _submitIdol() async {
+    logger.i('フォーム送信開始');
+
     setState(() {
       _isSending = true;
     });
 
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+      logger.i('ヴァリデーション成功');
     } else {
+      logger.w('ヴァリデーション失敗');
       setState(() {
         _isSending = false;
       });
@@ -146,6 +151,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         path: imagePath!,
         file: _selectedImage!,
       );
+      logger.i('画像をストレージにアップロード');
     }
 
     final imageUrl = fetchImageUrl(imagePath!);
@@ -187,6 +193,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         year: '',
         comment: '',
       );
+      logger.i('グループ登録: $groupName');
       await _fetchIdAndNameGroupList();
     }
     if (groupName.isNotEmpty) {
@@ -200,7 +207,6 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     final selectedColor = formatStringColorCode(_selectedColor);
 
     if (_isEditing) {
-      // 編集
       updateIdol(
         name: _enteredIdolName,
         id: _idol.id!,
@@ -214,8 +220,8 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         debutYear: debutYear,
         comment: _enteredComment,
       );
+      logger.i('アイドル更新完了: $_enteredIdolName');
     } else {
-      // 登録
       insertIdolData(
         name: _enteredIdolName,
         groupId: selectedGroupId,
@@ -228,6 +234,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         debutYear: debutYear,
         comment: _enteredComment,
       );
+      logger.i('アイドル新規登録完了: $_enteredIdolName');
     }
 
     setState(() {

@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/idol_group_list_providere.dart';
@@ -104,13 +105,17 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
   }
 
   Future<void> _submitGroup() async {
+    logger.i('フォーム送信開始');
+
     setState(() {
       _isSending = true;
     });
 
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+      logger.i('ヴァリデーション成功');
     } else {
+      logger.i('ヴァリデーション失敗');
       setState(() {
         _isSending = false;
       });
@@ -136,7 +141,11 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     }
     if (_selectedImage != null && imagePath != null) {
       await uploadImageToStorage(
-          table: TableName.images, path: imagePath, file: _selectedImage!);
+        table: TableName.images,
+        path: imagePath,
+        file: _selectedImage!,
+      );
+      logger.i('画像をストレージにアップロード');
     }
     if (imagePath != null) {
       imageUrl = fetchImageUrl(imagePath);
@@ -155,6 +164,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
         comment: _enteredComment,
         id: (_group.id).toString(),
       );
+      logger.i('グループ更新完了: $_enteredName');
     } else {
       // 登録
       insertIdolGroupData(
@@ -167,6 +177,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
         scheduleUrl: _enteredScheduleUrl,
         comment: _enteredComment,
       );
+      logger.i('新規グループ登録完了: $_enteredName');
     }
 
     setState(() {

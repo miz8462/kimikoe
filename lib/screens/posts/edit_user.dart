@@ -44,14 +44,18 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
     return textInputValidator(value, 'メール');
   }
 
-  void _saveUserProfile() async {
+  void _submitUserProfile() async {
+    logger.i('フォーム送信開始');
+
     setState(() {
       _isSending = true;
     });
 
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+      logger.i('ヴァリデーション成功');
     } else {
+      logger.i('ヴァリデーション失敗');
       setState(() {
         _isSending = false;
       });
@@ -59,7 +63,6 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
     }
 
     final userId = supabase.auth.currentUser!.id;
-    // todo: Googleアカウントの場合、初ログイン時に画像を登録するようにする。現状画像変更機能はなし。
     final user = UserProfile(
       id: userId,
       name: _enteredUserName,
@@ -69,6 +72,7 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
     );
 
     await ref.read(userProfileProvider.notifier).updateUserProfile(user);
+    logger.i('ユーザープロフィール更新完了: $userId');
 
     // if (_selectedImage != null) {
     //   await supabase.storage.from('images').upload(imagePath!, _selectedImage!);
@@ -150,7 +154,7 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
                 const Gap(spaceS),
                 StyledButton(
                   '登録',
-                  onPressed: _isSending ? null : _saveUserProfile,
+                  onPressed: _isSending ? null : _submitUserProfile,
                   isSending: _isSending,
                 ),
                 const Gap(spaceS),
