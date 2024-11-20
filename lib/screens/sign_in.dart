@@ -117,7 +117,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     }
 
     try {
-      await ref.read(authProvider.notifier).signIn(
+      await ref.read(authProvider.notifier).logIn(
             _enteredEmail,
             _enteredPassword,
             ref,

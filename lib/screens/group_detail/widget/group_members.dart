@@ -17,8 +17,6 @@ class GroupMembers extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final members = ref.watch(idolListOfGroupProvider(group.id!));
-    final asyncValue =
-        ref.watch(idolListOfGroupFromSupabaseProvider(group.id!));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -27,8 +25,8 @@ class GroupMembers extends ConsumerWidget {
           style: TextStyle(fontSize: fontM),
         ),
         const Gap(spaceS),
-        asyncValue.when(
-          data: (_) {
+        members.when(
+          data: (members) {
             return members.isEmpty
                 ? const Center(
                     child: Text('登録データはありません'),

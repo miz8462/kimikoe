@@ -76,7 +76,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
   }
 
   void _signOut() async {
-    await ref.read(authProvider.notifier).signOut(ref);
+    await ref.read(authProvider.notifier).logOut(ref);
     if (mounted) {
       context.go('/');
     }

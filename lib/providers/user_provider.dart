@@ -9,35 +9,50 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
 
   Future<void> fetchUserProfile() async {
     final currentUserId = supabase.auth.currentUser!.id;
-    final currentUser = await supabase
-        .from(TableName.profiles)
-        .select()
-        .eq(ColumnName.id, currentUserId)
-        .single();
 
-    state = UserProfile(
-        id: currentUser[ColumnName.id],
-        name: currentUser[ColumnName.name],
-        email: currentUser[ColumnName.email],
-        imageUrl: currentUser[ColumnName.imageUrl],
-        comment: currentUser[ColumnName.comment]);
+    try {
+      logger.i('ユーザーID $currentUserId のプロフィールを取得中...');
+      final currentUser = await supabase
+          .from(TableName.profiles)
+          .select()
+          .eq(ColumnName.id, currentUserId)
+          .single();
+
+      state = UserProfile(
+          id: currentUser[ColumnName.id],
+          name: currentUser[ColumnName.name],
+          email: currentUser[ColumnName.email],
+          imageUrl: currentUser[ColumnName.imageUrl],
+          comment: currentUser[ColumnName.comment]);
+      logger.i('ユーザーID $currentUserId のプロフィールを取得しました');
+    } catch (e, stackTrace) {
+      logger.e('ユーザーID $currentUserId のプロフィールを取得中にエラーが発生しました',
+          error: e, stackTrace: stackTrace);
+    }
   }
 
   void clearUserProfile() {
     state = null;
+    logger.i('ユーザープロフィールをクリアしました');
   }
 
   Future<void> updateUserProfile(UserProfile newUser) async {
-    final currentUserId = supabase.auth.currentUser!.id;
-    await updateUser(
-      id: currentUserId,
-      name: newUser.name,
-      email: newUser.email,
-      imageUrl: newUser.imageUrl,
-      comment: newUser.comment,
-    );
+    try {
+      final currentUserId = supabase.auth.currentUser!.id;
+      logger.i('ユーザーのプロフィールを更新中...');
+      await updateUser(
+        id: currentUserId,
+        name: newUser.name,
+        email: newUser.email,
+        imageUrl: newUser.imageUrl,
+        comment: newUser.comment,
+      );
 
-    state = newUser;
+      state = newUser;
+      logger.i('ユーザーのプロフィールを更新しました');
+    } catch (e, stackTrace) {
+      logger.e('ユーザーのプロフィールを更新中にエラーが発生しました', error: e, stackTrace: stackTrace);
+    }
   }
 }
 

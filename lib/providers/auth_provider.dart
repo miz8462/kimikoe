@@ -6,23 +6,36 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class AuthNotifier extends StateNotifier<Session?> {
   AuthNotifier() : super(null);
 
-  Future<void> signIn(String email, String password, WidgetRef ref) async {
-    final response = await supabase.auth.signInWithPassword(
-      email: email,
-      password: password,
-    );
-    if (response.session != null) {
-      state = response.session;
-      await ref.read(userProfileProvider.notifier).fetchUserProfile();
-    } else {
-      throw Exception('Login failed');
+  Future<void> logIn(String email, String password, WidgetRef ref) async {
+    try {
+      logger.i('ログインを試みています: email = $email');
+      final response = await supabase.auth.signInWithPassword(
+        email: email,
+        password: password,
+      );
+      if (response.session != null) {
+        state = response.session;
+        logger.i('ログインに成功しました: userId = ${response.session!.user.id}');
+        await ref.read(userProfileProvider.notifier).fetchUserProfile();
+      } else {
+        logger.w('ログインに失敗しました: 認証情報が無効です');
+        throw Exception('ログインに失敗しました');
+      }
+    } catch (e, stackTrace) {
+      logger.e('ログイン中にエラーが発生しました', error: e, stackTrace: stackTrace);
     }
   }
 
-  Future<void> signOut(WidgetRef ref) async {
-    await supabase.auth.signOut();
-    state = null;
-    ref.read(userProfileProvider.notifier).clearUserProfile();
+  Future<void> logOut(WidgetRef ref) async {
+    try {
+      logger.i('ログアウトを試みています');
+      await supabase.auth.signOut();
+      state = null;
+      logger.i('ログアウトに成功しました');
+      ref.read(userProfileProvider.notifier).clearUserProfile();
+    } catch (e, stackTrace) {
+      logger.e('ログアウト中にエラーが発生しました', error: e, stackTrace: stackTrace);
+    }
   }
 }
 

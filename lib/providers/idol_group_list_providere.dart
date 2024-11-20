@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/utils/crud_data.dart';
@@ -29,41 +30,58 @@ class IdolGroupListNotifier extends StateNotifier<IdolGroupListState> {
   }
 
   Future<void> fetchGroupList() async {
-    state = state.copyWith(isLoading: true);
-    final data = await fetchDatabyStream(
-      table: TableName.idolGroups,
-      id: ColumnName.id,
-    ).first;
-    final groups = data.map<IdolGroup>((group) {
-      return IdolGroup(
-        id: group[ColumnName.id],
-        name: group[ColumnName.name],
-        imageUrl: group[ColumnName.imageUrl],
-        year: group[ColumnName.yearFormingGroups],
-        officialUrl: group[ColumnName.officialUrl],
-        twitterUrl: group[ColumnName.twitterUrl],
-        instagramUrl: group[ColumnName.instagramUrl],
-        scheduleUrl: group[ColumnName.scheduleUrl],
-        comment: group[ColumnName.comment],
-      );
-    }).toList();
-    state = state.copyWith(groups: groups, isLoading: false);
+    try {
+      logger.i('アイドルグループのリストを取得中...');
+      state = state.copyWith(isLoading: true);
+
+      final data = await fetchDatabyStream(
+        table: TableName.idolGroups,
+        id: ColumnName.id,
+      ).first;
+
+      final groups = data.map<IdolGroup>((group) {
+        return IdolGroup(
+          id: group[ColumnName.id],
+          name: group[ColumnName.name],
+          imageUrl: group[ColumnName.imageUrl],
+          year: group[ColumnName.yearFormingGroups],
+          officialUrl: group[ColumnName.officialUrl],
+          twitterUrl: group[ColumnName.twitterUrl],
+          instagramUrl: group[ColumnName.instagramUrl],
+          scheduleUrl: group[ColumnName.scheduleUrl],
+          comment: group[ColumnName.comment],
+        );
+      }).toList();
+      logger.i('アイドルグループのリストを${groups.length}件取得しました');
+      state = state.copyWith(groups: groups, isLoading: false);
+    } catch (e, stackTrace) {
+      logger.e('アイドルグループのリストを取得中にエラーが発生しました', error: e, stackTrace: stackTrace);
+    }
   }
 
   void addGroup(IdolGroup newGroup) {
+    logger.i('アイドルグループを追加しています: ${newGroup.name}');
     state = state.copyWith(groups: [...state.groups, newGroup]);
   }
 
   void removeGroup(IdolGroup group) {
+    logger.i('アイドルグループを削除しています: ${group.name}');
     state = state.copyWith(
       groups: state.groups.where((g) => g.id != group.id).toList(),
     );
   }
 
   IdolGroup? getGroupById(int id) {
-    return state.groups.firstWhere((group) => group.id == id, orElse: () {
-      throw StateError('Group with id: $id not found');
-    });
+    try {
+      return state.groups.firstWhere((group) => group.id == id, orElse: () {
+        logger.e('IDが $id のグループが見つかりませんでした');
+        throw StateError('IDが $id のグループが見つかりませんでした');
+      });
+    } catch (e, stackTrace) {
+      logger.e('ID:$id のグループを見つける際にエラーが発生しました',
+          error: e, stackTrace: stackTrace);
+      return null;
+    }
   }
 }
 
