@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
+import 'package:kimikoe_app/main.dart';
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
   const TopBar({
     super.key,
     this.imageUrl,
-    this.pageTitle,
+    this.pageTitle = '',
     this.showLeading = true,
     this.isEditing = false,
     this.isGroup = false,
@@ -16,7 +17,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
     this.delete,
   });
   final String? imageUrl;
-  final String? pageTitle;
+  final String pageTitle;
   final bool showLeading;
   final bool isEditing;
   final bool isGroup;
@@ -25,6 +26,67 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   final Map<String, Object>? data;
   final void Function()? delete;
 
+  // 編集、削除機能。グループ、ユーザーの時は削除なし
+  List<Widget> _buildEditAndDeleteActions(BuildContext context) {
+    return [
+      Padding(
+        padding: const EdgeInsets.only(top: 12),
+        child: PopupMenuButton<int>(
+          icon: const Icon(Icons.more_vert),
+          color: Colors.white,
+          offset: const Offset(0, 40),
+          onSelected: (item) {
+            try {
+              if (item == 0) {
+                if (editRoute != null) {
+                  context.pushNamed(editRoute!, extra: data);
+                  logger.i('編集ルートへナビゲートしました: $editRoute');
+                } else {
+                  throw Exception('編集ルートがnullです');
+                }
+              } else if (item == 1 && !isGroup && !isUser) {
+                delete?.call();
+                logger.i('削除アクションがトリガーされました');
+              }
+            } catch (e) {
+              logger.e('メニューアクションの処理中にエラーが発生しました', error: e);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('操作中にエラーが発生しました: ${e.toString()}'),
+                ),
+              );
+            }
+          },
+          itemBuilder: (context) => [
+            PopupMenuItem<int>(
+              value: 0,
+              child: ListTile(
+                leading:
+                    Icon(Icons.edit, color: Theme.of(context).primaryColor),
+                title: Text('編集', style: Theme.of(context).textTheme.bodyLarge),
+              ),
+            ),
+            if (!isGroup && !isUser)
+              PopupMenuItem<int>(
+                value: 1,
+                child: ListTile(
+                  leading: Icon(Icons.delete,
+                      color: Theme.of(context).colorScheme.error),
+                  title: Text(
+                    '削除',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(color: Theme.of(context).colorScheme.error),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -32,97 +94,13 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
       title: Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: Text(
-          pageTitle!,
+          pageTitle,
           textAlign: TextAlign.center,
           style: const TextStyle(fontSize: 25, color: mainColor),
         ),
       ),
       centerTitle: true,
-      // 編集、削除機能。グループ、ユーザーの時は削除なし
-      actions: isEditing
-          ? isGroup || isUser
-              ? [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 12),
-                    child: MenuAnchor(
-                      menuChildren: [
-                        SizedBox(
-                          width: 100,
-                          child: MenuItemButton(
-                            onPressed: () {
-                              context.pushNamed(editRoute!, extra: data);
-                            },
-                            child: const Text('編集'),
-                          ),
-                        ),
-                      ],
-                      builder: (_, MenuController controller, Widget? child) {
-                        return IconButton(
-                            onPressed: () {
-                              if (controller.isOpen) {
-                                controller.close();
-                              } else {
-                                controller.open();
-                              }
-                            },
-                            icon: const Icon(Icons.more_vert));
-                      },
-                    ),
-                  ),
-                ]
-              : [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 12),
-                    child: MenuAnchor(
-                      menuChildren: [
-                        SizedBox(
-                          width: 80,
-                          child: MenuItemButton(
-                            onPressed: () {
-                              context.pushNamed(editRoute!, extra: data);
-                            },
-                            child: Center(
-                              child: Text(
-                                '編集',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 80,
-                          child: MenuItemButton(
-                            onPressed: delete,
-                            child: Center(
-                              child: Text(
-                                '削除',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge!
-                                    .copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .error),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                      builder: (_, MenuController controller, Widget? child) {
-                        return IconButton(
-                            onPressed: () {
-                              if (controller.isOpen) {
-                                controller.close();
-                              } else {
-                                controller.open();
-                              }
-                            },
-                            icon: const Icon(Icons.more_vert));
-                      },
-                    ),
-                  ),
-                ]
-          : null,
+      actions: isEditing ? _buildEditAndDeleteActions(context) : null,
       bottom: const AppBarBottom(),
     );
   }

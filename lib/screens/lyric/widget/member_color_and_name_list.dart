@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
+import 'package:kimikoe_app/utils/error_handling.dart';
 
 class GroupColorAndNameList extends StatefulWidget {
   const GroupColorAndNameList({
@@ -28,7 +29,7 @@ class _GroupColorAndNameListState extends State<GroupColorAndNameList> {
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
+          return handleMemberFetchError(snapshot.error);
         } else if (snapshot.hasData) {
           final members = snapshot.data!;
           return Row(

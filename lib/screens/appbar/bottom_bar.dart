@@ -86,6 +86,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
   Widget build(BuildContext context) {
     int currentIndex = widget.navigationShell.currentIndex;
     final user = ref.watch(userProfileProvider);
+
     if (user == null) {
       return Scaffold(
         body: Center(
@@ -119,26 +120,26 @@ class _BottomBarState extends ConsumerState<BottomBar> {
               Icons.home_outlined,
               color: currentIndex == homeIndex ? textDark : textWhite,
             ),
-            label: 'Home',
+            label: 'ホーム',
           ),
           NavigationDestination(
             icon: Icon(
               Icons.add_box_outlined,
               color: currentIndex == addIndex ? textDark : textWhite,
             ),
-            label: 'Add',
+            label: '登録',
           ),
           NavigationDestination(
             icon: CircleAvatar(
               backgroundImage: NetworkImage(imageUrl),
               radius: avaterSizeS,
             ),
-            label: 'User',
+            label: 'ユーザー',
           ),
           // todo: 開発用ログアウトボタン
           NavigationDestination(
             icon: Icon(Icons.logout),
-            label: 'SignOut',
+            label: 'ログアウト',
           ),
         ],
       ),

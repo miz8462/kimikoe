@@ -28,18 +28,15 @@ class SongInfoCard extends StatelessWidget {
                   fontSize: fontM,
                 ),
                 const Spacer(),
-                if (song.lyricist == null || song.lyricist!.name.isEmpty)
-                  const StyledText('作詞：不明')
-                else
-                  StyledText('作詞：${song.lyricist!.name}'),
-                if (song.composer == null || song.composer!.name.isEmpty)
-                  const StyledText('作曲：不明')
-                else
-                  StyledText('作曲：${song.composer!.name}'),
-                if (song.releaseDate == null || song.releaseDate!.isEmpty)
-                  const StyledText('発売日：不明')
-                else
-                  StyledText('発売日：${song.releaseDate}'),
+                StyledText(
+                  '作詞：${song.lyricist?.name ?? "作詞: 不明"}',
+                ),
+                StyledText(
+                  '作曲：${song.composer?.name ?? "作曲: 不明"}',
+                ),
+                StyledText(
+                  '発売日：${song.releaseDate ?? "発売日: 不明"}',
+                ),
               ],
             ),
           ),

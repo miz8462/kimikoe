@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
+import 'package:kimikoe_app/utils/error_handling.dart';
 import 'package:kimikoe_app/widgets/custom_text_for_lyrics.dart';
 
 class Lyrics extends StatelessWidget {
@@ -24,8 +24,7 @@ class Lyrics extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
-          logger.e('メンバーの取得に失敗しました', error: snapshot.error);
-          return Center(child: Text('メンバー情報の取得に失敗しました。後でもう一度お試しください。'));
+          return handleMemberFetchError(snapshot.error);
         } else {
           final members = snapshot.data!;
           final memberMap = {
