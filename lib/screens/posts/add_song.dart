@@ -197,8 +197,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
         table: TableName.images,
         path: imagePath!,
         file: _selectedImage!,
-      );      logger.i('画像をストレージにアップロード');
-
+      );
     }
 
     final imageUrl = fetchImageUrl(imagePath!);
@@ -221,7 +220,6 @@ class _AddSongScreenState extends State<AddSongScreen> {
         year: '',
         comment: '',
       );
-      logger.i('新規グループを登録: $groupName');
       await _fetchIdAndNameLists();
     }
     selectedGroupId =
@@ -233,7 +231,6 @@ class _AddSongScreenState extends State<AddSongScreen> {
         isInList(_artistIdAndNameList, lyricistName);
     if (!isSelectedLyricistInList && lyricistName.isNotEmpty) {
       insertArtistData(name: lyricistName, imageUrl: noImage);
-      logger.i('作詞家を登録: $lyricistName');
       await _fetchIdAndNameLists();
     }
     if (lyricistName.isNotEmpty) {
@@ -247,8 +244,6 @@ class _AddSongScreenState extends State<AddSongScreen> {
         isInList(_artistIdAndNameList, composerName);
     if (!isSelectedComposerInList && composerName.isNotEmpty) {
       insertArtistData(name: composerName, imageUrl: noImage);
-            logger.i('作曲家を登録: $lyricistName');
-
       await _fetchIdAndNameLists();
     }
     if (composerName.isNotEmpty) {
@@ -269,7 +264,6 @@ class _AddSongScreenState extends State<AddSongScreen> {
         comment: _enteredComment,
         id: _song.id!,
       );
-      logger.i('歌詞更新完了: $_enteredTitle');
     } else {
       // 歌詞登録
       insertSongData(
@@ -282,7 +276,6 @@ class _AddSongScreenState extends State<AddSongScreen> {
         composerId: selectedComposerId,
         comment: _enteredComment,
       );
-      logger.i('歌詞新規登録完了: $_enteredTitle');
     }
 
     setState(() {

@@ -105,7 +105,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
   }
 
   Future<void> _submitGroup() async {
-    logger.i('フォーム送信開始');
+    logger.i('フォーム送信を開始します');
 
     setState(() {
       _isSending = true;
@@ -113,9 +113,9 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
 
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      logger.i('ヴァリデーション成功');
+      logger.i('ヴァリデーションに成功しました');
     } else {
-      logger.i('ヴァリデーション失敗');
+      logger.i('ヴァリデーションに失敗しました');
       setState(() {
         _isSending = false;
       });
@@ -145,7 +145,6 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
         path: imagePath,
         file: _selectedImage!,
       );
-      logger.i('画像をストレージにアップロード');
     }
     if (imagePath != null) {
       imageUrl = fetchImageUrl(imagePath);
@@ -164,7 +163,6 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
         comment: _enteredComment,
         id: (_group.id).toString(),
       );
-      logger.i('グループ更新完了: $_enteredName');
     } else {
       // 登録
       insertIdolGroupData(
@@ -177,7 +175,6 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
         scheduleUrl: _enteredScheduleUrl,
         comment: _enteredComment,
       );
-      logger.i('新規グループ登録完了: $_enteredName');
     }
 
     setState(() {

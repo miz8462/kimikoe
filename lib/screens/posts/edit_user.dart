@@ -72,8 +72,8 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
     );
 
     await ref.read(userProfileProvider.notifier).updateUserProfile(user);
-    logger.i('ユーザープロフィール更新完了: $userId');
 
+    // todo: ユーザー画像の変更機能
     // if (_selectedImage != null) {
     //   await supabase.storage.from('images').upload(imagePath!, _selectedImage!);
     // }

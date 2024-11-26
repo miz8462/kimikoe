@@ -65,6 +65,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
         errorMessage = 'エラーが発生しました: ${error.message}';
     }
 
+    logger.e('認証エラーが発生しました。エラーメッセージ: $errorMessage');
+
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -73,12 +75,30 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     );
   }
 
+  void _handleAuthError(AuthException error, String operation) {
+    _showErrorMessage(error);
+    logger.e('$operation 中に認証エラーが発生しました。エラーメッセージ: ${error.message}');
+  }
+
+  void _handleGeneralAuthError(Object error) {
+    logger.e('認証エラーが発生しました。エラーメッセージ: $error');
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('認証エラーが発生しました'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   Future<void> _signUp() async {
     if (!_validateAndSaveForm()) {
       return;
     }
 
     try {
+      logger.d('サインアップを開始しました。メールアドレス: $_enteredEmail');
       final response = await supabase.auth.signUp(
         email: _enteredEmail,
         password: _enteredPassword,
@@ -98,11 +118,12 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
           userId,
         );
       }
+      logger.i('サインアップが成功しました。ユーザーID: $userId');
 
       await Future.delayed(Duration(milliseconds: 200));
     } on AuthException catch (e) {
       if (!mounted) return;
-      _showErrorMessage(e);
+      _handleAuthError(e, 'サインアップ');
       return;
     }
 
@@ -122,10 +143,12 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             _enteredPassword,
             ref,
           );
+      logger.i('ログインが成功しました。メールアドレス: $_enteredEmail');
+
       await Future.delayed(Duration(milliseconds: 200));
     } on AuthException catch (e) {
       if (!mounted) return;
-      _showErrorMessage(e);
+      _handleAuthError(e, 'ログイン');
     }
 
     if (mounted) {
@@ -133,33 +156,13 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     }
   }
 
-  // // マジックリンク
-  // Future<void> _sendMagicLink() async {
-  //   try {
-  //     await supabase.auth.signInWithOtp(
-  //       email: _emailController.text.trim(),
-  //       emailRedirectTo: 'io.supabase.kimikoe://login-callback/',
-  //     );
-  //     if (mounted) {
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //       Glogin link!')),
-  //       );
-  //       _emailController.clear();
-  //     }
-  //   } catch (e) {
-  //     print('Failed to send magic link: $e');
-  //     if (mounted) {
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //           SnackBar(content: Text('Failed to send magic link: $e')));
-  //     }
-  //   }
-  // }
-
   Future<void> _googleSignIn() async {
     final webClientId = dotenv.env['GOOGLE_OAUTH_WEB_CLIENT_ID'];
     final iosClientId = dotenv.env['GOOGLE_OAUTH_IOS_CLIENT_ID'];
 
     try {
+      logger.d('Googleサインインを開始しました。');
+
       final GoogleSignIn googleSignIn = GoogleSignIn(
         clientId: iosClientId,
         serverClientId: webClientId,
@@ -168,11 +171,12 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
       final googleAuth = await googleUser!.authentication;
       final accessToken = googleAuth.accessToken;
       final idToken = googleAuth.idToken;
+
       if (accessToken == null) {
-        throw 'No Access Token found.';
+        throw 'アクセストークンが見つかりません。';
       }
       if (idToken == null) {
-        throw 'No ID Token found.';
+        throw 'IDトークンが見つかりません。';
       }
 
       await supabase.auth.signInWithIdToken(
@@ -182,15 +186,21 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
       );
 
       await ref.read(userProfileProvider.notifier).fetchUserProfile();
+      logger.i('Googleサインインが成功しました。ユーザー: ${googleUser.displayName}');
 
       await Future.delayed(Duration(microseconds: 200));
     } catch (e) {
-      print('Google Sign-In Error: $e');
+      logger.e('Googleサインインエラー: $e');
     }
   }
 
   @override
   void initState() {
+    super.initState();
+    if (isDebugMode) {
+      logger.d('initStateが呼び出されました');
+    }
+
     _authStateSubscription = supabase.auth.onAuthStateChange.listen(
       (data) async {
         if (_isRedirecting) return;
@@ -199,6 +209,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
           _isRedirecting = true;
           if (mounted) {
             context.go(RoutingPath.groupList);
+            logger.i('セッションが存在します。リダイレクトを開始します');
           }
         }
       },
@@ -208,18 +219,22 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
         }
         if (error is AuthException) {
           context.showSnackBar(error.message, isError: true);
+          logger.e('認証エラーが発生しました: ${error.message}');
         } else {
-          context.showSnackBar('Unexpected error occurred', isError: true);
+          context.showSnackBar('予期しないエラーが発生しました', isError: true);
+          logger.e('予期しないエラーが発生しました: $error');
         }
       },
     );
-    super.initState();
   }
 
   @override
   void dispose() {
     _authStateSubscription.cancel();
     super.dispose();
+    if (isDebugMode) {
+      logger.d('disposeが呼び出されました');
+    }
   }
 
   @override
@@ -367,14 +382,20 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           FractionallySizedBox(
                             widthFactor: 1,
                             child: ElevatedButton(
-                              onPressed: _isLogin ? _logIn : _signUp,
+                              onPressed: () async {
+                                try {
+                                  _isLogin ? await _logIn() : await _signUp();
+                                } catch (error) {
+                                  _handleGeneralAuthError(error);
+                                }
+                              },
                               style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
                               child: Text(
-                                _isLogin ? "Login" : "Signup",
+                                _isLogin ? "ログイン" : "サインアップ",
                                 style: TextStyle(
                                   color: mainColor,
                                   fontSize: fontL,
@@ -410,7 +431,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                 ),
                               ),
                               Text(
-                                "    Social Login    ",
+                                "    Googleログイン    ",
                                 style: TextStyle(
                                   color: textWhite,
                                   fontSize: fontS,
@@ -432,10 +453,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                 _googleSignIn,
                                 imagePath: 'assets/images/google.svg',
                               ),
-                              // SocialLoginButton(
-                              //   _twitterSignIn,
-                              //   imagePath: 'assets/images/twitter.svg',
-                              // ),
                             ],
                           ),
                         ],

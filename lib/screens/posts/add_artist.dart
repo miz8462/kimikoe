@@ -61,14 +61,12 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
         path: imagePath!,
         file: _selectedImage!,
       );
-      logger.i('画像をストレージにアップロード');
     }
 
     final imageUrl = fetchImageUrl(imagePath!);
 
     insertArtistData(
         name: _enteredName, imageUrl: imageUrl, comment: _enteredComment);
-    logger.i('アーティスト登録完了: $_enteredName');
 
     setState(() {
       _isSending = false;

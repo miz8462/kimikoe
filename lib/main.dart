@@ -6,6 +6,8 @@ import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:logger/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+bool isDebugMode = const bool.fromEnvironment('dart.vm.product') == false;
+
 final sessionProvider = StateProvider<Session?>((ref) => null);
 final providerContainer = ProviderContainer();
 final logger = Logger(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/providers/song_list_provider.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
@@ -49,9 +50,12 @@ class _SongListScreenState extends ConsumerState<SongListScreen> {
                     },
                   );
                 },
-                error: (error, stack) => Center(
-                  child: Text('エラー発生: $error'),
-                ),
+                error: (error, _) {
+                  logger.e('曲の取得に失敗しました: $error');
+                  return Center(
+                    child: Text('曲の取得に失敗しました。再度お試しください。'),
+                  );
+                },
                 loading: () => const Center(child: CircularProgressIndicator()),
               ),
             ),

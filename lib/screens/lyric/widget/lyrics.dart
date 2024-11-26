@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/widgets/custom_text_for_lyrics.dart';
 
@@ -16,41 +17,41 @@ class Lyrics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: memberFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else {
-            final members = snapshot.data!;
-            final memberList = members.map((member) {
-              return {
-                ColumnName.id: member[ColumnName.id],
-                ColumnName.name: member[ColumnName.name],
-                ColumnName.color: Color(int.parse(member[ColumnName.color])),
-              };
-            }).toList();
+      future: memberFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          logger.e('メンバーの取得に失敗しました', error: snapshot.error);
+          return Center(child: Text('メンバー情報の取得に失敗しました。後でもう一度お試しください。'));
+        } else {
+          final members = snapshot.data!;
+          final memberMap = {
+            for (var member in members)
+              member[ColumnName.id]: Color(int.parse(member[ColumnName.color]))
+          };
 
-            final lyricsJson = jsonDecode(lyrics);
+          final lyricsJson = jsonDecode(lyrics);
 
-            return Row(children: [
+          return Row(
+            children: [
               Expanded(
                 child: Column(
                   children: [
-                    for (var i = 0; i < lyricsJson.length; i++)
+                    for (var lyric in lyricsJson)
                       CustomTextForLyrics(
-                        lyricsJson[i]['lyric'],
-                        color: memberList.firstWhere((member) =>
-                            member['id'] == lyricsJson[i]['singerId'])['color'],
+                        lyric['lyric'],
+                        color: memberMap[lyric['singerId']],
                       ),
                   ],
                 ),
               ),
-            ]);
-          }
-        });
+            ],
+          );
+        }
+      },
+    );
   }
 }
