@@ -66,13 +66,16 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
       context: context,
       builder: (context) {
         return DeleteAlertDialog(
-          onDelete: () {
+          onDelete: () async {
             deleteDataFromTable(
               table: TableName.idol,
               column: ColumnName.id,
               value: (widget.idol.id).toString(),
+              context: context,
             );
           },
+          successMessage: '${widget.idol.name}のデータが削除されました',
+          errorMessage: '${widget.idol.name}のデータの削除に失敗しました',
         );
       },
     );

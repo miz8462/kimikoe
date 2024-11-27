@@ -144,14 +144,16 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
         table: TableName.images,
         path: imagePath,
         file: _selectedImage!,
+                context: context,
+
       );
     }
     if (imagePath != null) {
       imageUrl = fetchImageUrl(imagePath);
     }
-
+    if (!mounted) return;
+    // 登録、修正
     if (_isEditing) {
-      // 修正
       updateIdolGroup(
         name: _enteredName,
         imageUrl: imageUrl,
@@ -162,9 +164,9 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
         scheduleUrl: _enteredScheduleUrl,
         comment: _enteredComment,
         id: (_group.id).toString(),
+        context: context,
       );
     } else {
-      // 登録
       insertIdolGroupData(
         name: _enteredName,
         imageUrl: imageUrl,
@@ -174,6 +176,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
         instagramUrl: _enteredInstagramUrl,
         scheduleUrl: _enteredScheduleUrl,
         comment: _enteredComment,
+        context: context,
       );
     }
 

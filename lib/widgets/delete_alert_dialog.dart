@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:kimikoe_app/router/routing_path.dart';
+import 'package:kimikoe_app/main.dart';
+import 'package:kimikoe_app/utils/crud_data.dart';
 
 class DeleteAlertDialog extends StatelessWidget {
   const DeleteAlertDialog({
     super.key,
     required this.onDelete,
+    required this.successMessage,
+    required this.errorMessage,
   });
-  final void Function() onDelete;
+  final Future<void> Function() onDelete;
+  final String successMessage;
+  final String errorMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +20,22 @@ class DeleteAlertDialog extends StatelessWidget {
       content: const Text('削除したデータは復元できません。\nそれでも削除しますか？'),
       actions: [
         TextButton(
-            onPressed: () {
-              onDelete();
-              Navigator.of(context).pop();
-              context.goNamed(RoutingPath.groupList);
+            onPressed: () async {
+              try {
+                await onDelete();
+                if (!context.mounted) return;
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(successMessage)),
+                );
+                logger.i(successMessage);
+              } catch (e) {
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(errorMessage)),
+                );
+                logger.e(errorMessage, error: e);
+              }
             },
             child: Text(
               'はい',

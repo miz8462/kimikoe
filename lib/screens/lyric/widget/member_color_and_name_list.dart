@@ -42,8 +42,8 @@ class _GroupColorAndNameListState extends State<GroupColorAndNameList> {
                     width: circleSize,
                     height: circleSize,
                     decoration: BoxDecoration(
-                      color: color, // 好きな色を指定
-                      shape: BoxShape.circle, // 円形を指定
+                      color: color,
+                      shape: BoxShape.circle,
                     ),
                   ),
                   const Gap(spaceSS),

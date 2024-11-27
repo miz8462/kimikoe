@@ -32,13 +32,16 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
       context: context,
       builder: (context) {
         return DeleteAlertDialog(
-          onDelete: () {
+          onDelete: () async {
             deleteDataFromTable(
               table: TableName.idolGroups,
               column: ColumnName.id,
               value: (widget.group.id).toString(),
+              context: context,
             );
           },
+          successMessage: '${widget.group.name}のデータが削除されました',
+          errorMessage: '${widget.group.name}のデータの削除に失敗しました',
         );
       },
     );

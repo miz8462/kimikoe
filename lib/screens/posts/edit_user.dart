@@ -71,7 +71,9 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
       comment: _enteredComment,
     );
 
-    await ref.read(userProfileProvider.notifier).updateUserProfile(user);
+    await ref
+        .read(userProfileProvider.notifier)
+        .updateUserProfile(user, context);
 
     // todo: ユーザー画像の変更機能
     // if (_selectedImage != null) {

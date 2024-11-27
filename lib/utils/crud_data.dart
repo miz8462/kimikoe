@@ -1,14 +1,33 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
+import 'package:logger/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+void showLogAndSnackBar({
+  required BuildContext context,
+  required Logger logger,
+  required String message,
+  bool isError = false,
+}) {
+  if (isError) {
+    logger.e(message);
+  } else {
+    logger.i(message);
+  }
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text(message)),
+  );
+}
 
 // CREATE
 Future<void> insertArtistData({
   required String name,
   String? imageUrl,
   String? comment,
+  required BuildContext context,
 }) async {
   try {
     await supabase.from(TableName.artists).insert({
@@ -16,9 +35,19 @@ Future<void> insertArtistData({
       ColumnName.imageUrl: imageUrl,
       ColumnName.comment: comment,
     });
-    logger.i('アーティストデータを登録しました。アーティスト名: $name');
+    if (!context.mounted) return;
+    showLogAndSnackBar(
+      context: context,
+      logger: logger,
+      message: 'アーティストを登録しました: $name',
+    );
   } catch (e) {
-    logger.e('アーティストデータの登録中にエラーが発生しました。アーティスト名: $name', error: e);
+    showLogAndSnackBar(
+      context: context,
+      logger: logger,
+      message: 'アーティストの登録中にエラーが発生しました: $name',
+      isError: true,
+    );
     rethrow;
   }
 }
@@ -32,6 +61,7 @@ Future<void> insertIdolGroupData({
   String? instagramUrl,
   String? scheduleUrl,
   String? comment,
+  required BuildContext context,
 }) async {
   try {
     await supabase.from(TableName.idolGroups).insert({
@@ -44,9 +74,19 @@ Future<void> insertIdolGroupData({
       ColumnName.scheduleUrl: scheduleUrl,
       ColumnName.comment: comment,
     });
-    logger.i('アイドルグループを登録しました。グループ名: $name');
+    if (!context.mounted) return;
+    showLogAndSnackBar(
+      context: context,
+      logger: logger,
+      message: 'グループを登録しました: $name',
+    );
   } catch (e) {
-    logger.e('アイドルグループの登録中にエラーが発生しました。グループ名: $name', error: e);
+    showLogAndSnackBar(
+      context: context,
+      logger: logger,
+      message: 'グループの登録中にエラーが発生しました: $name',
+      isError: true,
+    );
     rethrow;
   }
 }
@@ -62,6 +102,7 @@ Future<void> insertIdolData({
   String? hometown,
   int? debutYear,
   String? comment,
+  required BuildContext context,
 }) async {
   try {
     await supabase.from(TableName.idol).insert({
@@ -76,9 +117,19 @@ Future<void> insertIdolData({
       ColumnName.debutYear: debutYear,
       ColumnName.comment: comment,
     });
-    logger.i('アイドルを登録しました。アイドル名: $name');
+    if (!context.mounted) return;
+    showLogAndSnackBar(
+      context: context,
+      logger: logger,
+      message: 'アイドルを登録しました: $name',
+    );
   } catch (e) {
-    logger.e('アイドルの登録中にエラーが発生しました。アイドル名: $name', error: e);
+    showLogAndSnackBar(
+      context: context,
+      logger: logger,
+      message: 'アイドルの登録中にエラーが発生しました: $name',
+      isError: true,
+    );
     rethrow;
   }
 }
@@ -92,6 +143,7 @@ Future<void> insertSongData({
   int? lyricistId,
   int? composerId,
   String? comment,
+  required BuildContext context,
 }) async {
   try {
     await supabase.from(TableName.songs).insert({
@@ -104,9 +156,19 @@ Future<void> insertSongData({
       ColumnName.composerId: composerId,
       ColumnName.comment: comment,
     });
-    logger.i('曲を登録しました。曲名: $name');
+    if (!context.mounted) return;
+    showLogAndSnackBar(
+      context: context,
+      logger: logger,
+      message: '曲を登録しました: $name',
+    );
   } catch (e) {
-    logger.e('曲の登録中にエラーが発生しました。曲名: $name', error: e);
+    showLogAndSnackBar(
+      context: context,
+      logger: logger,
+      message: '曲の登録中にエラーが発生しました: $name',
+      isError: true,
+    );
     rethrow;
   }
 }
@@ -115,10 +177,16 @@ Future<void> uploadImageToStorage({
   required String table,
   required String path,
   required File file,
+  required BuildContext context,
 }) async {
   try {
     await supabase.storage.from(TableName.images).upload(path, file);
-    logger.i('画像をストレージにアップロードしました');
+    if (!context.mounted) return;
+    showLogAndSnackBar(
+      context: context,
+      logger: logger,
+      message: '画像をストレージにアップロードしました',
+    );
   } catch (e) {
     if (e is StorageException) {
       logger.e('ストレージエラー: ${e.message}', error: e);
@@ -254,6 +322,7 @@ Future<void> updateIdolGroup({
   String? scheduleUrl,
   String? comment,
   required String id,
+  required BuildContext context,
 }) async {
   try {
     await supabase.from(TableName.idolGroups).update({
@@ -266,9 +335,19 @@ Future<void> updateIdolGroup({
       ColumnName.scheduleUrl: scheduleUrl,
       ColumnName.comment: comment,
     }).eq(ColumnName.id, id);
-    logger.i('データを更新しました。グループ名: $name');
+    if (!context.mounted) return;
+    showLogAndSnackBar(
+      context: context,
+      logger: logger,
+      message: 'グループを更新しました。グループ名: $name',
+    );
   } catch (e) {
-    logger.e('データの更新中にエラーが発生しました。グループ名: $name', error: e);
+    showLogAndSnackBar(
+      context: context,
+      logger: logger,
+      message: 'グループの更新中にエラーが発生しました。グループ名: $name',
+      isError: true,
+    );
     rethrow;
   }
 }
@@ -285,6 +364,7 @@ Future<void> updateIdol({
   int? debutYear,
   String? comment,
   required int id,
+  required BuildContext context,
 }) async {
   try {
     await supabase.from(TableName.idol).update({
@@ -299,8 +379,19 @@ Future<void> updateIdol({
       ColumnName.debutYear: debutYear,
       ColumnName.comment: comment,
     }).eq(ColumnName.id, id);
-    logger.i('データを更新しました。アイドル名: $name');
+    if (!context.mounted) return;
+    showLogAndSnackBar(
+      context: context,
+      logger: logger,
+      message: 'アイドルデータを更新しました。グループ名: $name',
+    );
   } catch (e) {
+    showLogAndSnackBar(
+      context: context,
+      logger: logger,
+      message: 'アイドルデータの更新中にエラーが発生しました。アイドル名: $name',
+      isError: true,
+    );
     logger.e('データの更新中にエラーが発生しました。アイドル名: $name', error: e);
     rethrow;
   }
@@ -316,6 +407,7 @@ Future<void> updateSong({
   int? composerId,
   String? comment,
   required int id,
+  required BuildContext context,
 }) async {
   try {
     await supabase.from(TableName.songs).update({
@@ -328,9 +420,19 @@ Future<void> updateSong({
       ColumnName.composerId: composerId,
       ColumnName.comment: comment,
     }).eq(ColumnName.id, id);
-    logger.i('データを更新しました。曲名: $name');
+    if (!context.mounted) return;
+    showLogAndSnackBar(
+      context: context,
+      logger: logger,
+      message: '曲を更新しました。曲名: $name',
+    );
   } catch (e) {
-    logger.e('データの更新中にエラーが発生しました。曲名: $name', error: e);
+    showLogAndSnackBar(
+      context: context,
+      logger: logger,
+      message: '曲の更新中にエラーが発生しました。曲名: $name',
+      isError: true,
+    );
     rethrow;
   }
 }
@@ -341,6 +443,7 @@ Future<void> updateUser({
   required String imageUrl,
   String? comment,
   required String id,
+  required BuildContext context,
 }) async {
   try {
     await supabase.from(TableName.profiles).update({
@@ -349,9 +452,19 @@ Future<void> updateUser({
       ColumnName.imageUrl: imageUrl,
       ColumnName.comment: comment,
     }).eq(ColumnName.id, id);
-    logger.i('データを更新しました。ユーザー名: $name');
+    if (!context.mounted) return;
+    showLogAndSnackBar(
+      context: context,
+      logger: logger,
+      message: 'ユーザーを更新しました。ユーザー名: $name',
+    );
   } catch (e) {
-    logger.e('データの更新中にエラーが発生しました。ユーザー名: $name', error: e);
+    showLogAndSnackBar(
+      context: context,
+      logger: logger,
+      message: 'ユーザーの更新中にエラーが発生しました。ユーザー名: $name',
+      isError: true,
+    );
     rethrow;
   }
 }
@@ -361,12 +474,24 @@ Future<void> deleteDataFromTable({
   required String table,
   required String column,
   required String value,
+  required BuildContext context,
 }) async {
   try {
     await supabase.from(table).delete().eq(column, value);
+    if (!context.mounted) return;
+    showLogAndSnackBar(
+      context: context,
+      logger: logger,
+      message: 'データを削除しました。名前: $value',
+    );
     logger.i('データを削除しました。名前: $value');
   } catch (e) {
-    logger.e('データの削除中にエラーが発生しました。名前: $value', error: e);
+    showLogAndSnackBar(
+      context: context,
+      logger: logger,
+      message: 'データの削除中にエラーが発生しました。名前: $value',
+      isError: true,
+    );
     rethrow;
   }
 }

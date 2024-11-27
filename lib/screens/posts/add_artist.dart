@@ -60,13 +60,19 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
         table: TableName.images,
         path: imagePath!,
         file: _selectedImage!,
+                context: context,
+
       );
     }
 
     final imageUrl = fetchImageUrl(imagePath!);
 
     insertArtistData(
-        name: _enteredName, imageUrl: imageUrl, comment: _enteredComment);
+      name: _enteredName,
+      imageUrl: imageUrl,
+      comment: _enteredComment,
+      context: context
+    );
 
     setState(() {
       _isSending = false;

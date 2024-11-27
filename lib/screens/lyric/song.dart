@@ -42,13 +42,16 @@ class _SongScreenState extends State<SongScreen> {
       context: context,
       builder: (context) {
         return DeleteAlertDialog(
-          onDelete: () {
+          onDelete: () async {
             deleteDataFromTable(
               table: TableName.songs,
               column: ColumnName.id,
-              value: (widget.song.id).toString(),
+              value: (widget.song.id).toString(),              context: context,
+
             );
           },
+          successMessage: '${widget.song.title}が削除されました',
+          errorMessage: '${widget.song.title}の削除に失敗しました',
         );
       },
     );

@@ -118,7 +118,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
   }
 
   Future<void> _submitIdol() async {
-    logger.i('フォーム送信開始');
+    logger.i('アイドル登録フォーム送信開始');
 
     setState(() {
       _isSending = true;
@@ -150,6 +150,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         table: TableName.images,
         path: imagePath!,
         file: _selectedImage!,
+        context: context,
       );
     }
 
@@ -186,11 +187,13 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
 
     final isSelectedGroupInList = isInList(_groupIdAndNameList, groupName);
     if (!isSelectedGroupInList && groupName.isNotEmpty) {
+      if (!mounted) return;
       insertIdolGroupData(
         name: groupName,
         imageUrl: noImage,
         year: '',
         comment: '',
+        context: context,
       );
       await _fetchIdAndNameGroupList();
     }
@@ -204,6 +207,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     // MaterialColor(primary value: Color(0xff2196f3))という表記から"0xff2196f3"を抜き出す
     final selectedColor = formatStringColorCode(_selectedColor);
 
+    if (!mounted) return;
     if (_isEditing) {
       updateIdol(
         name: _enteredIdolName,
@@ -217,7 +221,9 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         hometown: _enteredHometown,
         debutYear: debutYear,
         comment: _enteredComment,
+        context: context,
       );
+    } else {
       insertIdolData(
         name: _enteredIdolName,
         groupId: selectedGroupId,
@@ -229,6 +235,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         hometown: _enteredHometown,
         debutYear: debutYear,
         comment: _enteredComment,
+        context: context,
       );
     }
 

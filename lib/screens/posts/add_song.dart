@@ -197,6 +197,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
         table: TableName.images,
         path: imagePath!,
         file: _selectedImage!,
+        context: context,
       );
     }
 
@@ -219,6 +220,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
         imageUrl: noImage,
         year: '',
         comment: '',
+        context: context,
       );
       await _fetchIdAndNameLists();
     }
@@ -230,7 +232,12 @@ class _AddSongScreenState extends State<AddSongScreen> {
     final isSelectedLyricistInList =
         isInList(_artistIdAndNameList, lyricistName);
     if (!isSelectedLyricistInList && lyricistName.isNotEmpty) {
-      insertArtistData(name: lyricistName, imageUrl: noImage);
+      if (!mounted) return;
+      insertArtistData(
+        name: lyricistName,
+        imageUrl: noImage,
+        context: context,
+      );
       await _fetchIdAndNameLists();
     }
     if (lyricistName.isNotEmpty) {
@@ -243,7 +250,12 @@ class _AddSongScreenState extends State<AddSongScreen> {
     final isSelectedComposerInList =
         isInList(_artistIdAndNameList, composerName);
     if (!isSelectedComposerInList && composerName.isNotEmpty) {
-      insertArtistData(name: composerName, imageUrl: noImage);
+      if (!mounted) return;
+      insertArtistData(
+        name: composerName,
+        imageUrl: noImage,
+        context: context,
+      );
       await _fetchIdAndNameLists();
     }
     if (composerName.isNotEmpty) {
@@ -251,8 +263,9 @@ class _AddSongScreenState extends State<AddSongScreen> {
           list: _artistIdAndNameList, name: composerName);
     }
 
+    // 登録、編集
+    if (!mounted) return;
     if (_isEditing) {
-      // 歌詞編集
       updateSong(
         name: _enteredTitle,
         lyric: jsonStringLyrics,
@@ -263,9 +276,9 @@ class _AddSongScreenState extends State<AddSongScreen> {
         composerId: selectedComposerId,
         comment: _enteredComment,
         id: _song.id!,
+        context: context,
       );
     } else {
-      // 歌詞登録
       insertSongData(
         name: _enteredTitle,
         lyric: jsonStringLyrics,
@@ -275,6 +288,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
         lyricistId: selectedLyricistId,
         composerId: selectedComposerId,
         comment: _enteredComment,
+        context: context,
       );
     }
 
@@ -282,9 +296,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
       _isSending = false;
     });
 
-    if (!mounted) {
-      return;
-    }
+    if (!mounted) return;
 
     context.pushReplacement(RoutingPath.groupList);
   }

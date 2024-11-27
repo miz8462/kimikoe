@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
@@ -36,7 +37,7 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
     logger.i('ユーザープロフィールをクリアしました');
   }
 
-  Future<void> updateUserProfile(UserProfile newUser) async {
+  Future<void> updateUserProfile(UserProfile newUser,BuildContext context) async {
     try {
       final currentUserId = supabase.auth.currentUser!.id;
       logger.i('ユーザーのプロフィールを更新中...');
@@ -46,6 +47,7 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
         email: newUser.email,
         imageUrl: newUser.imageUrl,
         comment: newUser.comment,
+        context: context,
       );
 
       state = newUser;
