@@ -303,7 +303,8 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
           height: MediaQuery.of(context).size.height / 3,
           child: IntPicker(
             startNum: 100,
-            endNum: 190,
+            endNum: 200,
+            initialNum: 160,
             controller: _heightController,
           ),
         );
