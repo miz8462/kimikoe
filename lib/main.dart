@@ -6,13 +6,15 @@ import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:logger/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+// `dart.vm.product` フラグは、Dartの仮想マシンがプロダクションモードで実行されているかを示す。 
+// プロダクションモード (リリースモード) では true、デバッグモードでは false。
 bool isDebugMode = const bool.fromEnvironment('dart.vm.product') == false;
 
 final sessionProvider = StateProvider<Session?>((ref) => null);
 final providerContainer = ProviderContainer();
 final logger = Logger(
   printer: PrettyPrinter(
-    lineLength: 100,
+    lineLength: 90,
     methodCount: 0,
     errorMethodCount: 10,
   ),
@@ -35,10 +37,10 @@ Future<void> main() async {
   );
 
   // スマホを横にしても画面が回転しない
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((fn) {
-    runApp(const ProviderScope(child: KimikoeApp()));
-  });
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  // アプリの実行
+  runApp(const ProviderScope(child: KimikoeApp()));
 }
 
 final supabase = Supabase.instance.client;

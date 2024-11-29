@@ -6,9 +6,6 @@ import 'package:kimikoe_app/router/router.dart';
 const Color mainColor = Color(0xFF38B6FF);
 var kColorScheme = ColorScheme.fromSeed(seedColor: mainColor);
 
-// AppBarとBottomNavigationBarの設計
-// bodyに子要素として各ページを受け取る
-
 class KimikoeApp extends StatelessWidget {
   const KimikoeApp({super.key});
 
@@ -21,7 +18,6 @@ class KimikoeApp extends StatelessWidget {
       theme: ThemeData().copyWith(
         colorScheme: kColorScheme,
         primaryColor: mainColor,
-        // textTheme: GoogleFonts.mPlus1TextTheme(Theme.of(context).textTheme),
         textTheme: GoogleFonts.kosugiMaruTextTheme(Theme.of(context).textTheme),
         navigationBarTheme: NavigationBarThemeData(
           labelTextStyle: WidgetStateProperty.all(
@@ -29,8 +25,7 @@ class KimikoeApp extends StatelessWidget {
           ),
         ),
       ),
-      // darkTheme: ThemeData.dark(),
-      // themeMode: ThemeMode.dark,
+      // todo: ダークモード
     );
   }
 }

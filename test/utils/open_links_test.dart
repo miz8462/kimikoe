@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/link_pair.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -44,10 +45,16 @@ Future<bool> isUrlExists(String? url) async {
       if (getResponse.statusCode == 200) {
         return true;
       }
+      // ヘッドリクエストとゲットリクエスト両方のステータスコードが200でない場合
+      logger.e('URLにアクセスできませんでした: $url');
     } catch (e) {
-      print('Error: $e');
+      // ネットワークエラーやURLのパースエラーなど
+      logger.e('URLの確認中にエラーが発生しました $url: $e');
       return false;
     }
+  } else {
+    // URLがnullまたは空の場合
+    logger.e('無効なURL: $url');
   }
   return false;
 }

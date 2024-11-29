@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/link_pair.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -45,7 +46,7 @@ Future<bool> isUrlExists(String? url) async {
         return true;
       }
     } catch (e) {
-      print('Error: $e');
+      logger.e('Error: $e');
       return false;
     }
   }
