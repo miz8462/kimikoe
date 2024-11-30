@@ -3,24 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
-import 'package:logger/logger.dart';
+import 'package:kimikoe_app/utils/show_log_and_snack_bar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
-void showLogAndSnackBar({
-  required BuildContext context,
-  required Logger logger,
-  required String message,
-  bool isError = false,
-}) {
-  if (isError) {
-    logger.e(message);
-  } else {
-    logger.i(message);
-  }
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text(message)),
-  );
-}
 
 // CREATE
 Future<void> insertArtistData({

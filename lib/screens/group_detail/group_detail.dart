@@ -8,7 +8,7 @@ import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/screens/group_detail/widget/group_info.dart';
 import 'package:kimikoe_app/screens/group_detail/widget/group_members.dart';
-import 'package:kimikoe_app/utils/crud_data.dart';
+import 'package:kimikoe_app/utils/supabase_service.dart';
 import 'package:kimikoe_app/widgets/delete_alert_dialog.dart';
 
 class GroupDetailScreen extends StatefulWidget {

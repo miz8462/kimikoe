@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/artist.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
-import 'package:kimikoe_app/utils/crud_data.dart';
+import 'package:kimikoe_app/utils/supabase_service.dart';
 import 'package:kimikoe_app/utils/logging_util.dart';
 
 class ArtistListNotifier extends StateNotifier<List<Artist>> {

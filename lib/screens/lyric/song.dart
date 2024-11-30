@@ -10,7 +10,7 @@ import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/screens/lyric/widget/lyrics.dart';
 import 'package:kimikoe_app/screens/lyric/widget/member_color_and_name_list.dart';
 import 'package:kimikoe_app/screens/lyric/widget/song_info_card.dart';
-import 'package:kimikoe_app/utils/crud_data.dart';
+import 'package:kimikoe_app/utils/supabase_service.dart';
 import 'package:kimikoe_app/widgets/delete_alert_dialog.dart';
 
 // HylightedTextクラスを作成し行単位でハイライトできるようにする
