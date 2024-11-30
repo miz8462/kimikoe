@@ -14,7 +14,8 @@ void main() {
 
           // テストウィジェットの設定
           await tester.pumpWidget(
-            CupertinoApp( // IntPicerはCupertinoPickerで作られている
+            CupertinoApp(
+              // IntPicerはCupertinoPickerで作られている
               home: IntPicker(
                 // アプリでは身長入力に用いるため、この数値範囲を設定
                 startNum: 100,

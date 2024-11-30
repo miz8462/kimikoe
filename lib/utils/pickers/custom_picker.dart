@@ -5,7 +5,7 @@ class CustomYearPicker extends DatePickerModel {
       {required DateTime currentTime,
       required DateTime minTime,
       required DateTime maxTime,
-      required LocaleType locale})
+      required LocaleType locale,})
       : super(
             locale: locale,
             minTime: minTime,
