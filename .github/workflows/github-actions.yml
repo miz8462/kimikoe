@@ -24,9 +24,6 @@ jobs:
       - name: Analyze project source
         run: flutter analyze
 
-      - name: Dart Code Metrics 
-        run: dart run dart_code_metrics:metrics
-
       - name: Run tests
         run: flutter test --machine > test_results.json 
         
