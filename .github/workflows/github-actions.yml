@@ -44,12 +44,3 @@ jobs:
 
       - name: Run tests
         run: flutter test | tee test_results.txt # --machine でJSONに形式に変換できる。より高度な自動解析ではJSONにする必要がある。
-
-      - name: Display test results 
-        run: cat test_results.txt 
-        
-      - name: Upload test results 
-        uses: actions/upload-artifact@v4 
-        with: 
-          name: test-results 
-          path: test_results.txt
