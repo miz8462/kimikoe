@@ -13,10 +13,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4 # リポジトリのコードをクローン
 
+      - name: Cache Flutter SDK 
+        uses: actions/cache@v3 
+        with: 
+          path: /opt/hostedtoolcache/flutter 
+          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.yaml') }} 
+          restore-keys: | 
+            ${{ runner.os }}-flutter-
+
       # Flutter SDKのインストール 
       - uses: subosito/flutter-action@v2 
         with: 
           flutter-version: '3.24.0' # latestはダメだった
+
+      - name: Cache dependencies 
+        uses: actions/cache@v3 
+        with: 
+          path: |
+            ~/.pub-cache
+            ~/.flutter 
+          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.yaml') }} 
+          restore-keys: | 
+            ${{ runner.os }}-flutter-
 
       - name: Install dependencies
         run: flutter pub get
@@ -25,4 +43,13 @@ jobs:
         run: flutter analyze
 
       - name: Run tests
-        run: flutter test --machine | tee test_results.json
+        run: flutter test | tee test_results.txt # --machine でJSONに形式に変換できる。より高度な自動解析ではJSONにする必要がある。
+
+      - name: Display test results 
+        run: cat test_results.txt 
+        
+      - name: Upload test results 
+        uses: actions/upload-artifact@v4 
+        with: 
+          name: test-results 
+          path: test_results.txt
