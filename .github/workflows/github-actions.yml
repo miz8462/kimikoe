@@ -1,4 +1,4 @@
-name: Flutter
+name: Flutter Build and Test
 
 on:
   push:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4 # リポジトリのコードをクローン
 
       # Flutter SDKのインストール 
       - uses: subosito/flutter-action@v2 
@@ -24,5 +24,17 @@ jobs:
       - name: Analyze project source
         run: flutter analyze
 
+      - name: Dart Code Metrics 
+        run: dart run dart_code_metrics:metrics
+
       - name: Run tests
-        run: flutter test
+        run: flutter test --machine > test_results.json 
+        
+      - name: Convert test results 
+        run: cat test_results.json | jq '.[] | select(.event == "testDone")' > junit_report.xml 
+        
+      - name: Upload test results 
+        uses: actions/upload-artifact@v3 
+        with: 
+          name: test-results 
+          path: junit_report.xml
