@@ -16,7 +16,7 @@ jobs:
       # Flutter SDKのインストール 
       - uses: subosito/flutter-action@v2 
         with: 
-          flutter-version: 'latest'
+          flutter-version: '3.24.0'
 
       - name: Install dependencies
         run: flutter pub get
