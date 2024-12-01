@@ -45,9 +45,12 @@ jobs:
       - name: Run tests
         run: flutter test --coverage # --machine でJSONに形式に変換できる。より高度な自動解析ではJSONにする必要がある。
         
-      - name: Upload Code Coverage to Codecov 
-        uses: codecov/codecov-action@v2 
+      - name: Upload Code Coverage to Codecov
+        uses: codecov/codecov-action@v5
         with: 
-          file: ./coverage/lcov.info 
-        env: 
+          file: ./coverage/lcov.info
+        env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          slug: miz8462/kimikoe
+
+
