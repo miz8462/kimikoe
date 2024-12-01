@@ -44,12 +44,6 @@ jobs:
 
       - name: Run tests
         run: flutter test --coverage # --machine でJSONに形式に変換できる。より高度な自動解析ではJSONにする必要がある。
-
-      - name: Upload Code Coverage Report 
-        uses: actions/upload-artifact@v4 
-        with: 
-          name: coverage-report 
-          path: coverage/lcov.info 
         
       - name: Upload Code Coverage to Codecov 
         uses: codecov/codecov-action@v2 
