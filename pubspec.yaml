@@ -51,6 +51,9 @@ dev_dependencies:
   riverpod_lint: ^2.3.10
   custom_lint: ^0.7.0
   mockito: ^5.4.4
+  url_launcher_platform_interface: ^2.3.2
+  plugin_platform_interface: ^2.1.8
+
 
 flutter:
   uses-material-design: true
