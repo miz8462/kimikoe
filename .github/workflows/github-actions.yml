@@ -29,7 +29,7 @@ jobs:
       - name: Cache dependencies 
         uses: actions/cache@v3 
         with: 
-          path: |
+            path: |
             ~/.pub-cache
             ~/.flutter 
           key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.yaml') }} 
@@ -38,6 +38,12 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get
+
+      - name: Check for outdated dependencies 
+        run: flutter pub outdated
+
+      - name: Check Code Formatting 
+        run: dart format --set-exit-if-changed .
   
       - name: Analyze project source
         run: flutter analyze
@@ -52,5 +58,14 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           slug: miz8462/kimikoe
+
+      - name: Build release APK 
+        run: flutter build apk --release 
+        
+      - name: Upload APK as artifact 
+        uses: actions/upload-artifact@v4 
+        with: 
+          name: app-release-apk 
+          path: build/app/outputs/flutter-apk/app-release.apk
 
 

@@ -4,7 +4,7 @@ import 'package:kimikoe_app/models/dropdown_id_and_name.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 
 class CustomDropdownMenu extends StatefulWidget {
-  const  CustomDropdownMenu({
+  const CustomDropdownMenu({
     super.key,
     required this.label,
     required this.dataList,

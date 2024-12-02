@@ -37,7 +37,8 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
     logger.i('ユーザープロフィールをクリアしました');
   }
 
-  Future<void> updateUserProfile(UserProfile newUser,BuildContext context) async {
+  Future<void> updateUserProfile(
+      UserProfile newUser, BuildContext context) async {
     try {
       final currentUserId = supabase.auth.currentUser!.id;
       logger.i('ユーザーのプロフィールを更新中...');

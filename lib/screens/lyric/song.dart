@@ -46,8 +46,8 @@ class _SongScreenState extends State<SongScreen> {
             deleteDataFromTable(
               table: TableName.songs,
               column: ColumnName.id,
-              value: (widget.song.id).toString(),              context: context,
-
+              value: (widget.song.id).toString(),
+              context: context,
             );
           },
           successMessage: '${widget.song.title}が削除されました',

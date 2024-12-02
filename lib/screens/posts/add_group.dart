@@ -144,8 +144,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
         table: TableName.images,
         path: imagePath,
         file: _selectedImage!,
-                context: context,
-
+        context: context,
       );
     }
     if (imagePath != null) {

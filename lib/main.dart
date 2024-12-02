@@ -6,7 +6,7 @@ import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:logger/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-// `dart.vm.product` フラグは、Dartの仮想マシンがプロダクションモードで実行されているかを示す。 
+// `dart.vm.product` フラグは、Dartの仮想マシンがプロダクションモードで実行されているかを示す。
 // プロダクションモード (リリースモード) では true、デバッグモードでは false。
 bool isDebugMode = const bool.fromEnvironment('dart.vm.product') == false;
 
