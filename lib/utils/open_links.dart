@@ -36,15 +36,18 @@ Future<bool> isUrlExists(String? url) async {
       final headResponse = await http.head(
         Uri.parse(url),
       );
+      logger.i('HEAD request status code: ${headResponse.statusCode}');
       if (headResponse.statusCode == 200) {
         return true;
       }
       final getResponse = await http.get(
         Uri.parse(url),
       );
+      logger.i('GET request status code: ${getResponse.statusCode}');
       if (getResponse.statusCode == 200) {
         return true;
       }
+      return false;
     } catch (e) {
       logger.e('Error: $e');
       return false;

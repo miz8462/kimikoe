@@ -1,4 +1,4 @@
-import '../test_utils/mocks/mock_logger.dart';
+import '../test_utils/mocks/logger_mock.dart';
 import '../test_utils/test_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
