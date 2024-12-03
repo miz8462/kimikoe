@@ -20,11 +20,12 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
           .single();
 
       state = UserProfile(
-          id: currentUser[ColumnName.id],
-          name: currentUser[ColumnName.name],
-          email: currentUser[ColumnName.email],
-          imageUrl: currentUser[ColumnName.imageUrl],
-          comment: currentUser[ColumnName.comment],);
+        id: currentUser[ColumnName.id],
+        name: currentUser[ColumnName.name],
+        email: currentUser[ColumnName.email],
+        imageUrl: currentUser[ColumnName.imageUrl],
+        comment: currentUser[ColumnName.comment],
+      );
       logger.i('ユーザーID $currentUserId のプロフィールを取得しました');
     } catch (e, stackTrace) {
       logger.e(
@@ -41,7 +42,9 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
   }
 
   Future<void> updateUserProfile(
-      UserProfile newUser, BuildContext context,) async {
+    UserProfile newUser,
+    BuildContext context,
+  ) async {
     try {
       final currentUserId = supabase.auth.currentUser!.id;
       logger.i('ユーザーのプロフィールを更新中...');
@@ -64,4 +67,5 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
 
 final userProfileProvider =
     StateNotifierProvider<UserProfileNotifier, UserProfile?>(
-        (ref) => UserProfileNotifier()..fetchUserProfile(),);
+  (ref) => UserProfileNotifier()..fetchUserProfile(),
+);

@@ -14,10 +14,13 @@ class ArtistListNotifier extends StateNotifier<List<Artist>> {
       return null;
     }
     try {
-      return state.firstWhere((artist) => artist.id == id, orElse: () {
-        logger.e('IDが $id のアーティストが見つかりませんでした');
-        throw StateError('IDが $id のアーティストが見つかりませんでした');
-      },);
+      return state.firstWhere(
+        (artist) => artist.id == id,
+        orElse: () {
+          logger.e('IDが $id のアーティストが見つかりませんでした');
+          throw StateError('IDが $id のアーティストが見つかりませんでした');
+        },
+      );
     } catch (e) {
       logger.e('ID:$id のアーティストを見つける際にエラーが発生しました', error: e);
     }
@@ -31,11 +34,12 @@ final artistListProvider =
   logAsyncValue(asyncValue);
 
   return asyncValue.maybeWhen(
-      data: (data) => ArtistListNotifier(data),
-      orElse: () {
-        logger.w('データが見つからないため、空のアーティストリストを返します');
-        return ArtistListNotifier([]);
-      },);
+    data: (data) => ArtistListNotifier(data),
+    orElse: () {
+      logger.w('データが見つからないため、空のアーティストリストを返します');
+      return ArtistListNotifier([]);
+    },
+  );
 });
 
 final artistListFromSupabaseProvider =
@@ -48,17 +52,21 @@ final artistListFromSupabaseProvider =
     final artists = response.map<Artist>((artist) {
       final imageUrl = fetchImageUrl(artist[ColumnName.imageUrl]);
       return Artist(
-          id: artist[ColumnName.id],
-          name: artist[ColumnName.name],
-          imageUrl: imageUrl,
-          comment: artist[ColumnName.comment],);
+        id: artist[ColumnName.id],
+        name: artist[ColumnName.name],
+        imageUrl: imageUrl,
+        comment: artist[ColumnName.comment],
+      );
     }).toList();
 
     logger.i('${artists.length}件のアーティストデータをリストにしました');
     return artists;
   } catch (e, stackTrace) {
-    logger.e('アーティストリストの取得またはマッピング中にエラーが発生しました',
-        error: e, stackTrace: stackTrace,);
+    logger.e(
+      'アーティストリストの取得またはマッピング中にエラーが発生しました',
+      error: e,
+      stackTrace: stackTrace,
+    );
     return [];
   }
 });

@@ -36,7 +36,6 @@ final songListOfGroupProvider =
     return songs;
   } catch (e, stackTrace) {
     logger.e(
-
       'ID:$groupId の曲リストを取得中にエラーが発生しました',
       error: e,
       stackTrace: stackTrace,
