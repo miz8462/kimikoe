@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 String formatDateTimeToXXXX({
@@ -32,5 +31,3 @@ String formatStringDateToSlash(String date) {
   DateFormat formatter = DateFormat("yyyy/MM/dd");
   return formatter.format(birthDay);
 }
-
-
