@@ -9,22 +9,22 @@ String formatDateTimeToXXXX({
   return formatter.format(date);
 }
 
-String formatStringDateToJapaneseOnlyMonthAndDay(String date) {
-  final birthDay = DateTime.parse(date);
+String formatStringDateToJapaneseOnlyMonthAndDay(String strDate) {
+  final date = DateTime.parse(strDate);
   DateFormat formatter = DateFormat("MM月dd日");
-  return formatter.format(birthDay);
+  return formatter.format(date);
 }
 
-String formatStringDateToJapaneseWithYear(String date) {
-  final birthDay = DateTime.parse(date);
+String formatStringDateToJapaneseWithYear(String strDate) {
+  final date = DateTime.parse(strDate);
   DateFormat formatter = DateFormat("yyyy年MM月dd日");
-  return formatter.format(birthDay);
+  return formatter.format(date);
 }
 
-String formatStringDateToMMdd(String date) {
-  final birthDay = DateTime.parse(date);
+String formatStringDateToMMdd(String strDate) {
+  final date = DateTime.parse(strDate);
   DateFormat formatter = DateFormat("MM-dd");
-  return formatter.format(birthDay);
+  return formatter.format(date);
 }
 
 String formatStringDateToSlash(String date) {
@@ -33,6 +33,4 @@ String formatStringDateToSlash(String date) {
   return formatter.format(birthDay);
 }
 
-String formatStringColorCode(Color color) {
-  return '0x${color.value.toRadixString(16)}';
-}
+

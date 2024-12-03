@@ -15,6 +15,7 @@ import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/utils/check.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
+import 'package:kimikoe_app/utils/color_code_to_string_hex.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
 import 'package:kimikoe_app/utils/pickers/custom_picker.dart';
 import 'package:kimikoe_app/utils/pickers/int_picker.dart';
@@ -205,7 +206,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     }
 
     // MaterialColor(primary value: Color(0xff2196f3))という表記から"0xff2196f3"を抜き出す
-    final selectedColor = formatStringColorCode(_selectedColor);
+    final selectedColor = colorCodeToStringHex(_selectedColor);
 
     if (!mounted) return;
     if (_isEditing) {
