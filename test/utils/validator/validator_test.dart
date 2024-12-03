@@ -27,9 +27,14 @@ void main() {
     });
     test('longTextInputValidatorが正しいエラーメッセージを返すことをテスト', () {
       expect(longTextInputValidator(null, 'コメント'), 'コメントを入力してください。');
-      expect(longTextInputValidator('', 'コメント'), 'コメントを入力してください。');
-      expect(longTextInputValidator('a' * 10001, 'コメント'),
-          'コメントは10000文字以下にしてください。');
+      expect(
+        longTextInputValidator('', 'コメント'),
+        'コメントを入力してください。',
+      );
+      expect(
+        longTextInputValidator('a' * 10001, 'コメント'),
+        'コメントは10000文字以下にしてください。',
+      );
       expect(longTextInputValidator('a' * 10000, 'コメント'), null);
       expect(longTextInputValidator('Coment', 'コメント'), null);
     });

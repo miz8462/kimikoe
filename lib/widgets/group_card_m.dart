@@ -62,7 +62,7 @@ class GroupCardM extends StatelessWidget {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

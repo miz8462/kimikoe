@@ -177,7 +177,9 @@ class _AddSongScreenState extends State<AddSongScreen> {
     // 「歌詞追加」の歌詞と歌手をjson形式でまとめる e.g. {'':,'singerId':idolId}
     for (var index = 0; index < _lyricAndSingerList.length; index++) {
       final idolId = fetchSelectedDataIdFromName(
-          list: _idolIdAndNameList, name: _singerListControllers[index].text);
+        list: _idolIdAndNameList,
+        name: _singerListControllers[index].text,
+      );
       _lyricAndSingerList[index]['singerId'] = idolId;
     }
 
@@ -242,7 +244,9 @@ class _AddSongScreenState extends State<AddSongScreen> {
     }
     if (lyricistName.isNotEmpty) {
       selectedLyricistId = fetchSelectedDataIdFromName(
-          list: _artistIdAndNameList, name: lyricistName);
+        list: _artistIdAndNameList,
+        name: lyricistName,
+      );
     }
 
     // 作曲家登録
@@ -260,7 +264,9 @@ class _AddSongScreenState extends State<AddSongScreen> {
     }
     if (composerName.isNotEmpty) {
       selectedComposerId = fetchSelectedDataIdFromName(
-          list: _artistIdAndNameList, name: composerName);
+        list: _artistIdAndNameList,
+        name: composerName,
+      );
     }
 
     // 登録、編集

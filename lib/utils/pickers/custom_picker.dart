@@ -7,10 +7,11 @@ class CustomYearPicker extends DatePickerModel {
     required DateTime maxTime,
     required LocaleType locale,
   }) : super(
-            locale: locale,
-            minTime: minTime,
-            maxTime: maxTime,
-            currentTime: currentTime);
+          locale: locale,
+          minTime: minTime,
+          maxTime: maxTime,
+          currentTime: currentTime,
+        );
 
   @override
   List<int> layoutProportions() {
@@ -24,16 +25,17 @@ class CustomYearPicker extends DatePickerModel {
 }
 
 class CustomMonthDayPicker extends DatePickerModel {
-  CustomMonthDayPicker(
-      {required DateTime currentTime,
-      required DateTime minTime,
-      required DateTime maxTime,
-      required LocaleType locale})
-      : super(
-            locale: locale,
-            minTime: minTime,
-            maxTime: maxTime,
-            currentTime: currentTime);
+  CustomMonthDayPicker({
+    required DateTime currentTime,
+    required DateTime minTime,
+    required DateTime maxTime,
+    required LocaleType locale,
+  }) : super(
+          locale: locale,
+          minTime: minTime,
+          maxTime: maxTime,
+          currentTime: currentTime,
+        );
 
   @override
   List<int> layoutProportions() {

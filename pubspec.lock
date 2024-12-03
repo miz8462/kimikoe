@@ -819,7 +819,7 @@ packages:
     source: hosted
     version: "0.1.2-main.4"
   matcher:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: matcher
       sha256: d2323aa2060500f906aa31a895b4030b6da3ebdcc5619d14ce1aada65cd161cb

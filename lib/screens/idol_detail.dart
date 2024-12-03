@@ -7,9 +7,9 @@ import 'package:kimikoe_app/models/idol.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/utils/supabase_service.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
 import 'package:kimikoe_app/utils/open_links.dart';
+import 'package:kimikoe_app/utils/supabase_service.dart';
 import 'package:kimikoe_app/widgets/delete_alert_dialog.dart';
 
 class IdolDetailScreen extends StatefulWidget {
@@ -179,14 +179,16 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
                   height: 24,
                   width: 24,
                   decoration: BoxDecoration(
-                      borderRadius: borderRadius12, color: idol.color),
+                    borderRadius: borderRadius12,
+                    color: idol.color,
+                  ),
                 ),
                 const Gap(spaceS),
                 if (idol.group != null)
                   Text(
                     idol.group!.name,
                     style: Theme.of(context).textTheme.titleLarge,
-                  )
+                  ),
               ],
             ),
             const Gap(spaceS),

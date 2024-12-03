@@ -79,28 +79,29 @@ final router = GoRouter(
                   },
                   routes: [
                     GoRoute(
-                        path: RoutingPath.groupDetail,
-                        name: RoutingPath.groupDetail,
-                        pageBuilder: (context, state) {
-                          final groupData = state.extra as IdolGroup;
-                          return MaterialPage(
-                            child: GroupDetailScreen(group: groupData),
-                            key: state.pageKey,
-                          );
-                        },
-                        routes: [
-                          GoRoute(
-                            path: RoutingPath.idolDetail,
-                            name: RoutingPath.idolDetail,
-                            pageBuilder: (context, state) {
-                              final idolData = state.extra as Idol;
-                              return MaterialPage(
-                                child: IdolDetailScreen(idol: idolData),
-                                key: state.pageKey,
-                              );
-                            },
-                          ),
-                        ]),
+                      path: RoutingPath.groupDetail,
+                      name: RoutingPath.groupDetail,
+                      pageBuilder: (context, state) {
+                        final groupData = state.extra as IdolGroup;
+                        return MaterialPage(
+                          child: GroupDetailScreen(group: groupData),
+                          key: state.pageKey,
+                        );
+                      },
+                      routes: [
+                        GoRoute(
+                          path: RoutingPath.idolDetail,
+                          name: RoutingPath.idolDetail,
+                          pageBuilder: (context, state) {
+                            final idolData = state.extra as Idol;
+                            return MaterialPage(
+                              child: IdolDetailScreen(idol: idolData),
+                              key: state.pageKey,
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ],
                 ),
                 GoRoute(
@@ -125,40 +126,42 @@ final router = GoRouter(
           navigatorKey: _addItemNavigatorKey,
           routes: [
             GoRoute(
-                path: RoutingPath.addSong,
-                name: RoutingPath.addSong,
-                pageBuilder: (context, state) {
-                  // todo: 編集時のdata
-                  final Map<String, dynamic>? data;
-                  data = state.extra as Map<String, dynamic>?;
-                  final Song? song =
-                      data?['song'] ?? const Song(title: '', lyrics: '');
-                  final bool? isEditing = data?['isEditing'] ?? false;
-                  return NoTransitionPage(
-                    key: state.pageKey,
-                    child: AddSongScreen(
-                      song: song,
-                      isEditing: isEditing,
-                    ),
-                  );
-                }),
+              path: RoutingPath.addSong,
+              name: RoutingPath.addSong,
+              pageBuilder: (context, state) {
+                // todo: 編集時のdata
+                final Map<String, dynamic>? data;
+                data = state.extra as Map<String, dynamic>?;
+                final Song? song =
+                    data?['song'] ?? const Song(title: '', lyrics: '');
+                final bool? isEditing = data?['isEditing'] ?? false;
+                return NoTransitionPage(
+                  key: state.pageKey,
+                  child: AddSongScreen(
+                    song: song,
+                    isEditing: isEditing,
+                  ),
+                );
+              },
+            ),
             GoRoute(
-                path: RoutingPath.addGroup,
-                name: RoutingPath.addGroup,
-                pageBuilder: (context, state) {
-                  final Map<String, dynamic>? data;
-                  data = state.extra as Map<String, dynamic>?;
-                  final IdolGroup? group =
-                      data?['group'] ?? const IdolGroup(name: '');
-                  final bool? isEditing = data?['isEditing'] ?? false;
-                  return NoTransitionPage(
-                    key: state.pageKey,
-                    child: AddGroupScreen(
-                      group: group,
-                      isEditing: isEditing,
-                    ),
-                  );
-                }),
+              path: RoutingPath.addGroup,
+              name: RoutingPath.addGroup,
+              pageBuilder: (context, state) {
+                final Map<String, dynamic>? data;
+                data = state.extra as Map<String, dynamic>?;
+                final IdolGroup? group =
+                    data?['group'] ?? const IdolGroup(name: '');
+                final bool? isEditing = data?['isEditing'] ?? false;
+                return NoTransitionPage(
+                  key: state.pageKey,
+                  child: AddGroupScreen(
+                    group: group,
+                    isEditing: isEditing,
+                  ),
+                );
+              },
+            ),
             GoRoute(
               path: RoutingPath.addIdol,
               name: RoutingPath.addIdol,

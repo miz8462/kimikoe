@@ -276,7 +276,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                             keyboardType: TextInputType.emailAddress,
                             decoration: const InputDecoration(
                               errorStyle: TextStyle(
-                                  color: Colors.yellowAccent, fontSize: 16),
+                                color: Colors.yellowAccent,
+                                fontSize: 16,
+                              ),
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
                                   color: textWhite,
@@ -312,7 +314,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                             keyboardType: TextInputType.visiblePassword,
                             decoration: const InputDecoration(
                               errorStyle: TextStyle(
-                                  color: Colors.yellowAccent, fontSize: 16),
+                                color: Colors.yellowAccent,
+                                fontSize: 16,
+                              ),
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
                                   color: textWhite,
@@ -349,7 +353,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                               keyboardType: TextInputType.name,
                               decoration: const InputDecoration(
                                 errorStyle: TextStyle(
-                                    color: Colors.yellowAccent, fontSize: 16),
+                                  color: Colors.yellowAccent,
+                                  fontSize: 16,
+                                ),
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
                                     color: textWhite,
@@ -416,9 +422,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                   .textTheme
                                   .titleMedium!
                                   .copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onError),
+                                    color:
+                                        Theme.of(context).colorScheme.onError,
+                                  ),
                             ),
                           ),
                           const Gap(12),

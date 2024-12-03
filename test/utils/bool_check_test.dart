@@ -8,7 +8,7 @@ void main() {
       final list = [
         {ColumnName.name: 'Miu'},
         {ColumnName.name: 'Nanako'},
-        {ColumnName.name: 'Nika'}
+        {ColumnName.name: 'Nika'},
       ];
 
       // 名前が存在する場合

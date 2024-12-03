@@ -19,27 +19,28 @@ class DeleteAlertDialog extends StatelessWidget {
       content: const Text('削除したデータは復元できません。\nそれでも削除しますか？'),
       actions: [
         TextButton(
-            onPressed: () async {
-              try {
-                await onDelete();
-                if (!context.mounted) return;
-                Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(successMessage)),
-                );
-                logger.i(successMessage);
-              } catch (e) {
-                Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(errorMessage)),
-                );
-                logger.e(errorMessage, error: e);
-              }
-            },
-            child: Text(
-              'はい',
-              style: TextStyle(color: Theme.of(context).colorScheme.error),
-            )),
+          onPressed: () async {
+            try {
+              await onDelete();
+              if (!context.mounted) return;
+              Navigator.of(context).pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(successMessage)),
+              );
+              logger.i(successMessage);
+            } catch (e) {
+              Navigator.of(context).pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(errorMessage)),
+              );
+              logger.e(errorMessage, error: e);
+            }
+          },
+          child: Text(
+            'はい',
+            style: TextStyle(color: Theme.of(context).colorScheme.error),
+          ),
+        ),
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();

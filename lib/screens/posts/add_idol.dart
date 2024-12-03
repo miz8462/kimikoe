@@ -14,11 +14,11 @@ import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/utils/check.dart';
-import 'package:kimikoe_app/utils/supabase_service.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
-import 'package:kimikoe_app/utils/pickers/int_picker.dart';
 import 'package:kimikoe_app/utils/pickers/custom_picker.dart';
+import 'package:kimikoe_app/utils/pickers/int_picker.dart';
+import 'package:kimikoe_app/utils/supabase_service.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
 import 'package:kimikoe_app/widgets/buttons/circular_button.dart';
 import 'package:kimikoe_app/widgets/buttons/image_input_button.dart';
@@ -455,13 +455,14 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       ),
                       const Gap(spaceS),
                       InputForm(
-                          initialValue:
-                              _isEditing ? _idol.hometown : _enteredHometown,
-                          label: '出身地',
-                          validator: _hometownValidator,
-                          onSaved: (value) {
-                            _enteredHometown = value!;
-                          }),
+                        initialValue:
+                            _isEditing ? _idol.hometown : _enteredHometown,
+                        label: '出身地',
+                        validator: _hometownValidator,
+                        onSaved: (value) {
+                          _enteredHometown = value!;
+                        },
+                      ),
                       const Gap(spaceS),
                       PickerForm(
                         label: 'デビュー年',

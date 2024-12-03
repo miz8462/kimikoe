@@ -134,10 +134,11 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     } else {
       // e.g. /aaa/bbb/ccc/image.png
       imagePath = getImagePath(
-          isEditing: _isEditing,
-          isImageChanged: _isImageChanged,
-          imageUrl: _group.imageUrl,
-          imageFile: _selectedImage);
+        isEditing: _isEditing,
+        isImageChanged: _isImageChanged,
+        imageUrl: _group.imageUrl,
+        imageFile: _selectedImage,
+      );
     }
     if (_selectedImage != null && imagePath != null) {
       await uploadImageToStorage(

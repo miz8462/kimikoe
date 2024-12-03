@@ -73,13 +73,19 @@ class IdolGroupListNotifier extends StateNotifier<IdolGroupListState> {
 
   IdolGroup? getGroupById(int id) {
     try {
-      return state.groups.firstWhere((group) => group.id == id, orElse: () {
-        logger.e('IDが $id のグループが見つかりませんでした');
-        throw StateError('IDが $id のグループが見つかりませんでした');
-      });
+      return state.groups.firstWhere(
+        (group) => group.id == id,
+        orElse: () {
+          logger.e('IDが $id のグループが見つかりませんでした');
+          throw StateError('IDが $id のグループが見つかりませんでした');
+        },
+      );
     } catch (e, stackTrace) {
-      logger.e('ID:$id のグループを見つける際にエラーが発生しました',
-          error: e, stackTrace: stackTrace);
+      logger.e(
+        'ID:$id のグループを見つける際にエラーが発生しました',
+        error: e,
+        stackTrace: stackTrace,
+      );
       return null;
     }
   }
@@ -87,4 +93,5 @@ class IdolGroupListNotifier extends StateNotifier<IdolGroupListState> {
 
 final idolGroupListProvider =
     StateNotifierProvider<IdolGroupListNotifier, IdolGroupListState>(
-        (ref) => IdolGroupListNotifier());
+  (ref) => IdolGroupListNotifier(),
+);

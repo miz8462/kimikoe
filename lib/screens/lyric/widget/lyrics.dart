@@ -29,7 +29,7 @@ class Lyrics extends StatelessWidget {
           final members = snapshot.data!;
           final memberMap = {
             for (var member in members)
-              member[ColumnName.id]: Color(int.parse(member[ColumnName.color]))
+              member[ColumnName.id]: Color(int.parse(member[ColumnName.color])),
           };
 
           final lyricsJson = jsonDecode(lyrics);

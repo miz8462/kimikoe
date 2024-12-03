@@ -34,7 +34,9 @@ void main() {
           // itemExtent: 35。
           // 10.1なのは10.0ピッタリだとドラッグ9だと認識されるから
           await tester.drag(
-              find.byType(CupertinoPicker), Offset(0, -35.0 * 10.1));
+            find.byType(CupertinoPicker),
+            Offset(0, -35.0 * 10.1),
+          );
           await tester.pumpAndSettle();
           logger.i('変更後の値: ${controller.text}');
 

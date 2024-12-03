@@ -40,8 +40,10 @@ class GroupMembers extends ConsumerWidget {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              context.pushNamed(RoutingPath.idolDetail,
-                                  extra: member);
+                              context.pushNamed(
+                                RoutingPath.idolDetail,
+                                extra: member,
+                              );
                             },
                             child: Row(
                               children: [
@@ -49,8 +51,9 @@ class GroupMembers extends ConsumerWidget {
                                   height: 24,
                                   width: 24,
                                   decoration: BoxDecoration(
-                                      borderRadius: borderRadius12,
-                                      color: member.color),
+                                    borderRadius: borderRadius12,
+                                    color: member.color,
+                                  ),
                                 ),
                                 const Gap(spaceS),
                                 Text(
@@ -60,7 +63,7 @@ class GroupMembers extends ConsumerWidget {
                               ],
                             ),
                           ),
-                          const Gap(spaceSS)
+                          const Gap(spaceSS),
                         ],
                       );
                     },

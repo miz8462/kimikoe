@@ -8,8 +8,8 @@ import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/utils/supabase_service.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
+import 'package:kimikoe_app/utils/supabase_service.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
 import 'package:kimikoe_app/widgets/buttons/image_input_button.dart';
 import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
@@ -67,10 +67,11 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
     final imageUrl = fetchImageUrl(imagePath!);
 
     insertArtistData(
-        name: _enteredName,
-        imageUrl: imageUrl,
-        comment: _enteredComment,
-        context: context);
+      name: _enteredName,
+      imageUrl: imageUrl,
+      comment: _enteredComment,
+      context: context,
+    );
 
     setState(() {
       _isSending = false;

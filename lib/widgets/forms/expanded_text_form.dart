@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
 
 class ExpandedTextForm extends StatefulWidget {
-  const ExpandedTextForm(
-      {super.key, this.label, required this.onTextChanged, this.initialValue});
+  const ExpandedTextForm({
+    super.key,
+    this.label,
+    required this.onTextChanged,
+    this.initialValue,
+  });
 
   final String? label;
   final ValueChanged<String?> onTextChanged;

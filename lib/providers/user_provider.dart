@@ -24,11 +24,14 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
           name: currentUser[ColumnName.name],
           email: currentUser[ColumnName.email],
           imageUrl: currentUser[ColumnName.imageUrl],
-          comment: currentUser[ColumnName.comment]);
+          comment: currentUser[ColumnName.comment],);
       logger.i('ユーザーID $currentUserId のプロフィールを取得しました');
     } catch (e, stackTrace) {
-      logger.e('ユーザーID $currentUserId のプロフィールを取得中にエラーが発生しました',
-          error: e, stackTrace: stackTrace);
+      logger.e(
+        'ユーザーID $currentUserId のプロフィールを取得中にエラーが発生しました',
+        error: e,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -38,7 +41,7 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
   }
 
   Future<void> updateUserProfile(
-      UserProfile newUser, BuildContext context) async {
+      UserProfile newUser, BuildContext context,) async {
     try {
       final currentUserId = supabase.auth.currentUser!.id;
       logger.i('ユーザーのプロフィールを更新中...');
@@ -61,4 +64,4 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
 
 final userProfileProvider =
     StateNotifierProvider<UserProfileNotifier, UserProfile?>(
-        (ref) => UserProfileNotifier()..fetchUserProfile());
+        (ref) => UserProfileNotifier()..fetchUserProfile(),);

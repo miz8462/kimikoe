@@ -47,16 +47,22 @@ class IdolListOfGroupNotifier extends StateNotifier<AsyncValue<List<Idol>>> {
       logger.i('SupabaseからID $groupId のアイドルリストを取得しました。データ数は${idols.length}個です');
       state = AsyncData(idols);
     } catch (e, stackTrace) {
-      logger.e('ID:$groupId のアイドルリストを取得中にエラーが発生しました',
-          error: e, stackTrace: stackTrace);
+      logger.e(
+        'ID:$groupId のアイドルリストを取得中にエラーが発生しました',
+        error: e,
+        stackTrace: stackTrace,
+      );
       state = AsyncError(e, stackTrace);
     }
   }
 
   Idol? getIdolById(int id) {
-    return state.value?.firstWhere((idol) => idol.id == id, orElse: () {
-      throw StateError('Idol with id:$id not fount');
-    });
+    return state.value?.firstWhere(
+      (idol) => idol.id == id,
+      orElse: () {
+        throw StateError('Idol with id:$id not fount');
+      },
+    );
   }
 }
 

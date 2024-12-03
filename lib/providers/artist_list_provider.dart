@@ -17,7 +17,7 @@ class ArtistListNotifier extends StateNotifier<List<Artist>> {
       return state.firstWhere((artist) => artist.id == id, orElse: () {
         logger.e('IDが $id のアーティストが見つかりませんでした');
         throw StateError('IDが $id のアーティストが見つかりませんでした');
-      });
+      },);
     } catch (e) {
       logger.e('ID:$id のアーティストを見つける際にエラーが発生しました', error: e);
     }
@@ -35,7 +35,7 @@ final artistListProvider =
       orElse: () {
         logger.w('データが見つからないため、空のアーティストリストを返します');
         return ArtistListNotifier([]);
-      });
+      },);
 });
 
 final artistListFromSupabaseProvider =
@@ -51,14 +51,14 @@ final artistListFromSupabaseProvider =
           id: artist[ColumnName.id],
           name: artist[ColumnName.name],
           imageUrl: imageUrl,
-          comment: artist[ColumnName.comment]);
+          comment: artist[ColumnName.comment],);
     }).toList();
 
     logger.i('${artists.length}件のアーティストデータをリストにしました');
     return artists;
   } catch (e, stackTrace) {
     logger.e('アーティストリストの取得またはマッピング中にエラーが発生しました',
-        error: e, stackTrace: stackTrace);
+        error: e, stackTrace: stackTrace,);
     return [];
   }
 });

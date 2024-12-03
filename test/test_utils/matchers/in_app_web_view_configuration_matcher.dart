@@ -22,7 +22,9 @@ class InAppWebViewConfigurationMatcher extends Matcher {
           'headers: ${_expected.headers}');
 
   bool _compareHeaders(
-      Map<String, String> headers1, Map<String, String> headers2) {
+    Map<String, String> headers1,
+    Map<String, String> headers2,
+  ) {
     if (headers1.length != headers2.length) return false;
     for (String key in headers1.keys) {
       if (headers1[key] != headers2[key]) return false;

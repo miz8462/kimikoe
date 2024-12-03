@@ -70,8 +70,10 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
               PopupMenuItem<int>(
                 value: 1,
                 child: ListTile(
-                  leading: Icon(Icons.delete,
-                      color: Theme.of(context).colorScheme.error),
+                  leading: Icon(
+                    Icons.delete,
+                    color: Theme.of(context).colorScheme.error,
+                  ),
                   title: Text(
                     '削除',
                     style: Theme.of(context)
@@ -123,7 +125,7 @@ class AppBarBottom extends StatelessWidget implements PreferredSizeWidget {
             color: mainColor.withOpacity(0.5),
             spreadRadius: 0,
             blurRadius: 2,
-          )
+          ),
         ],
       ),
     );

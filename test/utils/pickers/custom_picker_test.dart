@@ -64,8 +64,10 @@ void main() {
     });
 
     test('finalTimeが現在の年を変えることをテスト', () {
-      expect(customMonthDayPicker.finalTime(),
-          DateTime(0, currentTime.month, currentTime.day));
+      expect(
+        customMonthDayPicker.finalTime(),
+        DateTime(0, currentTime.month, currentTime.day),
+      );
     });
   });
 }

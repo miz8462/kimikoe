@@ -5,7 +5,6 @@ import 'package:mockito/mockito.dart';
 class MockUrlLauncherPlatform extends Mock
     with MockPlatformInterfaceMixin
     implements UrlLauncherPlatform {
-  
   @override
   Future<bool> canLaunch(String url) {
     return Future.value(true);
