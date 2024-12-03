@@ -29,9 +29,10 @@ void main() {
         'isEditing trueかつ isImageChangedがfalseの場合、20文字のランダムな文字列に.jpgを追加したものを返す',
         () {
       final result = getImagePath(
-          isEditing: true,
-          isImageChanged: false,
-          imageUrl: 'https://example.com/image.png');
+        isEditing: true,
+        isImageChanged: false,
+        imageUrl: 'https://example.com/image.png',
+      );
       expect(result, matches(RegExp(r'^[a-zA-Z0-9]{20}\.jpg$')));
     });
     test('isEditing falseでimageFileがnullの場合、noImageを返す', () {

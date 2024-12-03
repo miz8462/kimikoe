@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kimikoe_app/main.dart';
+import 'package:logger/logger.dart';
 
-void logAsyncValue<T>(AsyncValue<T> asyncValue) {
+void logAsyncValue<T>(AsyncValue<T> asyncValue, Logger logger) {
   asyncValue.when(
     data: (data) {
       if (data is List) {
