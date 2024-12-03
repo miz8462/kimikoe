@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/utils/generate_simple_random_string.dart';
 
 // e.g. /aaa/bbb/ccc/image.png
 String? createImageNameWithJPG({File? image, String? imageUrl}) {
@@ -29,16 +30,4 @@ String? getImagePath({
       return createImageNameWithJPG(image: imageFile);
     }
   }
-}
-
-String generateSimpleRandomString(int length) {
-  const chars =
-      'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  final random = Random();
-  return String.fromCharCodes(
-    Iterable.generate(
-      length,
-      (_) => chars.codeUnitAt(random.nextInt(chars.length)),
-    ),
-  );
 }
