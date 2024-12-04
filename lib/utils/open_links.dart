@@ -30,17 +30,19 @@ Future<void> openWebSite(Uri url) async {
   }
 }
 
-Future<bool> isUrlExists(String? url) async {
+Future<bool> isUrlExists(String? url, {http.Client? client}) async {
+  client ??= http.Client();
   if (url != null && url.isNotEmpty) {
     try {
-      final headResponse = await http.head(
+      final headResponse = await client.head(
         Uri.parse(url),
       );
+
       logger.i('HEAD request status code: ${headResponse.statusCode}');
       if (headResponse.statusCode == 200) {
         return true;
       }
-      final getResponse = await http.get(
+      final getResponse = await client.get(
         Uri.parse(url),
       );
       logger.i('GET request status code: ${getResponse.statusCode}');
@@ -48,24 +50,29 @@ Future<bool> isUrlExists(String? url) async {
         return true;
       }
       return false;
-    } catch (e) {
-      logger.e('Error: $e');
-      return false;
+    } catch (e, stackTrace) {
+      logger.e('Error: $e', error: e, stackTrace: stackTrace);
+      rethrow;
     }
   }
   return false;
 }
 
-Future<Uri?> convertUrlStringToUri(String? url) async {
-  if (await isUrlExists(url)) {
-    return Uri.parse(url!);
+Future<Uri?> convertUrlStringToUri(String? url, {http.Client? client}) async {
+  client ??= http.Client();
+  try {
+    if (await isUrlExists(url, client: client)) {
+      return Uri.parse(url!);
+    }
+  } catch (e, stackTrace) {
+    logger.e('Error: $e', error: e, stackTrace: stackTrace);
   }
   return null;
 }
 
 Uri? createDeepLinkFromWebUrl(Uri? webUrl, String? scheme) {
-  if (webUrl != null || scheme != null) {
-    final userName = webUrl!.pathSegments.last;
+  if (webUrl != null && scheme != null) {
+    final userName = webUrl.pathSegments.last;
     return Uri.parse('$scheme$userName');
   }
   return null;
