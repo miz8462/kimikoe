@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/utils/error_handling.dart';
-import 'package:kimikoe_app/widgets/custom_text_for_lyrics.dart';
+import 'package:kimikoe_app/widgets/text/custom_text_for_lyrics.dart';
 
 class Lyrics extends StatelessWidget {
   const Lyrics({

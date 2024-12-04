@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
-import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
+import 'package:kimikoe_app/widgets/button/styled_button.dart';
 
 class ImageInput extends StatefulWidget {
   const ImageInput({

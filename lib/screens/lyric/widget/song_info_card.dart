@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/song.dart';
-import 'package:kimikoe_app/widgets/styled_text.dart';
+import 'package:kimikoe_app/widgets/text/styled_text.dart';
 
 class SongInfoCard extends StatelessWidget {
   const SongInfoCard({

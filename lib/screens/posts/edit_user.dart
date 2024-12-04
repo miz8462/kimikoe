@@ -9,9 +9,9 @@ import 'package:kimikoe_app/providers/user_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
-import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
-import 'package:kimikoe_app/widgets/forms/expanded_text_form.dart';
-import 'package:kimikoe_app/widgets/forms/text_input_form.dart';
+import 'package:kimikoe_app/widgets/button/styled_button.dart';
+import 'package:kimikoe_app/widgets/form/expanded_text_form.dart';
+import 'package:kimikoe_app/widgets/form/text_input_form.dart';
 
 class EditUserScreen extends ConsumerStatefulWidget {
   const EditUserScreen({

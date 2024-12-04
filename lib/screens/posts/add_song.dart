@@ -18,13 +18,13 @@ import 'package:kimikoe_app/utils/supabase_service.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
-import 'package:kimikoe_app/widgets/buttons/image_input_button.dart';
-import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
-import 'package:kimikoe_app/widgets/forms/dropdown_menu_group_list.dart';
-import 'package:kimikoe_app/widgets/forms/drum_roll_form.dart';
-import 'package:kimikoe_app/widgets/forms/expanded_text_form.dart';
-import 'package:kimikoe_app/widgets/forms/text_form_with_controller.dart';
-import 'package:kimikoe_app/widgets/forms/text_input_form.dart';
+import 'package:kimikoe_app/widgets/button/image_input_button.dart';
+import 'package:kimikoe_app/widgets/button/styled_button.dart';
+import 'package:kimikoe_app/widgets/form/dropdown_menu_group_list.dart';
+import 'package:kimikoe_app/widgets/form/drum_roll_form.dart';
+import 'package:kimikoe_app/widgets/form/expanded_text_form.dart';
+import 'package:kimikoe_app/widgets/form/text_form_with_controller.dart';
+import 'package:kimikoe_app/widgets/form/text_input_form.dart';
 
 class AddSongScreen extends StatefulWidget {
   const AddSongScreen({

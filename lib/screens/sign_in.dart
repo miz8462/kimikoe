@@ -13,7 +13,7 @@ import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/auth_provider.dart';
 import 'package:kimikoe_app/providers/user_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
-import 'package:kimikoe_app/widgets/buttons/social_login_button.dart';
+import 'package:kimikoe_app/widgets/button/social_login_button.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {

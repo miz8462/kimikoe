@@ -6,8 +6,8 @@ import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/providers/song_list_provider.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/widgets/group_card_m.dart';
-import 'package:kimikoe_app/widgets/song_card.dart';
+import 'package:kimikoe_app/widgets/card/group_card_m.dart';
+import 'package:kimikoe_app/widgets/card/song_card.dart';
 
 class SongListScreen extends ConsumerStatefulWidget {
   const SongListScreen({

@@ -21,13 +21,13 @@ import 'package:kimikoe_app/utils/pickers/custom_picker.dart';
 import 'package:kimikoe_app/utils/pickers/int_picker.dart';
 import 'package:kimikoe_app/utils/supabase_service.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
-import 'package:kimikoe_app/widgets/buttons/circular_button.dart';
-import 'package:kimikoe_app/widgets/buttons/image_input_button.dart';
-import 'package:kimikoe_app/widgets/buttons/styled_button.dart';
-import 'package:kimikoe_app/widgets/forms/dropdown_menu_group_list.dart';
-import 'package:kimikoe_app/widgets/forms/drum_roll_form.dart';
-import 'package:kimikoe_app/widgets/forms/expanded_text_form.dart';
-import 'package:kimikoe_app/widgets/forms/text_input_form.dart';
+import 'package:kimikoe_app/widgets/button/circular_button.dart';
+import 'package:kimikoe_app/widgets/button/image_input_button.dart';
+import 'package:kimikoe_app/widgets/button/styled_button.dart';
+import 'package:kimikoe_app/widgets/form/dropdown_menu_group_list.dart';
+import 'package:kimikoe_app/widgets/form/drum_roll_form.dart';
+import 'package:kimikoe_app/widgets/form/expanded_text_form.dart';
+import 'package:kimikoe_app/widgets/form/text_input_form.dart';
 
 List<Color> colorsList = IdolColors.values.map((color) => color.rgb).toList();
 
@@ -76,28 +76,19 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     super.initState();
     _fetchIdAndNameGroupList();
 
-    // 編集の場合の初期化
     if (widget.idol != null) {
       _idol = widget.idol!;
-    }
-    _isEditing = widget.isEditing!;
-
-    if (_isEditing) {
-      _selectedColor = _idol.color!;
-      _groupNameController = TextEditingController(text: _idol.group!.name);
-      _birthYearController =
-          TextEditingController(text: _idol.birthYear.toString());
-      _birthDayController = TextEditingController(text: _idol.birthDay);
-      _heightController = TextEditingController(text: _idol.height.toString());
-      final initialDebutYear = widget.idol!.debutYear.toString();
-      _debutYearController = TextEditingController(text: initialDebutYear);
+      _isEditing = true;
     } else {
-      _groupNameController = TextEditingController();
-      _birthYearController = TextEditingController();
-      _birthDayController = TextEditingController();
-      _heightController = TextEditingController();
-      _debutYearController = TextEditingController();
+      _isEditing = false;
     }
+
+    _selectedColor = _isEditing ? _idol.color! : Colors.lightBlue;
+    _groupNameController = TextEditingController(text: _isEditing ? _idol.group!.name : '');
+    _birthYearController = TextEditingController(text: _isEditing ? _idol.birthYear.toString() : '');
+    _birthDayController = TextEditingController(text: _isEditing ? _idol.birthDay : '');
+    _heightController = TextEditingController(text: _isEditing ? _idol.height.toString() : '');
+    _debutYearController = TextEditingController(text: _isEditing ? _idol.debutYear.toString() : '');
   }
 
   Future<void> _fetchIdAndNameGroupList() async {
