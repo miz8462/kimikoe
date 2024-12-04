@@ -14,8 +14,8 @@ import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/utils/check.dart';
-import 'package:kimikoe_app/utils/date_formatter.dart';
 import 'package:kimikoe_app/utils/color_code_to_string_hex.dart';
+import 'package:kimikoe_app/utils/date_formatter.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
 import 'package:kimikoe_app/utils/pickers/custom_picker.dart';
 import 'package:kimikoe_app/utils/pickers/int_picker.dart';
@@ -84,11 +84,22 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     }
 
     _selectedColor = _isEditing ? _idol.color! : Colors.lightBlue;
-    _groupNameController = TextEditingController(text: _isEditing ? _idol.group!.name : '');
-    _birthYearController = TextEditingController(text: _isEditing ? _idol.birthYear.toString() : '');
-    _birthDayController = TextEditingController(text: _isEditing ? _idol.birthDay : '');
-    _heightController = TextEditingController(text: _isEditing ? _idol.height.toString() : '');
-    _debutYearController = TextEditingController(text: _isEditing ? _idol.debutYear.toString() : '');
+
+    _groupNameController = TextEditingController(
+      text: _isEditing ? _idol.group!.name : '',
+    );
+    _birthYearController = TextEditingController(
+      text: _isEditing ? _idol.birthYear.toString() : '',
+    );
+    _birthDayController = TextEditingController(
+      text: _isEditing ? _idol.birthDay : '',
+    );
+    _heightController = TextEditingController(
+      text: _isEditing ? _idol.height.toString() : '',
+    );
+    _debutYearController = TextEditingController(
+      text: _isEditing ? _idol.debutYear.toString() : '',
+    );
   }
 
   Future<void> _fetchIdAndNameGroupList() async {

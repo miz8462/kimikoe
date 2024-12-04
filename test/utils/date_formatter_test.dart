@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
 
 void main() {
-  group('formatDateTimeTOXXXX関数のテスト', () {
+  group('date_formatterファイルのテスト', () {
     test('formatStyleに合った日時を返す', () {
       // テスト用の日時を設定
       final date = DateTime(2023, 12, 4, 14, 30);
@@ -34,15 +34,12 @@ void main() {
       final result = formatStringDateToMMdd(date);
       expect(result, expected);
     });
-    test('MM-ddの形で日付を返す', () {
+    test('yyyy/MM/ddの形で日付を返す', () {
       final date = '2000-01-22';
       final expected = '2000/01/22';
 
       final result = formatStringDateToSlash(date);
       expect(result, expected);
-    });
-    test('test name', () {
-      
     });
   });
 }
