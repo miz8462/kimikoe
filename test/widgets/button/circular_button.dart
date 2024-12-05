@@ -1,0 +1,26 @@
+import 'package:flutter/material.dart';
+import 'package:kimikoe_app/kimikoe_app.dart';
+
+class CircularButton extends StatelessWidget {
+  const CircularButton({
+    super.key,
+    this.color = mainColor,
+    required this.onPressed,
+  });
+
+  final Color color;
+  final void Function() onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton(
+      onPressed: onPressed,
+      style: OutlinedButton.styleFrom(
+        backgroundColor: color,
+        shape: const CircleBorder(),
+        side: BorderSide.none,
+      ),
+      child: const Text(''),
+    );
+  }
+}

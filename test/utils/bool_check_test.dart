@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
-import 'package:kimikoe_app/utils/check.dart';
+import 'package:kimikoe_app/utils/bool_check.dart';
 
 void main() {
   group('isInList関数のテスト', () {
