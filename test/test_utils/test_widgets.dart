@@ -6,7 +6,12 @@ Widget buildTestWidget({
 }) {
   return MaterialApp(
     home: Scaffold(
-      body: child,
+      body: Builder(
+        builder: (context) {
+          // debugDumpApp();
+          return child;
+        },
+      ),
     ),
   );
 }

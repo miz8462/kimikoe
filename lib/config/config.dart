@@ -49,7 +49,7 @@ const screenPadding = EdgeInsets.symmetric(horizontal: 20);
 const String noImage =
     'https://inngzyruhkuljrsvujfw.supabase.co/storage/v1/object/public/images/no-images.png';
 
-// アイドルから―のサイズ
+// アイドルカラーのサイズ
 const double circleSize = 20.0;
 
 // リンクURL
