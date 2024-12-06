@@ -10,14 +10,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env: 
-      SUPABASE_URL: ${{ secrets.SUPABASE_URL }} 
-      SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-      GOOGLE_OAUTH_IOS_CLIENT_ID: ${{ secrets.GOOGLE_OAUTH_IOS_CLIENT_ID }}
-      GOOGLE_OAUTH_WEB_CLIENT_ID: ${{ secrets.GOOGLE_OAUTH_WEB_CLIENT_ID }}
-
     steps:
       - uses: actions/checkout@v4 # リポジトリのコードをクローン
+      
+      # .envファイルを作りGithubActionsから環境変数を入力
+      - name: Create .env file
+        run: |
+          touch .env
+          echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }} >> .env
+          echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }} >> .env
+          echo "GOOGLE_OAUTH_IOS_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_IOS_CLIENT_ID }} >> .env
+          echo "GOOGLE_OAUTH_WEB_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_WEB_CLIENT_ID }} >> .env
+      - 
 
       - name: Cache Flutter SDK 
         uses: actions/cache@v3 
