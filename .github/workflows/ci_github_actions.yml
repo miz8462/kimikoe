@@ -13,14 +13,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4 # リポジトリのコードをクローン
       
-      # .envファイルを作りGithubActionsから環境変数を入力
+      # .envファイルを作りGithubActionsシークレットに登録した環境変数を.envに書き込む
       - name: Create .env file
         run: |
           touch .env
-          echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }} >> .env
-          echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }} >> .env
-          echo "GOOGLE_OAUTH_IOS_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_IOS_CLIENT_ID }} >> .env
-          echo "GOOGLE_OAUTH_WEB_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_WEB_CLIENT_ID }} >> .env
+          echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env
+          echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}" >> .env
+          echo "GOOGLE_OAUTH_IOS_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_IOS_CLIENT_ID }}" >> .env
+          echo "GOOGLE_OAUTH_WEB_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_WEB_CLIENT_ID }}" >> .env
       - 
 
       - name: Cache Flutter SDK 
