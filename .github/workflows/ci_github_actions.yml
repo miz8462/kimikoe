@@ -21,6 +21,7 @@ jobs:
           echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}" >> .env
           echo "GOOGLE_OAUTH_IOS_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_IOS_CLIENT_ID }}" >> .env
           echo "GOOGLE_OAUTH_WEB_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_WEB_CLIENT_ID }}" >> .env
+      - 
 
       - name: Cache Flutter SDK 
         uses: actions/cache@v3 

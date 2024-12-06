@@ -31,9 +31,7 @@ void main() {
   final invalidUrl = Uri.parse('invalid-url');
   final strInvalidUrl = 'invalid-url';
 
-  final options = LaunchOptions(
-    
-  ); // launchUrlの引数のため
+  final options = LaunchOptions(); // launchUrlの引数のため
 
   group(
     'openAppOrWeb関数のテスト',
@@ -131,14 +129,16 @@ void main() {
               url.toString(),
             ),
           ).thenAnswer((_) async => false);
-          expect(
-            () => openAppOrWeb(deepLinkUrl, url),
-            throwsA(
-              equals(
-                'どちらのURLも開くことができません: $deepLinkUrl, $url',
-              ),
-            ),
-          );
+
+          try {
+            await openAppOrWeb(deepLinkUrl, url);
+            fail('例外がスローされていません');
+          } catch (e) {
+            expect(
+              e.toString(),
+              equals('Exception: どちらのURLも開くことができません: $deepLinkUrl, $url'),
+            );
+          }
         },
       );
     },
@@ -170,7 +170,15 @@ void main() {
     test('URLを開くことができない場合', () async {
       when(mockUrlLauncher.canLaunch(url.toString()))
           .thenAnswer((_) async => false);
-      expect(() => openWebSite(url), throwsA(equals('開くことができません: $url')));
+      try {
+        await openWebSite(url);
+        fail('例外がスローされていません');
+      } catch (e) {
+        expect(
+          e.toString(),
+          equals('Exception: 開くことができません: $url'),
+        );
+      }
     });
   });
   group('isUrlExist関数', () {
