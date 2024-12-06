@@ -9,8 +9,7 @@ import 'package:kimikoe_app/router/routing_path.dart';
 
 class GroupMembers extends ConsumerWidget {
   const GroupMembers({
-    super.key,
-    required this.group,
+    required this.group, super.key,
   });
   final IdolGroup group;
 

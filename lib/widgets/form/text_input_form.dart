@@ -3,10 +3,8 @@ import 'package:kimikoe_app/config/config.dart';
 
 class InputForm extends StatelessWidget {
   const InputForm({
-    super.key,
-    required this.label,
+    required this.label, required this.onSaved, super.key,
     this.validator,
-    required this.onSaved,
     this.initialValue,
     this.keyboardType = TextInputType.text,
   });
@@ -19,7 +17,7 @@ class InputForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return ColoredBox(
       color: backgroundLightBlue,
       child: TextFormField(
         initialValue: initialValue,

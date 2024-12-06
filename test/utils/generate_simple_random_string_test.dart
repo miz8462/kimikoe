@@ -14,7 +14,7 @@ void main() {
       final randomString = generateSimpleRandomString(length);
       const chars =
           'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      for (var char in randomString.split('')) {
+      for (final char in randomString.split('')) {
         expect(chars.contains(char), isTrue);
       }
     });

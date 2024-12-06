@@ -23,7 +23,7 @@ class _IdolGroupListScreenState extends ConsumerState<IdolGroupListScreen> {
   // グループリストページを開く際、ネットに繋がっていない場合
   // エラーメッセージを表示する。connectivity_plus
   Future<void> _checkConnectivity() async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
+    final connectivityResult = await Connectivity().checkConnectivity();
     if (connectivityResult.contains(ConnectivityResult.none)) {
       logger.e('インターネットに接続されていません');
       if (!mounted) return;
@@ -57,7 +57,6 @@ class _IdolGroupListScreenState extends ConsumerState<IdolGroupListScreen> {
             crossAxisCount: 2, // 横に表示する数
             crossAxisSpacing: 18, // 横のスペース
             mainAxisSpacing: 15, // 縦のスペース
-            childAspectRatio: 1.0, // カードのアスペクト比
           ),
           itemCount: groups.length,
           itemBuilder: (BuildContext context, int index) {

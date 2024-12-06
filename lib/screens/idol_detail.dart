@@ -14,8 +14,7 @@ import 'package:kimikoe_app/widgets/delete_alert_dialog.dart';
 
 class IdolDetailScreen extends StatefulWidget {
   const IdolDetailScreen({
-    super.key,
-    required this.idol,
+    required this.idol, super.key,
   });
 
   final Idol idol;
@@ -62,15 +61,15 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
   }
 
   void _deleteIdol() {
-    showDialog(
+    showDialog<Widget>(
       context: context,
       builder: (context) {
         return DeleteAlertDialog(
           onDelete: () async {
-            deleteDataFromTable(
+            await deleteDataFromTable(
               table: TableName.idol,
               column: ColumnName.id,
-              value: (widget.idol.id).toString(),
+              value: widget.idol.id.toString(),
               context: context,
             );
           },

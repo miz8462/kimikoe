@@ -51,12 +51,12 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
     FocusScope.of(context).unfocus();
 
     // e.g. /aaa/bbb/ccc/image.png
-    String? imagePath = getImagePath(
+    final imagePath = getImagePath(
       imageFile: _selectedImage,
     );
 
     if (_selectedImage != null) {
-      uploadImageToStorage(
+      await uploadImageToStorage(
         table: TableName.images,
         path: imagePath!,
         file: _selectedImage!,
@@ -66,7 +66,8 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
 
     final imageUrl = fetchImageUrl(imagePath!);
 
-    insertArtistData(
+    if (!mounted) return;
+    await insertArtistData(
       name: _enteredName,
       imageUrl: imageUrl,
       comment: _enteredComment,

@@ -23,7 +23,7 @@ final logger = Logger(
 Future<void> main() async {
   // Flutterの初期化
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: '.env');
+  await dotenv.load();
 
   // Supabaseの初期化
   await Supabase.initialize(

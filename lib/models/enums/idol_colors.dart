@@ -21,7 +21,6 @@ enum IdolColors {
   brown(rgb: Colors.brown),
   grey(rgb: Colors.grey);
 
-  final Color rgb;
-
   const IdolColors({required this.rgb});
+  final Color rgb;
 }

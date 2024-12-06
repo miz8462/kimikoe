@@ -5,8 +5,7 @@ import 'package:kimikoe_app/widgets/text/styled_text.dart';
 
 class SongInfoCard extends StatelessWidget {
   const SongInfoCard({
-    super.key,
-    required this.song,
+    required this.song, super.key,
   });
   final Song song;
 

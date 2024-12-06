@@ -3,9 +3,8 @@ import 'package:kimikoe_app/config/config.dart';
 
 class ExpandedTextForm extends StatefulWidget {
   const ExpandedTextForm({
-    super.key,
+    required this.onTextChanged, super.key,
     this.label,
-    required this.onTextChanged,
     this.initialValue,
   });
 
@@ -36,7 +35,7 @@ class _ExpandedTextFormState extends State<ExpandedTextForm> {
         ),
         maxLines: null,
         onSaved: (value) {
-          _enteredText = value!;
+          _enteredText = value;
           widget.onTextChanged(_enteredText);
         },
       ),

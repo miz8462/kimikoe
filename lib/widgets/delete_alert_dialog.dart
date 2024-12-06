@@ -3,10 +3,10 @@ import 'package:kimikoe_app/main.dart';
 
 class DeleteAlertDialog extends StatelessWidget {
   const DeleteAlertDialog({
-    super.key,
     required this.onDelete,
     required this.successMessage,
     required this.errorMessage,
+    super.key,
   });
   final Future<void> Function() onDelete;
   final String successMessage;

@@ -8,7 +8,7 @@ void main() {
   testWidgets(
     'DeleteAlertDialogウィジェット',
     (tester) async {
-      bool deleteCalled = false;
+      var deleteCalled = false;
       Future<void> onDelete() async {
         deleteCalled = true;
       }

@@ -11,10 +11,7 @@ String? createImageNameWithJPG({File? image, String? imageUrl}) {
   if (image == null && imageUrl == null) {
     return null;
   }
-  late String imagePathWithCreatedAtJPG;
-  imagePathWithCreatedAtJPG = '${generateSimpleRandomString(20)}.jpg';
-
-  return imagePathWithCreatedAtJPG;
+  return '${generateSimpleRandomString(20)}.jpg';
 }
 
 String? getImagePath({

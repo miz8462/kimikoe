@@ -30,23 +30,19 @@ void main() {
         () {
       final result = getImagePath(
         isEditing: true,
-        isImageChanged: false,
         imageUrl: 'https://example.com/image.png',
       );
       expect(result, matches(RegExp(r'^[a-zA-Z0-9]{20}\.jpg$')));
     });
     test('isEditing falseでimageFileがnullの場合、noImageを返す', () {
       final result = getImagePath(
-        isEditing: false,
         isImageChanged: true,
-        imageUrl: null,
       );
       expect(result, equals(noImage));
     });
     test('imageFileが与えられた場合、20文字のランダムな文字列に.jpgを追加したものを返す', () {
       final imageFile = File('path/to/image.jpg');
       final result = getImagePath(
-        isEditing: false,
         isImageChanged: true,
         imageFile: imageFile,
       );

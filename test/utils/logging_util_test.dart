@@ -26,14 +26,14 @@ void main() {
       verify(mockLogger.i('データの取得に成功しました'));
     });
     test('データが取得中の場合、ローディングログ', () {
-      final asyncValue = AsyncValue.loading();
+      final asyncValue = AsyncValue<dynamic>.loading();
 
       logAsyncValue(asyncValue, mockLogger);
 
       verify(mockLogger.i('データを取得中...'));
     });
     test('データが取得に失敗した場合、エラーログ', () {
-      final asyncValue = AsyncValue.error('Error', StackTrace.current);
+      final asyncValue = AsyncValue<Object>.error('Error', StackTrace.current);
 
       logAsyncValue(asyncValue, mockLogger);
       verify(

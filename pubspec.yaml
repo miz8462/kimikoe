@@ -15,7 +15,7 @@ dependencies:
   riverpod_annotation: ^2.3.5
   # supabase
   supabase_flutter: ^2.5.1
-  flutter_dotenv: ^5.1.0
+  flutter_dotenv: ^5.2.1
   supabase_auth_ui: ^0.5.0
   # OAuth
   google_sign_in: ^6.2.1
@@ -54,11 +54,13 @@ dev_dependencies:
   url_launcher_platform_interface: ^2.3.2
   plugin_platform_interface: ^2.1.8
   matcher: ^0.12.16+1
+  very_good_analysis: ^6.0.0
 
 
 flutter:
   uses-material-design: true
   assets: 
+      - .env
       - assets/images/
 
 flutter_launcher_icons:

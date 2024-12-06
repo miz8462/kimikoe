@@ -13,9 +13,9 @@ class SocialLoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double height = 40;
-    const double width = 40;
-    const Color textColor = textWhite;
+    const height = 40.0;
+    const width = 40.0;
+    const textColor = textWhite;
 
     return IconButton(
       onPressed: socialName,

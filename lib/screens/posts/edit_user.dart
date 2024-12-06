@@ -15,8 +15,7 @@ import 'package:kimikoe_app/widgets/form/text_input_form.dart';
 
 class EditUserScreen extends ConsumerStatefulWidget {
   const EditUserScreen({
-    super.key,
-    required this.isEditing,
+    required this.isEditing, super.key,
   });
   final bool isEditing;
 
@@ -29,7 +28,7 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
 
   var _enteredUserName = '';
   var _enteredEmailAddress = '';
-  String? _selectedImage;
+  late String? _selectedImage;
   var _enteredComment = '';
 
   var _isSending = false;
@@ -44,7 +43,7 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
     return textInputValidator(value, 'メール');
   }
 
-  void _submitUserProfile() async {
+  Future<void> _submitUserProfile() async {
     logger.i('フォーム送信開始');
 
     setState(() {
@@ -77,7 +76,8 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
 
     // todo: ユーザー画像の変更機能
     // if (_selectedImage != null) {
-    //   await supabase.storage.from('images').upload(imagePath!, _selectedImage!);
+    //   await supabase.storage.from('images')
+    //.upload(imagePath!, _selectedImage!);
     // }
 
     setState(() {

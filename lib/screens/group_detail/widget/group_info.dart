@@ -7,7 +7,7 @@ import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/utils/open_links.dart';
 
 class GroupInfo extends StatefulWidget {
-  const GroupInfo({super.key, required this.group});
+  const GroupInfo({required this.group, super.key});
   final IdolGroup group;
 
   @override

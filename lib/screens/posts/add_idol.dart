@@ -141,7 +141,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     FocusScope.of(context).unfocus();
 
     // e.g. /aaa/bbb/ccc/image.png
-    String? imagePath = getImagePath(
+    final imagePath = getImagePath(
       isEditing: _isEditing,
       isImageChanged: _isImageChanged,
       imageUrl: _idol.imageUrl,
@@ -191,7 +191,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     final isSelectedGroupInList = isInList(_groupIdAndNameList, groupName);
     if (!isSelectedGroupInList && groupName.isNotEmpty) {
       if (!mounted) return;
-      insertIdolGroupData(
+      await insertIdolGroupData(
         name: groupName,
         imageUrl: noImage,
         year: '',
@@ -212,7 +212,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
 
     if (!mounted) return;
     if (_isEditing) {
-      updateIdol(
+      await updateIdol(
         name: _enteredIdolName,
         id: _idol.id!,
         groupId: selectedGroupId,
@@ -227,7 +227,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         context: context,
       );
     } else {
-      insertIdolData(
+      await insertIdolData(
         name: _enteredIdolName,
         groupId: selectedGroupId,
         color: selectedColor,
@@ -261,7 +261,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     return nullableTextInputValidator(value, '出身地');
   }
 
-  void _pickBirthYear() async {
+  Future<void> _pickBirthYear() async {
     await picker.DatePicker.showPicker(
       context,
       showTitleActions: false,
@@ -281,7 +281,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     );
   }
 
-  void _pickBirthday() async {
+  Future<void> _pickBirthday() async {
     await picker.DatePicker.showPicker(
       context,
       showTitleActions: false,
@@ -298,8 +298,8 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     );
   }
 
-  void _pickHeight() async {
-    await showModalBottomSheet(
+  Future<void> _pickHeight() async {
+    await showModalBottomSheet<Widget>(
       context: context,
       builder: (BuildContext context) {
         return SizedBox(
@@ -315,7 +315,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     );
   }
 
-  void _pickDebutYear() async {
+  Future<void> _pickDebutYear() async {
     await picker.DatePicker.showPicker(
       context,
       showTitleActions: false,
@@ -335,8 +335,8 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     );
   }
 
-  void _pickColor() async {
-    await showModalBottomSheet(
+  Future<void> _pickColor() async {
+    await showModalBottomSheet<Widget>(
       context: context,
       builder: (BuildContext context) {
         return SizedBox(
@@ -363,7 +363,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         : Scaffold(
             appBar: TopBar(
               pageTitle: _isEditing ? 'アイドル編集' : 'アイドル登録',
-              showLeading: _isEditing ? true : false,
+              showLeading: _isEditing,
             ),
             body: SingleChildScrollView(
               child: Form(
@@ -425,7 +425,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                         onSaved: (value) {
                           setState(
                             () {
-                              _selectedBirthYear = value!;
+                              _selectedBirthYear = value;
                             },
                           );
                         },
@@ -438,7 +438,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                         onSaved: (value) {
                           setState(
                             () {
-                              _selectedBirthDay = value!;
+                              _selectedBirthDay = value;
                             },
                           );
                         },
@@ -463,7 +463,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                         label: '出身地',
                         validator: _hometownValidator,
                         onSaved: (value) {
-                          _enteredHometown = value!;
+                          _enteredHometown = value;
                         },
                       ),
                       const Gap(spaceS),
@@ -474,7 +474,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                         onSaved: (value) {
                           setState(
                             () {
-                              _selectedDebutYear = value!;
+                              _selectedDebutYear = value;
                             },
                           );
                         },
@@ -485,7 +485,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                             _isEditing ? _idol.comment : _enteredComment,
                         onTextChanged: (value) {
                           setState(() {
-                            _enteredComment = value!;
+                            _enteredComment = value;
                           });
                         },
                         label: '備考',

@@ -31,11 +31,8 @@ void main() {
   final invalidUrl = Uri.parse('invalid-url');
   final strInvalidUrl = 'invalid-url';
 
-  final LaunchOptions options = LaunchOptions(
-    mode: PreferredLaunchMode.platformDefault,
-    webViewConfiguration: const InAppWebViewConfiguration(),
-    browserConfiguration: const InAppBrowserConfiguration(),
-    webOnlyWindowName: null,
+  final options = LaunchOptions(
+    
   ); // launchUrlの引数のため
 
   group(
@@ -201,7 +198,7 @@ void main() {
       when(mockClient.head(invalidUrl))
           .thenThrow(FormatException('Invalid URL'));
       expect(
-        () async => await isUrlExists(strInvalidUrl, client: mockClient),
+        () async => isUrlExists(strInvalidUrl, client: mockClient),
         throwsA(isA<FormatException>()),
       );
     });

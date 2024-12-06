@@ -2,15 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:kimikoe_app/widgets/button/styled_button.dart';
 
 class ImageInput extends StatefulWidget {
   const ImageInput({
-    super.key,
-    required this.label,
-    required this.onPickImage,
+    required this.label, required this.onPickImage, super.key,
     this.imageUrl,
   });
 
@@ -56,7 +53,6 @@ class _ImageInputState extends State<ImageInput> {
     Widget content = StyledButton(
       widget.label,
       onPressed: _getImageFromMobileStorage,
-      textColor: textWhite,
       backgroundColor: mainColor.withOpacity(0.8),
     );
 
@@ -64,7 +60,6 @@ class _ImageInputState extends State<ImageInput> {
       content = Container(
         decoration: BoxDecoration(
           border: Border.all(
-            width: 1,
             color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
           ),
         ),

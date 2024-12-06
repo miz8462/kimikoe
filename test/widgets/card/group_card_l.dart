@@ -6,8 +6,7 @@ import 'package:kimikoe_app/router/routing_path.dart';
 
 class GroupCardL extends StatelessWidget {
   const GroupCardL({
-    super.key,
-    required this.group,
+    required this.group, super.key,
   });
   final IdolGroup group;
 
@@ -33,7 +32,6 @@ class GroupCardL extends StatelessWidget {
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // 画像をClipRRectで囲って角を丸くする
             Expanded(

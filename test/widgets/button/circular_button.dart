@@ -3,9 +3,8 @@ import 'package:kimikoe_app/kimikoe_app.dart';
 
 class CircularButton extends StatelessWidget {
   const CircularButton({
-    super.key,
+    required this.onPressed, super.key,
     this.color = mainColor,
-    required this.onPressed,
   });
 
   final Color color;

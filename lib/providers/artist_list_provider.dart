@@ -34,7 +34,7 @@ final artistListProvider =
   logAsyncValue(asyncValue, logger);
 
   return asyncValue.maybeWhen(
-    data: (data) => ArtistListNotifier(data),
+    data: ArtistListNotifier.new,
     orElse: () {
       logger.w('データが見つからないため、空のアーティストリストを返します');
       return ArtistListNotifier([]);

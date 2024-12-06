@@ -12,10 +12,9 @@ Future<void> openAppOrWeb(Uri deepLinkUrl, Uri webUrl) async {
   } else if (await canLaunchUrl(webUrl)) {
     await launchUrl(
       webUrl,
-      mode: LaunchMode.platformDefault,
     );
   } else {
-    throw 'どちらのURLも開くことができません: $deepLinkUrl, $webUrl';
+    throw Exception('どちらのURLも開くことができません: $deepLinkUrl, $webUrl');
   }
 }
 
@@ -23,10 +22,9 @@ Future<void> openWebSite(Uri url) async {
   if (await canLaunchUrl(url)) {
     await launchUrl(
       url,
-      mode: LaunchMode.platformDefault,
     );
   } else {
-    throw '開くことができません: $url';
+    throw Exception('開くことができません: $url');
   }
 }
 
@@ -82,10 +80,10 @@ Future<LinkPair> fetchWebUrlAndDeepLinkUrl(
   String? url, {
   String? scheme,
 }) async {
-  Uri? webUrl = await convertUrlStringToUri(url);
+  final webUrl = await convertUrlStringToUri(url);
   if (scheme == null) {
-    return LinkPair(webUrl: webUrl, deepLinkUrl: null);
+    return LinkPair(webUrl: webUrl);
   }
-  Uri? deepLinkUrl = createDeepLinkFromWebUrl(webUrl, scheme);
+  final deepLinkUrl = createDeepLinkFromWebUrl(webUrl, scheme);
   return LinkPair(webUrl: webUrl, deepLinkUrl: deepLinkUrl);
 }

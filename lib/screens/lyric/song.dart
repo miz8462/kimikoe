@@ -18,9 +18,9 @@ import 'package:kimikoe_app/widgets/delete_alert_dialog.dart';
 
 class SongScreen extends StatefulWidget {
   const SongScreen({
-    super.key,
     required this.song,
     required this.group,
+    super.key,
   });
   final IdolGroup group;
   final Song song;
@@ -38,15 +38,15 @@ class _SongScreenState extends State<SongScreen> {
   }
 
   void _deleteSong(BuildContext context) {
-    showDialog(
+    showDialog<Widget>(
       context: context,
       builder: (context) {
         return DeleteAlertDialog(
           onDelete: () async {
-            deleteDataFromTable(
+            await deleteDataFromTable(
               table: TableName.songs,
               column: ColumnName.id,
-              value: (widget.song.id).toString(),
+              value: widget.song.id.toString(),
               context: context,
             );
           },
@@ -59,7 +59,7 @@ class _SongScreenState extends State<SongScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const bool isEditing = true;
+    const isEditing = true;
     final song = widget.song;
     final group = widget.group;
     final data = {

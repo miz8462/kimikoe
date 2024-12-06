@@ -51,16 +51,12 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     switch (error.code) {
       case 'email_exists':
         errorMessage = 'メールアドレスは既に登録されています。別のメールアドレスを使用してください。';
-        break;
       case 'user_already_exists':
         errorMessage = 'ユーザーはすでに存在しています。ログインを試してください。';
-        break;
       case 'user_not_found':
         errorMessage = 'ユーザーが見つかりません。メールアドレスを確認するか、新しいアカウントを作成してください。';
-        break;
       case 'invalid_credentials':
         errorMessage = 'メールアドレスまたはパスワードが正しくありません。もう一度確認してください。';
-        break;
       default:
         errorMessage = 'エラーが発生しました: ${error.message}';
     }
@@ -120,7 +116,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
       }
       logger.i('サインアップが成功しました。ユーザーID: $userId');
 
-      await Future.delayed(Duration(milliseconds: 200));
+      await Future<dynamic>.delayed(Duration(milliseconds: 200));
     } on AuthException catch (e) {
       if (!mounted) return;
       _handleAuthError(e, 'サインアップ');
@@ -145,7 +141,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
           );
       logger.i('ログインが成功しました。メールアドレス: $_enteredEmail');
 
-      await Future.delayed(Duration(milliseconds: 200));
+      await Future<dynamic>.delayed(Duration(milliseconds: 200));
     } on AuthException catch (e) {
       if (!mounted) return;
       _handleAuthError(e, 'ログイン');
@@ -163,7 +159,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     try {
       logger.d('Googleサインインを開始しました。');
 
-      final GoogleSignIn googleSignIn = GoogleSignIn(
+      final googleSignIn = GoogleSignIn(
         clientId: iosClientId,
         serverClientId: webClientId,
       );
@@ -173,10 +169,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
       final idToken = googleAuth.idToken;
 
       if (accessToken == null) {
-        throw 'アクセストークンが見つかりません。';
+        throw Exception('アクセストークンが見つかりません。');
       }
       if (idToken == null) {
-        throw 'IDトークンが見つかりません。';
+        throw Exception('IDトークンが見つかりません。');
       }
 
       await supabase.auth.signInWithIdToken(
@@ -188,7 +184,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
       await ref.read(userProfileProvider.notifier).fetchUserProfile();
       logger.i('Googleサインインが成功しました。ユーザー: ${googleUser.displayName}');
 
-      await Future.delayed(Duration(microseconds: 200));
+      await Future<dynamic>.delayed(Duration(microseconds: 200));
     } catch (e) {
       logger.e('Googleサインインエラー: $e');
     }
@@ -213,7 +209,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
           }
         }
       },
-      onError: (error) {
+      onError: (Object error) {
         if (!mounted) {
           return;
         }
@@ -401,7 +397,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                 ),
                               ),
                               child: Text(
-                                _isLogin ? "ログイン" : "サインアップ",
+                                _isLogin ? 'ログイン' : 'サインアップ',
                                 style: TextStyle(
                                   color: mainColor,
                                   fontSize: fontL,
@@ -437,7 +433,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                 ),
                               ),
                               Text(
-                                "    Googleログイン    ",
+                                '    Googleログイン    ',
                                 style: TextStyle(
                                   color: textWhite,
                                   fontSize: fontS,

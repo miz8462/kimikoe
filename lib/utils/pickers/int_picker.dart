@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 
 class IntPicker extends StatefulWidget {
   const IntPicker({
-    super.key,
     required this.startNum,
     required this.endNum,
     required this.initialNum,
     required this.controller,
+    super.key,
   });
 
   final int startNum;
@@ -29,7 +29,7 @@ class _IntPickerState extends State<IntPicker> {
   @override
   Widget build(BuildContext context) {
     final lengthOfNumbers = widget.endNum - widget.startNum + 1;
-    List<Widget> numbers = List.generate(
+    final numbers = List<Widget>.generate(
       lengthOfNumbers,
       (index) => Text('${widget.startNum + index}'),
     );

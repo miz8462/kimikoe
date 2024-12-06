@@ -7,9 +7,7 @@ import 'package:kimikoe_app/utils/error_handling.dart';
 
 class GroupColorAndNameList extends StatefulWidget {
   const GroupColorAndNameList({
-    super.key,
-    required this.group,
-    required this.memberFuture,
+    required this.group, required this.memberFuture, super.key,
   });
   final IdolGroup group;
   final Future<List<Map<String, dynamic>>> memberFuture;

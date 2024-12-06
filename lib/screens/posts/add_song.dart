@@ -14,9 +14,9 @@ import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/utils/bool_check.dart';
-import 'package:kimikoe_app/utils/supabase_service.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
+import 'package:kimikoe_app/utils/supabase_service.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
 import 'package:kimikoe_app/widgets/button/image_input_button.dart';
 import 'package:kimikoe_app/widgets/button/styled_button.dart';
@@ -94,17 +94,17 @@ class _AddSongScreenState extends State<AddSongScreen> {
     _lyricistNameController.dispose();
     _composerNameController.dispose();
     _releaseDateController.dispose();
-    for (var controller in _lyricListControllers) {
+    for (final controller in _lyricListControllers) {
       controller.dispose();
     }
-    for (var controller in _singerListControllers) {
+    for (final controller in _singerListControllers) {
       controller.dispose();
     }
     super.dispose();
   }
 
   void _initializeEditingFields() {
-    final jsonLyrics = jsonDecode(_song.lyrics);
+    final jsonLyrics = jsonDecode(_song.lyrics) as List<Map<String, String>>;
     _groupNameController = TextEditingController(text: _song.group!.name);
     if (_song.lyricist?.name == null) {
       _lyricistNameController = TextEditingController();
@@ -120,7 +120,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
     }
     _releaseDateController = TextEditingController(text: _song.releaseDate);
     // 歌詞と担当歌手データ
-    for (var lyricData in jsonLyrics) {
+    for (final lyricData in jsonLyrics) {
       // singerIdから歌手の名前を取得
       final singerId = lyricData['singerId'];
       final selectedMember =
@@ -184,10 +184,10 @@ class _AddSongScreenState extends State<AddSongScreen> {
     }
 
     // 歌詞と歌手のセットをjsonにする
-    String jsonStringLyrics = jsonEncode(_lyricAndSingerList);
+    final jsonStringLyrics = jsonEncode(_lyricAndSingerList);
 
     // e.g. /aaa/bbb/ccc/image.png
-    String? imagePath = getImagePath(
+    final imagePath = getImagePath(
       isEditing: _isEditing,
       isImageChanged: _isImageChanged,
       imageUrl: _song.imageUrl,
@@ -195,7 +195,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
     );
 
     if (_selectedImage != null) {
-      uploadImageToStorage(
+      await uploadImageToStorage(
         table: TableName.images,
         path: imagePath!,
         file: _selectedImage!,
@@ -217,7 +217,8 @@ class _AddSongScreenState extends State<AddSongScreen> {
 
     final isSelectedGroupInList = isInList(_groupIdAndNameList, groupName);
     if (!isSelectedGroupInList && groupName.isNotEmpty) {
-      insertIdolGroupData(
+      if (!mounted) return;
+      await insertIdolGroupData(
         name: groupName,
         imageUrl: noImage,
         year: '',
@@ -235,7 +236,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
         isInList(_artistIdAndNameList, lyricistName);
     if (!isSelectedLyricistInList && lyricistName.isNotEmpty) {
       if (!mounted) return;
-      insertArtistData(
+      await insertArtistData(
         name: lyricistName,
         imageUrl: noImage,
         context: context,
@@ -255,7 +256,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
         isInList(_artistIdAndNameList, composerName);
     if (!isSelectedComposerInList && composerName.isNotEmpty) {
       if (!mounted) return;
-      insertArtistData(
+      await insertArtistData(
         name: composerName,
         imageUrl: noImage,
         context: context,
@@ -272,7 +273,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
     // 登録、編集
     if (!mounted) return;
     if (_isEditing) {
-      updateSong(
+      await updateSong(
         name: _enteredTitle,
         lyric: jsonStringLyrics,
         groupId: selectedGroupId,
@@ -285,7 +286,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
         context: context,
       );
     } else {
-      insertSongData(
+      await insertSongData(
         name: _enteredTitle,
         lyric: jsonStringLyrics,
         groupId: selectedGroupId,
@@ -311,7 +312,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
     return textInputValidator(value, 'タイトル');
   }
 
-  void _pickReleaseDate() async {
+  Future<void> _pickReleaseDate() async {
     await picker.DatePicker.showDatePicker(
       context,
       showTitleActions: false,
@@ -344,7 +345,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
         : Scaffold(
             appBar: TopBar(
               pageTitle: _isEditing ? '歌詞編集' : '歌詞登録',
-              showLeading: _isEditing ? true : false,
+              showLeading: _isEditing,
             ),
             body: SingleChildScrollView(
               child: Padding(
@@ -402,7 +403,6 @@ class _AddSongScreenState extends State<AddSongScreen> {
                       StyledButton(
                         '歌詞追加',
                         onPressed: _addNewLyricItem,
-                        textColor: textWhite,
                         backgroundColor: mainColor.withOpacity(0.7),
                       ),
                       const Gap(spaceS),
@@ -434,7 +434,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                         onSaved: (value) {
                           setState(
                             () {
-                              _selectedReleaseDate = value!;
+                              _selectedReleaseDate = value;
                             },
                           );
                         },

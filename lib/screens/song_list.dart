@@ -11,8 +11,7 @@ import 'package:kimikoe_app/widgets/card/song_card.dart';
 
 class SongListScreen extends ConsumerStatefulWidget {
   const SongListScreen({
-    super.key,
-    required this.group,
+    required this.group, super.key,
   });
   final IdolGroup group;
 

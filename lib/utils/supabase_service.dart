@@ -9,9 +9,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 // CREATE
 Future<void> insertArtistData({
   required String name,
+  required BuildContext context,
   String? imageUrl,
   String? comment,
-  required BuildContext context,
 }) async {
   try {
     await supabase.from(TableName.artists).insert({
@@ -38,6 +38,7 @@ Future<void> insertArtistData({
 
 Future<void> insertIdolGroupData({
   required String name,
+  required BuildContext context,
   String? imageUrl,
   String? year,
   String? officialUrl,
@@ -45,7 +46,6 @@ Future<void> insertIdolGroupData({
   String? instagramUrl,
   String? scheduleUrl,
   String? comment,
-  required BuildContext context,
 }) async {
   try {
     await supabase.from(TableName.idolGroups).insert({
@@ -77,6 +77,7 @@ Future<void> insertIdolGroupData({
 
 Future<void> insertIdolData({
   required String name,
+  required BuildContext context,
   int? groupId,
   String? color,
   String? imageUrl,
@@ -86,7 +87,6 @@ Future<void> insertIdolData({
   String? hometown,
   int? debutYear,
   String? comment,
-  required BuildContext context,
 }) async {
   try {
     await supabase.from(TableName.idol).insert({
@@ -121,13 +121,13 @@ Future<void> insertIdolData({
 Future<void> insertSongData({
   required String name,
   required String lyric,
+  required BuildContext context,
   int? groupId,
   String? imageUrl,
   String? releaseDate,
   int? lyricistId,
   int? composerId,
   String? comment,
-  required BuildContext context,
 }) async {
   try {
     await supabase.from(TableName.songs).insert({
@@ -250,7 +250,7 @@ int fetchSelectedDataIdFromName({
     throw StateError('指定された名前: $name に対するデータが見つかりません');
   }
   final selectedData = selectedDataList.single;
-  final selectedDataId = selectedData[ColumnName.id];
+  final selectedDataId = selectedData[ColumnName.id] as int;
   logger.i('指定された名前: $name に対するデータIDを取得しました');
   return selectedDataId;
 }
@@ -281,7 +281,7 @@ Future<Map<String, dynamic>> fetchArtistById(String id) async {
   }
 }
 
-Stream fetchDatabyStream({
+Stream<dynamic> fetchDatabyStream({
   required String table,
   required String id,
 }) {
@@ -298,6 +298,8 @@ Stream fetchDatabyStream({
 // UPDATE
 Future<void> updateIdolGroup({
   required String name,
+  required String id,
+  required BuildContext context,
   String? imageUrl,
   String? year,
   String? officialUrl,
@@ -305,8 +307,6 @@ Future<void> updateIdolGroup({
   String? instagramUrl,
   String? scheduleUrl,
   String? comment,
-  required String id,
-  required BuildContext context,
 }) async {
   try {
     await supabase.from(TableName.idolGroups).update({
@@ -338,6 +338,8 @@ Future<void> updateIdolGroup({
 
 Future<void> updateIdol({
   required String name,
+  required int id,
+  required BuildContext context,
   int? groupId,
   String? color,
   String? imageUrl,
@@ -347,8 +349,6 @@ Future<void> updateIdol({
   String? hometown,
   int? debutYear,
   String? comment,
-  required int id,
-  required BuildContext context,
 }) async {
   try {
     await supabase.from(TableName.idol).update({
@@ -384,14 +384,14 @@ Future<void> updateIdol({
 Future<void> updateSong({
   required String name,
   required String lyric,
+  required int id,
+  required BuildContext context,
   int? groupId,
   String? imageUrl,
   String? releaseDate,
   int? lyricistId,
   int? composerId,
   String? comment,
-  required int id,
-  required BuildContext context,
 }) async {
   try {
     await supabase.from(TableName.songs).update({
@@ -425,9 +425,9 @@ Future<void> updateUser({
   required String name,
   required String email,
   required String imageUrl,
-  String? comment,
   required String id,
   required BuildContext context,
+  String? comment,
 }) async {
   try {
     await supabase.from(TableName.profiles).update({

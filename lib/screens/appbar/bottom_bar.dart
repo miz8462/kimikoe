@@ -9,8 +9,7 @@ import 'package:kimikoe_app/widgets/button/styled_button.dart';
 
 class BottomBar extends ConsumerStatefulWidget {
   const BottomBar({
-    super.key,
-    required this.navigationShell,
+    required this.navigationShell, super.key,
   });
   final StatefulNavigationShell navigationShell;
 
@@ -26,9 +25,9 @@ class _BottomBarState extends ConsumerState<BottomBar> {
 
   void _openAddOverlay(BuildContext context) {
     setState(() {
-      widget.navigationShell.goBranch(addIndex, initialLocation: false);
+      widget.navigationShell.goBranch(addIndex);
     });
-    showModalBottomSheet(
+    showModalBottomSheet<Widget>(
       context: context,
       isScrollControlled: true,
       builder: (context) {
@@ -75,7 +74,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
     );
   }
 
-  void _signOut() async {
+  Future<void> _signOut() async {
     await ref.read(authProvider.notifier).logOut(ref);
     if (mounted) {
       context.go('/');
@@ -84,7 +83,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
-    int currentIndex = widget.navigationShell.currentIndex;
+    final currentIndex = widget.navigationShell.currentIndex;
     final user = ref.watch(userProfileProvider);
 
     if (user == null) {

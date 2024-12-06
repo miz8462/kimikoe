@@ -30,8 +30,8 @@ const double buttonL = 50;
 const double borderWidth = 2;
 
 // ボタンやカードの丸み
-var borderRadius4 = BorderRadius.circular(4);
-var borderRadius12 = BorderRadius.circular(12);
+BorderRadius borderRadius4 = BorderRadius.circular(4);
+BorderRadius borderRadius12 = BorderRadius.circular(12);
 
 // テキストフォームのヒントのパディング
 const double bottomPadding = 7;
@@ -50,7 +50,7 @@ const String noImage =
     'https://inngzyruhkuljrsvujfw.supabase.co/storage/v1/object/public/images/no-images.png';
 
 // アイドルカラーのサイズ
-const double circleSize = 20.0;
+const double circleSize = 20;
 
 // リンクURL
 const String twitterScheme = 'twitter://user?screen_name=';

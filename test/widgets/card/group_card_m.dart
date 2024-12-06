@@ -7,8 +7,7 @@ import 'package:kimikoe_app/router/routing_path.dart';
 
 class GroupCardM extends StatelessWidget {
   const GroupCardM({
-    super.key,
-    required this.group,
+    required this.group, super.key,
   });
   final IdolGroup group;
 

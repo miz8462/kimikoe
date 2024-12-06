@@ -21,21 +21,21 @@ void main() {
 
     // 色丸パートの検証
     // Rowの中のPaddingウィジェットを取得。二つ見付かるのでtopが2.0になっているPaddingを選択。
-    Iterable<Padding> paddingWidgets = tester.widgetList<Padding>(
+    final paddingWidgets = tester.widgetList<Padding>(
       find.descendant(
         of: find.byType(CustomTextForLyrics),
         matching: find.byType(Padding),
       ),
     );
     final targetPadding = paddingWidgets
-        .firstWhere((p) => p.padding == const EdgeInsets.only(top: 2.0));
-    expect(targetPadding.padding, const EdgeInsets.only(top: 2.0));
+        .firstWhere((p) => p.padding == const EdgeInsets.only(top: 2));
+    expect(targetPadding.padding, const EdgeInsets.only(top: 2));
 
     final container = tester.widget<Container>(find.byType(Container));
     expect(container.constraints?.maxHeight, circleSize);
     expect(container.constraints?.maxWidth, circleSize);
 
-    final BoxDecoration decoration = container.decoration as BoxDecoration;
+    final decoration = container.decoration! as BoxDecoration;
     expect(decoration.color, color);
     expect(decoration.borderRadius, BorderRadius.circular(100));
 

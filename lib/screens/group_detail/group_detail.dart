@@ -13,8 +13,7 @@ import 'package:kimikoe_app/widgets/delete_alert_dialog.dart';
 
 class GroupDetailScreen extends StatefulWidget {
   const GroupDetailScreen({
-    super.key,
-    required this.group,
+    required this.group, super.key,
   });
 
   final IdolGroup group;
@@ -28,15 +27,15 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
   final _isGroup = true;
 
   void _deleteGroup() {
-    showDialog(
+    showDialog<Widget>(
       context: context,
       builder: (context) {
         return DeleteAlertDialog(
           onDelete: () async {
-            deleteDataFromTable(
+            await deleteDataFromTable(
               table: TableName.idolGroups,
               column: ColumnName.id,
-              value: (widget.group.id).toString(),
+              value: widget.group.id.toString(),
               context: context,
             );
           },

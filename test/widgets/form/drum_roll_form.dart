@@ -3,11 +3,11 @@ import 'package:kimikoe_app/config/config.dart';
 
 class PickerForm extends StatefulWidget {
   const PickerForm({
-    super.key,
     required this.label,
     required this.controller,
     required this.picker,
     required this.onSaved,
+    super.key,
   });
 
   final String label;
@@ -22,7 +22,7 @@ class PickerForm extends StatefulWidget {
 class _PickerFormState extends State<PickerForm> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return ColoredBox(
       color: backgroundLightBlue,
       child: TextFormField(
         controller: widget.controller,

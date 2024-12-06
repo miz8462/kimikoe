@@ -5,10 +5,10 @@ import 'package:kimikoe_app/models/table_and_column_name.dart';
 
 class CustomDropdownMenu extends StatefulWidget {
   const CustomDropdownMenu({
-    super.key,
     required this.label,
     required this.dataList,
     required this.controller,
+    super.key,
   });
 
   final String label;
@@ -25,10 +25,6 @@ class _CustomDropdownMenuState extends State<CustomDropdownMenu> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return DropdownMenu<DropdownIdAndName>(
-      // todo: 登録していないグループを入力した時のバリデーション。
-      // todo: 自作のFilterCallbackが必要か？
-      // enableFilter: true,
-      enableSearch: true,
       controller: widget.controller,
       requestFocusOnTap: true,
       label: Text(widget.label),

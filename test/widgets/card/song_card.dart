@@ -11,9 +11,7 @@ import 'package:kimikoe_app/router/routing_path.dart';
 
 class SongCard extends ConsumerWidget {
   const SongCard({
-    super.key,
-    required this.song,
-    required this.group,
+    required this.song, required this.group, super.key,
   });
   final Song song;
   final IdolGroup group;
@@ -24,11 +22,12 @@ class SongCard extends ConsumerWidget {
     final lyrics = song.lyrics;
 
     // 一行ごとの歌詞と歌手のjsonから歌詞だけを抽出
-    final lyricsJson = jsonDecode(lyrics);
-    var allLyrics = '';
-    for (var lyric in lyricsJson) {
-      allLyrics += (lyric['lyric'] + ' ');
+    final lyricsJson = jsonDecode(lyrics) as List<Map<String, String>>;
+    final buffer = StringBuffer();
+    for (final lyric in lyricsJson) {
+      buffer.write('${lyric['lyric']} ');
     }
+    final allLyrics = buffer.toString().trim();
 
     final data = {
       'song': song,

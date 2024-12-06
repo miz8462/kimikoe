@@ -14,7 +14,7 @@ class UserScreen extends ConsumerWidget {
     const isEditing = true;
 
     final user = ref.watch(userProfileProvider);
-    var userImage = NetworkImage(user!.imageUrl);
+    final userImage = NetworkImage(user!.imageUrl);
 
     final data = {
       'user': user,

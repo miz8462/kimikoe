@@ -4,7 +4,7 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/router/router.dart';
 
 const Color mainColor = Color(0xFF38B6FF);
-var kColorScheme = ColorScheme.fromSeed(seedColor: mainColor);
+ColorScheme kColorScheme = ColorScheme.fromSeed(seedColor: mainColor);
 
 class KimikoeApp extends StatelessWidget {
   const KimikoeApp({super.key});

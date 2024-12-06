@@ -52,7 +52,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
               logger.e('メニューアクションの処理中にエラーが発生しました', error: e);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('操作中にエラーが発生しました: ${e.toString()}'),
+                  content: Text('操作中にエラーが発生しました: $e'),
                 ),
               );
             }
@@ -94,7 +94,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       automaticallyImplyLeading: showLeading,
       title: Padding(
-        padding: const EdgeInsets.only(top: 8.0),
+        padding: const EdgeInsets.only(top: 8),
         child: Text(
           pageTitle,
           textAlign: TextAlign.center,
@@ -117,13 +117,12 @@ class AppBarBottom extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 2.0,
+      height: 2,
       decoration: BoxDecoration(
         color: mainColor.withOpacity(0.9),
         boxShadow: [
           BoxShadow(
             color: mainColor.withOpacity(0.5),
-            spreadRadius: 0,
             blurRadius: 2,
           ),
         ],

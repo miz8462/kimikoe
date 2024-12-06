@@ -71,7 +71,7 @@ final router = GoRouter(
                   path: RoutingPath.songList,
                   name: RoutingPath.songList,
                   pageBuilder: (context, state) {
-                    final groupData = state.extra as IdolGroup;
+                    final groupData = state.extra! as IdolGroup;
                     return MaterialPage(
                       child: SongListScreen(group: groupData),
                       key: state.pageKey,
@@ -82,7 +82,7 @@ final router = GoRouter(
                       path: RoutingPath.groupDetail,
                       name: RoutingPath.groupDetail,
                       pageBuilder: (context, state) {
-                        final groupData = state.extra as IdolGroup;
+                        final groupData = state.extra! as IdolGroup;
                         return MaterialPage(
                           child: GroupDetailScreen(group: groupData),
                           key: state.pageKey,
@@ -93,7 +93,7 @@ final router = GoRouter(
                           path: RoutingPath.idolDetail,
                           name: RoutingPath.idolDetail,
                           pageBuilder: (context, state) {
-                            final idolData = state.extra as Idol;
+                            final idolData = state.extra! as Idol;
                             return MaterialPage(
                               child: IdolDetailScreen(idol: idolData),
                               key: state.pageKey,
@@ -109,9 +109,9 @@ final router = GoRouter(
                   name: RoutingPath.lyric,
                   pageBuilder: (context, state) {
                     final Map<String, dynamic> data;
-                    data = state.extra as Map<String, dynamic>;
-                    final Song song = data['song'];
-                    final IdolGroup group = data['group'];
+                    data = state.extra! as Map<String, dynamic>;
+                    final song = data['song'] as Song;
+                    final group = data['group'] as IdolGroup;
                     return MaterialPage(
                       child: SongScreen(song: song, group: group),
                       key: state.pageKey,
@@ -132,9 +132,8 @@ final router = GoRouter(
                 // todo: 編集時のdata
                 final Map<String, dynamic>? data;
                 data = state.extra as Map<String, dynamic>?;
-                final Song? song =
-                    data?['song'] ?? const Song(title: '', lyrics: '');
-                final bool? isEditing = data?['isEditing'] ?? false;
+                final song = data?['song'] ?? const Song(title: '', lyrics: '');
+                final isEditing = data?['isEditing'] ?? false;
                 return NoTransitionPage(
                   key: state.pageKey,
                   child: AddSongScreen(
@@ -150,9 +149,8 @@ final router = GoRouter(
               pageBuilder: (context, state) {
                 final Map<String, dynamic>? data;
                 data = state.extra as Map<String, dynamic>?;
-                final IdolGroup? group =
-                    data?['group'] ?? const IdolGroup(name: '');
-                final bool? isEditing = data?['isEditing'] ?? false;
+                final group = data?['group'] ?? const IdolGroup(name: '');
+                final isEditing = data?['isEditing'] ?? false;
                 return NoTransitionPage(
                   key: state.pageKey,
                   child: AddGroupScreen(
@@ -168,8 +166,8 @@ final router = GoRouter(
               pageBuilder: (context, state) {
                 final Map<String, dynamic>? data;
                 data = state.extra as Map<String, dynamic>?;
-                final Idol? idol = data?['idol'] ?? const Idol(name: '');
-                final bool? isEditing = data?['isEditing'] ?? false;
+                final idol = data?['idol'] ?? const Idol(name: '');
+                final isEditing = data?['isEditing'] ?? false;
                 return NoTransitionPage(
                   key: state.pageKey,
                   child: AddIdolScreen(
@@ -206,7 +204,7 @@ final router = GoRouter(
                   pageBuilder: (context, state) {
                     final Map<String, dynamic>? data;
                     data = state.extra as Map<String, dynamic>?;
-                    final bool? isEditing = data?['isEditing'] ?? false;
+                    final isEditing = data?['isEditing'] ?? false;
                     return MaterialPage(
                       child: EditUserScreen(
                         isEditing: isEditing!,
@@ -239,10 +237,10 @@ final router = GoRouter(
 );
 
 class AuthState {
-  final Session? session;
   AuthState({this.session});
 
   factory AuthState.initial() {
     return AuthState(session: supabase.auth.currentSession);
   }
+  final Session? session;
 }

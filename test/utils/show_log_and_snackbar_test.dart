@@ -1,9 +1,10 @@
-import '../test_utils/mocks/logger_mock.dart';
-import '../test_utils/test_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/utils/show_log_and_snack_bar.dart';
 import 'package:mockito/mockito.dart';
+
+import '../test_utils/mocks/logger_mock.dart';
+import '../test_utils/test_widgets.dart';
 
 void main() {
   // MockLoggerを各テスト前に初期化

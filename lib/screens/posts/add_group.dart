@@ -13,10 +13,10 @@ import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/idol_group_list_providere.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/utils/supabase_service.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
 import 'package:kimikoe_app/utils/pickers/custom_picker.dart';
+import 'package:kimikoe_app/utils/supabase_service.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
 import 'package:kimikoe_app/widgets/button/image_input_button.dart';
 import 'package:kimikoe_app/widgets/button/styled_button.dart';
@@ -84,7 +84,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     return textInputValidator(value, 'グループ名');
   }
 
-  void _pickYear() async {
+  Future<void> _pickYear() async {
     await picker.DatePicker.showPicker(
       context,
       showTitleActions: false,
@@ -154,7 +154,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     if (!mounted) return;
     // 登録、修正
     if (_isEditing) {
-      updateIdolGroup(
+      await updateIdolGroup(
         name: _enteredName,
         imageUrl: imageUrl,
         year: _selectedYear,
@@ -163,11 +163,11 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
         instagramUrl: _enteredInstagramUrl,
         scheduleUrl: _enteredScheduleUrl,
         comment: _enteredComment,
-        id: (_group.id).toString(),
+        id: _group.id.toString(),
         context: context,
       );
     } else {
-      insertIdolGroupData(
+      await insertIdolGroupData(
         name: _enteredName,
         imageUrl: imageUrl,
         year: _selectedYear,
@@ -198,7 +198,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     return Scaffold(
       appBar: TopBar(
         pageTitle: _isEditing ? 'グループ編集' : 'グループ登録',
-        showLeading: _isEditing ? true : false,
+        showLeading: _isEditing,
       ),
       body: SingleChildScrollView(
         child: ConstrainedBox(
@@ -245,7 +245,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                     initialValue: _isEditing ? _group.officialUrl : '',
                     label: '公式サイト URL',
                     keyboardType: TextInputType.url,
-                    validator: (value) => urlValidator(value),
+                    validator: urlValidator,
                     onSaved: (value) {
                       _enteredOfficialUrl = value!;
                     },
@@ -255,7 +255,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                     initialValue: _isEditing ? _group.twitterUrl : '',
                     label: 'Twitter URL',
                     keyboardType: TextInputType.url,
-                    validator: (value) => urlValidator(value),
+                    validator: urlValidator,
                     onSaved: (value) {
                       _enteredTwitterUrl = value!;
                     },
@@ -265,7 +265,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                     initialValue: _isEditing ? _group.instagramUrl : '',
                     label: 'Instagram Url',
                     keyboardType: TextInputType.url,
-                    validator: (value) => urlValidator(value),
+                    validator: urlValidator,
                     onSaved: (value) {
                       _enteredInstagramUrl = value!;
                     },
@@ -275,7 +275,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                     initialValue: _isEditing ? _group.scheduleUrl : '',
                     label: 'Schedule Url',
                     keyboardType: TextInputType.url,
-                    validator: (value) => urlValidator(value),
+                    validator: urlValidator,
                     onSaved: (value) {
                       _enteredScheduleUrl = value!;
                     },

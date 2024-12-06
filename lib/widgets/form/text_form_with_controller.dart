@@ -3,11 +3,11 @@ import 'package:kimikoe_app/config/config.dart';
 
 class TextFormWithController extends StatelessWidget {
   const TextFormWithController({
-    super.key,
     required this.label,
     required this.validator,
     required this.onSaved,
     required this.controller,
+    super.key,
   });
   final String label;
   final String? Function(String?) validator;
@@ -15,8 +15,9 @@ class TextFormWithController extends StatelessWidget {
   final TextEditingController controller;
 
   @override
+
   Widget build(BuildContext context) {
-    return Container(
+    return ColoredBox(
       color: backgroundLightBlue,
       child: TextFormField(
         controller: controller,

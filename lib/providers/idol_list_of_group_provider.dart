@@ -68,5 +68,5 @@ class IdolListOfGroupNotifier extends StateNotifier<AsyncValue<List<Idol>>> {
 
 final idolListOfGroupProvider = StateNotifierProvider.family<
     IdolListOfGroupNotifier, AsyncValue<List<Idol>>, int>(
-  (ref, groupId) => IdolListOfGroupNotifier(ref, groupId),
+  IdolListOfGroupNotifier.new,
 );
