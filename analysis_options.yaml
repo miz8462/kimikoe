@@ -7,6 +7,7 @@ analyzer:
     argument_type_not_assignable: ignore
     flutter_style_todos: ignore
     sort_pub_dependencies: ignore
+    asset_does_not_exist: ignore
 
 linter:
   rules:
