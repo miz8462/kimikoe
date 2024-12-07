@@ -39,7 +39,7 @@ class Lyrics extends StatelessWidget {
               Expanded(
                 child: Column(
                   children: [
-                    for (final lyric in lyricsJson)
+                    for (final lyric in lyricsJson as List<Map<String, String>>)
                       CustomTextForLyrics(
                         lyric['lyric']!,
                         color: memberMap[lyric['singerId']],

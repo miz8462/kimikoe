@@ -34,6 +34,7 @@ class GroupCardM extends StatelessWidget {
               child: CircleAvatar(
                 backgroundImage: NetworkImage(groupImage),
                 radius: avaterSizeL,
+                // ignore: unnecessary_null_comparison
                 child: groupImage == null ? const Icon(Icons.person) : null,
               ),
             ),

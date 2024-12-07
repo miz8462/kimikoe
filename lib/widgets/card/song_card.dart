@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/song.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
@@ -26,10 +25,10 @@ class SongCard extends ConsumerWidget {
 
     // 一行ごとの歌詞と歌手のjsonから歌詞だけを抽出
     final lyricsJson = jsonDecode(lyrics) as List<dynamic>;
-    logger.i(lyricsJson);
-    logger.i(lyricsJson.runtimeType);
+
+    // bufferをつかうと早いらしい（analyzer談）
     final buffer = StringBuffer();
-    for (final lyric in lyricsJson) {
+    for (final lyric in lyricsJson as List<Map<String, String>>) {
       buffer.write('${lyric['lyric']} ');
     }
     final allLyrics = buffer.toString().trim();
