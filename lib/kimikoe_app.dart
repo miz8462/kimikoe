@@ -25,7 +25,7 @@ class KimikoeApp extends StatelessWidget {
           ),
         ),
       ),
-      // todo: ダークモード
+      // TODO: ダークモード
     );
   }
 }

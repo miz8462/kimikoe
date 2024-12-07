@@ -130,7 +130,7 @@ final router = GoRouter(
               path: RoutingPath.addSong,
               name: RoutingPath.addSong,
               pageBuilder: (context, state) {
-                // todo: 編集時のdata
+                // TODO: 編集時のdata
                 final Map<String, dynamic>? data;
                 data = state.extra as Map<String, dynamic>?;
                 final song = data?['song'] ??
@@ -220,7 +220,7 @@ final router = GoRouter(
             ),
           ],
         ),
-        // todo: 開発用ログアウトボタン
+        // TODO: 開発用ログアウトボタン
         StatefulShellBranch(
           navigatorKey: _signOutNavigatorKey,
           routes: [

@@ -9,7 +9,8 @@ import 'package:kimikoe_app/widgets/button/styled_button.dart';
 
 class BottomBar extends ConsumerStatefulWidget {
   const BottomBar({
-    required this.navigationShell, super.key,
+    required this.navigationShell,
+    super.key,
   });
   final StatefulNavigationShell navigationShell;
 
@@ -135,7 +136,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
             ),
             label: 'ユーザー',
           ),
-          // todo: 開発用ログアウトボタン
+          // TODO: 開発用ログアウトボタン
           NavigationDestination(
             icon: Icon(Icons.logout),
             label: 'ログアウト',

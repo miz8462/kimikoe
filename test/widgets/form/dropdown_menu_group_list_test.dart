@@ -35,7 +35,7 @@ void main() {
     await tester.tap(find.byType(DropdownMenu<DropdownIdAndName>));
     await tester.pumpAndSettle();
 
-    // fix: Widgetひとつのはずがふたつ見付かるってさ 
+    // FIXME: Widgetひとつのはずがふたつ見付かるってさ 
     // expect(find.text('Option1'), findsOneWidget);
     // expect(find.text('Option2'), findsOneWidget);
   });

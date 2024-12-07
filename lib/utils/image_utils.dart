@@ -18,8 +18,7 @@ String getImagePath({
   }
 }
 
-
-// todo: test
+// TODO: test
 Future<String?> processImage({
   required bool isEditing,
   required bool isImageChanged,
