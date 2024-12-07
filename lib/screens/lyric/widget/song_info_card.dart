@@ -5,7 +5,8 @@ import 'package:kimikoe_app/widgets/text/styled_text.dart';
 
 class SongInfoCard extends StatelessWidget {
   const SongInfoCard({
-    required this.song, super.key,
+    required this.song,
+    super.key,
   });
   final Song song;
 
@@ -40,7 +41,7 @@ class SongInfoCard extends StatelessWidget {
             ),
           ),
           Image.network(
-            song.imageUrl!,
+            song.imageUrl,
             height: 140,
             width: 140,
             fit: BoxFit.cover,

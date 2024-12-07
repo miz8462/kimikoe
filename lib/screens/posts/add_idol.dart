@@ -53,6 +53,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
   late TextEditingController _heightController;
   late TextEditingController _debutYearController;
   late Idol _idol;
+  late Color color;
 
   var _enteredIdolName = '';
   Color _selectedColor = Colors.lightBlue;
@@ -79,14 +80,20 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     if (widget.idol != null) {
       _idol = widget.idol!;
       _isEditing = true;
+      _selectedColor = _idol.color ?? Colors.lightBlue;
     } else {
+      _idol = Idol(name: '', imageUrl: noImage); // デフォルト値で初期化
       _isEditing = false;
+      _selectedColor = Colors.lightBlue;
     }
 
-    _selectedColor = _isEditing ? _idol.color! : Colors.lightBlue;
+    if (_idol.color == null) {
+      color = Colors.lightBlue;
+    }
+    _selectedColor = _isEditing ? color : Colors.lightBlue;
 
     _groupNameController = TextEditingController(
-      text: _isEditing ? _idol.group!.name : '',
+      text: _isEditing ? _idol.group?.name : '',
     );
     _birthYearController = TextEditingController(
       text: _isEditing ? _idol.birthYear.toString() : '',
@@ -140,24 +147,20 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
 
     FocusScope.of(context).unfocus();
 
-    // e.g. /aaa/bbb/ccc/image.png
-    final imagePath = getImagePath(
+    final imageUrl = await processImage(
       isEditing: _isEditing,
       isImageChanged: _isImageChanged,
-      imageUrl: _idol.imageUrl,
-      imageFile: _selectedImage,
+      existingImageUrl: _idol.imageUrl,
+      selectedImage: _selectedImage,
+      context: context,
     );
 
-    if (_selectedImage != null) {
-      await uploadImageToStorage(
-        table: TableName.images,
-        path: imagePath!,
-        file: _selectedImage!,
-        context: context,
-      );
+    if (imageUrl == null) {
+      // 画像URLが取得できなかった場合の処理
+      logger.e('画像URLが取得できませんでした。');
+    } else {
+      logger.i(imageUrl);
     }
-
-    final imageUrl = fetchImageUrl(imagePath!);
 
     int birthYear;
     if (_selectedBirthYear == null || _selectedBirthYear!.isEmpty) {
@@ -183,7 +186,6 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     } else {
       debutYear = int.parse(_selectedDebutYear!);
     }
-
     // 入力グループ名がDBにない場合、グループ名とNo Imageを登録する
     int? selectedGroupId;
     final groupName = _groupNameController.text;
@@ -421,6 +423,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       PickerForm(
                         label: '生まれた年',
                         controller: _birthYearController,
+                        initialValue: '2000',
                         picker: _pickBirthYear,
                         onSaved: (value) {
                           setState(
@@ -434,6 +437,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       PickerForm(
                         label: '生まれた日付',
                         controller: _birthDayController,
+                        initialValue: '06-15',
                         picker: _pickBirthday,
                         onSaved: (value) {
                           setState(
@@ -471,6 +475,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                         label: 'デビュー年',
                         controller: _debutYearController,
                         picker: _pickDebutYear,
+                        initialValue: '2020',
                         onSaved: (value) {
                           setState(
                             () {

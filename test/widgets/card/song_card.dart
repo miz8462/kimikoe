@@ -11,7 +11,9 @@ import 'package:kimikoe_app/router/routing_path.dart';
 
 class SongCard extends ConsumerWidget {
   const SongCard({
-    required this.song, required this.group, super.key,
+    required this.song,
+    required this.group,
+    super.key,
   });
   final Song song;
   final IdolGroup group;
@@ -47,7 +49,7 @@ class SongCard extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.all(4),
               child: CircleAvatar(
-                backgroundImage: NetworkImage(song.imageUrl!),
+                backgroundImage: NetworkImage(song.imageUrl),
                 radius: avaterSizeM,
               ),
             ),

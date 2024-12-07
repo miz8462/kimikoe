@@ -5,9 +5,9 @@ class Song {
   const Song({
     required this.title,
     required this.lyrics,
+    required this.imageUrl,
     this.id,
     this.group,
-    this.imageUrl,
     this.lyricist,
     this.composer,
     this.releaseDate,
@@ -18,7 +18,7 @@ class Song {
   final String lyrics;
   final int? id;
   final IdolGroup? group;
-  final String? imageUrl;
+  final String imageUrl;
   final Artist? lyricist;
   final Artist? composer;
   final String? releaseDate;

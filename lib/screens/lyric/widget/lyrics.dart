@@ -7,7 +7,9 @@ import 'package:kimikoe_app/widgets/text/custom_text_for_lyrics.dart';
 
 class Lyrics extends StatelessWidget {
   const Lyrics({
-    required this.lyrics, required this.memberFuture, super.key,
+    required this.lyrics,
+    required this.memberFuture,
+    super.key,
   });
   final String lyrics;
   final Future<List<Map<String, dynamic>>> memberFuture;
@@ -30,7 +32,7 @@ class Lyrics extends StatelessWidget {
               member[ColumnName.id]: Color(int.parse(member[ColumnName.color])),
           };
 
-          final lyricsJson = jsonDecode(lyrics) as List<Map<String, String>>;
+          final lyricsJson = jsonDecode(lyrics) as List<dynamic>;
 
           return Row(
             children: [

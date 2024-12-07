@@ -7,7 +7,8 @@ import 'package:kimikoe_app/router/routing_path.dart';
 
 class GroupCardM extends StatelessWidget {
   const GroupCardM({
-    required this.group, super.key,
+    required this.group,
+    super.key,
   });
   final IdolGroup group;
 
@@ -31,8 +32,7 @@ class GroupCardM extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(4),
               child: CircleAvatar(
-                backgroundImage:
-                    groupImage != null ? NetworkImage(groupImage) : null,
+                backgroundImage: NetworkImage(groupImage),
                 radius: avaterSizeL,
                 child: groupImage == null ? const Icon(Icons.person) : null,
               ),

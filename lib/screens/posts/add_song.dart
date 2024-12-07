@@ -186,24 +186,20 @@ class _AddSongScreenState extends State<AddSongScreen> {
     // 歌詞と歌手のセットをjsonにする
     final jsonStringLyrics = jsonEncode(_lyricAndSingerList);
 
-    // e.g. /aaa/bbb/ccc/image.png
-    final imagePath = getImagePath(
+    final imageUrl = await processImage(
       isEditing: _isEditing,
       isImageChanged: _isImageChanged,
-      imageUrl: _song.imageUrl,
-      imageFile: _selectedImage,
+      existingImageUrl: _song.imageUrl,
+      selectedImage: _selectedImage,
+      context: context,
     );
 
-    if (_selectedImage != null) {
-      await uploadImageToStorage(
-        table: TableName.images,
-        path: imagePath!,
-        file: _selectedImage!,
-        context: context,
-      );
+    if (imageUrl == null) {
+      // 画像URLが取得できなかった場合の処理
+      logger.e('画像URLが取得できませんでした。');
+    } else {
+      logger.i(imageUrl);
     }
-
-    final imageUrl = fetchImageUrl(imagePath!);
 
     if (_selectedReleaseDate == null || _selectedReleaseDate!.isEmpty) {
       _selectedReleaseDate = null;

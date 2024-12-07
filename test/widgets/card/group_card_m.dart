@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -7,7 +9,8 @@ import 'package:kimikoe_app/router/routing_path.dart';
 
 class GroupCardM extends StatelessWidget {
   const GroupCardM({
-    required this.group, super.key,
+    required this.group,
+    super.key,
   });
   final IdolGroup group;
 

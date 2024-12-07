@@ -8,11 +8,10 @@ analyzer:
     flutter_style_todos: ignore
     sort_pub_dependencies: ignore
     asset_does_not_exist: ignore
+    cascade_invocations: ignore
 
 linter:
   rules:
-    # todo: リリース前にはtrueにする
-    prefer_const_constructors: false
     prefer_const_literals_to_create_immutables: false
     require_trailing_commas: true
     public_member_api_docs: false

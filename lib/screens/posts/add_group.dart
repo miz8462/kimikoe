@@ -9,7 +9,6 @@ import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
-import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/idol_group_list_providere.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
@@ -124,33 +123,21 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
 
     FocusScope.of(context).unfocus();
 
-    String? imagePath;
-    late String? imageUrl;
-    // 画像を登録しない場合
-    if (_selectedImage == null && !_isEditing) {
-      imageUrl = noImage;
-    } else if (_isEditing && !_isImageChanged) {
-      imageUrl = _group.imageUrl;
+    final imageUrl = await processImage(
+      isEditing: _isEditing,
+      isImageChanged: _isImageChanged,
+      existingImageUrl: _group.imageUrl,
+      selectedImage: _selectedImage,
+      context: context,
+    );
+
+    if (imageUrl == null) {
+      // 画像URLが取得できなかった場合の処理
+      logger.e('画像URLが取得できませんでした。');
     } else {
-      // e.g. /aaa/bbb/ccc/image.png
-      imagePath = getImagePath(
-        isEditing: _isEditing,
-        isImageChanged: _isImageChanged,
-        imageUrl: _group.imageUrl,
-        imageFile: _selectedImage,
-      );
+      logger.i(imageUrl);
     }
-    if (_selectedImage != null && imagePath != null) {
-      await uploadImageToStorage(
-        table: TableName.images,
-        path: imagePath,
-        file: _selectedImage!,
-        context: context,
-      );
-    }
-    if (imagePath != null) {
-      imageUrl = fetchImageUrl(imagePath);
-    }
+
     if (!mounted) return;
     // 登録、修正
     if (_isEditing) {

@@ -6,7 +6,8 @@ import 'package:kimikoe_app/router/routing_path.dart';
 
 class GroupCardL extends StatelessWidget {
   const GroupCardL({
-    required this.group, super.key,
+    required this.group,
+    super.key,
   });
   final IdolGroup group;
 
@@ -38,7 +39,7 @@ class GroupCardL extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Image.network(
-                  group.imageUrl!,
+                  group.imageUrl,
                   height: 130,
                   width: 130,
                   fit: BoxFit.cover,

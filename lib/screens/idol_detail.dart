@@ -132,7 +132,7 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CircleAvatar(
-                  backgroundImage: NetworkImage(widget.idol.imageUrl!),
+                  backgroundImage: NetworkImage(widget.idol.imageUrl),
                   radius: avaterSizeLL,
                 ),
                 Row(

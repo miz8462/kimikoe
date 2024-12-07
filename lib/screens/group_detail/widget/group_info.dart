@@ -71,7 +71,7 @@ class _GroupInfoState extends State<GroupInfo> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CircleAvatar(
-              backgroundImage: NetworkImage(widget.group.imageUrl!),
+              backgroundImage: NetworkImage(widget.group.imageUrl),
               radius: avaterSizeLL,
             ),
             Row(

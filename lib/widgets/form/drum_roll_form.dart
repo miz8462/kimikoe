@@ -7,6 +7,7 @@ class PickerForm extends StatefulWidget {
     required this.controller,
     required this.picker,
     required this.onSaved,
+    this.initialValue,
     super.key,
   });
 
@@ -14,12 +15,18 @@ class PickerForm extends StatefulWidget {
   final TextEditingController controller;
   final void Function() picker;
   final void Function(String?) onSaved;
+  final String? initialValue;
 
   @override
   State<PickerForm> createState() => _PickerFormState();
 }
 
 class _PickerFormState extends State<PickerForm> {
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.text = widget.initialValue ?? '';
+  }
   @override
   Widget build(BuildContext context) {
     return ColoredBox(

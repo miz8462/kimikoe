@@ -1,8 +1,8 @@
 class IdolGroup {
   const IdolGroup({
     required this.name,
+    required this.imageUrl,
     this.id,
-    this.imageUrl,
     this.year,
     this.comment,
     this.officialUrl,
@@ -13,7 +13,7 @@ class IdolGroup {
 
   final String name;
   final int? id;
-  final String? imageUrl;
+  final String imageUrl;
   final int? year;
   final String? comment;
   final String? officialUrl;

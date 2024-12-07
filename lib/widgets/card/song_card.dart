@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/song.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
@@ -24,7 +25,9 @@ class SongCard extends ConsumerWidget {
     final lyrics = song.lyrics;
 
     // 一行ごとの歌詞と歌手のjsonから歌詞だけを抽出
-    final lyricsJson = jsonDecode(lyrics) as List<Map<String, dynamic>>;
+    final lyricsJson = jsonDecode(lyrics) as List<dynamic>;
+    logger.i(lyricsJson);
+    logger.i(lyricsJson.runtimeType);
     final buffer = StringBuffer();
     for (final lyric in lyricsJson) {
       buffer.write('${lyric['lyric']} ');
@@ -49,7 +52,7 @@ class SongCard extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.all(4),
               child: CircleAvatar(
-                backgroundImage: NetworkImage(song.imageUrl!),
+                backgroundImage: NetworkImage(song.imageUrl),
                 radius: avaterSizeM,
               ),
             ),

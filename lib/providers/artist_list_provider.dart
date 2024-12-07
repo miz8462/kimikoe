@@ -10,7 +10,7 @@ class ArtistListNotifier extends StateNotifier<List<Artist>> {
 
   Artist? getArtistById(int? id) {
     if (id == null) {
-      logger.w('IDがNULLです');
+      logger.w('アーティストのIDがNULLです');
       return null;
     }
     try {

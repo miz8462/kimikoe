@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/idol.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
@@ -132,7 +133,8 @@ final router = GoRouter(
                 // todo: 編集時のdata
                 final Map<String, dynamic>? data;
                 data = state.extra as Map<String, dynamic>?;
-                final song = data?['song'] ?? const Song(title: '', lyrics: '');
+                final song = data?['song'] ??
+                    const Song(title: '', lyrics: '', imageUrl: noImage);
                 final isEditing = data?['isEditing'] ?? false;
                 return NoTransitionPage(
                   key: state.pageKey,
@@ -149,7 +151,8 @@ final router = GoRouter(
               pageBuilder: (context, state) {
                 final Map<String, dynamic>? data;
                 data = state.extra as Map<String, dynamic>?;
-                final group = data?['group'] ?? const IdolGroup(name: '');
+                final group = data?['group'] ??
+                    const IdolGroup(name: '', imageUrl: noImage);
                 final isEditing = data?['isEditing'] ?? false;
                 return NoTransitionPage(
                   key: state.pageKey,
@@ -166,7 +169,7 @@ final router = GoRouter(
               pageBuilder: (context, state) {
                 final Map<String, dynamic>? data;
                 data = state.extra as Map<String, dynamic>?;
-                final idol = data?['idol'] ?? const Idol(name: '');
+                final idol = data?['idol'];
                 final isEditing = data?['isEditing'] ?? false;
                 return NoTransitionPage(
                   key: state.pageKey,

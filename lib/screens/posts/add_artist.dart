@@ -58,13 +58,13 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
     if (_selectedImage != null) {
       await uploadImageToStorage(
         table: TableName.images,
-        path: imagePath!,
+        path: imagePath,
         file: _selectedImage!,
         context: context,
       );
     }
 
-    final imageUrl = fetchImageUrl(imagePath!);
+    final imageUrl = fetchImageUrl(imagePath);
 
     if (!mounted) return;
     await insertArtistData(
