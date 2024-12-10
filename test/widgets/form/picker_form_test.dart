@@ -14,6 +14,7 @@ void main() {
 
     void mockPicker() {
       pickerCalled = true;
+      controller.text = 'Text Changed';
       logger.i('Picker Called: $pickerCalled');
     }
 
@@ -43,8 +44,10 @@ void main() {
     await tester.tap(formFieldFinder);
     await tester.pumpAndSettle();
 
-    // テキストフィールドがタップされるとPickerが呼び出されることを検証
+    // テキストフィールドをタップすることでpickerが呼び出され
+    // テキストが変更されたことを確認
     expect(pickerCalled, isTrue);
+    expect(controller.text, 'Text Changed');
 
     // onSavedが呼び出されることを検証
     final formState = tester.state<FormFieldState<String>>(formFieldFinder);
