@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kimikoe_app/main.dart';
-import 'package:kimikoe_app/widgets/form/text_form_with_controller.dart';
+import 'package:kimikoe_app/widgets/form/text_input_form.dart';
 
 import '../../test_utils/test_widgets.dart';
 
 void main() {
-  testWidgets('TextFormWithController', (WidgetTester tester) async {
+  testWidgets('InputFormウィジェット', (WidgetTester tester) async {
     final formKey = GlobalKey<FormState>();
     final label = 'Test Label';
-    final controller = TextEditingController();
-    final focusNode = FocusNode();
     String? savedText;
+    final initialValue = 'Initial Value';
+
+    void mockOnSaved(String? text) {
+      savedText = text;
+    }
 
     String? mockValidator(String? value) {
       if (value == null || value.isEmpty) {
@@ -20,32 +22,23 @@ void main() {
       return null;
     }
 
-    void mockOnSaved(String? text) {
-      savedText = text;
-      logger.i('Saved: $text');
-    }
-
     await tester.pumpWidget(
       buildTestWidget(
         child: Form(
           key: formKey,
-          child: TextFormWithController(
-            focusNode: focusNode,
+          child: InputForm(
             label: label,
-            validator: mockValidator,
             onSaved: mockOnSaved,
-            controller: controller,
+            initialValue: initialValue,
+            validator: mockValidator,
           ),
         ),
       ),
     );
 
+    // 初期化の確認
     expect(find.text(label), findsOneWidget);
-
-    // フォーカス動作の確認
-    await tester.tap(find.byType(TextFormField));
-    await tester.pump();
-    expect(focusNode.hasFocus, isTrue);
+    expect(find.text(initialValue), findsOneWidget);
 
     // 空の値でヴァリデーションを検証
     await tester.enterText(find.byType(TextFormField), '');
@@ -57,9 +50,6 @@ void main() {
     // テキスト変更
     final newText = 'New Text';
     await tester.enterText(find.byType(TextFormField), newText);
-    await tester.pump();
-    expect(controller.text, newText);
-    expect(find.text(newText), findsOneWidget);
 
     // エラーメッセージが消えてることを確認
     formKey.currentState!.validate();

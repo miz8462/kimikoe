@@ -3,16 +3,18 @@ import 'package:kimikoe_app/config/config.dart';
 
 class InputForm extends StatelessWidget {
   const InputForm({
-    required this.label, required this.onSaved, super.key,
-    this.validator,
+    required this.label,
+    required this.onSaved,
     this.initialValue,
+    this.validator,
     this.keyboardType = TextInputType.text,
+    super.key,
   });
 
   final String label;
-  final String? Function(String?)? validator;
   final void Function(String?) onSaved;
   final String? initialValue;
+  final String? Function(String?)? validator;
   final TextInputType? keyboardType;
 
   @override
