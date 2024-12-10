@@ -19,8 +19,8 @@ import 'package:kimikoe_app/utils/supabase_service.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
 import 'package:kimikoe_app/widgets/button/image_input_button.dart';
 import 'package:kimikoe_app/widgets/button/styled_button.dart';
-import 'package:kimikoe_app/widgets/form/drum_roll_form.dart';
 import 'package:kimikoe_app/widgets/form/expanded_text_form.dart';
+import 'package:kimikoe_app/widgets/form/picker_form.dart';
 import 'package:kimikoe_app/widgets/form/text_input_form.dart';
 
 class AddGroupScreen extends ConsumerStatefulWidget {

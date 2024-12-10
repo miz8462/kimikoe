@@ -21,8 +21,8 @@ import 'package:kimikoe_app/utils/validator/validator.dart';
 import 'package:kimikoe_app/widgets/button/image_input_button.dart';
 import 'package:kimikoe_app/widgets/button/styled_button.dart';
 import 'package:kimikoe_app/widgets/form/dropdown_menu_group_list.dart';
-import 'package:kimikoe_app/widgets/form/drum_roll_form.dart';
 import 'package:kimikoe_app/widgets/form/expanded_text_form.dart';
+import 'package:kimikoe_app/widgets/form/picker_form.dart';
 import 'package:kimikoe_app/widgets/form/text_form_with_controller.dart';
 import 'package:kimikoe_app/widgets/form/text_input_form.dart';
 
