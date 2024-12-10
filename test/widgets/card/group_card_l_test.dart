@@ -5,21 +5,18 @@ import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/widgets/card/group_card_l.dart';
 
+import '../../test_utils/test_widgets.dart';
+
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
   group('GroupCardLウィジェット', () {
     final testGroup = IdolGroup(
       name: 'Test Group',
       imageUrl: 'https://example.com/test.jpg',
     );
-    final testImagePath = 'assets/images/Kimikoe_app_icon.png';
+    final testImagePath = 'assets/images/test.jpg';
 
-    testWidgets('GroupCardL、ナビゲーションテスト', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(body: Container()),
-        ),
-      ); // 画像のプリキャッシュ
+    testWidgets('GroupCardLのナビゲーションテスト', (WidgetTester tester) async {
+      // 画像のプリキャッシュ
       await tester.runAsync(() async {
         await precacheImage(
           AssetImage(testImagePath),
@@ -56,17 +53,31 @@ void main() {
         ),
       );
 
-      // // 画像をプリロード
-      // await tester.runAsync(() async {
-      //   await precacheImage(
-      //     AssetImage(testImagePath),
-      //   );
-      // });
-
       // タップ後画面遷移の確認
       await tester.tap(find.byType(GroupCardL));
       await tester.pumpAndSettle();
       expect(find.text('Test Groupへナビゲーション'), findsOneWidget);
+    });
+    testWidgets('GroupCardLの表示テスト', (WidgetTester tester) async {
+      // 画像のプリキャッシュ
+      await tester.runAsync(() async {
+        await precacheImage(
+          AssetImage(testImagePath),
+          tester.element(find.byType(Container)),
+        );
+      });
+      await tester.pumpWidget(
+        buildTestWidget(
+          child: GroupCardL(
+            group: testGroup,
+            imageProvider: AssetImage(testImagePath),
+          ),
+        ),
+      );
+
+      // 表示確認
+      expect(find.byType(Image), findsOneWidget);
+      expect(find.text('Test Group'), findsOneWidget);
     });
   });
 }
