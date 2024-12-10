@@ -3,13 +3,14 @@ import 'package:kimikoe_app/config/config.dart';
 
 class ExpandedTextForm extends StatefulWidget {
   const ExpandedTextForm({
-    required this.onTextChanged, super.key,
+    required this.onTextChanged,
     this.label,
     this.initialValue,
+    super.key,
   });
 
-  final String? label;
   final ValueChanged<String?> onTextChanged;
+  final String? label;
   final String? initialValue;
 
   @override
