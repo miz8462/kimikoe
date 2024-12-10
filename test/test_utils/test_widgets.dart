@@ -8,7 +8,6 @@ Widget buildTestWidget({
     home: Scaffold(
       body: Builder(
         builder: (context) {
-          // debugDumpApp();
           return child;
         },
       ),

@@ -11,7 +11,7 @@ void main() {
     final initialValue = 'Initial Value';
     String? changedText;
 
-    void onTextChanged(String? text) {
+    void mockOnTextChanged(String? text) {
       changedText = text;
       logger.i('on Changed Text: $text');
     }
@@ -19,7 +19,7 @@ void main() {
     await tester.pumpWidget(
       buildTestWidget(
         child: ExpandedTextForm(
-          onTextChanged: onTextChanged,
+          onTextChanged: mockOnTextChanged,
           label: label,
           initialValue: initialValue,
         ),

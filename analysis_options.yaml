@@ -9,6 +9,7 @@ analyzer:
     sort_pub_dependencies: ignore
     asset_does_not_exist: ignore
     cascade_invocations: ignore
+    avoid_print: ignore
 
 linter:
   rules:
