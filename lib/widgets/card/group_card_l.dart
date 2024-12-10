@@ -7,12 +7,15 @@ import 'package:kimikoe_app/router/routing_path.dart';
 class GroupCardL extends StatelessWidget {
   const GroupCardL({
     required this.group,
+    this.imageProvider,
     super.key,
   });
   final IdolGroup group;
+  final ImageProvider? imageProvider;
 
   @override
   Widget build(BuildContext context) {
+    final image = imageProvider ?? NetworkImage(group.imageUrl);
     return GestureDetector(
       onTap: () => context.push(
         '${RoutingPath.groupList}/${RoutingPath.songList}',
@@ -38,8 +41,8 @@ class GroupCardL extends StatelessWidget {
             Expanded(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                  group.imageUrl,
+                child: Image(
+                  image: image,
                   height: 130,
                   width: 130,
                   fit: BoxFit.cover,

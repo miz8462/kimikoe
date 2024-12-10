@@ -6,7 +6,7 @@ import 'package:kimikoe_app/widgets/form/text_form_with_controller.dart';
 import '../../test_utils/test_widgets.dart';
 
 void main() {
-  testWidgets('TextFormWithController', (WidgetTester tester) async {
+  testWidgets('TextFormWithControllerウィジェット', (WidgetTester tester) async {
     final formKey = GlobalKey<FormState>();
     final label = 'Test Label';
     final controller = TextEditingController();
