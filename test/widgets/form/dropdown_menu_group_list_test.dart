@@ -32,11 +32,20 @@ void main() {
 
     expect(find.text('Test Label'), findsOneWidget);
 
+    // ドロップダウンメニューを開く
     await tester.tap(find.byType(DropdownMenu<DropdownIdAndName>));
     await tester.pumpAndSettle();
 
-    // FIXME: Widgetひとつのはずがふたつ見付かるってさ 
-    // expect(find.text('Option1'), findsOneWidget);
-    // expect(find.text('Option2'), findsOneWidget);
+    // おそらくはdropdownの仕様上、Textウィジェットの下にRichTextウィジェットが生成され'Option1'が2つが生成される
+    // そのうちRichTextの方を選択する
+    final option1TextFinder = find.text('Option1').last;
+    expect(option1TextFinder, findsOneWidget);
+
+    // Option1を選択
+    await tester.tap(option1TextFinder);
+    await tester.pumpAndSettle();
+    
+    // 選択した値を確認
+    expect(controller.text, 'Option1');
   });
 }
