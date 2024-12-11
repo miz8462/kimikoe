@@ -8,13 +8,13 @@ import 'package:kimikoe_app/widgets/card/group_card_m.dart';
 void main() {
   group('GroupCardMウィジェット', () {
     final testGroup = IdolGroup(
-      name: 'Test Group',
+      name: 'test group',
       imageUrl: 'https://example.com/test.jpg',
     );
     final testImagePath = 'assets/images/test.jpg';
 
     testWidgets('GroupCardMのルーティングテスト', (WidgetTester tester) async {
-// 画像のプリキャッシュ
+      // 画像のプリキャッシュ
       await tester.runAsync(() async {
         await precacheImage(
           AssetImage(testImagePath),
@@ -23,8 +23,8 @@ void main() {
       });
 
       final router = GoRouter(
-        routes: [
-          GoRoute(
+        routes: <RouteBase>[
+          GoRoute(    
             path: '/',
             builder: (context, state) => Scaffold(
               body: GroupCardM(

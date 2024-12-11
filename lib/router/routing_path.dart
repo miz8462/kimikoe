@@ -3,7 +3,7 @@ class RoutingPath {
 
   static const groupList = '/group_list';
   static const songList = 'song_list';
-  static const lyric = 'lyric';
+  static const lyric = '/lyric';
   static const groupDetail = '/group_detail';
   static const idolDetail = 'idol_detail';
 

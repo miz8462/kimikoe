@@ -13,23 +13,29 @@ class SongCard extends ConsumerWidget {
   const SongCard({
     required this.song,
     required this.group,
+    this.imageProvider,
     super.key,
   });
   final Song song;
   final IdolGroup group;
+  final ImageProvider? imageProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final title = song.title;
     final lyrics = song.lyrics;
 
+    final image = imageProvider ?? NetworkImage(song.imageUrl);
+
     // 一行ごとの歌詞と歌手のjsonから歌詞だけを抽出
     final lyricsJson = jsonDecode(lyrics) as List<dynamic>;
 
     // bufferをつかうと早いらしい（analyzer談）
     final buffer = StringBuffer();
-    for (final lyric in lyricsJson as List<Map<String, String>>) {
-      buffer.write('${lyric['lyric']} ');
+    for (final dynamic lyric in lyricsJson) {
+      if (lyric is Map<String, dynamic> && lyric['lyric'] is String) {
+        buffer.write('${lyric['lyric']} ');
+      }
     }
     final allLyrics = buffer.toString().trim();
 
@@ -39,7 +45,7 @@ class SongCard extends ConsumerWidget {
     };
 
     return GestureDetector(
-      onTap: () => context.pushNamed(RoutingPath.lyric, extra: data),
+      onTap: () => context.push(RoutingPath.lyric, extra: data),
       child: Card(
         elevation: 6,
         color: backgroundWhite,
@@ -51,7 +57,7 @@ class SongCard extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.all(4),
               child: CircleAvatar(
-                backgroundImage: NetworkImage(song.imageUrl),
+                backgroundImage: image,
                 radius: avaterSizeM,
               ),
             ),
