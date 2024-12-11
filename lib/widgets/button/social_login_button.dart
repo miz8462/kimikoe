@@ -4,11 +4,11 @@ import 'package:kimikoe_app/config/config.dart';
 
 class SocialLoginButton extends StatelessWidget {
   const SocialLoginButton(
-    this.socialName, {
+    this.socialLogin, {
     required this.imagePath,
     super.key,
   });
-  final void Function() socialName;
+  final void Function() socialLogin;
   final String imagePath;
 
   @override
@@ -18,11 +18,11 @@ class SocialLoginButton extends StatelessWidget {
     const textColor = textWhite;
 
     return IconButton(
-      onPressed: socialName,
+      onPressed: socialLogin,
       icon: SvgPicture.asset(
+        imagePath,
         height: height,
         width: width,
-        imagePath,
         colorFilter: const ColorFilter.mode(textColor, BlendMode.srcIn),
       ),
     );
