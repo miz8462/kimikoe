@@ -8,18 +8,23 @@ import 'package:kimikoe_app/router/routing_path.dart';
 class GroupCardM extends StatelessWidget {
   const GroupCardM({
     required this.group,
+    this.imageProvider,
     super.key,
   });
   final IdolGroup group;
+  final ImageProvider? imageProvider;
 
   @override
   Widget build(BuildContext context) {
     final groupName = group.name;
     final groupImage = group.imageUrl;
     final groupInfo = group.comment;
+
+    final image = imageProvider ?? NetworkImage(groupImage);
+
     return GestureDetector(
       onTap: () {
-        context.pushNamed(RoutingPath.groupDetail, extra: group);
+        context.push(RoutingPath.groupDetail, extra: group);
       },
       child: Card(
         elevation: 6,
@@ -32,7 +37,7 @@ class GroupCardM extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(4),
               child: CircleAvatar(
-                backgroundImage: NetworkImage(groupImage),
+                backgroundImage:image,
                 radius: avaterSizeL,
                 // ignore: unnecessary_null_comparison
                 child: groupImage == null ? const Icon(Icons.person) : null,
