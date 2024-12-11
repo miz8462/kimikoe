@@ -24,7 +24,7 @@ void main() {
 
       final router = GoRouter(
         routes: <RouteBase>[
-          GoRoute(    
+          GoRoute(
             path: '/',
             builder: (context, state) => Scaffold(
               body: GroupCardM(
@@ -56,7 +56,7 @@ void main() {
       await tester.tap(find.byType(GestureDetector));
       await tester.pumpAndSettle();
       expect(find.byType(Text), findsOneWidget);
-      expect(find.text('Test Groupへナビゲーション'), findsOneWidget);
+      expect(find.text('test groupへナビゲーション'), findsOneWidget);
     });
   });
 }
