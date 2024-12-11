@@ -6,19 +6,19 @@ class StyledButton extends StatelessWidget {
   const StyledButton(
     this.text, {
     this.isSending = false,
-    this.onPressed,
     this.textColor = textWhite,
     this.backgroundColor = mainColor,
     this.borderSide = BorderSide.none,
+    this.onPressed,
     super.key,
   });
 
-  final bool? isSending;
   final String text;
-  final void Function()? onPressed;
+  final bool? isSending;
   final Color textColor;
   final Color backgroundColor;
   final BorderSide borderSide;
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
