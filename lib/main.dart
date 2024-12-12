@@ -14,7 +14,7 @@ final sessionProvider = StateProvider<Session?>((ref) => null);
 final providerContainer = ProviderContainer();
 final logger = Logger(
   printer: PrettyPrinter(
-    lineLength: 90,
+    lineLength: 70,
     methodCount: 0,
     errorMethodCount: 10,
   ),
