@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/models/user.dart';
+import 'package:kimikoe_app/models/user_profile.dart';
 
 void main() {
   test('UserProfileクラス', () {

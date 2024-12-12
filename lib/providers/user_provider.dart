@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
-import 'package:kimikoe_app/models/user.dart';
+import 'package:kimikoe_app/models/user_profile.dart';
 import 'package:kimikoe_app/utils/supabase_service.dart';
 
 class UserProfileNotifier extends StateNotifier<UserProfile?> {
