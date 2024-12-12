@@ -22,8 +22,10 @@ void main() {
     );
 
     expect(artistWithoutOptionalFields.name, 'another artist');
-    expect(artistWithoutOptionalFields.imageUrl,
-        'https://example.com/another.jpg');
+    expect(
+      artistWithoutOptionalFields.imageUrl,
+      'https://example.com/another.jpg',
+    );
     expect(artistWithoutOptionalFields.id, isNull);
     expect(artistWithoutOptionalFields.comment, isNull);
   });
