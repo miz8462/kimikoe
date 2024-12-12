@@ -44,6 +44,7 @@ void main() {
           ),
           GoRoute(
             path: RoutingPath.lyric,
+            name: RoutingPath.lyric,
             builder: (context, state) {
               final extra = state.extra! as Map<String, dynamic>;
               final song = extra['song'] as Song;

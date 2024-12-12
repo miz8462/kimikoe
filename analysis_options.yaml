@@ -15,5 +15,4 @@ analyzer:
 linter:
   rules:
     prefer_const_literals_to_create_immutables: false
-    require_trailing_commas: true
     public_member_api_docs: false
