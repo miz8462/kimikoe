@@ -13,13 +13,13 @@ import 'package:kimikoe_app/models/idol.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
+import 'package:kimikoe_app/services/supabase_service.dart';
 import 'package:kimikoe_app/utils/bool_check.dart';
 import 'package:kimikoe_app/utils/color_code_to_string_hex.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
 import 'package:kimikoe_app/utils/pickers/custom_picker.dart';
 import 'package:kimikoe_app/utils/pickers/int_picker.dart';
-import 'package:kimikoe_app/utils/supabase_service.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
 import 'package:kimikoe_app/widgets/button/circular_button.dart';
 import 'package:kimikoe_app/widgets/button/image_input_button.dart';
@@ -411,7 +411,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                         ],
                       ),
                       const Gap(spaceS),
-                      ImageInput(
+                      ImageInputButton(
                         imageUrl: _idol.imageUrl,
                         onPickImage: (image) {
                           _selectedImage = image;

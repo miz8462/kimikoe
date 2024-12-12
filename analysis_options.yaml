@@ -10,6 +10,7 @@ analyzer:
     asset_does_not_exist: ignore
     cascade_invocations: ignore
     avoid_print: ignore
+    one_member_abstracts: ignore
 
 linter:
   rules:

@@ -3,38 +3,44 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
+import 'package:kimikoe_app/services/image_picker_service.dart';
 import 'package:kimikoe_app/widgets/button/styled_button.dart';
 
-class ImageInput extends StatefulWidget {
-  const ImageInput({
-    required this.label, required this.onPickImage, super.key,
+class ImageInputButton extends StatefulWidget {
+  const ImageInputButton({
+    required this.label,
+    required this.onPickImage,
+    super.key,
     this.imageUrl,
+    this.imagePickerService,
   });
 
   final String label;
   final void Function(File image) onPickImage;
   final String? imageUrl;
+  final ImagePickerService? imagePickerService;
 
   @override
-  State<ImageInput> createState() => _ImageInputState();
+  State<ImageInputButton> createState() => _ImageInputButtonState();
 }
 
-class _ImageInputState extends State<ImageInput> {
+class _ImageInputButtonState extends State<ImageInputButton> {
   File? _selectedImage;
   bool _hasEditingImage = false;
+  late ImagePickerService _imagePickerService;
 
   @override
   void initState() {
     super.initState();
+    _imagePickerService = widget.imagePickerService ?? ImagePickerServiceImpl();
     if (widget.imageUrl != null) {
       _hasEditingImage = true;
     }
   }
 
   Future<File?> _getImageFromMobileStorage() async {
-    final picker = ImagePicker();
-
-    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+    final pickedImage =
+        await _imagePickerService.pickImage(source: ImageSource.gallery);
     if (pickedImage == null) {
       return null;
     }
@@ -85,5 +91,10 @@ class _ImageInputState extends State<ImageInput> {
       );
     }
     return content;
+  }
+
+  @visibleForTesting
+  Future<File?> getImageFromMobileStorageForTesting() async {
+    return _getImageFromMobileStorage();
   }
 }

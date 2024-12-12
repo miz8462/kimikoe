@@ -45,7 +45,7 @@ class SongCard extends ConsumerWidget {
     };
 
     return GestureDetector(
-      onTap: () => context.push(RoutingPath.lyric, extra: data),
+      onTap: () => context.pushNamed(RoutingPath.lyric, extra: data),
       child: Card(
         elevation: 6,
         color: backgroundWhite,

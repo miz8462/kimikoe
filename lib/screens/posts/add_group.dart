@@ -12,10 +12,10 @@ import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/providers/idol_group_list_providere.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
+import 'package:kimikoe_app/services/supabase_service.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
 import 'package:kimikoe_app/utils/pickers/custom_picker.dart';
-import 'package:kimikoe_app/utils/supabase_service.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
 import 'package:kimikoe_app/widgets/button/image_input_button.dart';
 import 'package:kimikoe_app/widgets/button/styled_button.dart';
@@ -210,7 +210,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                     },
                   ),
                   const Gap(spaceS),
-                  ImageInput(
+                  ImageInputButton(
                     imageUrl: _group.imageUrl,
                     onPickImage: (image) {
                       _selectedImage = image;

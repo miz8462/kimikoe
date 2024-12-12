@@ -13,10 +13,10 @@ import 'package:kimikoe_app/models/song.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
+import 'package:kimikoe_app/services/supabase_service.dart';
 import 'package:kimikoe_app/utils/bool_check.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
-import 'package:kimikoe_app/utils/supabase_service.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
 import 'package:kimikoe_app/widgets/button/image_input_button.dart';
 import 'package:kimikoe_app/widgets/button/styled_button.dart';
@@ -402,7 +402,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                         backgroundColor: mainColor.withOpacity(0.7),
                       ),
                       const Gap(spaceS),
-                      ImageInput(
+                      ImageInputButton(
                         imageUrl: _song.imageUrl,
                         onPickImage: (image) {
                           _selectedImage = image;

@@ -24,7 +24,7 @@ class GroupCardM extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        context.push(RoutingPath.groupDetail, extra: group);
+        context.pushNamed(RoutingPath.groupDetail, extra: group);
       },
       child: Card(
         elevation: 6,
@@ -37,7 +37,7 @@ class GroupCardM extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(4),
               child: CircleAvatar(
-                backgroundImage:image,
+                backgroundImage: image,
                 radius: avaterSizeL,
                 // ignore: unnecessary_null_comparison
                 child: groupImage == null ? const Icon(Icons.person) : null,
