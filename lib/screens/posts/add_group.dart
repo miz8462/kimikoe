@@ -17,7 +17,7 @@ import 'package:kimikoe_app/utils/date_formatter.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
 import 'package:kimikoe_app/utils/pickers/custom_picker.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
-import 'package:kimikoe_app/widgets/button/image_input_button.dart';
+import 'package:kimikoe_app/widgets/button/image_input.dart';
 import 'package:kimikoe_app/widgets/button/styled_button.dart';
 import 'package:kimikoe_app/widgets/form/expanded_text_form.dart';
 import 'package:kimikoe_app/widgets/form/picker_form.dart';
@@ -210,7 +210,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                     },
                   ),
                   const Gap(spaceS),
-                  ImageInputButton(
+                  ImageInput(
                     imageUrl: _group.imageUrl,
                     onPickImage: (image) {
                       _selectedImage = image;

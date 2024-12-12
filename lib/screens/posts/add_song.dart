@@ -18,7 +18,7 @@ import 'package:kimikoe_app/utils/bool_check.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
-import 'package:kimikoe_app/widgets/button/image_input_button.dart';
+import 'package:kimikoe_app/widgets/button/image_input.dart';
 import 'package:kimikoe_app/widgets/button/styled_button.dart';
 import 'package:kimikoe_app/widgets/form/dropdown_menu_group_list.dart';
 import 'package:kimikoe_app/widgets/form/expanded_text_form.dart';
@@ -402,7 +402,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                         backgroundColor: mainColor.withOpacity(0.7),
                       ),
                       const Gap(spaceS),
-                      ImageInputButton(
+                      ImageInput(
                         imageUrl: _song.imageUrl,
                         onPickImage: (image) {
                           _selectedImage = image;

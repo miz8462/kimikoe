@@ -11,7 +11,7 @@ import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/services/supabase_service.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
-import 'package:kimikoe_app/widgets/button/image_input_button.dart';
+import 'package:kimikoe_app/widgets/button/image_input.dart';
 import 'package:kimikoe_app/widgets/button/styled_button.dart';
 import 'package:kimikoe_app/widgets/form/expanded_text_form.dart';
 import 'package:kimikoe_app/widgets/form/text_input_form.dart';
@@ -118,7 +118,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
                     onSaved: (value) => _enteredName = value!,
                   ),
                   const Gap(spaceS),
-                  ImageInputButton(
+                  ImageInput(
                     onPickImage: (image) {
                       _selectedImage = image;
                     },

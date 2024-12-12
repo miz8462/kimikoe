@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
-import 'package:kimikoe_app/widgets/button/image_input_button.dart';
+import 'package:kimikoe_app/widgets/button/image_input.dart';
 import 'package:kimikoe_app/widgets/button/styled_button.dart';
 
 import '../../test_utils/test_widgets.dart';
@@ -11,7 +11,7 @@ void main() {
     testWidgets('ImageInputウィジェット初期状態テスト', (WidgetTester tester) async {
       await tester.pumpWidget(
         buildTestWidget(
-          child: ImageInputButton(label: 'test label', onPickImage: (_) {}),
+          child: ImageInput(label: 'test label', onPickImage: (_) {}),
         ),
       );
 

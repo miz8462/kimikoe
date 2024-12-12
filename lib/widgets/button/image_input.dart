@@ -6,8 +6,8 @@ import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:kimikoe_app/services/image_picker_service.dart';
 import 'package:kimikoe_app/widgets/button/styled_button.dart';
 
-class ImageInputButton extends StatefulWidget {
-  const ImageInputButton({
+class ImageInput extends StatefulWidget {
+  const ImageInput({
     required this.label,
     required this.onPickImage,
     super.key,
@@ -21,10 +21,10 @@ class ImageInputButton extends StatefulWidget {
   final ImagePickerService? imagePickerService;
 
   @override
-  State<ImageInputButton> createState() => _ImageInputButtonState();
+  State<ImageInput> createState() => _ImageInputState();
 }
 
-class _ImageInputButtonState extends State<ImageInputButton> {
+class _ImageInputState extends State<ImageInput> {
   File? _selectedImage;
   bool _hasEditingImage = false;
   late ImagePickerService _imagePickerService;
