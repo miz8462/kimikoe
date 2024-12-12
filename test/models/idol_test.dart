@@ -49,7 +49,10 @@ void main() {
       imageUrl: 'https://example.com/another-idol.jpg',
     );
     expect(idolWithoutOptionalFields.name, 'another idol');
-    expect(idolWithoutOptionalFields.imageUrl, 'https://example.com/another-idol.jpg');
+    expect(
+      idolWithoutOptionalFields.imageUrl,
+      'https://example.com/another-idol.jpg',
+    );
     expect(idolWithoutOptionalFields.id, isNull);
     expect(idolWithoutOptionalFields.comment, isNull);
     expect(idolWithoutOptionalFields.group, isNull);

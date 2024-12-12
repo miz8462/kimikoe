@@ -43,7 +43,10 @@ void main() {
     );
     expect(songWithoutOptionalFields.title, 'another title');
     expect(songWithoutOptionalFields.lyrics, 'another lyrics');
-    expect(songWithoutOptionalFields.imageUrl, 'https://example.com/another-song.jpg');
+    expect(
+      songWithoutOptionalFields.imageUrl,
+      'https://example.com/another-song.jpg',
+    );
     expect(songWithoutOptionalFields.id, isNull);
     expect(songWithoutOptionalFields.group, isNull);
     expect(songWithoutOptionalFields.composer, isNull);
