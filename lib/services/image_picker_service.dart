@@ -5,7 +5,9 @@ abstract class ImagePickerService {
 }
 
 class ImagePickerServiceImpl implements ImagePickerService {
-  final ImagePicker _picker = ImagePicker();
+  ImagePickerServiceImpl([ImagePicker? picker])
+      : _picker = picker ?? ImagePicker();
+  final ImagePicker _picker;
 
   @override
   Future<XFile?> pickImage({required ImageSource source}) {

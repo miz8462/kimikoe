@@ -11,11 +11,13 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 Future<void> insertArtistData({
   required String name,
   required BuildContext context,
+  SupabaseClient? supabaseClient,
   String? imageUrl,
   String? comment,
 }) async {
+  final client = supabaseClient ?? supabase;
   try {
-    await supabase.from(TableName.artists).insert({
+    await client.from(TableName.artists).insert({
       ColumnName.name: name,
       ColumnName.imageUrl: imageUrl,
       ColumnName.comment: comment,
@@ -40,6 +42,7 @@ Future<void> insertArtistData({
 Future<void> insertIdolGroupData({
   required String name,
   required BuildContext context,
+  SupabaseClient? supabaseClient,
   String? imageUrl,
   String? year,
   String? officialUrl,
@@ -48,8 +51,9 @@ Future<void> insertIdolGroupData({
   String? scheduleUrl,
   String? comment,
 }) async {
+  final client = supabaseClient ?? supabase;
   try {
-    await supabase.from(TableName.idolGroups).insert({
+    await client.from(TableName.idolGroups).insert({
       ColumnName.name: name,
       ColumnName.imageUrl: imageUrl,
       ColumnName.yearFormingGroups: year == null ? null : int.tryParse(year),

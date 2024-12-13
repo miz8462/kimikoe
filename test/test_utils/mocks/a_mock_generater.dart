@@ -1,5 +1,5 @@
-import 'package:kimikoe_app/services/image_picker_service.dart';
 import 'package:mockito/annotations.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-@GenerateNiceMocks([MockSpec<ImagePickerService>()])
+@GenerateNiceMocks([MockSpec<SupabaseQueryBuilder>()])
 void main() {}
