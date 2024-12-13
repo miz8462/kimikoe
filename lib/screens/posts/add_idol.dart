@@ -110,7 +110,10 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
   }
 
   Future<void> _fetchIdAndNameGroupList() async {
-    final groupIdAndNameList = await fetchIdAndNameList(TableName.idolGroups);
+    final groupIdAndNameList = await fetchIdAndNameList(
+      TableName.idolGroups,
+      supabase,
+    );
     setState(() {
       _groupIdAndNameList = groupIdAndNameList;
       _isFetching = false;

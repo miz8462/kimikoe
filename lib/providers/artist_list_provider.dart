@@ -46,7 +46,7 @@ final artistListFromSupabaseProvider =
     FutureProvider<List<Artist>>((ref) async {
   try {
     logger.i('Supabaseからアーティストデータを取得中...');
-    final response = await fetchArtists();
+    final response = await fetchArtists(supabase);
     logger.i('${response.length}件のアーティストデータをSupabaseから取得しました');
 
     final artists = response.map<Artist>((artist) {

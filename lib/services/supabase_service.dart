@@ -83,6 +83,7 @@ Future<void> insertIdolGroupData({
 Future<void> insertIdolData({
   required String name,
   required BuildContext context,
+  SupabaseClient? supabaseClient,
   int? groupId,
   String? color,
   String? imageUrl,
@@ -93,8 +94,10 @@ Future<void> insertIdolData({
   int? debutYear,
   String? comment,
 }) async {
+  final client = supabaseClient ?? supabase;
+
   try {
-    await supabase.from(TableName.idol).insert({
+    await client.from(TableName.idol).insert({
       ColumnName.name: name,
       ColumnName.groupId: groupId,
       ColumnName.color: color,
@@ -124,9 +127,10 @@ Future<void> insertIdolData({
 }
 
 Future<void> insertSongData({
-  required String name,
+  required String title,
   required String lyric,
   required BuildContext context,
+  SupabaseClient? supabaseClient,
   int? groupId,
   String? imageUrl,
   String? releaseDate,
@@ -134,9 +138,10 @@ Future<void> insertSongData({
   int? composerId,
   String? comment,
 }) async {
+  final client = supabaseClient ?? supabase;
   try {
-    await supabase.from(TableName.songs).insert({
-      ColumnName.title: name,
+    await client.from(TableName.songs).insert({
+      ColumnName.title: title,
       ColumnName.lyrics: lyric,
       ColumnName.groupId: groupId,
       ColumnName.imageUrl: imageUrl,
@@ -149,13 +154,13 @@ Future<void> insertSongData({
     showLogAndSnackBar(
       context: context,
       logger: logger,
-      message: '曲を登録しました: $name',
+      message: '曲を登録しました: $title',
     );
   } catch (e) {
     showLogAndSnackBar(
       context: context,
       logger: logger,
-      message: '曲の登録中にエラーが発生しました: $name',
+      message: '曲の登録中にエラーが発生しました: $title',
       isError: true,
     );
     rethrow;
@@ -167,9 +172,12 @@ Future<void> uploadImageToStorage({
   required String path,
   required File file,
   required BuildContext context,
+  SupabaseClient? supabaseClient,
 }) async {
+  final client = supabaseClient ?? supabase;
+
   try {
-    await supabase.storage.from(TableName.images).upload(path, file);
+    await client.storage.from(table).upload(path, file);
     if (!context.mounted) return;
     showLogAndSnackBar(
       context: context,
@@ -191,9 +199,27 @@ Future<void> uploadImageToStorage({
 }
 
 // READ
-Future<List<Map<String, dynamic>>> fetchGroupMembers(int groupId) async {
+Future<List<Map<String, dynamic>>> fetchArtists(
+  SupabaseClient? supabaseClient,
+) async {
   try {
-    final response = await supabase
+    final client = supabaseClient ?? supabase;
+    final response = await client.from(TableName.artists).select();
+    logger.i('アーティストのリストを取得しました');
+    return response;
+  } catch (e) {
+    logger.e('アーティストのリストの取得中にエラーが発生しました', error: e);
+    rethrow;
+  }
+}
+
+Future<List<Map<String, dynamic>>> fetchGroupMembers(
+  int groupId,
+  SupabaseClient? supabaseClient,
+) async {
+  final client = supabaseClient ?? supabase;
+  try {
+    final response = await client
         .from(TableName.idol)
         .select()
         .eq(ColumnName.groupId, groupId);
@@ -205,10 +231,15 @@ Future<List<Map<String, dynamic>>> fetchGroupMembers(int groupId) async {
   }
 }
 
-Future<List<Map<String, dynamic>>> fetchCurrentUserInfo() async {
+// HACK: Supabase CLI でできるらしいよ
+Future<List<Map<String, dynamic>>> fetchCurrentUserInfo(
+  SupabaseClient? supabaseClient,
+) async {
   try {
-    final currentUserId = supabase.auth.currentUser!.id;
-    final userInfo = await supabase
+    final client = supabaseClient ?? supabase;
+
+    final currentUserId = client.auth.currentUser!.id;
+    final userInfo = await client
         .from(TableName.profiles)
         .select()
         .eq(ColumnName.id, currentUserId);
@@ -220,6 +251,7 @@ Future<List<Map<String, dynamic>>> fetchCurrentUserInfo() async {
   }
 }
 
+// HACK: Supabase CLI でできるらしいよ
 String fetchImageUrl(String imagePath) {
   if (imagePath == noImage) return noImage;
   try {
@@ -232,9 +264,13 @@ String fetchImageUrl(String imagePath) {
   }
 }
 
-Future<List<Map<String, dynamic>>> fetchIdAndNameList(String tableName) async {
+Future<List<Map<String, dynamic>>> fetchIdAndNameList(
+  String tableName,
+  SupabaseClient? supabaseClient,
+) async {
   try {
-    final response = await supabase
+    final client = supabaseClient ?? supabase;
+    final response = await client
         .from(tableName)
         .select('${ColumnName.id}, ${ColumnName.name}');
     logger.i('$tableNameのIDと名前のリストを取得しました');
@@ -247,7 +283,7 @@ Future<List<Map<String, dynamic>>> fetchIdAndNameList(String tableName) async {
 
 int fetchSelectedDataIdFromName({
   required List<Map<String, dynamic>> list,
-  required String? name,
+  required String name,
 }) {
   final selectedDataList =
       list.where((item) => item[ColumnName.name] == name).toList();
@@ -259,32 +295,6 @@ int fetchSelectedDataIdFromName({
   final selectedDataId = selectedData[ColumnName.id] as int;
   logger.i('指定された名前: $name に対するデータIDを取得しました');
   return selectedDataId;
-}
-
-Future<List<Map<String, dynamic>>> fetchArtists() async {
-  try {
-    final response = await supabase.from(TableName.artists).select();
-    logger.i('アーティストのリストを取得しました');
-    return response;
-  } catch (e) {
-    logger.e('アーティストのリストの取得中にエラーが発生しました', error: e);
-    rethrow;
-  }
-}
-
-Future<Map<String, dynamic>> fetchArtistById(String id) async {
-  try {
-    final response = await supabase
-        .from(TableName.artists)
-        .select()
-        .eq(ColumnName.id, id)
-        .single();
-    logger.i('ID: $id のアーティストを取得しました');
-    return response;
-  } catch (e) {
-    logger.e('ID: $id のアーティストの取得中にエラーが発生しました', error: e);
-    rethrow;
-  }
 }
 
 Stream<dynamic> fetchDatabyStream({
@@ -306,6 +316,7 @@ Future<void> updateIdolGroup({
   required String name,
   required String id,
   required BuildContext context,
+  SupabaseClient? supabaseClient,
   String? imageUrl,
   String? year,
   String? officialUrl,
@@ -314,8 +325,9 @@ Future<void> updateIdolGroup({
   String? scheduleUrl,
   String? comment,
 }) async {
+  final client = supabaseClient ?? supabase;
   try {
-    await supabase.from(TableName.idolGroups).update({
+    await client.from(TableName.idolGroups).update({
       ColumnName.name: name,
       ColumnName.imageUrl: imageUrl,
       ColumnName.yearFormingGroups: year == null ? null : int.tryParse(year),
@@ -343,8 +355,8 @@ Future<void> updateIdolGroup({
 }
 
 Future<void> updateIdol({
-  required String name,
   required int id,
+  required String name,
   required BuildContext context,
   int? groupId,
   String? color,
@@ -388,10 +400,11 @@ Future<void> updateIdol({
 }
 
 Future<void> updateSong({
-  required String name,
-  required String lyric,
   required int id,
+  required String title,
+  required String lyric,
   required BuildContext context,
+  SupabaseClient? supabaseClient,
   int? groupId,
   String? imageUrl,
   String? releaseDate,
@@ -399,9 +412,10 @@ Future<void> updateSong({
   int? composerId,
   String? comment,
 }) async {
+  final client = supabaseClient ?? supabase;
   try {
-    await supabase.from(TableName.songs).update({
-      ColumnName.title: name,
+    await client.from(TableName.songs).update({
+      ColumnName.title: title,
       ColumnName.lyrics: lyric,
       ColumnName.groupId: groupId,
       ColumnName.imageUrl: imageUrl,
@@ -414,13 +428,13 @@ Future<void> updateSong({
     showLogAndSnackBar(
       context: context,
       logger: logger,
-      message: '曲を更新しました。曲名: $name',
+      message: '曲を更新しました。曲名: $title',
     );
   } catch (e) {
     showLogAndSnackBar(
       context: context,
       logger: logger,
-      message: '曲の更新中にエラーが発生しました。曲名: $name',
+      message: '曲の更新中にエラーが発生しました。曲名: $title',
       isError: true,
     );
     rethrow;

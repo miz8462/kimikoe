@@ -142,9 +142,9 @@ class _AddSongScreenState extends State<AddSongScreen> {
   }
 
   Future<void> _fetchIdAndNameLists() async {
-    final groupList = await fetchIdAndNameList(TableName.idolGroups);
-    final idolList = await fetchIdAndNameList(TableName.idol);
-    final artistList = await fetchIdAndNameList(TableName.artists);
+    final groupList = await fetchIdAndNameList(TableName.idolGroups, supabase);
+    final idolList = await fetchIdAndNameList(TableName.idol, supabase);
+    final artistList = await fetchIdAndNameList(TableName.artists, supabase);
     setState(() {
       _groupIdAndNameList = groupList;
       _idolIdAndNameList = idolList;
@@ -270,7 +270,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
     if (!mounted) return;
     if (_isEditing) {
       await updateSong(
-        name: _enteredTitle,
+        title: _enteredTitle,
         lyric: jsonStringLyrics,
         groupId: selectedGroupId,
         imageUrl: imageUrl,
@@ -283,7 +283,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
       );
     } else {
       await insertSongData(
-        name: _enteredTitle,
+        title: _enteredTitle,
         lyric: jsonStringLyrics,
         groupId: selectedGroupId,
         imageUrl: imageUrl,
