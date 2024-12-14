@@ -1,11 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-
-class LinkPair {
-  const LinkPair({this.webUrl, this.deepLinkUrl});
-
-  final Uri? webUrl;
-  final Uri? deepLinkUrl;
-}
+import 'package:kimikoe_app/models/link_pair.dart';
 
 void main() {
   test('LinkPairクラス', () {

@@ -1,17 +1,14 @@
-class TableName { // storage名
-
+class TableName {
   TableName._();
   static const artists = 'artists';
   static const idol = 'idols';
   static const idolGroups = 'idol-groups';
   static const profiles = 'profiles';
   static const songs = 'songs';
-
-  static const images = 'images'; // プライベートコンストラクタ
+  static const images = 'images'; // storage名
 }
 
 class ColumnName {
-
   ColumnName._();
   static const id = 'id';
   static const name = 'name';
@@ -36,5 +33,5 @@ class ColumnName {
   static const lyrics = 'lyrics';
   static const lyricistId = 'lyricist_id';
   static const composerId = 'composer_id';
-  static const releaseDate = 'release_date'; // プライベートコンストラクタ
+  static const releaseDate = 'release_date';
 }
