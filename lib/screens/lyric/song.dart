@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
-import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/song.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
@@ -35,7 +34,7 @@ class _SongScreenState extends State<SongScreen> {
   @override
   void initState() {
     super.initState();
-    _memberFuture = fetchGroupMembers(widget.group.id!, supabase);
+    _memberFuture = fetchGroupMembers(widget.group.id!);
   }
 
   void _deleteSong(BuildContext context) {
@@ -46,8 +45,8 @@ class _SongScreenState extends State<SongScreen> {
           onDelete: () async {
             await deleteDataFromTable(
               table: TableName.songs,
-              column: ColumnName.id,
-              value: widget.song.id.toString(),
+              targetColumn: ColumnName.id,
+              targetValue: widget.song.id.toString(),
               context: context,
             );
           },

@@ -142,9 +142,9 @@ class _AddSongScreenState extends State<AddSongScreen> {
   }
 
   Future<void> _fetchIdAndNameLists() async {
-    final groupList = await fetchIdAndNameList(TableName.idolGroups, supabase);
-    final idolList = await fetchIdAndNameList(TableName.idol, supabase);
-    final artistList = await fetchIdAndNameList(TableName.artists, supabase);
+    final groupList = await fetchIdAndNameList(TableName.idolGroups);
+    final idolList = await fetchIdAndNameList(TableName.idol);
+    final artistList = await fetchIdAndNameList(TableName.artists);
     setState(() {
       _groupIdAndNameList = groupList;
       _idolIdAndNameList = idolList;

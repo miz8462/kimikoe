@@ -259,7 +259,7 @@ void main() {
     testWidgets('uploadImageToStorage', (WidgetTester tester) async {});
     testWidgets('fetchArtists', (WidgetTester tester) async {
       final artistList = await fetchArtists(
-        mockSupabase,
+        supabaseClient: mockSupabase,
       );
 
       expect(artistList.length, 2);
@@ -270,7 +270,7 @@ void main() {
       // NOTE: insertIdolDaltaのテストデータを使っている。
       final members = await fetchGroupMembers(
         1,
-        mockSupabase,
+        supabaseClient: mockSupabase,
       );
 
       expect(members.length, 1);
@@ -279,7 +279,7 @@ void main() {
     testWidgets('fetchIdAndNameList', (WidgetTester tester) async {
       final idolGroupsIdAndNameList = await fetchIdAndNameList(
         TableName.idolGroups,
-        mockSupabase,
+        supabaseClient: mockSupabase,
       );
 
       expect(idolGroupsIdAndNameList.length, 2);
@@ -442,6 +442,78 @@ void main() {
         updatedsong[ColumnName.comment],
         'updated comment',
       );
+    });
+
+    testWidgets('updateUser', (WidgetTester tester) async {
+      final mockContext = await createMockContext(tester);
+
+      await mockSupabase.from(TableName.profiles).insert({
+        ColumnName.id: 1,
+        ColumnName.name: 'test user',
+        ColumnName.lyrics: 'test lyrics',
+      });
+
+      await updateUser(
+        id: '1',
+        name: 'updated user',
+        email: 'updated@example.com',
+        imageUrl: 'https://example.com/updated.jpg',
+        comment: 'updated comment',
+        context: mockContext,
+        supabaseClient: mockSupabase,
+      );
+
+      final updateduser = await mockSupabase
+          .from(TableName.profiles)
+          .select()
+          .eq(ColumnName.id, '1')
+          .single();
+
+      expect(
+        updateduser[ColumnName.name],
+        'updated user',
+      );
+      expect(
+        updateduser[ColumnName.email],
+        'updated@example.com',
+      );
+      expect(
+        updateduser[ColumnName.imageUrl],
+        'https://example.com/updated.jpg',
+      );
+      expect(
+        updateduser[ColumnName.comment],
+        'updated comment',
+      );
+    });
+    testWidgets('deleteDataFromTable', (WidgetTester tester) async {
+      final mockContext = await createMockContext(tester);
+
+      // 削除するデータの登録と、登録されてることの確認
+      await mockSupabase.from(TableName.artists).insert({
+        ColumnName.id: 1,
+        ColumnName.name: 'delete artist',
+      });
+      final artists = await mockSupabase.from(TableName.artists).select();
+      expect(artists.last[ColumnName.name], 'delete artist');
+
+      await deleteDataFromTable(
+        table: TableName.artists,
+        targetColumn: ColumnName.id,
+        targetValue: '1',
+        context: mockContext,
+        supabaseClient: mockSupabase,
+      );
+
+      // 削除後のデータ
+      final artistsAfterDeletion =
+          await mockSupabase.from(TableName.artists).select();
+
+      // 削除したデータがリストに含まれていないことの確認
+      final containsDeletedArtist = artistsAfterDeletion.any(
+        (artist) => artist[ColumnName.name] == 'delete artist',
+      );
+      expect(containsDeletedArtist, isFalse);
     });
   });
 }

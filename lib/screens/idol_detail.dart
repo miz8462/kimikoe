@@ -69,8 +69,8 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
           onDelete: () async {
             await deleteDataFromTable(
               table: TableName.idol,
-              column: ColumnName.id,
-              value: widget.idol.id.toString(),
+              targetColumn: ColumnName.id,
+              targetValue: widget.idol.id.toString(),
               context: context,
             );
           },
