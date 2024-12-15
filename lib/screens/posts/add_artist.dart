@@ -51,7 +51,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
     FocusScope.of(context).unfocus();
 
     // e.g. /aaa/bbb/ccc/image.png
-    final imagePath = getImagePath(
+    final imagePath = createImagePath(
       imageFile: _selectedImage,
     );
 

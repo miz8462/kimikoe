@@ -172,12 +172,9 @@ Future<void> uploadImageToStorage({
   required String path,
   required File file,
   required BuildContext context,
-  SupabaseClient? supabaseClient,
 }) async {
-  final client = supabaseClient ?? supabase;
-
   try {
-    await client.storage.from(table).upload(path, file);
+    await supabase.storage.from(table).upload(path, file);
     if (!context.mounted) return;
     showLogAndSnackBar(
       context: context,
