@@ -1,15 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/services/supabase_service.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() {
+  late final SupabaseClient supabaseClient;
   late final SupabaseClient mockSupabase;
   late final MockSupabaseHttpClient mockHttpClient;
 
-  setUpAll(() {
+  setUpAll(() async {
+    // Flutterの環境を初期化
+    TestWidgetsFlutterBinding.ensureInitialized();
+
+    // SharedPreferencesを初期化
+    SharedPreferences.setMockInitialValues({});
+
+    // dotenvを初期化して環境変数を読み込む
+    await dotenv.load();
+
+    // Supabaseを初期化
+    await Supabase.initialize(
+      url: dotenv.env['SUPABASE_URL_LOCAL']!,
+      anonKey: dotenv.env['SUPABASE_ANON_KEY_LOCAL']!,
+    );
+    supabaseClient = Supabase.instance.client;
     mockHttpClient = MockSupabaseHttpClient();
     mockSupabase = SupabaseClient(
       'https://mock.supabase.co',
@@ -36,47 +54,92 @@ void main() {
     return tester.element(find.byType(Container));
   }
 
-  // NOTE: 現状、データ登録系のテストの後にフェッチのテストを行っているので、データ登録系テストに依存している。
-  // NOTE: まとめてテストをすることを前提に変更はしない。
-  group('SupabaseService', () {
-    testWidgets('insertArtistData', (WidgetTester tester) async {
-      final mockContext = await createMockContext(tester);
-
+  testWidgets('ローカルSupabaseのテスト', (WidgetTester tester) async {
+    final mockContext = await createMockContext(tester);
+    var didThrowError = false;
+    try {
       await insertArtistData(
         name: 'test artist',
         context: mockContext,
-        supabaseClient: mockSupabase,
+        supabaseClient: supabaseClient,
         imageUrl: 'https://example.com/image.jpg',
         comment: 'test comment',
       );
-      await tester.pump(Duration(milliseconds: 500));
-
-      final artists = await mockSupabase.from(TableName.artists).select();
-
-      expect(artists.length, 1);
-      expect(artists.first, {
-        'name': 'test artist',
-        'image_url': 'https://example.com/image.jpg',
-        'comment': 'test comment',
-      });
       expect(find.byType(SnackBar), findsOneWidget);
-      expect(find.text('アーティストを登録しました: test artist'), findsOneWidget);
-
-      // name以外がnullの場合
-      await insertArtistData(
-        name: 'test artist2',
-        context: mockContext,
-        supabaseClient: mockSupabase,
+      expect(
+        find.text('アーティアーティストの登録中にエラーが発生しました: test artist'),
+        findsOneWidget,
       );
-      await tester.pump(Duration(milliseconds: 500));
+    } catch (e) {
+      didThrowError = true;
+    }
 
-      final artists2 = await mockSupabase.from('artists').select();
+    expect(didThrowError, isTrue);
+  });
 
-      expect(artists2.length, 2);
-      expect(artists2.last, {
-        'name': 'test artist2',
-        'image_url': null,
-        'comment': null,
+  // NOTE: 現状、データ登録系のテストの後にフェッチのテストを行っているので、データ登録系テストに依存している。
+  // NOTE: 登録系と一緒にまとめてテストすること。
+  group('SupabaseService', () {
+    group('insertArtistData', () {
+      testWidgets('insertArtistData', (WidgetTester tester) async {
+        final mockContext = await createMockContext(tester);
+
+        await insertArtistData(
+          name: 'test artist',
+          context: mockContext,
+          supabaseClient: mockSupabase,
+          imageUrl: 'https://example.com/image.jpg',
+          comment: 'test comment',
+        );
+        await tester.pump(Duration(milliseconds: 500));
+
+        final artists = await mockSupabase.from(TableName.artists).select();
+
+        expect(artists.length, 1);
+        expect(artists.first, {
+          'name': 'test artist',
+          'image_url': 'https://example.com/image.jpg',
+          'comment': 'test comment',
+        });
+        expect(find.byType(SnackBar), findsOneWidget);
+        expect(find.text('アーティストを登録しました: test artist'), findsOneWidget);
+
+        // name以外がnullの場合
+        await insertArtistData(
+          name: 'test artist2',
+          context: mockContext,
+          supabaseClient: mockSupabase,
+        );
+        await tester.pump(Duration(milliseconds: 500));
+
+        final artists2 = await mockSupabase.from('artists').select();
+
+        expect(artists2.length, 2);
+        expect(artists2.last, {
+          'name': 'test artist2',
+          'image_url': null,
+          'comment': null,
+        });
+      });
+      testWidgets('insertArtistDataの例外処理', (WidgetTester tester) async {
+        final mockContext = await createMockContext(tester);
+        var didThrowError = false;
+        try {
+          await insertArtistData(
+            name: 'test artist',
+            context: mockContext,
+            supabaseClient: supabaseClient,
+            imageUrl: 'https://example.com/image.jpg',
+            comment: 'test comment',
+          );
+          expect(find.byType(SnackBar), findsOneWidget);
+          expect(find.text('アーティアーティストの登録中にエラーが発生しました: test artist'),
+              findsOneWidget);
+        } catch (e) {
+          didThrowError = true;
+        }
+
+        expect(didThrowError, isTrue);
       });
     });
 
@@ -135,69 +198,92 @@ void main() {
         'comment': null,
       });
     });
+    group('insertIdolData', () {
+      testWidgets('insertIdolData', (WidgetTester tester) async {
+        final mockContext = await createMockContext(tester);
 
-    testWidgets('insertIdolData', (WidgetTester tester) async {
-      final mockContext = await createMockContext(tester);
+        await insertIdolData(
+          name: 'test idol',
+          context: mockContext,
+          supabaseClient: mockSupabase,
+          groupId: 1,
+          color: 'test color',
+          imageUrl: 'https://example.com/image.jpg',
+          birthday: '01-22',
+          birthYear: 2002,
+          height: 158,
+          hometown: 'Sapporo',
+          debutYear: 2023,
+          comment: 'test comment',
+        );
+        await tester.pump(Duration(milliseconds: 500));
 
-      await insertIdolData(
-        name: 'test idol',
-        context: mockContext,
-        supabaseClient: mockSupabase,
-        groupId: 1,
-        color: 'test color',
-        imageUrl: 'https://example.com/image.jpg',
-        birthday: '01-22',
-        birthYear: 2002,
-        height: 158,
-        hometown: 'Sapporo',
-        debutYear: 2023,
-        comment: 'test comment',
-      );
-      await tester.pump(Duration(milliseconds: 500));
+        final idol = await mockSupabase.from(TableName.idol).select();
 
-      final idol = await mockSupabase.from(TableName.idol).select();
+        expect(idol.length, 1);
+        expect(idol.first, {
+          'name': 'test idol',
+          'group_id': 1,
+          'color': 'test color',
+          'image_url': 'https://example.com/image.jpg',
+          'birthday': '01-22',
+          'birth_year': 2002,
+          'height': 158,
+          'hometown': 'Sapporo',
+          'debut_year': 2023,
+          'comment': 'test comment',
+        });
+        expect(find.byType(SnackBar), findsOneWidget);
+        expect(find.text('アイドルを登録しました: test idol'), findsOneWidget);
 
-      expect(idol.length, 1);
-      expect(idol.first, {
-        'name': 'test idol',
-        'group_id': 1,
-        'color': 'test color',
-        'image_url': 'https://example.com/image.jpg',
-        'birthday': '01-22',
-        'birth_year': 2002,
-        'height': 158,
-        'hometown': 'Sapporo',
-        'debut_year': 2023,
-        'comment': 'test comment',
+        // name以外がnullの場合
+        await insertIdolData(
+          name: 'test idol2',
+          context: mockContext,
+          supabaseClient: mockSupabase,
+        );
+        await tester.pump(Duration(milliseconds: 500));
+
+        final idol2 = await mockSupabase.from(TableName.idol).select();
+
+        expect(idol2.length, 2);
+        expect(idol2.last, {
+          'name': 'test idol2',
+          'group_id': null,
+          'color': null,
+          'image_url': null,
+          'birthday': null,
+          'birth_year': null,
+          'height': null,
+          'hometown': null,
+          'debut_year': null,
+          'comment': null,
+        });
       });
-      expect(find.byType(SnackBar), findsOneWidget);
-      expect(find.text('アイドルを登録しました: test idol'), findsOneWidget);
 
-      // name以外がnullの場合
-      await insertIdolData(
-        name: 'test idol2',
-        context: mockContext,
-        supabaseClient: mockSupabase,
-      );
-      await tester.pump(Duration(milliseconds: 500));
+      testWidgets('insertIdolDataの例外処理', (WidgetTester tester) async {
+        final mockContext = await createMockContext(tester);
+        var didThrowError = false;
+        try {
+          await insertIdolData(
+            name: 'test idol',
+            context: mockContext,
+            supabaseClient: supabaseClient,
+            imageUrl: 'https://example.com/image.jpg',
+            comment: 'test comment',
+          );
+          expect(find.byType(SnackBar), findsOneWidget);
+          expect(
+            find.text('アイドルの登録中にエラーが発生しました: test idol'),
+            findsOneWidget,
+          );
+        } catch (e) {
+          didThrowError = true;
+        }
 
-      final idol2 = await mockSupabase.from(TableName.idol).select();
-
-      expect(idol2.length, 2);
-      expect(idol2.last, {
-        'name': 'test idol2',
-        'group_id': null,
-        'color': null,
-        'image_url': null,
-        'birthday': null,
-        'birth_year': null,
-        'height': null,
-        'hometown': null,
-        'debut_year': null,
-        'comment': null,
+        expect(didThrowError, isTrue);
       });
     });
-
     testWidgets('insertSongData', (WidgetTester tester) async {
       final mockContext = await createMockContext(tester);
 

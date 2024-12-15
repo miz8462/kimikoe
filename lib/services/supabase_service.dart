@@ -22,6 +22,7 @@ Future<void> insertArtistData({
       ColumnName.imageUrl: imageUrl,
       ColumnName.comment: comment,
     });
+
     if (!context.mounted) return;
     showLogAndSnackBar(
       context: context,
