@@ -133,8 +133,10 @@ void main() {
             comment: 'test comment',
           );
           expect(find.byType(SnackBar), findsOneWidget);
-          expect(find.text('アーティアーティストの登録中にエラーが発生しました: test artist'),
-              findsOneWidget);
+          expect(
+            find.text('アーティアーティストの登録中にエラーが発生しました: test artist'),
+            findsOneWidget,
+          );
         } catch (e) {
           didThrowError = true;
         }
