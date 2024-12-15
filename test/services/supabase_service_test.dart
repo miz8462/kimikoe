@@ -26,7 +26,8 @@ void main() {
         (throw ArgumentError('SUPABASE_URL_LOCAL is not set in .env file.'));
     final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY_LOCAL'] ??
         (throw ArgumentError(
-            'SUPABASE_ANON_KEY_LOCAL is not set in .env file.'));
+          'SUPABASE_ANON_KEY_LOCAL is not set in .env file.',
+        ));
 
     // Supabaseを初期化
     await Supabase.initialize(
@@ -59,29 +60,6 @@ void main() {
     );
     return tester.element(find.byType(Container));
   }
-
-  testWidgets('ローカルSupabaseのテスト', (WidgetTester tester) async {
-    final mockContext = await createMockContext(tester);
-    var didThrowError = false;
-    try {
-      await insertArtistData(
-        name: 'test artist',
-        context: mockContext,
-        supabaseClient: supabaseClient,
-        imageUrl: 'https://example.com/image.jpg',
-        comment: 'test comment',
-      );
-      expect(find.byType(SnackBar), findsOneWidget);
-      expect(
-        find.text('アーティアーティストの登録中にエラーが発生しました: test artist'),
-        findsOneWidget,
-      );
-    } catch (e) {
-      didThrowError = true;
-    }
-
-    expect(didThrowError, isTrue);
-  });
 
   // NOTE: 現状、データ登録系のテストの後にフェッチのテストを行っているので、データ登録系テストに依存している。
   // NOTE: 登録系と一緒にまとめてテストすること。
@@ -318,60 +296,87 @@ void main() {
         expect(didThrowError, isTrue);
       });
     });
-    testWidgets('insertSongData', (WidgetTester tester) async {
-      final mockContext = await createMockContext(tester);
 
-      await insertSongData(
-        title: 'test title',
-        lyric: 'test lyric',
-        context: mockContext,
-        supabaseClient: mockSupabase,
-        groupId: 1,
-        imageUrl: 'https://example.com/image.jpg',
-        releaseDate: '2023-01-22',
-        lyricistId: 1,
-        composerId: 1,
-        comment: 'test comment',
-      );
-      await tester.pump(Duration(milliseconds: 500));
+    group('insertSongData', () {
+      testWidgets('insertSongData', (WidgetTester tester) async {
+        final mockContext = await createMockContext(tester);
 
-      final song = await mockSupabase.from(TableName.songs).select();
+        await insertSongData(
+          title: 'test title',
+          lyric: 'test lyric',
+          context: mockContext,
+          supabaseClient: mockSupabase,
+          groupId: 1,
+          imageUrl: 'https://example.com/image.jpg',
+          releaseDate: '2023-01-22',
+          lyricistId: 1,
+          composerId: 1,
+          comment: 'test comment',
+        );
+        await tester.pump(Duration(milliseconds: 500));
 
-      expect(song.length, 1);
-      expect(song.first, {
-        'title': 'test title',
-        'lyrics': 'test lyric',
-        'group_id': 1,
-        'image_url': 'https://example.com/image.jpg',
-        'release_date': '2023-01-22',
-        'lyricist_id': 1,
-        'composer_id': 1,
-        'comment': 'test comment',
+        final song = await mockSupabase.from(TableName.songs).select();
+
+        expect(song.length, 1);
+        expect(song.first, {
+          'title': 'test title',
+          'lyrics': 'test lyric',
+          'group_id': 1,
+          'image_url': 'https://example.com/image.jpg',
+          'release_date': '2023-01-22',
+          'lyricist_id': 1,
+          'composer_id': 1,
+          'comment': 'test comment',
+        });
+        expect(find.byType(SnackBar), findsOneWidget);
+        expect(find.text('曲を登録しました: test title'), findsOneWidget);
+
+        // オプションがnullの場合
+        await insertSongData(
+          title: 'test title2',
+          lyric: 'test lyric2',
+          context: mockContext,
+          supabaseClient: mockSupabase,
+        );
+        await tester.pump(Duration(milliseconds: 500));
+
+        final song2 = await mockSupabase.from(TableName.songs).select();
+
+        expect(song2.length, 2);
+        expect(song2.last, {
+          'title': 'test title2',
+          'lyrics': 'test lyric2',
+          'group_id': null,
+          'image_url': null,
+          'release_date': null,
+          'lyricist_id': null,
+          'composer_id': null,
+          'comment': null,
+        });
       });
-      expect(find.byType(SnackBar), findsOneWidget);
-      expect(find.text('曲を登録しました: test title'), findsOneWidget);
+      
+      testWidgets('insertSongDataaの例外処理', (WidgetTester tester) async {
+        final mockContext = await createMockContext(tester);
+        var didThrowError = false;
+        try {
+          await insertSongData(
+            title: 'test song',
+            lyric: 'test lyric',
+            context: mockContext,
+            supabaseClient: supabaseClient,
+            imageUrl: 'https://example.com/image.jpg',
+            comment: 'test comment',
+          );
+          expect(find.byType(SnackBar), findsOneWidget);
+          expect(
+            find.text('曲の登録中にエラーが発生しました: test song'),
+            findsOneWidget,
+          );
+        } catch (e) {
+          didThrowError = true;
+        }
 
-      // オプションがnullの場合
-      await insertSongData(
-        title: 'test title2',
-        lyric: 'test lyric2',
-        context: mockContext,
-        supabaseClient: mockSupabase,
-      );
-      await tester.pump(Duration(milliseconds: 500));
-
-      final song2 = await mockSupabase.from(TableName.songs).select();
-
-      expect(song2.length, 2);
-      expect(song2.last, {
-        'title': 'test title2',
-        'lyrics': 'test lyric2',
-        'group_id': null,
-        'image_url': null,
-        'release_date': null,
-        'lyricist_id': null,
-        'composer_id': null,
-        'comment': null,
+        expect(didThrowError, isTrue);
       });
     });
 
