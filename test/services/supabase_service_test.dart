@@ -24,8 +24,8 @@ void main() {
 
     // Supabaseを初期化
     await Supabase.initialize(
-      url: dotenv.env['SUPABASE_URL_LOCAL']!,
-      anonKey: dotenv.env['SUPABASE_ANON_KEY_LOCAL']!,
+      url: dotenv.env['SUPABASE_URL_LOCAL'],
+      anonKey: dotenv.env['SUPABASE_ANON_KEY_LOCAL'],
     );
     supabaseClient = Supabase.instance.client;
     mockHttpClient = MockSupabaseHttpClient();
