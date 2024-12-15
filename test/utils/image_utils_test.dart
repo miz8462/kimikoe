@@ -5,7 +5,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
 import 'package:logger/logger.dart';
-import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:mockito/mockito.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -19,25 +18,12 @@ class MockBuildContext extends Mock implements BuildContext {}
 void main() {
   late MockFile mockFile;
   late MockBuildContext mockContext;
-  late final SupabaseClient mockSupabase;
-  late final MockSupabaseHttpClient mockHttpClient;
-
-  setUpAll(() {
-    mockHttpClient = MockSupabaseHttpClient();
-    mockSupabase = SupabaseClient(
-      'https://mock.supabase.co',
-      'fakeAnonKey',
-      httpClient: MockSupabaseHttpClient(),
-    );
-  });
 
   setUp(() {
     mockFile = MockFile();
     mockContext = MockBuildContext();
   });
-  tearDown(() async {
-    mockHttpClient.reset();
-  });
+
   group('getImagePath関数', () {
     test('画僧を選択していた場合、20文字のランダムな文字列に.jpgを追加したものを返す', () {
       final imageFile = File('path/to/image.jpg');
