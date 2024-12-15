@@ -1,5 +1,5 @@
 class TableName {
-  TableName._();
+  TableName._(); // coverage:ignore-line
   static const artists = 'artists';
   static const idol = 'idols';
   static const idolGroups = 'idol-groups';
@@ -9,7 +9,7 @@ class TableName {
 }
 
 class ColumnName {
-  ColumnName._();
+  ColumnName._(); // coverage:ignore-line
   static const id = 'id';
   static const name = 'name';
   static const title = 'title';
