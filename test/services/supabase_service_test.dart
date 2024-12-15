@@ -22,10 +22,16 @@ void main() {
     // dotenvを初期化して環境変数を読み込む
     await dotenv.load();
 
+    final supabaseUrl = dotenv.env['SUPABASE_URL_LOCAL'] ??
+        (throw ArgumentError('SUPABASE_URL_LOCAL is not set in .env file.'));
+    final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY_LOCAL'] ??
+        (throw ArgumentError(
+            'SUPABASE_ANON_KEY_LOCAL is not set in .env file.'));
+
     // Supabaseを初期化
     await Supabase.initialize(
-      url: dotenv.env['SUPABASE_URL_LOCAL'],
-      anonKey: dotenv.env['SUPABASE_ANON_KEY_LOCAL'],
+      url: supabaseUrl,
+      anonKey: supabaseAnonKey,
     );
     supabaseClient = Supabase.instance.client;
     mockHttpClient = MockSupabaseHttpClient();
@@ -144,62 +150,88 @@ void main() {
         expect(didThrowError, isTrue);
       });
     });
+    group('insertIdolGroupData', () {
+      testWidgets('insertIdolGroupData', (WidgetTester tester) async {
+        final mockContext = await createMockContext(tester);
 
-    testWidgets('insertIdolGroupData', (WidgetTester tester) async {
-      final mockContext = await createMockContext(tester);
+        await insertIdolGroupData(
+          name: 'test group',
+          context: mockContext,
+          supabaseClient: mockSupabase,
+          imageUrl: 'https://example.com/image.jpg',
+          year: '2023',
+          officialUrl: 'https://example.com/official',
+          twitterUrl: 'https://twitter.com/test_group',
+          instagramUrl: 'https://instagram.com/test_group',
+          scheduleUrl: 'https://example.com/schedule',
+          comment: 'test comment',
+        );
+        await tester.pump(Duration(milliseconds: 500));
 
-      await insertIdolGroupData(
-        name: 'test group',
-        context: mockContext,
-        supabaseClient: mockSupabase,
-        imageUrl: 'https://example.com/image.jpg',
-        year: '2023',
-        officialUrl: 'https://example.com/official',
-        twitterUrl: 'https://twitter.com/test_group',
-        instagramUrl: 'https://instagram.com/test_group',
-        scheduleUrl: 'https://example.com/schedule',
-        comment: 'test comment',
-      );
-      await tester.pump(Duration(milliseconds: 500));
+        final idolGroups =
+            await mockSupabase.from(TableName.idolGroups).select();
 
-      final idolGroups = await mockSupabase.from(TableName.idolGroups).select();
+        expect(idolGroups.length, 1);
+        expect(idolGroups.first, {
+          'name': 'test group',
+          'image_url': 'https://example.com/image.jpg',
+          'year_forming_group': 2023,
+          'official_url': 'https://example.com/official',
+          'twitter_url': 'https://twitter.com/test_group',
+          'instagram_url': 'https://instagram.com/test_group',
+          'schedule_url': 'https://example.com/schedule',
+          'comment': 'test comment',
+        });
+        expect(find.byType(SnackBar), findsOneWidget);
+        expect(find.text('グループを登録しました: test group'), findsOneWidget);
 
-      expect(idolGroups.length, 1);
-      expect(idolGroups.first, {
-        'name': 'test group',
-        'image_url': 'https://example.com/image.jpg',
-        'year_forming_group': 2023,
-        'official_url': 'https://example.com/official',
-        'twitter_url': 'https://twitter.com/test_group',
-        'instagram_url': 'https://instagram.com/test_group',
-        'schedule_url': 'https://example.com/schedule',
-        'comment': 'test comment',
+        // name以外がnullの場合
+        await insertIdolGroupData(
+          name: 'test group2',
+          context: mockContext,
+          supabaseClient: mockSupabase,
+        );
+        await tester.pump(Duration(milliseconds: 500));
+
+        final groups2 = await mockSupabase.from(TableName.idolGroups).select();
+
+        expect(groups2.length, 2);
+        expect(groups2.last, {
+          'name': 'test group2',
+          'image_url': null,
+          'year_forming_group': null,
+          'official_url': null,
+          'twitter_url': null,
+          'instagram_url': null,
+          'schedule_url': null,
+          'comment': null,
+        });
       });
-      expect(find.byType(SnackBar), findsOneWidget);
-      expect(find.text('グループを登録しました: test group'), findsOneWidget);
 
-      // name以外がnullの場合
-      await insertIdolGroupData(
-        name: 'test group2',
-        context: mockContext,
-        supabaseClient: mockSupabase,
-      );
-      await tester.pump(Duration(milliseconds: 500));
+      testWidgets('insertIdolGroupDataの例外処理', (WidgetTester tester) async {
+        final mockContext = await createMockContext(tester);
+        var didThrowError = false;
+        try {
+          await insertIdolGroupData(
+            name: 'test group',
+            context: mockContext,
+            supabaseClient: supabaseClient,
+            imageUrl: 'https://example.com/image.jpg',
+            comment: 'test comment',
+          );
+          expect(find.byType(SnackBar), findsOneWidget);
+          expect(
+            find.text('グループの登録中にエラーが発生しました: test group'),
+            findsOneWidget,
+          );
+        } catch (e) {
+          didThrowError = true;
+        }
 
-      final groups2 = await mockSupabase.from(TableName.idolGroups).select();
-
-      expect(groups2.length, 2);
-      expect(groups2.last, {
-        'name': 'test group2',
-        'image_url': null,
-        'year_forming_group': null,
-        'official_url': null,
-        'twitter_url': null,
-        'instagram_url': null,
-        'schedule_url': null,
-        'comment': null,
+        expect(didThrowError, isTrue);
       });
     });
+
     group('insertIdolData', () {
       testWidgets('insertIdolData', (WidgetTester tester) async {
         final mockContext = await createMockContext(tester);
