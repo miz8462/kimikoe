@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -8,7 +10,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() {
-  late final SupabaseClient supabase;
+  // late final SupabaseClient supabase;
+  late final SupabaseClient errorSupabase;
   late final SupabaseClient mockSupabase;
   late final MockSupabaseHttpClient mockHttpClient;
 
@@ -34,12 +37,18 @@ void main() {
       url: supabaseUrl,
       anonKey: supabaseAnonKey,
     );
-    supabase = Supabase.instance.client;
+    // supabase = Supabase.instance.client;
+
     mockHttpClient = MockSupabaseHttpClient();
     mockSupabase = SupabaseClient(
       'https://mock.supabase.co',
       'fakeAnonKey',
       httpClient: MockSupabaseHttpClient(),
+    );
+
+    errorSupabase = SupabaseClient(
+      'error',
+      'error',
     );
   });
 
@@ -112,7 +121,7 @@ void main() {
           await insertArtistData(
             name: 'test artist',
             context: mockContext,
-            supabase: supabase,
+            supabase: errorSupabase,
             imageUrl: 'https://example.com/image.jpg',
             comment: 'test comment',
           );
@@ -193,7 +202,7 @@ void main() {
           await insertIdolGroupData(
             name: 'test group',
             context: mockContext,
-            supabase: supabase,
+            supabase: errorSupabase,
             imageUrl: 'https://example.com/image.jpg',
             comment: 'test comment',
           );
@@ -280,7 +289,7 @@ void main() {
           await insertIdolData(
             name: 'test idol',
             context: mockContext,
-            supabase: supabase,
+            supabase: errorSupabase,
             imageUrl: 'https://example.com/image.jpg',
             comment: 'test comment',
           );
@@ -355,7 +364,7 @@ void main() {
         });
       });
 
-      testWidgets('insertSongDataaの例外処理', (WidgetTester tester) async {
+      testWidgets('insertSongDataの例外処理', (WidgetTester tester) async {
         final mockContext = await createMockContext(tester);
         var didThrowError = false;
         try {
@@ -363,7 +372,7 @@ void main() {
             title: 'test song',
             lyric: 'test lyric',
             context: mockContext,
-            supabase: supabase,
+            supabase: errorSupabase,
             imageUrl: 'https://example.com/image.jpg',
             comment: 'test comment',
           );
@@ -381,7 +390,33 @@ void main() {
     });
 
     // TODO: Supabase CLIでのローカル環境でテストができるらしいよ
-    testWidgets('uploadImageToStorage', (WidgetTester tester) async {});
+    group('uploadImageToStorage', () {
+      // TODO: 実装時テスト名要変更
+      testWidgets('uploadImageToStorage正常系', (WidgetTester tester) async {});
+      testWidgets('uploadImageToStorageの例外処理', (WidgetTester tester) async {
+        final mockContext = await createMockContext(tester);
+        var didThrowError = false;
+        try {
+          await uploadImageToStorage(
+            table: 'error',
+            file: File('error'),
+            path: 'error',
+            context: mockContext,
+            supabase: errorSupabase,
+          );
+          expect(find.byType(SnackBar), findsOneWidget);
+          expect(
+            find.text('画像をストレージにアップロード中にエラーが発生しました'),
+            findsOneWidget,
+          );
+        } catch (e) {
+          didThrowError = true;
+        }
+
+        expect(didThrowError, isTrue);
+      });
+    });
+
     testWidgets('fetchArtists', (WidgetTester tester) async {
       final artistList = await fetchArtists(
         supabase: mockSupabase,

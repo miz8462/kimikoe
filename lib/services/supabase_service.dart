@@ -168,6 +168,7 @@ Future<void> uploadImageToStorage({
   required String path,
   required File file,
   required BuildContext context,
+  required SupabaseClient supabase,
 }) async {
   try {
     await supabase.storage.from(table).upload(path, file);
@@ -178,15 +179,8 @@ Future<void> uploadImageToStorage({
       message: '画像をストレージにアップロードしました',
     );
   } catch (e) {
-    if (e is StorageException) {
-      logger.e('ストレージエラー: ${e.message}', error: e);
-    } else if (e is SocketException) {
-      logger.e('ネットワークエラー: ${e.message}', error: e);
-    } else if (e is HttpException) {
-      logger.e('HTTPエラー: ${e.message}', error: e);
-    } else {
-      logger.e('エラーが発生しました: $e', error: e);
-    }
+    logger.e('画像をストレージにアップロード中にエラーが発生しました', error: e);
+
     rethrow;
   }
 }
