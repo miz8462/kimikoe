@@ -235,7 +235,10 @@ Future<List<Map<String, dynamic>>> fetchCurrentUserInfo({
 }
 
 // HACK: Supabase CLI でできるらしいよ
-String fetchImageUrl(String imagePath) {
+String fetchImageUrl(
+  String imagePath, {
+  required SupabaseClient supabase,
+}) {
   if (imagePath == noImage) return noImage;
   try {
     final url = supabase.storage.from(TableName.images).getPublicUrl(imagePath);
@@ -282,6 +285,7 @@ int fetchSelectedDataIdFromName({
 Stream<dynamic> fetchDatabyStream({
   required String table,
   required String id,
+  required SupabaseClient supabase,
 }) {
   try {
     final stream = supabase.from(table).stream(primaryKey: [id]);
@@ -339,6 +343,7 @@ Future<void> updateIdol({
   required int id,
   required String name,
   required BuildContext context,
+  required SupabaseClient supabase,
   int? groupId,
   String? color,
   String? imageUrl,

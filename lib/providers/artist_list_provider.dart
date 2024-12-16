@@ -50,7 +50,10 @@ final artistListFromSupabaseProvider =
     logger.i('${response.length}件のアーティストデータをSupabaseから取得しました');
 
     final artists = response.map<Artist>((artist) {
-      final imageUrl = fetchImageUrl(artist[ColumnName.imageUrl]);
+      final imageUrl = fetchImageUrl(
+        artist[ColumnName.imageUrl],
+        supabase: supabase,
+      );
       return Artist(
         id: artist[ColumnName.id],
         name: artist[ColumnName.name],

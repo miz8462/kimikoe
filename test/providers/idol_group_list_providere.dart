@@ -37,6 +37,7 @@ class IdolGroupListNotifier extends StateNotifier<IdolGroupListState> {
       final data = await fetchDatabyStream(
         table: TableName.idolGroups,
         id: ColumnName.id,
+        supabase: supabase,
       ).first as List<Map<String, dynamic>>;
 
       final groups = data.map<IdolGroup>((group) {

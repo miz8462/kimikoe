@@ -29,7 +29,7 @@ Future<String?> processImage({
   required BuildContext context,
   String Function({File? imageFile})? createImagePathFunction = createImagePath,
   UploadFunction? uploadFunction = uploadImageToStorage,
-  String Function(String imagePath)? fetchFunction = fetchImageUrl,
+  FetchFunction? fetchFunction = fetchImageUrl,
 }) async {
   // 編集モードで画像変更なし
   if (isEditing && !isImageChanged) {
@@ -49,7 +49,10 @@ Future<String?> processImage({
         supabase: supabase,
       );
     }
-    return fetchFunction!(imagePath);
+    return fetchFunction!(
+      imagePath,
+      supabase: supabase,
+    );
   }
 }
 
@@ -58,5 +61,10 @@ typedef UploadFunction = Future<void> Function({
   required String path,
   required File file,
   required BuildContext context,
+  required SupabaseClient supabase,
+});
+
+typedef FetchFunction = String Function(
+  String imagePath, {
   required SupabaseClient supabase,
 });
