@@ -402,7 +402,7 @@ void main() {
             file: File('error'),
             path: 'error',
             context: mockContext,
-            supabase: errorSupabase,
+            supabaseClient: errorSupabase,
           );
           expect(find.byType(SnackBar), findsOneWidget);
           expect(

@@ -61,7 +61,6 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
         path: imagePath,
         file: _selectedImage!,
         context: context,
-        supabase: supabase,
       );
     }
 
