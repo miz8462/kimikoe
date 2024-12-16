@@ -28,13 +28,7 @@ Future<String?> processImage({
   required File? selectedImage,
   required BuildContext context,
   String Function({File? imageFile})? createImagePathFunction = createImagePath,
-  Future<void> Function({
-    required String table,
-    required String path,
-    required File file,
-    required BuildContext context,
-    required SupabaseClient supabase,
-  })? uploadFunction = uploadImageToStorage,
+  UploadFunction? uploadFunction = uploadImageToStorage,
   String Function(String imagePath)? fetchFunction = fetchImageUrl,
 }) async {
   // 編集モードで画像変更なし
@@ -44,7 +38,7 @@ Future<String?> processImage({
     final imagePath = createImagePathFunction!(
       imageFile: selectedImage,
     );
-    
+
     // 新規の場合、編集で画像を変更した場合は登録する
     if (selectedImage != null) {
       await uploadFunction!(
@@ -58,3 +52,11 @@ Future<String?> processImage({
     return fetchFunction!(imagePath);
   }
 }
+
+typedef UploadFunction = Future<void> Function({
+  required String table,
+  required String path,
+  required File file,
+  required BuildContext context,
+  required SupabaseClient supabase,
+});
