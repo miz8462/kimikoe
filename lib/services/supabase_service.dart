@@ -217,9 +217,9 @@ Future<List<Map<String, dynamic>>> fetchGroupMembers(
 }
 
 // HACK: Supabase CLI でできるらしいよ
-Future<List<Map<String, dynamic>>> fetchCurrentUserInfo({
-  required SupabaseClient supabase,
-}) async {
+Future<List<Map<String, dynamic>>> fetchCurrentUserInfo(
+    // required SupabaseClient supabase,
+    ) async {
   try {
     final currentUserId = supabase.auth.currentUser!.id;
     final userInfo = await supabase
@@ -236,9 +236,9 @@ Future<List<Map<String, dynamic>>> fetchCurrentUserInfo({
 
 // HACK: Supabase CLI でできるらしいよ
 String fetchImageUrl(
-  String imagePath, {
-  required SupabaseClient supabase,
-}) {
+  String imagePath,
+  // required SupabaseClient supabase,
+) {
   if (imagePath == noImage) return noImage;
   try {
     final url = supabase.storage.from(TableName.images).getPublicUrl(imagePath);

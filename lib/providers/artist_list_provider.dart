@@ -52,7 +52,6 @@ final artistListFromSupabaseProvider =
     final artists = response.map<Artist>((artist) {
       final imageUrl = fetchImageUrl(
         artist[ColumnName.imageUrl],
-        supabase: supabase,
       );
       return Artist(
         id: artist[ColumnName.id],
