@@ -44,12 +44,15 @@ void main() {
       required String path,
       required File file,
       required BuildContext context,
-      SupabaseClient? supabaseClient,
+      required SupabaseClient supabase,
     }) async {
       // ここで実際に何もしない
     }
 
-    String mockFetchImageUrl(String imagePath) {
+    String mockFetchImageUrl(
+      String imagePath, {
+      required SupabaseClient supabase,
+    }) {
       return 'https://example.com/$imagePath';
     }
 
