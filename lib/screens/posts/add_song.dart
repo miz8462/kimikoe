@@ -142,9 +142,18 @@ class _AddSongScreenState extends State<AddSongScreen> {
   }
 
   Future<void> _fetchIdAndNameLists() async {
-    final groupList = await fetchIdAndNameList(TableName.idolGroups);
-    final idolList = await fetchIdAndNameList(TableName.idol);
-    final artistList = await fetchIdAndNameList(TableName.artists);
+    final groupList = await fetchIdAndNameList(
+      TableName.idolGroups,
+      supabase: supabase,
+    );
+    final idolList = await fetchIdAndNameList(
+      TableName.idol,
+      supabase: supabase,
+    );
+    final artistList = await fetchIdAndNameList(
+      TableName.artists,
+      supabase: supabase,
+    );
     setState(() {
       _groupIdAndNameList = groupList;
       _idolIdAndNameList = idolList;
@@ -220,6 +229,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
         year: '',
         comment: '',
         context: context,
+        supabase: supabase,
       );
       await _fetchIdAndNameLists();
     }
@@ -236,6 +246,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
         name: lyricistName,
         imageUrl: noImage,
         context: context,
+        supabase: supabase,
       );
       await _fetchIdAndNameLists();
     }
@@ -256,6 +267,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
         name: composerName,
         imageUrl: noImage,
         context: context,
+        supabase: supabase,
       );
       await _fetchIdAndNameLists();
     }
@@ -280,6 +292,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
         comment: _enteredComment,
         id: _song.id!,
         context: context,
+        supabase: supabase,
       );
     } else {
       await insertSongData(
@@ -292,6 +305,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
         composerId: selectedComposerId,
         comment: _enteredComment,
         context: context,
+        supabase: supabase,
       );
     }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
+import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
@@ -38,6 +39,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
               targetColumn: ColumnName.id,
               targetValue: widget.group.id.toString(),
               context: context,
+              supabase: supabase,
             );
           },
           successMessage: '${widget.group.name}のデータが削除されました',

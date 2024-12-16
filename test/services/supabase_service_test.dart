@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() {
-  late final SupabaseClient supabaseClient;
+  late final SupabaseClient supabase;
   late final SupabaseClient mockSupabase;
   late final MockSupabaseHttpClient mockHttpClient;
 
@@ -34,7 +34,7 @@ void main() {
       url: supabaseUrl,
       anonKey: supabaseAnonKey,
     );
-    supabaseClient = Supabase.instance.client;
+    supabase = Supabase.instance.client;
     mockHttpClient = MockSupabaseHttpClient();
     mockSupabase = SupabaseClient(
       'https://mock.supabase.co',
@@ -71,7 +71,7 @@ void main() {
         await insertArtistData(
           name: 'test artist',
           context: mockContext,
-          supabaseClient: mockSupabase,
+          supabase: mockSupabase,
           imageUrl: 'https://example.com/image.jpg',
           comment: 'test comment',
         );
@@ -92,7 +92,7 @@ void main() {
         await insertArtistData(
           name: 'test artist2',
           context: mockContext,
-          supabaseClient: mockSupabase,
+          supabase: mockSupabase,
         );
         await tester.pump(Duration(milliseconds: 500));
 
@@ -112,7 +112,7 @@ void main() {
           await insertArtistData(
             name: 'test artist',
             context: mockContext,
-            supabaseClient: supabaseClient,
+            supabase: supabase,
             imageUrl: 'https://example.com/image.jpg',
             comment: 'test comment',
           );
@@ -135,7 +135,7 @@ void main() {
         await insertIdolGroupData(
           name: 'test group',
           context: mockContext,
-          supabaseClient: mockSupabase,
+          supabase: mockSupabase,
           imageUrl: 'https://example.com/image.jpg',
           year: '2023',
           officialUrl: 'https://example.com/official',
@@ -167,7 +167,7 @@ void main() {
         await insertIdolGroupData(
           name: 'test group2',
           context: mockContext,
-          supabaseClient: mockSupabase,
+          supabase: mockSupabase,
         );
         await tester.pump(Duration(milliseconds: 500));
 
@@ -193,7 +193,7 @@ void main() {
           await insertIdolGroupData(
             name: 'test group',
             context: mockContext,
-            supabaseClient: supabaseClient,
+            supabase: supabase,
             imageUrl: 'https://example.com/image.jpg',
             comment: 'test comment',
           );
@@ -217,7 +217,7 @@ void main() {
         await insertIdolData(
           name: 'test idol',
           context: mockContext,
-          supabaseClient: mockSupabase,
+          supabase: mockSupabase,
           groupId: 1,
           color: 'test color',
           imageUrl: 'https://example.com/image.jpg',
@@ -252,7 +252,7 @@ void main() {
         await insertIdolData(
           name: 'test idol2',
           context: mockContext,
-          supabaseClient: mockSupabase,
+          supabase: mockSupabase,
         );
         await tester.pump(Duration(milliseconds: 500));
 
@@ -280,7 +280,7 @@ void main() {
           await insertIdolData(
             name: 'test idol',
             context: mockContext,
-            supabaseClient: supabaseClient,
+            supabase: supabase,
             imageUrl: 'https://example.com/image.jpg',
             comment: 'test comment',
           );
@@ -305,7 +305,7 @@ void main() {
           title: 'test title',
           lyric: 'test lyric',
           context: mockContext,
-          supabaseClient: mockSupabase,
+          supabase: mockSupabase,
           groupId: 1,
           imageUrl: 'https://example.com/image.jpg',
           releaseDate: '2023-01-22',
@@ -336,7 +336,7 @@ void main() {
           title: 'test title2',
           lyric: 'test lyric2',
           context: mockContext,
-          supabaseClient: mockSupabase,
+          supabase: mockSupabase,
         );
         await tester.pump(Duration(milliseconds: 500));
 
@@ -363,7 +363,7 @@ void main() {
             title: 'test song',
             lyric: 'test lyric',
             context: mockContext,
-            supabaseClient: supabaseClient,
+            supabase: supabase,
             imageUrl: 'https://example.com/image.jpg',
             comment: 'test comment',
           );
@@ -384,7 +384,7 @@ void main() {
     testWidgets('uploadImageToStorage', (WidgetTester tester) async {});
     testWidgets('fetchArtists', (WidgetTester tester) async {
       final artistList = await fetchArtists(
-        supabaseClient: mockSupabase,
+        supabase: mockSupabase,
       );
 
       expect(artistList.length, 2);
@@ -395,7 +395,7 @@ void main() {
       // NOTE: insertIdolDaltaのテストデータを使っている。
       final members = await fetchGroupMembers(
         1,
-        supabaseClient: mockSupabase,
+        supabase: mockSupabase,
       );
 
       expect(members.length, 1);
@@ -404,7 +404,7 @@ void main() {
     testWidgets('fetchIdAndNameList', (WidgetTester tester) async {
       final idolGroupsIdAndNameList = await fetchIdAndNameList(
         TableName.idolGroups,
-        supabaseClient: mockSupabase,
+        supabase: mockSupabase,
       );
 
       expect(idolGroupsIdAndNameList.length, 2);
@@ -454,7 +454,7 @@ void main() {
         id: '1',
         name: 'updated group',
         context: mockContext,
-        supabaseClient: mockSupabase,
+        supabase: mockSupabase,
         imageUrl: 'https://example.com/updated.jpg',
         year: '2024',
         officialUrl: 'https://example.com/updated',
@@ -520,7 +520,7 @@ void main() {
         title: 'updated title',
         lyric: 'updated lyrics',
         context: mockContext,
-        supabaseClient: mockSupabase,
+        supabase: mockSupabase,
         groupId: 1,
         imageUrl: 'https://example.com/updated.jpg',
         releaseDate: '2024-01-22',
@@ -585,7 +585,7 @@ void main() {
         imageUrl: 'https://example.com/updated.jpg',
         comment: 'updated comment',
         context: mockContext,
-        supabaseClient: mockSupabase,
+        supabase: mockSupabase,
       );
 
       final updateduser = await mockSupabase
@@ -627,7 +627,7 @@ void main() {
         targetColumn: ColumnName.id,
         targetValue: '1',
         context: mockContext,
-        supabaseClient: mockSupabase,
+        supabase: mockSupabase,
       );
 
       // 削除後のデータ

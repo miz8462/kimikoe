@@ -11,13 +11,12 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 Future<void> insertArtistData({
   required String name,
   required BuildContext context,
+  required SupabaseClient supabase,
   String? imageUrl,
   String? comment,
-  SupabaseClient? supabaseClient,
 }) async {
-  final client = supabaseClient ?? supabase;
   try {
-    await client.from(TableName.artists).insert({
+    await supabase.from(TableName.artists).insert({
       ColumnName.name: name,
       ColumnName.imageUrl: imageUrl,
       ColumnName.comment: comment,
@@ -43,6 +42,7 @@ Future<void> insertArtistData({
 Future<void> insertIdolGroupData({
   required String name,
   required BuildContext context,
+  required SupabaseClient supabase,
   String? imageUrl,
   String? year,
   String? officialUrl,
@@ -50,11 +50,9 @@ Future<void> insertIdolGroupData({
   String? instagramUrl,
   String? scheduleUrl,
   String? comment,
-  SupabaseClient? supabaseClient,
 }) async {
-  final client = supabaseClient ?? supabase;
   try {
-    await client.from(TableName.idolGroups).insert({
+    await supabase.from(TableName.idolGroups).insert({
       ColumnName.name: name,
       ColumnName.imageUrl: imageUrl,
       ColumnName.yearFormingGroups: year == null ? null : int.tryParse(year),
@@ -84,6 +82,7 @@ Future<void> insertIdolGroupData({
 Future<void> insertIdolData({
   required String name,
   required BuildContext context,
+  required SupabaseClient supabase,
   int? groupId,
   String? color,
   String? imageUrl,
@@ -93,12 +92,9 @@ Future<void> insertIdolData({
   String? hometown,
   int? debutYear,
   String? comment,
-  SupabaseClient? supabaseClient,
 }) async {
-  final client = supabaseClient ?? supabase;
-
   try {
-    await client.from(TableName.idol).insert({
+    await supabase.from(TableName.idol).insert({
       ColumnName.name: name,
       ColumnName.groupId: groupId,
       ColumnName.color: color,
@@ -131,17 +127,16 @@ Future<void> insertSongData({
   required String title,
   required String lyric,
   required BuildContext context,
+  required SupabaseClient supabase,
   int? groupId,
   String? imageUrl,
   String? releaseDate,
   int? lyricistId,
   int? composerId,
   String? comment,
-  SupabaseClient? supabaseClient,
 }) async {
-  final client = supabaseClient ?? supabase;
   try {
-    await client.from(TableName.songs).insert({
+    await supabase.from(TableName.songs).insert({
       ColumnName.title: title,
       ColumnName.lyrics: lyric,
       ColumnName.groupId: groupId,
@@ -198,11 +193,10 @@ Future<void> uploadImageToStorage({
 
 // READ
 Future<List<Map<String, dynamic>>> fetchArtists({
-  SupabaseClient? supabaseClient,
+  required SupabaseClient supabase,
 }) async {
   try {
-    final client = supabaseClient ?? supabase;
-    final response = await client.from(TableName.artists).select();
+    final response = await supabase.from(TableName.artists).select();
     logger.i('アーティストのリストを取得しました');
     return response;
   } catch (e) {
@@ -213,11 +207,10 @@ Future<List<Map<String, dynamic>>> fetchArtists({
 
 Future<List<Map<String, dynamic>>> fetchGroupMembers(
   int groupId, {
-  SupabaseClient? supabaseClient,
+  required SupabaseClient supabase,
 }) async {
-  final client = supabaseClient ?? supabase;
   try {
-    final response = await client
+    final response = await supabase
         .from(TableName.idol)
         .select()
         .eq(ColumnName.groupId, groupId);
@@ -231,13 +224,11 @@ Future<List<Map<String, dynamic>>> fetchGroupMembers(
 
 // HACK: Supabase CLI でできるらしいよ
 Future<List<Map<String, dynamic>>> fetchCurrentUserInfo({
-  SupabaseClient? supabaseClient,
+  required SupabaseClient supabase,
 }) async {
   try {
-    final client = supabaseClient ?? supabase;
-
-    final currentUserId = client.auth.currentUser!.id;
-    final userInfo = await client
+    final currentUserId = supabase.auth.currentUser!.id;
+    final userInfo = await supabase
         .from(TableName.profiles)
         .select()
         .eq(ColumnName.id, currentUserId);
@@ -264,11 +255,10 @@ String fetchImageUrl(String imagePath) {
 
 Future<List<Map<String, dynamic>>> fetchIdAndNameList(
   String tableName, {
-  SupabaseClient? supabaseClient,
+  required SupabaseClient supabase,
 }) async {
   try {
-    final client = supabaseClient ?? supabase;
-    final response = await client
+    final response = await supabase
         .from(tableName)
         .select('${ColumnName.id}, ${ColumnName.name}');
     logger.i('$tableNameのIDと名前のリストを取得しました');
@@ -314,6 +304,7 @@ Future<void> updateIdolGroup({
   required String name,
   required String id,
   required BuildContext context,
+  required SupabaseClient supabase,
   String? imageUrl,
   String? year,
   String? officialUrl,
@@ -321,11 +312,9 @@ Future<void> updateIdolGroup({
   String? instagramUrl,
   String? scheduleUrl,
   String? comment,
-  SupabaseClient? supabaseClient,
 }) async {
-  final client = supabaseClient ?? supabase;
   try {
-    await client.from(TableName.idolGroups).update({
+    await supabase.from(TableName.idolGroups).update({
       ColumnName.name: name,
       ColumnName.imageUrl: imageUrl,
       ColumnName.yearFormingGroups: year == null ? null : int.tryParse(year),
@@ -402,17 +391,16 @@ Future<void> updateSong({
   required String title,
   required String lyric,
   required BuildContext context,
+  required SupabaseClient supabase,
   int? groupId,
   String? imageUrl,
   String? releaseDate,
   int? lyricistId,
   int? composerId,
   String? comment,
-  SupabaseClient? supabaseClient,
 }) async {
-  final client = supabaseClient ?? supabase;
   try {
-    await client.from(TableName.songs).update({
+    await supabase.from(TableName.songs).update({
       ColumnName.title: title,
       ColumnName.lyrics: lyric,
       ColumnName.groupId: groupId,
@@ -445,12 +433,11 @@ Future<void> updateUser({
   required String email,
   required String imageUrl,
   required BuildContext context,
+  required SupabaseClient supabase,
   String? comment,
-  SupabaseClient? supabaseClient,
 }) async {
-  final client = supabaseClient ?? supabase;
   try {
-    await client.from(TableName.profiles).update({
+    await supabase.from(TableName.profiles).update({
       ColumnName.name: name,
       ColumnName.email: email,
       ColumnName.imageUrl: imageUrl,
@@ -479,11 +466,10 @@ Future<void> deleteDataFromTable({
   required String targetColumn,
   required String targetValue,
   required BuildContext context,
-  SupabaseClient? supabaseClient,
+  required SupabaseClient supabase,
 }) async {
-  final client = supabaseClient ?? supabase;
   try {
-    await client.from(table).delete().eq(targetColumn, targetValue);
+    await supabase.from(table).delete().eq(targetColumn, targetValue);
     if (!context.mounted) return;
     showLogAndSnackBar(
       context: context,

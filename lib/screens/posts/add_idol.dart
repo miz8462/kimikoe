@@ -111,7 +111,8 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
 
   Future<void> _fetchIdAndNameGroupList() async {
     final groupIdAndNameList = await fetchIdAndNameList(
-      TableName.idolGroups,
+      TableName.idolGroups,              supabase: supabase,
+
     );
     setState(() {
       _groupIdAndNameList = groupIdAndNameList;
@@ -200,7 +201,8 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         imageUrl: noImage,
         year: '',
         comment: '',
-        context: context,
+        context: context,              supabase: supabase,
+
       );
       await _fetchIdAndNameGroupList();
     }
@@ -242,7 +244,8 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
         hometown: _enteredHometown,
         debutYear: debutYear,
         comment: _enteredComment,
-        context: context,
+        context: context,              supabase: supabase,
+
       );
     }
 

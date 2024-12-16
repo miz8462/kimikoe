@@ -152,6 +152,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
         comment: _enteredComment,
         id: _group.id.toString(),
         context: context,
+        supabase: supabase,
       );
     } else {
       await insertIdolGroupData(
@@ -164,6 +165,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
         scheduleUrl: _enteredScheduleUrl,
         comment: _enteredComment,
         context: context,
+        supabase: supabase,
       );
     }
 

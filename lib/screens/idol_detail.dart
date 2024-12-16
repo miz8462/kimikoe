@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
+import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/idol.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
@@ -72,6 +73,7 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
               targetColumn: ColumnName.id,
               targetValue: widget.idol.id.toString(),
               context: context,
+              supabase: supabase,
             );
           },
           successMessage: '${widget.idol.name}のデータが削除されました',

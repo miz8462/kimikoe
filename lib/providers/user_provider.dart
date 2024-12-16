@@ -55,6 +55,7 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
         imageUrl: newUser.imageUrl,
         comment: newUser.comment,
         context: context,
+        supabase: supabase,
       );
 
       state = newUser;

@@ -72,6 +72,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
       imageUrl: imageUrl,
       comment: _enteredComment,
       context: context,
+      supabase: supabase,
     );
 
     setState(() {
