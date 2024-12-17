@@ -5,8 +5,6 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/services/supabase_service.dart';
 import 'package:kimikoe_app/utils/generate_simple_random_string.dart';
-import 'package:logger/logger.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 // 画像選択していない場合はnoImageを返す
 // その他は20文字のランダム文字列+jpgを返す
@@ -27,11 +25,15 @@ Future<String?> processImage({
   required String existingImageUrl,
   required File? selectedImage,
   required BuildContext context,
-  required SupabaseClient supabase,
   String Function({File? imageFile})? createImagePathFunction = createImagePath,
   UploadImageToStorage? uploadFunction = uploadImageToStorage,
-  FetchImageUrl fetchFunction = fetchImageUrl,
+  String Function(String imagePath)? fetchFunction = fetchImageUrl,
 }) async {
+  // 新規作成モードで画像変更なし
+  if (!isEditing && !isImageChanged) {
+    return noImage;
+  }
+  
   // 編集モードで画像変更なし
   if (isEditing && !isImageChanged) {
     return existingImageUrl;
@@ -48,7 +50,7 @@ Future<String?> processImage({
         context: context,
       );
     }
-    return fetchFunction(imagePath, supabase: supabase);
+    return fetchFunction!(imagePath);
   }
 }
 
@@ -57,10 +59,4 @@ typedef UploadImageToStorage = Future<void> Function({
   required String path,
   required File file,
   required BuildContext context,
-});
-
-typedef FetchImageUrl = String Function(
-  String imagePath, {
-  required SupabaseClient supabase,
-  Logger? injectedlogger,
 });

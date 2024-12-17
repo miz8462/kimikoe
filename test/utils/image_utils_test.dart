@@ -3,13 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
+import 'package:logger/logger.dart';
 import 'package:mockito/mockito.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 // モックのファイルとコンテキスト
 class MockFile extends Mock implements File {}
+
+class MockLogger extends Mock implements Logger {}
 
 class MockBuildContext extends Mock implements BuildContext {}
 
@@ -42,7 +43,6 @@ void main() {
       required String path,
       required File file,
       required BuildContext context,
-      SupabaseClient? supabaseClient,
     }) async {
       // ここで実際に何もしない
     }
@@ -62,7 +62,7 @@ void main() {
         existingImageUrl: '',
         selectedImage: null,
         context: mockContext,
-        supabase: supabase,
+        
       );
       expect(result, noImage);
     });
@@ -74,7 +74,6 @@ void main() {
         existingImageUrl: '',
         selectedImage: mockFile,
         context: mockContext,
-        supabase: supabase,
         createImagePathFunction: mockCreateImagePath,
         uploadFunction: mockUploadImageToStorage,
         fetchFunction: mockFetchImageUrl,
@@ -91,7 +90,6 @@ void main() {
         existingImageUrl: 'https://example.com/existing.jpg',
         selectedImage: mockFile,
         context: mockContext,
-        supabase: supabase,
         createImagePathFunction: mockCreateImagePath,
         uploadFunction: mockUploadImageToStorage,
         fetchFunction: mockFetchImageUrl,
@@ -108,7 +106,6 @@ void main() {
         existingImageUrl: 'https://example.com/existing.jpg',
         selectedImage: mockFile,
         context: mockContext,
-        supabase: supabase,
         createImagePathFunction: mockCreateImagePath,
         uploadFunction: mockUploadImageToStorage,
         fetchFunction: mockFetchImageUrl,

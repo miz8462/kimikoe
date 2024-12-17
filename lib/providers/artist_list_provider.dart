@@ -46,15 +46,12 @@ final artistListFromSupabaseProvider =
     FutureProvider<List<Artist>>((ref) async {
   try {
     logger.i('Supabaseからアーティストデータを取得中...');
-    final response = await fetchArtists(
-      supabase: supabase,
-    );
+    final response = await fetchArtists(supabase: supabase);
     logger.i('${response.length}件のアーティストデータをSupabaseから取得しました');
 
     final artists = response.map<Artist>((artist) {
       final imageUrl = fetchImageUrl(
         artist[ColumnName.imageUrl],
-        supabase: supabase,
       );
       return Artist(
         id: artist[ColumnName.id],

@@ -222,19 +222,18 @@ Future<List<Map<String, dynamic>>> fetchGroupMembers(
   }
 }
 
-
-
 // HACK: Supabase CLI でできるらしいよ
 String fetchImageUrl(
   String imagePath, {
-  required SupabaseClient supabase,
+  SupabaseClient? supabaseClient,
   Logger? injectedlogger,
 }) {
+  final diSupabase = supabaseClient ?? supabase;
   final dilogger = injectedlogger ?? logger;
-
   if (imagePath == noImage) return noImage;
   try {
-    final url = supabase.storage.from(TableName.images).getPublicUrl(imagePath);
+    final url =
+        diSupabase.storage.from(TableName.images).getPublicUrl(imagePath);
     dilogger.i('画像URLを取得しました');
     return url;
   } catch (e) {

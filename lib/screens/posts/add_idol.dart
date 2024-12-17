@@ -156,7 +156,6 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
       existingImageUrl: _idol.imageUrl,
       selectedImage: _selectedImage,
       context: context,
-      supabase: supabase,
     );
 
     if (imageUrl == null) {
