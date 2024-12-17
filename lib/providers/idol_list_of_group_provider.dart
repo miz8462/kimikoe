@@ -20,7 +20,7 @@ class IdolListOfGroupNotifier extends StateNotifier<AsyncValue<List<Idol>>> {
           ref.watch(idolGroupListProvider.notifier).getGroupById(groupId);
       logger.i('SupabaseからID $groupId のアイドルリストを取得中...');
       final response = await supabase
-          .from(TableName.idol)
+          .from(TableName.idols)
           .select()
           .eq(ColumnName.groupId, groupId);
 

@@ -1,44 +1,18 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/services/supabase_service.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() {
-  // late final SupabaseClient supabase;
   late final SupabaseClient errorSupabase;
   late final SupabaseClient mockSupabase;
   late final MockSupabaseHttpClient mockHttpClient;
 
   setUpAll(() async {
-    // Flutterの環境を初期化
-    TestWidgetsFlutterBinding.ensureInitialized();
-
-    // SharedPreferencesを初期化
-    SharedPreferences.setMockInitialValues({});
-
-    // dotenvを初期化して環境変数を読み込む
-    await dotenv.load();
-
-    final supabaseUrl = dotenv.env['SUPABASE_URL_LOCAL'] ??
-        (throw ArgumentError('SUPABASE_URL_LOCAL is not set in .env file.'));
-    final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY_LOCAL'] ??
-        (throw ArgumentError(
-          'SUPABASE_ANON_KEY_LOCAL is not set in .env file.',
-        ));
-
-    // Supabaseを初期化
-    await Supabase.initialize(
-      url: supabaseUrl,
-      anonKey: supabaseAnonKey,
-    );
-    // supabase = Supabase.instance.client;
-
     mockHttpClient = MockSupabaseHttpClient();
     mockSupabase = SupabaseClient(
       'https://mock.supabase.co',
@@ -239,7 +213,7 @@ void main() {
         );
         await tester.pump(Duration(milliseconds: 500));
 
-        final idol = await mockSupabase.from(TableName.idol).select();
+        final idol = await mockSupabase.from(TableName.idols).select();
 
         expect(idol.length, 1);
         expect(idol.first, {
@@ -265,7 +239,7 @@ void main() {
         );
         await tester.pump(Duration(milliseconds: 500));
 
-        final idol2 = await mockSupabase.from(TableName.idol).select();
+        final idol2 = await mockSupabase.from(TableName.idols).select();
 
         expect(idol2.length, 2);
         expect(idol2.last, {
@@ -389,7 +363,7 @@ void main() {
       });
     });
 
-    // TODO: Supabase CLIでのローカル環境でテストができるらしいよ
+    // TODO: Supabase CLIでのローカル環境でテストができるらしいよ。よくわからなかった
     group('uploadImageToStorage', () {
       // TODO: 実装時テスト名要変更
       testWidgets('uploadImageToStorage正常系', (WidgetTester tester) async {});

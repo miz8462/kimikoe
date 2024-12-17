@@ -4,7 +4,7 @@ import 'package:kimikoe_app/models/table_and_column_name.dart';
 void main() {
   test('TableName定数のテスト', () {
     expect(TableName.artists, 'artists');
-    expect(TableName.idol, 'idols');
+    expect(TableName.idols, 'idols');
     expect(TableName.idolGroups, 'idol-groups');
     expect(TableName.profiles, 'profiles');
     expect(TableName.songs, 'songs');

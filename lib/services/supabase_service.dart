@@ -94,7 +94,7 @@ Future<void> insertIdolData({
   String? comment,
 }) async {
   try {
-    await supabase.from(TableName.idol).insert({
+    await supabase.from(TableName.idols).insert({
       ColumnName.name: name,
       ColumnName.groupId: groupId,
       ColumnName.color: color,
@@ -181,7 +181,6 @@ Future<void> uploadImageToStorage({
     );
   } catch (e) {
     logger.e('画像をストレージにアップロード中にエラーが発生しました', error: e);
-
     rethrow;
   }
 }
@@ -206,7 +205,7 @@ Future<List<Map<String, dynamic>>> fetchGroupMembers(
 }) async {
   try {
     final response = await supabase
-        .from(TableName.idol)
+        .from(TableName.idols)
         .select()
         .eq(ColumnName.groupId, groupId);
     logger.i('グループメンバーリストを取得しました');
@@ -356,7 +355,7 @@ Future<void> updateIdol({
   String? comment,
 }) async {
   try {
-    await supabase.from(TableName.idol).update({
+    await supabase.from(TableName.idols).update({
       ColumnName.name: name,
       ColumnName.groupId: groupId,
       ColumnName.color: color,

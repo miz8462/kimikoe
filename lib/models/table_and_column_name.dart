@@ -1,7 +1,7 @@
 class TableName {
   TableName._(); // coverage:ignore-line
   static const artists = 'artists';
-  static const idol = 'idols';
+  static const idols = 'idols';
   static const idolGroups = 'idol-groups';
   static const profiles = 'profiles';
   static const songs = 'songs';
