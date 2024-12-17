@@ -737,143 +737,252 @@ void main() {
         expect(didThrowError, isTrue);
       });
     });
+    group('updateSong', () {
+      testWidgets('updateSong', (WidgetTester tester) async {
+        final mockContext = await createMockContext(tester);
 
-    testWidgets('updateSong', (WidgetTester tester) async {
-      final mockContext = await createMockContext(tester);
+        // アップデート用のデータを登録。
+        // SupabaseのIDは自動生成のためインサート関数にはIDがない。
+        // なので、ID付きのモックデータが必要。
+        await mockSupabase.from(TableName.songs).insert({
+          ColumnName.id: 1,
+          ColumnName.title: 'test song',
+          ColumnName.lyrics: 'test lyrics',
+        });
 
-      // アップデート用のデータを登録。
-      // SupabaseのIDは自動生成のためインサート関数にはIDがない。
-      // なので、ID付きのモックデータが必要。
-      await mockSupabase.from(TableName.songs).insert({
-        ColumnName.id: 1,
-        ColumnName.title: 'test song',
-        ColumnName.lyrics: 'test lyrics',
+        await updateSong(
+          id: 1,
+          title: 'updated title',
+          lyric: 'updated lyrics',
+          context: mockContext,
+          supabase: mockSupabase,
+          groupId: 1,
+          imageUrl: 'https://example.com/updated.jpg',
+          releaseDate: '2024-01-22',
+          lyricistId: 13,
+          composerId: 13,
+          comment: 'updated comment',
+        );
+
+        final updatedsong = await mockSupabase
+            .from(TableName.songs)
+            .select()
+            .eq(ColumnName.id, 1)
+            .single();
+
+        expect(
+          updatedsong[ColumnName.title],
+          'updated title',
+        );
+        expect(
+          updatedsong[ColumnName.lyrics],
+          'updated lyrics',
+        );
+        expect(
+          updatedsong[ColumnName.groupId],
+          1,
+        );
+        expect(
+          updatedsong[ColumnName.imageUrl],
+          'https://example.com/updated.jpg',
+        );
+        expect(
+          updatedsong[ColumnName.releaseDate],
+          '2024-01-22',
+        );
+        expect(
+          updatedsong[ColumnName.lyricistId],
+          13,
+        );
+        expect(
+          updatedsong[ColumnName.composerId],
+          13,
+        );
+        expect(
+          updatedsong[ColumnName.comment],
+          'updated comment',
+        );
       });
+      testWidgets('updateSong', (WidgetTester tester) async {
+        final mockContext = await createMockContext(tester);
+        var didThrowError = false;
 
-      await updateSong(
-        id: 1,
-        title: 'updated title',
-        lyric: 'updated lyrics',
-        context: mockContext,
-        supabase: mockSupabase,
-        groupId: 1,
-        imageUrl: 'https://example.com/updated.jpg',
-        releaseDate: '2024-01-22',
-        lyricistId: 13,
-        composerId: 13,
-        comment: 'updated comment',
-      );
+        // アップデート用のデータを登録。
+        // SupabaseのIDは自動生成のためインサート関数にはIDがない。
+        // なので、ID付きのモックデータが必要。
+        await mockSupabase.from(TableName.songs).insert({
+          ColumnName.id: 1,
+          ColumnName.title: 'test song',
+          ColumnName.lyrics: 'test lyrics',
+        });
+        try {
+          await updateSong(
+            id: 1,
+            title: 'error title',
+            lyric: 'error lyrics',
+            context: mockContext,
+            supabase: errorSupabase,
+            groupId: 1,
+            imageUrl: 'https://example.com/updated.jpg',
+            releaseDate: '2024-01-22',
+            lyricistId: 13,
+            composerId: 13,
+            comment: 'updated comment',
+          );
 
-      final updatedsong = await mockSupabase
-          .from(TableName.songs)
-          .select()
-          .eq(ColumnName.id, 1)
-          .single();
+          expect(find.byType(SnackBar), findsOneWidget);
+          expect(
+            find.text('曲データの更新中にエラーが発生しました。曲名: error title'),
+            findsOneWidget,
+          );
+        } catch (e) {
+          didThrowError = true;
+        }
 
-      expect(
-        updatedsong[ColumnName.title],
-        'updated title',
-      );
-      expect(
-        updatedsong[ColumnName.lyrics],
-        'updated lyrics',
-      );
-      expect(
-        updatedsong[ColumnName.groupId],
-        1,
-      );
-      expect(
-        updatedsong[ColumnName.imageUrl],
-        'https://example.com/updated.jpg',
-      );
-      expect(
-        updatedsong[ColumnName.releaseDate],
-        '2024-01-22',
-      );
-      expect(
-        updatedsong[ColumnName.lyricistId],
-        13,
-      );
-      expect(
-        updatedsong[ColumnName.composerId],
-        13,
-      );
-      expect(
-        updatedsong[ColumnName.comment],
-        'updated comment',
-      );
+        expect(didThrowError, isTrue);
+      });
+    });
+    group('updateUser', () {
+      testWidgets('updateUserの正常動作', (WidgetTester tester) async {
+        final mockContext = await createMockContext(tester);
+
+        await mockSupabase.from(TableName.profiles).insert({
+          ColumnName.id: 1,
+          ColumnName.name: 'test user',
+          ColumnName.lyrics: 'test lyrics',
+        });
+
+        await updateUser(
+          id: '1',
+          name: 'updated user',
+          email: 'updated@example.com',
+          imageUrl: 'https://example.com/updated.jpg',
+          comment: 'updated comment',
+          context: mockContext,
+          supabase: mockSupabase,
+        );
+
+        final updateduser = await mockSupabase
+            .from(TableName.profiles)
+            .select()
+            .eq(ColumnName.id, '1')
+            .single();
+
+        expect(
+          updateduser[ColumnName.name],
+          'updated user',
+        );
+        expect(
+          updateduser[ColumnName.email],
+          'updated@example.com',
+        );
+        expect(
+          updateduser[ColumnName.imageUrl],
+          'https://example.com/updated.jpg',
+        );
+        expect(
+          updateduser[ColumnName.comment],
+          'updated comment',
+        );
+      });
+      testWidgets('updateUserの例外処理', (WidgetTester tester) async {
+        final mockContext = await createMockContext(tester);
+        var didThrowError = false;
+
+        // アップデート用のデータを登録。
+        // SupabaseのIDは自動生成のためインサート関数にはIDがない。
+        // なので、ID付きのモックデータが必要。
+        await mockSupabase.from(TableName.profiles).insert({
+          ColumnName.id: '1',
+          ColumnName.name: 'test user',
+        });
+        try {
+          await updateUser(
+            id: '1',
+            name: 'error user',
+            email: 'error@example.com',
+            imageUrl: 'https://example.com/updated.jpg',
+            comment: 'updated comment',
+            context: mockContext,
+            supabase: errorSupabase,
+          );
+
+          expect(find.byType(SnackBar), findsOneWidget);
+          expect(
+            find.text('ユーザーの更新中にエラーが発生しました。ユーザー名: error user'),
+            findsOneWidget,
+          );
+        } catch (e) {
+          didThrowError = true;
+        }
+
+        expect(didThrowError, isTrue);
+      });
     });
 
-    testWidgets('updateUser', (WidgetTester tester) async {
-      final mockContext = await createMockContext(tester);
+    group('deleteDataFromTable', () {
+      testWidgets('deleteDataFromTableの正常動作', (WidgetTester tester) async {
+        final mockContext = await createMockContext(tester);
 
-      await mockSupabase.from(TableName.profiles).insert({
-        ColumnName.id: 1,
-        ColumnName.name: 'test user',
-        ColumnName.lyrics: 'test lyrics',
+        // 削除するデータの登録と、登録されてることの確認
+        await mockSupabase.from(TableName.artists).insert({
+          ColumnName.id: 1,
+          ColumnName.name: 'delete artist',
+        });
+        final artists = await mockSupabase.from(TableName.artists).select();
+        expect(artists.last[ColumnName.name], 'delete artist');
+
+        await deleteDataFromTable(
+          table: TableName.artists,
+          targetColumn: ColumnName.id,
+          targetValue: '1',
+          context: mockContext,
+          supabase: mockSupabase,
+        );
+
+        // 削除後のデータ
+        final artistsAfterDeletion =
+            await mockSupabase.from(TableName.artists).select();
+
+        // 削除したデータがリストに含まれていないことの確認
+        final containsDeletedArtist = artistsAfterDeletion.any(
+          (artist) => artist[ColumnName.name] == 'delete artist',
+        );
+        expect(containsDeletedArtist, isFalse);
       });
+      testWidgets('deleteDataFromTableの例外処理', (WidgetTester tester) async {
+        final mockContext = await createMockContext(tester);
+        var didThrowError = false;
 
-      await updateUser(
-        id: '1',
-        name: 'updated user',
-        email: 'updated@example.com',
-        imageUrl: 'https://example.com/updated.jpg',
-        comment: 'updated comment',
-        context: mockContext,
-        supabase: mockSupabase,
-      );
+        // 削除するデータの登録と、登録されてることの確認
+        await mockSupabase.from(TableName.artists).insert({
+          ColumnName.id: 1,
+          ColumnName.name: 'cannot delete artist',
+        });
+        final artists = await mockSupabase.from(TableName.artists).select();
+        expect(artists.last[ColumnName.name], 'cannot delete artist');
+        try {
+          await deleteDataFromTable(
+            table: TableName.artists,
+            targetColumn: ColumnName.id,
+            targetValue: '1',
+            context: mockContext,
+            supabase: errorSupabase,
+          );
+        } catch (e) {
+          didThrowError = true;
+        }
 
-      final updateduser = await mockSupabase
-          .from(TableName.profiles)
-          .select()
-          .eq(ColumnName.id, '1')
-          .single();
+        expect(didThrowError, isTrue);
 
-      expect(
-        updateduser[ColumnName.name],
-        'updated user',
-      );
-      expect(
-        updateduser[ColumnName.email],
-        'updated@example.com',
-      );
-      expect(
-        updateduser[ColumnName.imageUrl],
-        'https://example.com/updated.jpg',
-      );
-      expect(
-        updateduser[ColumnName.comment],
-        'updated comment',
-      );
-    });
-    testWidgets('deleteDataFromTable', (WidgetTester tester) async {
-      final mockContext = await createMockContext(tester);
-
-      // 削除するデータの登録と、登録されてることの確認
-      await mockSupabase.from(TableName.artists).insert({
-        ColumnName.id: 1,
-        ColumnName.name: 'delete artist',
+        // 削除に失敗していることの確認
+        final artistsAfterDeletion =
+            await mockSupabase.from(TableName.artists).select();
+        expect(
+          artistsAfterDeletion.last[ColumnName.name],
+          'cannot delete artist',
+        );
       });
-      final artists = await mockSupabase.from(TableName.artists).select();
-      expect(artists.last[ColumnName.name], 'delete artist');
-
-      await deleteDataFromTable(
-        table: TableName.artists,
-        targetColumn: ColumnName.id,
-        targetValue: '1',
-        context: mockContext,
-        supabase: mockSupabase,
-      );
-
-      // 削除後のデータ
-      final artistsAfterDeletion =
-          await mockSupabase.from(TableName.artists).select();
-
-      // 削除したデータがリストに含まれていないことの確認
-      final containsDeletedArtist = artistsAfterDeletion.any(
-        (artist) => artist[ColumnName.name] == 'delete artist',
-      );
-      expect(containsDeletedArtist, isFalse);
     });
   });
 }
