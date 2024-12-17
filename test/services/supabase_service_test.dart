@@ -466,7 +466,7 @@ void main() {
         try {
           await fetchIdAndNameList(
             TableName.idolGroups,
-            supabase: mockSupabase,
+            supabase: errorSupabase,
             injectedlogger: mockLogger,
           );
           verify(mockLogger.e('アイドルグループのIDと名前のリストの取得中にエラーが発生しました')).called(1);
