@@ -200,7 +200,8 @@ class _AddSongScreenState extends State<AddSongScreen> {
       isImageChanged: _isImageChanged,
       existingImageUrl: _song.imageUrl,
       selectedImage: _selectedImage,
-      context: context,
+      context: context, 
+      supabase: supabase,
     );
 
     if (imageUrl == null) {

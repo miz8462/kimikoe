@@ -5,6 +5,7 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/utils/show_log_and_snack_bar.dart';
+import 'package:logger/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 // CREATE
@@ -188,13 +189,15 @@ Future<void> uploadImageToStorage({
 // READ
 Future<List<Map<String, dynamic>>> fetchArtists({
   required SupabaseClient supabase,
+  Logger? injectedlogger,
 }) async {
+  final dilogger = injectedlogger ?? logger;
   try {
     final response = await supabase.from(TableName.artists).select();
-    logger.i('アーティストのリストを取得しました');
+    dilogger.i('アーティストのリストを取得しました');
     return response;
   } catch (e) {
-    logger.e('アーティストのリストの取得中にエラーが発生しました', error: e);
+    dilogger.e('アーティストのリストの取得中にエラーが発生しました', error: e);
     rethrow;
   }
 }
@@ -202,50 +205,40 @@ Future<List<Map<String, dynamic>>> fetchArtists({
 Future<List<Map<String, dynamic>>> fetchGroupMembers(
   int groupId, {
   required SupabaseClient supabase,
+  Logger? injectedlogger,
 }) async {
+  final dilogger = injectedlogger ?? logger;
+
   try {
     final response = await supabase
         .from(TableName.idols)
         .select()
         .eq(ColumnName.groupId, groupId);
-    logger.i('グループメンバーリストを取得しました');
+    dilogger.i('グループメンバーリストを取得しました');
     return response;
   } catch (e) {
-    logger.e('グループメンバーリストの取得中にエラーが発生しました', error: e);
+    dilogger.e('グループメンバーリストの取得中にエラーが発生しました', error: e);
     rethrow;
   }
 }
 
-// HACK: Supabase CLI でできるらしいよ
-Future<List<Map<String, dynamic>>> fetchCurrentUserInfo(
-    // required SupabaseClient supabase,
-    ) async {
-  try {
-    final currentUserId = supabase.auth.currentUser!.id;
-    final userInfo = await supabase
-        .from(TableName.profiles)
-        .select()
-        .eq(ColumnName.id, currentUserId);
-    logger.i('現在のユーザー情報を取得しました');
-    return userInfo;
-  } catch (e) {
-    logger.e('現在のユーザー情報の取得中にエラーが発生しました', error: e);
-    rethrow;
-  }
-}
+
 
 // HACK: Supabase CLI でできるらしいよ
 String fetchImageUrl(
-  String imagePath,
-  // required SupabaseClient supabase,
-) {
+  String imagePath, {
+  required SupabaseClient supabase,
+  Logger? injectedlogger,
+}) {
+  final dilogger = injectedlogger ?? logger;
+
   if (imagePath == noImage) return noImage;
   try {
     final url = supabase.storage.from(TableName.images).getPublicUrl(imagePath);
-    logger.i('画像URLを取得しました');
+    dilogger.i('画像URLを取得しました');
     return url;
   } catch (e) {
-    logger.e('画像URLの取得中にエラーが発生しました', error: e);
+    dilogger.e('画像URLの取得中にエラーが発生しました', error: e);
     return noImage;
   }
 }
@@ -253,15 +246,18 @@ String fetchImageUrl(
 Future<List<Map<String, dynamic>>> fetchIdAndNameList(
   String tableName, {
   required SupabaseClient supabase,
+  Logger? injectedlogger,
 }) async {
+  final dilogger = injectedlogger ?? logger;
+
   try {
     final response = await supabase
         .from(tableName)
         .select('${ColumnName.id}, ${ColumnName.name}');
-    logger.i('$tableNameのIDと名前のリストを取得しました');
+    dilogger.i('$tableNameのIDと名前のリストを取得しました');
     return response;
   } catch (e) {
-    logger.e('$tableNameのIDと名前のリストの取得中にエラーが発生しました', error: e);
+    dilogger.e('$tableNameのIDと名前のリストの取得中にエラーが発生しました', error: e);
     rethrow;
   }
 }

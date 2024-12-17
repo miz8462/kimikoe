@@ -5,12 +5,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/services/supabase_service.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
+import 'package:mockito/mockito.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../test_utils/mocks/logger_mock.dart';
 
 void main() {
   late final SupabaseClient errorSupabase;
   late final SupabaseClient mockSupabase;
   late final MockSupabaseHttpClient mockHttpClient;
+  late final MockLogger mockLogger;
 
   setUpAll(() async {
     mockHttpClient = MockSupabaseHttpClient();
@@ -24,6 +28,7 @@ void main() {
       'error',
       'error',
     );
+    mockLogger = MockLogger();
   });
 
   tearDown(() async {
@@ -48,7 +53,7 @@ void main() {
   // NOTE: 登録系と一緒にまとめてテストすること。
   group('SupabaseService', () {
     group('insertArtistData', () {
-      testWidgets('insertArtistData', (WidgetTester tester) async {
+      testWidgets('insertArtistDataの正常動作', (WidgetTester tester) async {
         final mockContext = await createMockContext(tester);
 
         await insertArtistData(
@@ -112,7 +117,7 @@ void main() {
       });
     });
     group('insertIdolGroupData', () {
-      testWidgets('insertIdolGroupData', (WidgetTester tester) async {
+      testWidgets('insertIdolGroupDataの正常動作', (WidgetTester tester) async {
         final mockContext = await createMockContext(tester);
 
         await insertIdolGroupData(
@@ -194,7 +199,7 @@ void main() {
     });
 
     group('insertIdolData', () {
-      testWidgets('insertIdolData', (WidgetTester tester) async {
+      testWidgets('insertIdolDataの正常動作', (WidgetTester tester) async {
         final mockContext = await createMockContext(tester);
 
         await insertIdolData(
@@ -281,7 +286,7 @@ void main() {
     });
 
     group('insertSongData', () {
-      testWidgets('insertSongData', (WidgetTester tester) async {
+      testWidgets('insertSongDataの正常動作', (WidgetTester tester) async {
         final mockContext = await createMockContext(tester);
 
         await insertSongData(
@@ -363,10 +368,10 @@ void main() {
       });
     });
 
-    // TODO: Supabase CLIでのローカル環境でテストができるらしいよ。よくわからなかった
+    // HACK: Supabase CLIでのローカル環境でテストができるらしいよ。よくわからなかった
     group('uploadImageToStorage', () {
       // TODO: 実装時テスト名要変更
-      testWidgets('uploadImageToStorage正常系', (WidgetTester tester) async {});
+      testWidgets('uploadImageToStorageの正常動作', (WidgetTester tester) async {});
       testWidgets('uploadImageToStorageの例外処理', (WidgetTester tester) async {
         final mockContext = await createMockContext(tester);
         var didThrowError = false;
@@ -390,34 +395,108 @@ void main() {
         expect(didThrowError, isTrue);
       });
     });
+    group('fetchArtists', () {
+      testWidgets('fetchArtistsの正常動作', (WidgetTester tester) async {
+        final artistList = await fetchArtists(
+          supabase: mockSupabase,
+        );
 
-    testWidgets('fetchArtists', (WidgetTester tester) async {
-      final artistList = await fetchArtists(
-        supabase: mockSupabase,
-      );
+        expect(artistList.length, 2);
+        expect(artistList.first[ColumnName.name], 'test artist');
+      });
+      testWidgets('fetchArtistsの例外処理', (WidgetTester tester) async {
+        var didThrowError = false;
 
-      expect(artistList.length, 2);
-      expect(artistList.first[ColumnName.name], 'test artist');
+        try {
+          await fetchArtists(
+            supabase: errorSupabase,
+            injectedlogger: mockLogger,
+          );
+          verify(mockLogger.e('アーティストのリストの取得中にエラーが発生しました')).called(1);
+        } catch (e) {
+          didThrowError = true;
+        }
+        expect(didThrowError, isTrue);
+      });
+    });
+    group('fetchGroupMembers', () {
+      testWidgets('fetchGroupMembers', (WidgetTester tester) async {
+        // NOTE: insertIdolDaltaのテストデータを使っている。
+        final members = await fetchGroupMembers(
+          1,
+          supabase: mockSupabase,
+        );
+
+        expect(members.length, 1);
+        expect(members.first[ColumnName.name], 'test idol');
+      });
+
+      testWidgets('fetchGroupMembersの例外処理', (WidgetTester tester) async {
+        final mockLogger = MockLogger();
+        var didThrowError = false;
+
+        try {
+          await fetchGroupMembers(
+            1,
+            supabase: errorSupabase,
+            injectedlogger: mockLogger,
+          );
+
+          verify(mockLogger.e('グループメンバーリストの取得中にエラーが発生しました')).called(1);
+        } catch (e) {
+          didThrowError = true;
+        }
+        expect(didThrowError, isTrue);
+      });
     });
 
-    testWidgets('fetchGroupMembers', (WidgetTester tester) async {
-      // NOTE: insertIdolDaltaのテストデータを使っている。
-      final members = await fetchGroupMembers(
-        1,
-        supabase: mockSupabase,
-      );
+    group('fetchIdAndNameList', () {
+      testWidgets('fetchIdAndNameList', (WidgetTester tester) async {
+        final idolGroupsIdAndNameList = await fetchIdAndNameList(
+          TableName.idolGroups,
+          supabase: mockSupabase,
+        );
 
-      expect(members.length, 1);
-      expect(members.first[ColumnName.name], 'test idol');
+        expect(idolGroupsIdAndNameList.length, 2);
+        expect(idolGroupsIdAndNameList.first[ColumnName.name], 'test group');
+      });
+      testWidgets('fetchIdAndNameList', (WidgetTester tester) async {
+        var didThrowError = false;
+
+        try {
+          await fetchIdAndNameList(
+            TableName.idolGroups,
+            supabase: mockSupabase,
+            injectedlogger: mockLogger,
+          );
+          verify(mockLogger.e('アイドルグループのIDと名前のリストの取得中にエラーが発生しました')).called(1);
+        } catch (e) {
+          didThrowError = true;
+        }
+
+        expect(didThrowError, isTrue);
+      });
     });
-    testWidgets('fetchIdAndNameList', (WidgetTester tester) async {
-      final idolGroupsIdAndNameList = await fetchIdAndNameList(
-        TableName.idolGroups,
-        supabase: mockSupabase,
-      );
 
-      expect(idolGroupsIdAndNameList.length, 2);
-      expect(idolGroupsIdAndNameList.first[ColumnName.name], 'test group');
+    // HACK: Supabase CLI でできるらしいよ
+    group('fetchImageUrl', () {
+      testWidgets('fetchImageUrlの正常動作', (WidgetTester tester) async {});
+      testWidgets('fetchImageUrlの例外処理', (WidgetTester tester) async {
+        var didThrowError = false;
+
+        try {
+          fetchImageUrl(
+            TableName.idolGroups,
+            supabase: errorSupabase,
+            injectedlogger: mockLogger,
+          );
+          verify(mockLogger.e('画像URLの取得中にエラーが発生しました')).called(1);
+        } catch (e) {
+          didThrowError = true;
+        }
+
+        expect(didThrowError, isTrue);
+      });
     });
 
     group('fetchSelectedDataIdFromName', () {

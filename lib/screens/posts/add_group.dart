@@ -129,6 +129,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
       existingImageUrl: _group.imageUrl,
       selectedImage: _selectedImage,
       context: context,
+      supabase: supabase,
     );
 
     if (imageUrl == null) {
