@@ -525,72 +525,219 @@ void main() {
         );
       });
     });
+    group('updateIdolGroup', () {
+      testWidgets('updateIdolGroup', (WidgetTester tester) async {
+        final mockContext = await createMockContext(tester);
 
-    testWidgets('updateIdolGroup', (WidgetTester tester) async {
-      final mockContext = await createMockContext(tester);
+        // アップデート用のデータを登録。
+        // SupabaseのIDは自動生成のためインサート関数にはIDがない。
+        // なので、ID付きのモックデータが必要。
+        await mockSupabase.from(TableName.idolGroups).insert({
+          ColumnName.id: 1,
+          ColumnName.name: 'test group',
+          ColumnName.comment: 'test comment',
+        });
 
-      // アップデート用のデータを登録。
-      // SupabaseのIDは自動生成のためインサート関数にはIDがない。
-      // なので、ID付きのモックデータが必要。
-      await mockSupabase.from(TableName.idolGroups).insert({
-        ColumnName.id: 1,
-        ColumnName.name: 'test group',
-        ColumnName.comment: 'test comment',
+        await updateIdolGroup(
+          id: '1',
+          name: 'updated group',
+          context: mockContext,
+          supabase: mockSupabase,
+          imageUrl: 'https://example.com/updated.jpg',
+          year: '2024',
+          officialUrl: 'https://example.com/updated',
+          twitterUrl: 'https://twitter.com/updated',
+          instagramUrl: 'https://instagram.com/updated',
+          scheduleUrl: 'https://example.com/updated/schedule',
+          comment: 'updated comment',
+        );
+
+        final updatedGroup = await mockSupabase
+            .from(TableName.idolGroups)
+            .select()
+            .eq(ColumnName.id, 1)
+            .single();
+
+        expect(
+          updatedGroup[ColumnName.name],
+          'updated group',
+        );
+        expect(
+          updatedGroup[ColumnName.comment],
+          'updated comment',
+        );
+        expect(
+          updatedGroup[ColumnName.imageUrl],
+          'https://example.com/updated.jpg',
+        );
+        expect(
+          updatedGroup[ColumnName.yearFormingGroups],
+          2024,
+        );
+        expect(
+          updatedGroup[ColumnName.officialUrl],
+          'https://example.com/updated',
+        );
+        expect(
+          updatedGroup[ColumnName.twitterUrl],
+          'https://twitter.com/updated',
+        );
+        expect(
+          updatedGroup[ColumnName.instagramUrl],
+          'https://instagram.com/updated',
+        );
+        expect(
+          updatedGroup[ColumnName.scheduleUrl],
+          'https://example.com/updated/schedule',
+        );
+      });
+      testWidgets('updateIdolGroup', (WidgetTester tester) async {
+        final mockContext = await createMockContext(tester);
+        var didThrowError = false;
+
+        // アップデート用のデータを登録。
+        // SupabaseのIDは自動生成のためインサート関数にはIDがない。
+        // なので、ID付きのモックデータが必要。
+        await mockSupabase.from(TableName.idolGroups).insert({
+          ColumnName.id: 1,
+          ColumnName.name: 'test group',
+          ColumnName.comment: 'test comment',
+        });
+
+        try {
+          await updateIdolGroup(
+            id: '1',
+            name: 'error',
+            context: mockContext,
+            supabase: errorSupabase,
+          );
+          verify(mockLogger.i('グループの更新中にエラーが発生しました。グループ名: error')).called(1);
+        } catch (e) {
+          didThrowError = true;
+        }
+
+        expect(didThrowError, isTrue);
+      });
+    });
+
+    group('updateIdol', () {
+      testWidgets('updateIdolの正常動作', (WidgetTester tester) async {
+        final mockContext = await createMockContext(tester);
+
+        // アップデート用のデータを登録。
+        // SupabaseのIDは自動生成のためインサート関数にはIDがない。
+        // なので、ID付きのモックデータが必要。
+        await mockSupabase.from(TableName.idols).insert({
+          ColumnName.id: 1,
+          ColumnName.name: 'test song',
+        });
+
+        await updateIdol(
+          id: 1,
+          name: 'updated idol',
+          context: mockContext,
+          supabase: mockSupabase,
+          groupId: 1,
+          color: 'white',
+          imageUrl: 'https://example.com/updated.jpg',
+          birthday: '01-22',
+          birthYear: 2002,
+          height: 158,
+          hometown: 'Sapporo',
+          debutYear: 2019,
+          comment: 'updated comment',
+        );
+
+        final updatedIdol = await mockSupabase
+            .from(TableName.idols)
+            .select()
+            .eq(ColumnName.id, 1)
+            .single();
+
+        expect(
+          updatedIdol[ColumnName.name],
+          'updated idol',
+        );
+        expect(
+          updatedIdol[ColumnName.groupId],
+          1,
+        );
+        expect(
+          updatedIdol[ColumnName.color],
+          'white',
+        );
+
+        expect(
+          updatedIdol[ColumnName.imageUrl],
+          'https://example.com/updated.jpg',
+        );
+        expect(
+          updatedIdol[ColumnName.birthday],
+          '01-22',
+        );
+        expect(
+          updatedIdol[ColumnName.birthYear],
+          2002,
+        );
+        expect(
+          updatedIdol[ColumnName.height],
+          158,
+        );
+        expect(
+          updatedIdol[ColumnName.hometown],
+          'Sapporo',
+        );
+        expect(
+          updatedIdol[ColumnName.debutYear],
+          2019,
+        );
+        expect(
+          updatedIdol[ColumnName.comment],
+          'updated comment',
+        );
       });
 
-      await updateIdolGroup(
-        id: '1',
-        name: 'updated group',
-        context: mockContext,
-        supabase: mockSupabase,
-        imageUrl: 'https://example.com/updated.jpg',
-        year: '2024',
-        officialUrl: 'https://example.com/updated',
-        twitterUrl: 'https://twitter.com/updated',
-        instagramUrl: 'https://instagram.com/updated',
-        scheduleUrl: 'https://example.com/updated/schedule',
-        comment: 'updated comment',
-      );
+      testWidgets('updateIdolの例外処理', (WidgetTester tester) async {
+        final mockContext = await createMockContext(tester);
+        var didThrowError = false;
 
-      final updatedGroup = await mockSupabase
-          .from(TableName.idolGroups)
-          .select()
-          .eq(ColumnName.id, 1)
-          .single();
+        // アップデート用のデータを登録。
+        // SupabaseのIDは自動生成のためインサート関数にはIDがない。
+        // なので、ID付きのモックデータが必要。
+        await mockSupabase.from(TableName.idols).insert({
+          ColumnName.id: 1,
+          ColumnName.name: 'test song',
+        });
 
-      expect(
-        updatedGroup[ColumnName.name],
-        'updated group',
-      );
-      expect(
-        updatedGroup[ColumnName.comment],
-        'updated comment',
-      );
-      expect(
-        updatedGroup[ColumnName.imageUrl],
-        'https://example.com/updated.jpg',
-      );
-      expect(
-        updatedGroup[ColumnName.yearFormingGroups],
-        2024,
-      );
-      expect(
-        updatedGroup[ColumnName.officialUrl],
-        'https://example.com/updated',
-      );
-      expect(
-        updatedGroup[ColumnName.twitterUrl],
-        'https://twitter.com/updated',
-      );
-      expect(
-        updatedGroup[ColumnName.instagramUrl],
-        'https://instagram.com/updated',
-      );
-      expect(
-        updatedGroup[ColumnName.scheduleUrl],
-        'https://example.com/updated/schedule',
-      );
+        try {
+          await updateIdol(
+            id: 1,
+            name: 'error idol',
+            context: mockContext,
+            supabase: errorSupabase,
+            groupId: 1,
+            color: 'white',
+            imageUrl: 'https://example.com/updated.jpg',
+            birthday: '01-22',
+            birthYear: 2002,
+            height: 158,
+            hometown: 'Sapporo',
+            debutYear: 2019,
+            comment: 'updated comment',
+          );
+          expect(find.byType(SnackBar), findsOneWidget);
+          expect(
+            find.text('アイドルデータの更新中にエラーが発生しました。アイドル名: error idol'),
+            findsOneWidget,
+          );
+        } catch (e) {
+          didThrowError = true;
+        }
+
+        expect(didThrowError, isTrue);
+      });
     });
+
     testWidgets('updateSong', (WidgetTester tester) async {
       final mockContext = await createMockContext(tester);
 
