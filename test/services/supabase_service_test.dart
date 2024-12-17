@@ -969,6 +969,12 @@ void main() {
             context: mockContext,
             supabase: errorSupabase,
           );
+
+          expect(find.byType(SnackBar), findsOneWidget);
+          expect(
+            find.text('ータの削除中にエラーが発生しました。名前: 1'),
+            findsOneWidget,
+          );
         } catch (e) {
           didThrowError = true;
         }
