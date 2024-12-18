@@ -28,10 +28,14 @@ ProviderContainer supabaseContainer({
   required SupabaseClient supabaseClient,
   required MockLogger logger,
 }) {
-  return ProviderContainer(
+  final container = ProviderContainer(
     overrides: [
       loggerProvider.overrideWithValue(logger),
       supabaseProvider.overrideWithValue(supabaseClient),
     ],
   );
+
+  addTearDown(container.dispose);
+
+  return container;
 }
