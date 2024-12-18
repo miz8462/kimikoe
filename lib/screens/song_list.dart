@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/song_list_provider.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/widgets/card/group_card_m.dart';
@@ -11,7 +11,8 @@ import 'package:kimikoe_app/widgets/card/song_card.dart';
 
 class SongListScreen extends ConsumerStatefulWidget {
   const SongListScreen({
-    required this.group, super.key,
+    required this.group,
+    super.key,
   });
   final IdolGroup group;
 

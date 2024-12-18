@@ -11,6 +11,7 @@ import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/auth_provider.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/user_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/widgets/button/social_login_button.dart';

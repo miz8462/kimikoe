@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kimikoe_app/main.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
 
 class DeleteAlertDialog extends StatelessWidget {
   const DeleteAlertDialog({

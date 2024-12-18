@@ -3,22 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
-import 'package:logger/logger.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 // `dart.vm.product` フラグは、Dartの仮想マシンがプロダクションモードで実行されているかを示す。
 // プロダクションモード (リリースモード) では true、デバッグモードでは false。
 bool isDebugMode = const bool.fromEnvironment('dart.vm.product') == false;
-
-final sessionProvider = StateProvider<Session?>((ref) => null);
 final providerContainer = ProviderContainer();
-final logger = Logger(
-  printer: PrettyPrinter(
-    lineLength: 70,
-    methodCount: 0,
-    errorMethodCount: 10,
-  ),
-);
+final sessionProvider = StateProvider<Session?>((ref) => null);
 
 Future<void> main() async {
   // Flutterの初期化
@@ -40,7 +32,14 @@ Future<void> main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   // アプリの実行
-  runApp(const ProviderScope(child: KimikoeApp()));
+  runApp(
+    ProviderScope(
+      overrides: [loggerProvider.overrideWith((ref) => logger)],
+      child: const KimikoeApp(),
+    ),
+  );
+
+  providerContainer.dispose();
 }
 
 final supabase = Supabase.instance.client;

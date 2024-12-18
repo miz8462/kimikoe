@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
-import 'package:kimikoe_app/main.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
   const TopBar({

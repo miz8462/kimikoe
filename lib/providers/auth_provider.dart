@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/main.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/user_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

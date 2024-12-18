@@ -4,6 +4,7 @@ import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/idol.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/idol_group_list_providere.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
 
 class IdolListOfGroupNotifier extends StateNotifier<AsyncValue<List<Idol>>> {
   IdolListOfGroupNotifier(this.ref, this.groupId)

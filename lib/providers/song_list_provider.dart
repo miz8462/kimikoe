@@ -4,6 +4,7 @@ import 'package:kimikoe_app/models/song.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/artist_list_provider.dart';
 import 'package:kimikoe_app/providers/idol_group_list_providere.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
 
 final songListOfGroupProvider =
     FutureProvider.family<List<Song>, int>((ref, groupId) async {

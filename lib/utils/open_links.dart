@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
-import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/link_pair.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<void> openAppOrWeb(Uri deepLinkUrl, Uri webUrl) async {
