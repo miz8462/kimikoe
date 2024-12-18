@@ -4,9 +4,14 @@ import 'package:kimikoe_app/models/artist.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/services/supabase_service.dart';
 import 'package:kimikoe_app/utils/logging_util.dart';
+import 'package:logger/logger.dart';
 
 class ArtistListNotifier extends StateNotifier<List<Artist>> {
-  ArtistListNotifier(super.state);
+  ArtistListNotifier(
+    super.state, {
+    required this.logger,
+  });
+  final Logger logger;
 
   Artist? getArtistById(int? id) {
     if (id == null) {
@@ -17,14 +22,15 @@ class ArtistListNotifier extends StateNotifier<List<Artist>> {
       return state.firstWhere(
         (artist) => artist.id == id,
         orElse: () {
-          logger.e('IDが $id のアーティストが見つかりませんでした');
-          throw StateError('IDが $id のアーティストが見つかりませんでした');
+          final message = 'IDが $id のアーティストが見つかりませんでした';
+          logger.e(message);
+          throw StateError(message);
         },
       );
     } catch (e) {
       logger.e('ID:$id のアーティストを見つける際にエラーが発生しました', error: e);
+      return null;
     }
-    return null;
   }
 }
 
@@ -34,10 +40,10 @@ final artistListProvider =
   logAsyncValue(asyncValue, logger);
 
   return asyncValue.maybeWhen(
-    data: ArtistListNotifier.new,
+    data: (artists) => ArtistListNotifier(artists, logger: logger),
     orElse: () {
       logger.w('データが見つからないため、空のアーティストリストを返します');
-      return ArtistListNotifier([]);
+      return ArtistListNotifier([], logger: logger);
     },
   );
 });
