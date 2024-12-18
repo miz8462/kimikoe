@@ -6,8 +6,8 @@ import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/idol_group_list_providere.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 
-class IdolListOfGroupNotifier extends StateNotifier<AsyncValue<List<Idol>>> {
-  IdolListOfGroupNotifier(this.ref, this.groupId)
+class MemberListInGroupNotifier extends StateNotifier<AsyncValue<List<Idol>>> {
+  MemberListInGroupNotifier(this.ref, this.groupId)
       : super(const AsyncLoading()) {
     fetchIdols();
   }
@@ -19,7 +19,8 @@ class IdolListOfGroupNotifier extends StateNotifier<AsyncValue<List<Idol>>> {
     try {
       final group =
           ref.watch(idolGroupListProvider.notifier).getGroupById(groupId);
-      logger.i('SupabaseからID $groupId のアイドルリストを取得中...');
+      final groupName = group!.name;
+      logger.i('Supabaseから $groupName のメンバーリストを取得中...');
       final response = await supabase
           .from(TableName.idols)
           .select()
@@ -45,11 +46,12 @@ class IdolListOfGroupNotifier extends StateNotifier<AsyncValue<List<Idol>>> {
         );
       }).toList();
 
-      logger.i('SupabaseからID $groupId のアイドルリストを取得しました。データ数は${idols.length}個です');
+      logger
+          .i('Supabaseから $groupName のメンバーリストを取得しました。メンバーは${idols.length}人です');
       state = AsyncData(idols);
     } catch (e, stackTrace) {
       logger.e(
-        'ID:$groupId のアイドルリストを取得中にエラーが発生しました',
+        'ID:$groupId のメンバーリストを取得中にエラーが発生しました',
         error: e,
         stackTrace: stackTrace,
       );
@@ -68,6 +70,6 @@ class IdolListOfGroupNotifier extends StateNotifier<AsyncValue<List<Idol>>> {
 }
 
 final idolListOfGroupProvider = StateNotifierProvider.family<
-    IdolListOfGroupNotifier, AsyncValue<List<Idol>>, int>(
-  IdolListOfGroupNotifier.new,
+    MemberListInGroupNotifier, AsyncValue<List<Idol>>, int>(
+  MemberListInGroupNotifier.new,
 );

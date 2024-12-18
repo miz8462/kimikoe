@@ -1,7 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 
-void logAsyncValue<T>(AsyncValue<T> asyncValue, Logger logger) {
+void logAsyncValue<T>({
+  required AsyncValue<T> asyncValue,
+  required Logger logger,
+}) {
   asyncValue.when(
     data: (data) {
       if (data is List) {

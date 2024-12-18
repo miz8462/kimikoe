@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/models/artist.dart';
-import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/services/supabase_service.dart';
@@ -38,8 +37,10 @@ class ArtistListNotifier extends StateNotifier<List<Artist>> {
 
 final artistListProvider =
     StateNotifierProvider<ArtistListNotifier, List<Artist>>((ref) {
+  final logger = ref.read(loggerProvider);
   final asyncValue = ref.watch(artistListFromSupabaseProvider);
-  logAsyncValue(asyncValue, logger);
+  
+  logAsyncValue(asyncValue: asyncValue, logger: logger);
 
   return asyncValue.maybeWhen(
     data: (artists) => ArtistListNotifier(artists, logger: logger),
@@ -52,34 +53,10 @@ final artistListProvider =
 
 final artistListFromSupabaseProvider =
     FutureProvider<List<Artist>>((ref) async {
+  // プロバイダーを作り、そこを通すことで
+  // ProviderContainerでオーバーライドしたモックを受け取ることができる
   final logger = ref.read(loggerProvider);
   final supabase = ref.read(supabaseProvider);
-  try {
-    logger.i('Supabaseからアーティストデータを取得中...');
-    final response =
-        await fetchArtists(supabase: supabase, injectedlogger: logger);
-    logger.i('${response.length}件のアーティストデータをSupabaseから取得しました');
-    final artists = response.map<Artist>((artist) {
-      final imageUrl = fetchImageUrl(
-        artist[ColumnName.imageUrl],supabaseClient: supabase,
-        injectedlogger: logger,
-      );
-      return Artist(
-        id: artist[ColumnName.id],
-        name: artist[ColumnName.name],
-        imageUrl: imageUrl,
-        comment: artist[ColumnName.comment],
-      );
-    }).toList();
 
-    logger.i('${artists.length}件のアーティストデータをリストにしました');
-    return artists;
-  } catch (e, stackTrace) {
-    logger.e(
-      'アーティストリストの取得またはマッピング中にエラーが発生しました',
-      error: e,
-      stackTrace: stackTrace,
-    );
-    return [];
-  }
+  return fetchArtistList(supabase: supabase, logger: logger);
 });

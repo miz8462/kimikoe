@@ -69,10 +69,10 @@ void main() {
 
     setUp(() async {
       final artist = {
+        ColumnName.id: 1,
         ColumnName.name: 'Artist 1',
         ColumnName.imageUrl: 'https://example.com/artist1.jpg',
         ColumnName.comment: 'Great artist',
-        ColumnName.id: 1,
       };
       await mockSupabase.from(TableName.artists).insert(artist);
       resetMockitoState();
@@ -83,6 +83,7 @@ void main() {
     });
 
     test('Supabaseからデータを取得', () async {
+      // ProviderContainerを作りモックを渡す
       final container = supabaseContainer(
         supabaseClient: mockSupabase,
         logger: mockLogger,
@@ -96,6 +97,8 @@ void main() {
       verify(mockLogger.i('Supabaseからアーティストデータを取得中...')).called(1);
       verify(mockLogger.i('1件のアーティストデータをSupabaseから取得しました')).called(1);
       verify(mockLogger.i('1件のアーティストデータをリストにしました')).called(1);
+
+      // 忘れずコンテナは破棄する。そうしないと他のテストに影響してしまう。
       container.dispose();
     });
 
@@ -114,6 +117,8 @@ void main() {
           ),
         ).called(1);
       }
+
+      // 忘れずコンテナは破棄する。そうしないと他のテストに影響してしまう。
       container.dispose();
     });
   });

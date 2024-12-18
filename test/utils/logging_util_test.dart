@@ -14,28 +14,28 @@ void main() {
     test('データが取得された場合、成功ログ（リスト）', () {
       final asyncValue = AsyncValue.data([1, 2, 3]);
 
-      logAsyncValue(asyncValue, mockLogger);
+      logAsyncValue(asyncValue:asyncValue, logger:mockLogger);
 
       verify(mockLogger.i('3 個のアイテムを含むリストの取得に成功しました'));
     });
     test('データが取得された場合、成功ログ（その他のデータ）', () {
       final asyncValue = AsyncValue.data('Some Data');
 
-      logAsyncValue(asyncValue, mockLogger);
+      logAsyncValue(asyncValue:asyncValue, logger:mockLogger);
 
       verify(mockLogger.i('データの取得に成功しました'));
     });
     test('データが取得中の場合、ローディングログ', () {
       final asyncValue = AsyncValue<dynamic>.loading();
 
-      logAsyncValue(asyncValue, mockLogger);
+      logAsyncValue(asyncValue:asyncValue, logger:mockLogger);
 
       verify(mockLogger.i('データを取得中...'));
     });
     test('データが取得に失敗した場合、エラーログ', () {
       final asyncValue = AsyncValue<Object>.error('Error', StackTrace.current);
 
-      logAsyncValue(asyncValue, mockLogger);
+      logAsyncValue(asyncValue:asyncValue, logger:mockLogger);
       verify(
         mockLogger.e(
           'データの取得に失敗しました',

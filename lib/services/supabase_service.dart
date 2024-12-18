@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/main.dart';
+import 'package:kimikoe_app/models/artist.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/utils/show_log_and_snack_bar.dart';
@@ -259,6 +260,41 @@ Future<List<Map<String, dynamic>>> fetchIdAndNameList(
   } catch (e) {
     dilogger.e('$tableNameのIDと名前のリストの取得中にエラーが発生しました', error: e);
     rethrow;
+  }
+}
+
+Future<List<Artist>> fetchArtistList({
+  required SupabaseClient supabase,
+  required Logger logger,
+}) async {
+  try {
+    logger.i('Supabaseからアーティストデータを取得中...');
+    final response =
+        await fetchArtists(supabase: supabase, injectedlogger: logger);
+    logger.i('${response.length}件のアーティストデータをSupabaseから取得しました');
+    final artists = response.map<Artist>((artist) {
+      final imageUrl = fetchImageUrl(
+        artist[ColumnName.imageUrl],
+        supabaseClient: supabase,
+        injectedlogger: logger,
+      );
+      return Artist(
+        id: artist[ColumnName.id],
+        name: artist[ColumnName.name],
+        imageUrl: imageUrl,
+        comment: artist[ColumnName.comment],
+      );
+    }).toList();
+
+    logger.i('${artists.length}件のアーティストデータをリストにしました');
+    return artists;
+  } catch (e, stackTrace) {
+    logger.e(
+      'アーティストリストの取得またはマッピング中にエラーが発生しました',
+      error: e,
+      stackTrace: stackTrace,
+    );
+    return [];
   }
 }
 
