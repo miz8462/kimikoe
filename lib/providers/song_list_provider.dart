@@ -11,9 +11,10 @@ final songListOfGroupProvider =
   try {
     final group =
         ref.watch(idolGroupListProvider.notifier).getGroupById(groupId);
+    final groupName = group!.name;
     final artistList = ref.watch(artistListProvider.notifier);
 
-    logger.i('SupabaseからID $groupId の曲リストを取得中...');
+    logger.i('Supabaseから $groupName の曲リストを取得中...');
     final response = await supabase
         .from(TableName.songs)
         .select()
@@ -33,7 +34,7 @@ final songListOfGroupProvider =
         comment: song[ColumnName.comment],
       );
     }).toList();
-    logger.i('SupabaseからID $groupId の曲リストを取得しました。データ数は${songs.length}個です');
+    logger.i('Supabaseから $groupName の曲リストを取得しました。データ数は${songs.length}個です');
     return songs;
   } catch (e, stackTrace) {
     logger.e(

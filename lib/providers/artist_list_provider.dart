@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/artist.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
+import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/services/supabase_service.dart';
 import 'package:kimikoe_app/utils/logging_util.dart';
 import 'package:logger/logger.dart';
@@ -52,14 +52,17 @@ final artistListProvider =
 
 final artistListFromSupabaseProvider =
     FutureProvider<List<Artist>>((ref) async {
+  final logger = ref.read(loggerProvider);
+  final supabase = ref.read(supabaseProvider);
   try {
     logger.i('Supabaseからアーティストデータを取得中...');
-    final response = await fetchArtists(supabase: supabase);
+    final response =
+        await fetchArtists(supabase: supabase, injectedlogger: logger);
     logger.i('${response.length}件のアーティストデータをSupabaseから取得しました');
-
     final artists = response.map<Artist>((artist) {
       final imageUrl = fetchImageUrl(
-        artist[ColumnName.imageUrl],
+        artist[ColumnName.imageUrl],supabaseClient: supabase,
+        injectedlogger: logger,
       );
       return Artist(
         id: artist[ColumnName.id],
