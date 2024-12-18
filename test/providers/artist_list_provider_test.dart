@@ -3,8 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/artist.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/artist_list_provider.dart';
-import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:mockito/mockito.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -85,11 +83,9 @@ void main() {
     });
 
     test('Supabaseからデータを取得', () async {
-      final container = createContainer(
-        overrides: [
-          loggerProvider.overrideWith((ref) => mockLogger),
-          supabaseProvider.overrideWith((ref) => mockSupabase),
-        ],
+      final container = supabaseContainer(
+        supabaseClient: mockSupabase,
+        logger: mockLogger,
       );
 
       final artists =
@@ -104,11 +100,9 @@ void main() {
     });
 
     test('Supabaseからデータを取得中にエラーが発生した場合', () async {
-      final container = createContainer(
-        overrides: [
-          loggerProvider.overrideWith((ref) => mockLogger),
-          supabaseProvider.overrideWith((ref) => errorSupabase),
-        ],
+      final container = supabaseContainer(
+        supabaseClient: errorSupabase,
+        logger: mockLogger,
       );
       try {
         await container.read(artistListFromSupabaseProvider.future);
