@@ -7,7 +7,7 @@ import '../test_utils/mocks/logger_mock.dart';
 import '../test_utils/test_helpers.dart';
 
 void main() {
-  test('プロバイダーがLoggerインスタンスを返し、ログを出力する', () {
+  test('loggerProvider', () {
     final mockLogger = MockLogger();
     final container = createContainer(
       overrides: [loggerProvider.overrideWithValue(mockLogger)],
