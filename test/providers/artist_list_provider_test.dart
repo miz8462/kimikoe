@@ -28,22 +28,17 @@ void main() {
     test('IDがnullの場合はnullを返す', () {
       final result = notifier.getArtistById(null);
       expect(result, isNull);
-      verify(mockLogger.w('アーティストのIDがNULLです'));
+      verify(mockLogger.w('アーティストのIDがNULLです')).called(1);
     });
 
     test('IDが見つからない場合は例外をスローする', () {
+      expect(() => notifier.getArtistById(999), throwsA(isA<StateError>()));
+      verify(mockLogger.e('IDが 999 のアーティストが見つかりませんでした'));
+      // 
       try {
         notifier.getArtistById(999);
       } catch (e) {
-        verify(mockLogger.e('IDが 999 のアーティストが見つかりませんでした'));
-        expect(e, throwsA(isA<StateError>()));
-        // 例外をキャッチしていることの確認
-        verify(
-          mockLogger.e(
-            'ID:999 のアーティストを見つける際にエラーが発生しました',
-            error: anyNamed('error'),
-          ),
-        ).called(1);
+        verify(mockLogger.e('ID:999 のアーティストを見つける際にエラーが発生しました', error: e));
       }
     });
   });

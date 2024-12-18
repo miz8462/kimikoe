@@ -29,6 +29,7 @@ class ArtistListNotifier extends StateNotifier<List<Artist>> {
       );
     } catch (e) {
       logger.e('ID:$id のアーティストを見つける際にエラーが発生しました', error: e);
+      if (e is StateError) rethrow;
       return null;
     }
   }
