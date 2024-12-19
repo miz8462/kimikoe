@@ -1,19 +1,20 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/song.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/artist_list_provider.dart';
 import 'package:kimikoe_app/providers/idol_group_list_providere.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
+import 'package:kimikoe_app/providers/supabase_provider.dart';
 
 final songListOfGroupProvider =
     FutureProvider.family<List<Song>, int>((ref, groupId) async {
   try {
     final group =
         ref.watch(idolGroupListProvider.notifier).getGroupById(groupId);
+  final groupName = group!.name;
     final artistList = ref.watch(artistListProvider.notifier);
 
-    logger.i('SupabaseからID $groupId の曲リストを取得中...');
+    logger.i('Supabaseから $groupName の曲のリストを取得中...');
     final response = await supabase
         .from(TableName.songs)
         .select()
@@ -33,7 +34,7 @@ final songListOfGroupProvider =
         comment: song[ColumnName.comment],
       );
     }).toList();
-    logger.i('SupabaseからID $groupId の曲リストを取得しました。データ数は${songs.length}個です');
+    logger.i('Supabaseから $groupName の曲のリストを取得しました。曲数は${songs.length}曲です');
     return songs;
   } catch (e, stackTrace) {
     logger.e(

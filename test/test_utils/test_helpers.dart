@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
@@ -38,4 +39,19 @@ ProviderContainer supabaseContainer({
   addTearDown(container.dispose);
 
   return container;
+}
+
+Future<BuildContext> createMockContext(WidgetTester tester) async {
+  await tester.pumpWidget(
+    MaterialApp(
+      home: Scaffold(
+        body: Builder(
+          builder: (BuildContext context) {
+            return Container();
+          },
+        ),
+      ),
+    ),
+  );
+  return tester.element(find.byType(Container));
 }

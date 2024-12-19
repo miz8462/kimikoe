@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
+import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 // `dart.vm.product` フラグは、Dartの仮想マシンがプロダクションモードで実行されているかを示す。
@@ -22,7 +23,7 @@ Future<void> main() async {
     url: dotenv.env['SUPABASE_URL']!,
     anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
   );
-  Supabase.instance.client.auth.onAuthStateChange.listen(
+  supabase.auth.onAuthStateChange.listen(
     (data) {
       providerContainer.read(sessionProvider.notifier).state = data.session;
     },
@@ -41,8 +42,6 @@ Future<void> main() async {
 
   providerContainer.dispose();
 }
-
-final supabase = Supabase.instance.client;
 
 extension ContextExtension on BuildContext {
   void showSnackBar(String message, {bool isError = false}) {

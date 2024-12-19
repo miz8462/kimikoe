@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/services/supabase_service.dart';
+import 'package:kimikoe_app/providers/supabase_provider.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
 
 // 二つ以上の状態を管理する場合Stateクラスを別に作って管理するといい
 class IdolGroupListState {

@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/main.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
+import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/services/supabase_service.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_insert.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_upload_to_storage.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
 import 'package:kimikoe_app/widgets/button/image_input.dart';
@@ -60,7 +62,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
       await uploadImageToStorage(
         table: TableName.images,
         path: imagePath,
-        file: _selectedImage!,
+        file: _selectedImage,
         context: context,
       );
     }
