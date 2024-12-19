@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/services/supabase_service.dart';
 import 'package:kimikoe_app/utils/generate_simple_random_string.dart';
+import 'package:logger/logger.dart';
 
 // 画像選択していない場合はnoImageを返す
 // その他は20文字のランダム文字列+jpgを返す
@@ -27,13 +29,16 @@ Future<String?> processImage({
   required BuildContext context,
   String Function({File? imageFile})? createImagePathFunction = createImagePath,
   UploadImageToStorage? uploadFunction = uploadImageToStorage,
-  String Function(String imagePath)? fetchFunction = fetchImageUrl,
+  String Function(
+    String imagePath, {
+    required Logger logger,
+  })? fetchFunction = fetchImageUrl,
 }) async {
   // 新規作成モードで画像変更なし
   if (!isEditing && !isImageChanged) {
     return noImage;
   }
-  
+
   // 編集モードで画像変更なし
   if (isEditing && !isImageChanged) {
     return existingImageUrl;
@@ -50,7 +55,7 @@ Future<String?> processImage({
         context: context,
       );
     }
-    return fetchFunction!(imagePath);
+    return fetchFunction!(imagePath, logger: logger);
   }
 }
 

@@ -5,6 +5,7 @@ import 'package:kimikoe_app/models/idol.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/idol_group_list_providere.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
+import 'package:kimikoe_app/services/supabase_service.dart';
 
 class MemberListInGroupNotifier extends StateNotifier<AsyncValue<List<Idol>>> {
   MemberListInGroupNotifier(this.ref, this.groupId)
@@ -21,10 +22,11 @@ class MemberListInGroupNotifier extends StateNotifier<AsyncValue<List<Idol>>> {
           ref.watch(idolGroupListProvider.notifier).getGroupById(groupId);
       final groupName = group!.name;
       logger.i('Supabaseから $groupName のメンバーリストを取得中...');
-      final response = await supabase
-          .from(TableName.idols)
-          .select()
-          .eq(ColumnName.groupId, groupId);
+      final response = await fetchGroupMembers(
+        groupId,
+        supabase: supabase,
+        logger: logger,
+      );
 
       final idols = response.map((idol) {
         return Idol(
@@ -46,8 +48,7 @@ class MemberListInGroupNotifier extends StateNotifier<AsyncValue<List<Idol>>> {
         );
       }).toList();
 
-      logger
-          .i('Supabaseから $groupName のメンバーリストを取得しました。メンバーは${idols.length}人です');
+      logger.i('Supabaseから $groupName のメンバーリストを取得しました。メンバーは${idols.length}人です');
       state = AsyncData(idols);
     } catch (e, stackTrace) {
       logger.e(
@@ -69,7 +70,7 @@ class MemberListInGroupNotifier extends StateNotifier<AsyncValue<List<Idol>>> {
   }
 }
 
-final idolListOfGroupProvider = StateNotifierProvider.family<
+final memberListOfGroupProvider = StateNotifierProvider.family<
     MemberListInGroupNotifier, AsyncValue<List<Idol>>, int>(
   MemberListInGroupNotifier.new,
 );

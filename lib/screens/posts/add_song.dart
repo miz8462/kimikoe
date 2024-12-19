@@ -146,14 +146,17 @@ class _AddSongScreenState extends State<AddSongScreen> {
     final groupList = await fetchIdAndNameList(
       TableName.idolGroups,
       supabase: supabase,
+      logger: logger,
     );
     final idolList = await fetchIdAndNameList(
       TableName.idols,
       supabase: supabase,
+      logger: logger,
     );
     final artistList = await fetchIdAndNameList(
       TableName.artists,
       supabase: supabase,
+      logger: logger,
     );
     setState(() {
       _groupIdAndNameList = groupList;

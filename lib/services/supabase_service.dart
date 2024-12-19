@@ -191,15 +191,14 @@ Future<void> uploadImageToStorage({
 // READ
 Future<List<Map<String, dynamic>>> fetchArtists({
   required SupabaseClient supabase,
-  Logger? injectedlogger,
+  required Logger logger,
 }) async {
-  final dilogger = injectedlogger ?? logger;
   try {
     final response = await supabase.from(TableName.artists).select();
-    dilogger.i('アーティストのリストを取得しました');
+    logger.i('アーティストのリストを取得しました');
     return response;
   } catch (e) {
-    dilogger.e('アーティストのリストの取得中にエラーが発生しました', error: e);
+    logger.e('アーティストのリストの取得中にエラーが発生しました', error: e);
     rethrow;
   }
 }
@@ -207,19 +206,17 @@ Future<List<Map<String, dynamic>>> fetchArtists({
 Future<List<Map<String, dynamic>>> fetchGroupMembers(
   int groupId, {
   required SupabaseClient supabase,
-  Logger? injectedlogger,
+  required Logger logger,
 }) async {
-  final dilogger = injectedlogger ?? logger;
-
   try {
     final response = await supabase
         .from(TableName.idols)
         .select()
         .eq(ColumnName.groupId, groupId);
-    dilogger.i('グループメンバーリストを取得しました');
+    logger.i('グループメンバーリストを取得しました');
     return response;
   } catch (e) {
-    dilogger.e('グループメンバーリストの取得中にエラーが発生しました', error: e);
+    logger.e('グループメンバーリストの取得中にエラーが発生しました', error: e);
     rethrow;
   }
 }
@@ -227,19 +224,18 @@ Future<List<Map<String, dynamic>>> fetchGroupMembers(
 // HACK: Supabase CLI でできるらしいよ
 String fetchImageUrl(
   String imagePath, {
+  required Logger logger,
   SupabaseClient? supabaseClient,
-  Logger? injectedlogger,
 }) {
   final diSupabase = supabaseClient ?? supabase;
-  final dilogger = injectedlogger ?? logger;
   if (imagePath == noImage) return noImage;
   try {
     final url =
         diSupabase.storage.from(TableName.images).getPublicUrl(imagePath);
-    dilogger.i('画像URLを取得しました');
+    logger.i('画像URLを取得しました');
     return url;
   } catch (e) {
-    dilogger.e('画像URLの取得中にエラーが発生しました', error: e);
+    logger.e('画像URLの取得中にエラーが発生しました', error: e);
     return noImage;
   }
 }
@@ -247,18 +243,16 @@ String fetchImageUrl(
 Future<List<Map<String, dynamic>>> fetchIdAndNameList(
   String tableName, {
   required SupabaseClient supabase,
-  Logger? injectedlogger,
+  required Logger logger,
 }) async {
-  final dilogger = injectedlogger ?? logger;
-
   try {
     final response = await supabase
         .from(tableName)
         .select('${ColumnName.id}, ${ColumnName.name}');
-    dilogger.i('$tableNameのIDと名前のリストを取得しました');
+    logger.i('$tableNameのIDと名前のリストを取得しました');
     return response;
   } catch (e) {
-    dilogger.e('$tableNameのIDと名前のリストの取得中にエラーが発生しました', error: e);
+    logger.e('$tableNameのIDと名前のリストの取得中にエラーが発生しました', error: e);
     rethrow;
   }
 }
@@ -269,14 +263,12 @@ Future<List<Artist>> fetchArtistList({
 }) async {
   try {
     logger.i('Supabaseからアーティストデータを取得中...');
-    final response =
-        await fetchArtists(supabase: supabase, injectedlogger: logger);
+    final response = await fetchArtists(supabase: supabase, logger: logger);
     logger.i('${response.length}件のアーティストデータをSupabaseから取得しました');
     final artists = response.map<Artist>((artist) {
       final imageUrl = fetchImageUrl(
         artist[ColumnName.imageUrl],
-        supabaseClient: supabase,
-        injectedlogger: logger,
+        logger: logger,
       );
       return Artist(
         id: artist[ColumnName.id],

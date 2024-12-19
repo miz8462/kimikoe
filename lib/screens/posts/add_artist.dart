@@ -67,6 +67,8 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
 
     final imageUrl = fetchImageUrl(
       imagePath,
+      supabaseClient: supabase,
+      logger: logger,
     );
 
     if (!mounted) return;

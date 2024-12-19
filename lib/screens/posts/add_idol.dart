@@ -114,6 +114,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     final groupIdAndNameList = await fetchIdAndNameList(
       TableName.idolGroups,
       supabase: supabase,
+      logger: logger,
     );
     setState(() {
       _groupIdAndNameList = groupIdAndNameList;

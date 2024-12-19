@@ -399,6 +399,7 @@ void main() {
       testWidgets('fetchArtistsの正常動作', (WidgetTester tester) async {
         final artistList = await fetchArtists(
           supabase: mockSupabase,
+          logger: mockLogger,
         );
 
         expect(artistList.length, 2);
@@ -410,7 +411,7 @@ void main() {
         try {
           await fetchArtists(
             supabase: errorSupabase,
-            injectedlogger: mockLogger,
+            logger: mockLogger,
           );
           verify(mockLogger.e('アーティストのリストの取得中にエラーが発生しました')).called(1);
         } catch (e) {
@@ -425,6 +426,7 @@ void main() {
         final members = await fetchGroupMembers(
           1,
           supabase: mockSupabase,
+          logger: mockLogger,
         );
 
         expect(members.length, 1);
@@ -439,7 +441,7 @@ void main() {
           await fetchGroupMembers(
             1,
             supabase: errorSupabase,
-            injectedlogger: mockLogger,
+            logger: mockLogger,
           );
 
           verify(mockLogger.e('グループメンバーリストの取得中にエラーが発生しました')).called(1);
@@ -455,6 +457,7 @@ void main() {
         final idolGroupsIdAndNameList = await fetchIdAndNameList(
           TableName.idolGroups,
           supabase: mockSupabase,
+          logger: mockLogger,
         );
 
         expect(idolGroupsIdAndNameList.length, 2);
@@ -467,7 +470,7 @@ void main() {
           await fetchIdAndNameList(
             TableName.idolGroups,
             supabase: errorSupabase,
-            injectedlogger: mockLogger,
+            logger: mockLogger,
           );
           verify(mockLogger.e('アイドルグループのIDと名前のリストの取得中にエラーが発生しました')).called(1);
         } catch (e) {
@@ -488,7 +491,7 @@ void main() {
           fetchImageUrl(
             TableName.idolGroups,
             supabaseClient: errorSupabase,
-            injectedlogger: mockLogger,
+            logger: mockLogger,
           );
           verify(mockLogger.e('画像URLの取得中にエラーが発生しました')).called(1);
         } catch (e) {
