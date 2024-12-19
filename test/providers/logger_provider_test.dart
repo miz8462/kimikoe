@@ -16,6 +16,7 @@ void main() {
     // Loggerインスタンスチェック
     final logger = container.read(loggerProvider);
     expect(logger, isA<Logger>());
+    expect(logger, equals(mockLogger));
 
     // ログ出力チェック
     logger.i('test logger provider');
