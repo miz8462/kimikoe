@@ -5,7 +5,7 @@ import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/idol_group_list_providere.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
-import 'package:kimikoe_app/services/supabase_service_fetch.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
 
 class MemberListInGroupNotifier extends StateNotifier<AsyncValue<List<Idol>>> {
   MemberListInGroupNotifier(this.ref, this.groupId)
