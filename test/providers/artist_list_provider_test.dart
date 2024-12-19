@@ -122,4 +122,68 @@ void main() {
       container.dispose();
     });
   });
+
+  test('artistListProvider', () async {
+    final mockLogger = MockLogger();
+    final mockSupabase = SupabaseClient(
+      'https://mock.supabase.co',
+      'fakeAnonKey',
+      httpClient: MockSupabaseHttpClient(),
+    );
+    final container = supabaseContainer(
+      supabaseClient: mockSupabase,
+      logger: mockLogger,
+    );
+
+    // StateNotifier インスタンスを取得
+    container.read(artistListProvider.notifier);
+    await container.read(artistListFromSupabaseProvider.future);
+    // 現在の「状態」にアクセス
+    final emptyList = container.read(artistListProvider);
+
+    // DBが空の時は、空のリストを返す
+    expect(emptyList, isEmpty);
+    expect(emptyList.length, 0);
+
+    // テストデータの作成と登録
+    final artists = [
+      {
+        ColumnName.id: 1,
+        ColumnName.name: 'Artist 1',
+        ColumnName.imageUrl: 'https://example.com/artist1.jpg',
+        ColumnName.comment: 'Great artist',
+      },
+      {
+        ColumnName.id: 2,
+        ColumnName.name: 'Artist 2',
+        ColumnName.imageUrl: 'https://example.com/artist2.jpg',
+        ColumnName.comment: 'Good artist',
+      }
+    ];
+    for (final artist in artists) {
+      await mockSupabase.from(TableName.artists).insert(artist);
+    }
+
+    // プロバイダーのキャッシュをクリア
+    container.refresh(artistListFromSupabaseProvider);
+    container.refresh(artistListProvider);
+
+    // テストに必要なデータを事前にロードする必要がある
+    await container.read(artistListFromSupabaseProvider.future);
+
+    // StateNotifier インスタンスを取得
+    final artistsNotifier = container.read(artistListProvider.notifier);
+    // 現在の「状態」にアクセス
+    final artistList = container.read(artistListProvider);
+
+    expect(artistList.length, 2);
+
+    final artist1 = artistsNotifier.getArtistById(1);
+    final artist2 = artistsNotifier.getArtistById(2);
+
+    expect(artist1, isNotNull);
+    expect(artist1!.name, 'Artist 1');
+    expect(artist2, isNotNull);
+    expect(artist2!.comment, 'Good artist');
+  });
 }

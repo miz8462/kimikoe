@@ -35,11 +35,21 @@ class ArtistListNotifier extends StateNotifier<List<Artist>> {
   }
 }
 
+final artistListFromSupabaseProvider =
+    FutureProvider<List<Artist>>((ref) async {
+  // プロバイダーを作り、そこを通すことで
+  // ProviderContainerでオーバーライドしたモックを受け取ることができる
+  final logger = ref.read(loggerProvider);
+  final supabase = ref.read(supabaseProvider);
+
+  return fetchArtistList(supabase: supabase, logger: logger);
+});
+
 final artistListProvider =
     StateNotifierProvider<ArtistListNotifier, List<Artist>>((ref) {
   final logger = ref.read(loggerProvider);
   final asyncValue = ref.watch(artistListFromSupabaseProvider);
-  
+
   logAsyncValue(asyncValue: asyncValue, logger: logger);
 
   return asyncValue.maybeWhen(
@@ -49,14 +59,4 @@ final artistListProvider =
       return ArtistListNotifier([], logger: logger);
     },
   );
-});
-
-final artistListFromSupabaseProvider =
-    FutureProvider<List<Artist>>((ref) async {
-  // プロバイダーを作り、そこを通すことで
-  // ProviderContainerでオーバーライドしたモックを受け取ることができる
-  final logger = ref.read(loggerProvider);
-  final supabase = ref.read(supabaseProvider);
-
-  return fetchArtistList(supabase: supabase, logger: logger);
 });
