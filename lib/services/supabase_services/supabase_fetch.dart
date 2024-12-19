@@ -3,7 +3,6 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/artist.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:logger/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -43,15 +42,11 @@ Future<List<Map<String, dynamic>>> fetchGroupMembers(
 String fetchImageUrl(
   String imagePath, {
   required Logger logger,
-  SupabaseClient? supabaseClient,
+  required SupabaseClient supabase,
 }) {
-  print('ここだよ～fetchImageUrl');
-  final diSupabase = supabaseClient ?? supabase;
-  print(diSupabase);
   if (imagePath == noImage) return noImage;
   try {
-    final url =
-        diSupabase.storage.from(TableName.images).getPublicUrl(imagePath);
+    final url = supabase.storage.from(TableName.images).getPublicUrl(imagePath);
     logger.i('画像URLを取得しました');
     return url;
   } catch (e) {
@@ -84,14 +79,13 @@ Future<List<Artist>> fetchArtistList({
   try {
     logger.i('Supabaseからアーティストデータを取得中...');
     final response = await fetchArtists(supabase: supabase, logger: logger);
-    print('response: $response');
     logger.i('${response.length}件のアーティストデータをSupabaseから取得しました');
     final artists = response.map<Artist>((artist) {
       final imageUrl = fetchImageUrl(
         artist[ColumnName.imageUrl],
         logger: logger,
+        supabase: supabase,
       );
-      print('ここだよ～fetchArtistList');
       return Artist(
         id: artist[ColumnName.id],
         name: artist[ColumnName.name],
@@ -99,7 +93,6 @@ Future<List<Artist>> fetchArtistList({
         comment: artist[ColumnName.comment],
       );
     }).toList();
-    print('artists:$artists');
     logger.i('${artists.length}件のアーティストデータをリストにしました');
     return artists;
   } catch (e, stackTrace) {

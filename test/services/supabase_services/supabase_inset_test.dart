@@ -42,8 +42,6 @@ void main() {
     return tester.element(find.byType(Container));
   }
 
-  // NOTE: 現状、データ登録系のテストの後にフェッチのテストを行っているので、データ登録系テストに依存している。
-  // NOTE: 登録系と一緒にまとめてテストすること。
   group('SupabaseService', () {
     group('insertArtistData', () {
       testWidgets('insertArtistDataの正常動作', (WidgetTester tester) async {

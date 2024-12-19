@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
+import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_upload_to_storage.dart';
 import 'package:kimikoe_app/utils/generate_simple_random_string.dart';
 import 'package:logger/logger.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 // 画像選択していない場合はnoImageを返す
 // その他は20文字のランダム文字列+jpgを返す
@@ -33,6 +35,7 @@ Future<String?> processImage({
   String Function(
     String imagePath, {
     required Logger logger,
+    required SupabaseClient supabase,
   })? fetchFunction = fetchImageUrl,
 }) async {
   // 新規作成モードで画像変更なし
@@ -56,7 +59,11 @@ Future<String?> processImage({
         context: context,
       );
     }
-    return fetchFunction!(imagePath, logger: logger);
+    return fetchFunction!(
+      imagePath,
+      logger: logger,
+      supabase: supabase,
+    );
   }
 }
 

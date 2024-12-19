@@ -47,7 +47,10 @@ void main() {
       // ここで実際に何もしない
     }
 
-    String mockFetchImageUrl(String imagePath) {
+    String mockFetchImageUrl(
+      String imagePath, {
+      required Logger logger,
+    }) {
       return 'https://example.com/$imagePath';
     }
 
@@ -62,7 +65,6 @@ void main() {
         existingImageUrl: '',
         selectedImage: null,
         context: mockContext,
-        
       );
       expect(result, noImage);
     });
