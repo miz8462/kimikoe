@@ -3,6 +3,7 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/artist.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
+import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:logger/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -42,11 +43,14 @@ Future<List<Map<String, dynamic>>> fetchGroupMembers(
 String fetchImageUrl(
   String imagePath, {
   required Logger logger,
-  required SupabaseClient supabase,
+  SupabaseClient? injectedSupabase,
 }) {
+  // XXX: ｲｼﾞﾙﾅｷｹﾝ
+  final diSupabase = injectedSupabase ?? supabase;
   if (imagePath == noImage) return noImage;
   try {
-    final url = supabase.storage.from(TableName.images).getPublicUrl(imagePath);
+    final url =
+        diSupabase.storage.from(TableName.images).getPublicUrl(imagePath);
     logger.i('画像URLを取得しました');
     return url;
   } catch (e) {
@@ -84,7 +88,7 @@ Future<List<Artist>> fetchArtistList({
       final imageUrl = fetchImageUrl(
         artist[ColumnName.imageUrl],
         logger: logger,
-        supabase: supabase,
+        injectedSupabase: supabase,
       );
       return Artist(
         id: artist[ColumnName.id],

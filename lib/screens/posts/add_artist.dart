@@ -62,14 +62,14 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
       await uploadImageToStorage(
         table: TableName.images,
         path: imagePath,
-        file: _selectedImage,
+        file: _selectedImage!,
         context: context,
       );
     }
 
     final imageUrl = fetchImageUrl(
       imagePath,
-      supabase: supabase,
+      injectedSupabase: supabase,
       logger: logger,
     );
 

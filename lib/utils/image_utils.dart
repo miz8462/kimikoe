@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_upload_to_storage.dart';
 import 'package:kimikoe_app/utils/generate_simple_random_string.dart';
@@ -35,7 +34,7 @@ Future<String?> processImage({
   String Function(
     String imagePath, {
     required Logger logger,
-    required SupabaseClient supabase,
+    SupabaseClient? injectedSupabase,
   })? fetchFunction = fetchImageUrl,
 }) async {
   // 新規作成モードで画像変更なし
@@ -62,7 +61,6 @@ Future<String?> processImage({
     return fetchFunction!(
       imagePath,
       logger: logger,
-      supabase: supabase,
     );
   }
 }

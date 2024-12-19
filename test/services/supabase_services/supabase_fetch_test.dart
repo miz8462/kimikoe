@@ -137,7 +137,7 @@ void main() {
       try {
         fetchImageUrl(
           TableName.idolGroups,
-          supabase: errorSupabase,
+          injectedSupabase: errorSupabase,
           logger: mockLogger,
         );
         verify(mockLogger.e('画像URLの取得中にエラーが発生しました')).called(1);
