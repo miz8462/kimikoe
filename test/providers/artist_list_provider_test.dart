@@ -91,7 +91,7 @@ void main() {
 
       final artists =
           await container.read(artistListFromSupabaseProvider.future);
-
+          
       expect(artists.length, 1);
       expect(artists.first.name, 'Artist 1');
       verify(mockLogger.i('Supabaseからアーティストデータを取得中...')).called(1);
