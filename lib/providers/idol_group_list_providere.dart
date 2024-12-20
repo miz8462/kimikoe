@@ -26,8 +26,10 @@ class IdolGroupListState {
 }
 
 class IdolGroupListNotifier extends StateNotifier<IdolGroupListState> {
-  IdolGroupListNotifier() : super(IdolGroupListState()) {
-    fetchGroupList();
+  IdolGroupListNotifier() : super(IdolGroupListState());
+
+  Future<void> initialize() async {
+    await fetchGroupList();
   }
 
   Future<void> fetchGroupList() async {
@@ -95,6 +97,8 @@ class IdolGroupListNotifier extends StateNotifier<IdolGroupListState> {
 }
 
 final idolGroupListProvider =
-    StateNotifierProvider<IdolGroupListNotifier, IdolGroupListState>(
-  (ref) => IdolGroupListNotifier(),
-);
+    StateNotifierProvider<IdolGroupListNotifier, IdolGroupListState>((ref) {
+  final notifier = IdolGroupListNotifier();
+  notifier.initialize();
+  return notifier;
+});
