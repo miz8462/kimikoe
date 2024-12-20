@@ -175,7 +175,10 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
       _isSending = false;
     });
 
-    await ref.read(idolGroupListProvider.notifier).fetchGroupList();
+    await ref.read(idolGroupListProvider.notifier).fetchGroupList(
+          supabase: supabase,
+          logger: logger,
+        );
     if (!mounted) {
       return;
     }

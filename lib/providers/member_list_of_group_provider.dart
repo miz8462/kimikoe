@@ -18,8 +18,10 @@ class MemberListInGroupNotifier extends StateNotifier<AsyncValue<List<Idol>>> {
 
   Future<void> fetchIdols() async {
     try {
-      final group =
-          ref.watch(idolGroupListProvider.notifier).getGroupById(groupId);
+      final group = ref.watch(idolGroupListProvider.notifier).getGroupById(
+            groupId,
+            logger: logger,
+          );
       final groupName = group!.name;
       logger.i('Supabaseから $groupName のメンバーリストを取得中...');
       final response = await fetchGroupMembers(

@@ -4,6 +4,8 @@ import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
+import 'package:logger/logger.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 // 二つ以上の状態を管理する場合Stateクラスを別に作って管理するといい
 class IdolGroupListState {
@@ -28,11 +30,20 @@ class IdolGroupListState {
 class IdolGroupListNotifier extends StateNotifier<IdolGroupListState> {
   IdolGroupListNotifier() : super(IdolGroupListState());
 
-  Future<void> initialize() async {
-    await fetchGroupList();
+  Future<void> initialize({
+    required SupabaseClient supabase,
+    required Logger logger,
+  }) async {
+    await fetchGroupList(
+      supabase: supabase,
+      logger: logger,
+    );
   }
 
-  Future<void> fetchGroupList() async {
+  Future<void> fetchGroupList({
+    required SupabaseClient supabase,
+    required Logger logger,
+  }) async {
     try {
       logger.i('アイドルグループのリストを取得中...');
       state = state.copyWith(isLoading: true);
@@ -60,23 +71,37 @@ class IdolGroupListNotifier extends StateNotifier<IdolGroupListState> {
       logger.i('アイドルグループのリストを${groups.length}件取得しました');
       state = state.copyWith(groups: groups, isLoading: false);
     } catch (e, stackTrace) {
-      logger.e('アイドルグループのリストを取得中にエラーが発生しました', error: e, stackTrace: stackTrace);
+      logger.e(
+        'アイドルグループのリストを取得中にエラーが発生しました',
+        error: e,
+        stackTrace: stackTrace,
+      );
+      rethrow;
     }
   }
 
-  void addGroup(IdolGroup newGroup) {
+  void addGroup(
+    IdolGroup newGroup, {
+    required Logger logger,
+  }) {
     logger.i('アイドルグループを追加しています: ${newGroup.name}');
     state = state.copyWith(groups: [...state.groups, newGroup]);
   }
 
-  void removeGroup(IdolGroup group) {
-    logger.i('アイドルグループを削除しています: ${group.name}');
+  void removeGroup(
+    IdolGroup group, {
+    required Logger logger,
+  }) {
+    logger.i('アイlドルグループを削除しています: ${group.name}');
     state = state.copyWith(
       groups: state.groups.where((g) => g.id != group.id).toList(),
     );
   }
 
-  IdolGroup? getGroupById(int id) {
+  IdolGroup? getGroupById(
+    int id, {
+    required Logger logger,
+  }) {
     try {
       return state.groups.firstWhere(
         (group) => group.id == id,
@@ -91,7 +116,7 @@ class IdolGroupListNotifier extends StateNotifier<IdolGroupListState> {
         error: e,
         stackTrace: stackTrace,
       );
-      return null;
+      rethrow;
     }
   }
 }
@@ -99,6 +124,9 @@ class IdolGroupListNotifier extends StateNotifier<IdolGroupListState> {
 final idolGroupListProvider =
     StateNotifierProvider<IdolGroupListNotifier, IdolGroupListState>((ref) {
   final notifier = IdolGroupListNotifier();
-  notifier.initialize();
+  notifier.initialize(
+    supabase: supabase,
+    logger: logger,
+  );
   return notifier;
 });

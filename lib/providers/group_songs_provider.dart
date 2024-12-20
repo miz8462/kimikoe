@@ -6,11 +6,12 @@ import 'package:kimikoe_app/providers/idol_group_list_providere.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 
-final songListOfGroupProvider =
+final groupSongsProvider =
     FutureProvider.family<List<Song>, int>((ref, groupId) async {
   try {
-    final group =
-        ref.watch(idolGroupListProvider.notifier).getGroupById(groupId);
+    final group = ref
+        .watch(idolGroupListProvider.notifier)
+        .getGroupById(groupId, logger: logger);
     final groupName = group!.name;
     final artistList = ref.watch(artistListProvider.notifier);
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/providers/idol_group_list_providere.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
+import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/widgets/card/group_card_l.dart';
 
@@ -49,7 +50,9 @@ class _IdolGroupListScreenState extends ConsumerState<IdolGroupListScreen> {
     } else {
       content = RefreshIndicator(
         onRefresh: () async {
-          await ref.read(idolGroupListProvider.notifier).fetchGroupList();
+          await ref
+              .read(idolGroupListProvider.notifier)
+              .fetchGroupList(supabase: supabase, logger: logger);
         },
         child: GridView.builder(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
