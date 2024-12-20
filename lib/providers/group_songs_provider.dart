@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/models/song.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/artist_list_provider.dart';
-import 'package:kimikoe_app/providers/idol_group_list_providere.dart';
+import 'package:kimikoe_app/providers/groups_providere.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 
@@ -10,10 +10,10 @@ final groupSongsProvider =
     FutureProvider.family<List<Song>, int>((ref, groupId) async {
   try {
     final group = ref
-        .watch(idolGroupListProvider.notifier)
+        .watch(groupsProvider.notifier)
         .getGroupById(groupId, logger: logger);
     final groupName = group!.name;
-    final artistList = ref.watch(artistListProvider.notifier);
+    final artistList = ref.watch(artistsProvider.notifier);
 
     logger.i('Supabaseから $groupName の曲リストを取得中...');
     final response = await supabase

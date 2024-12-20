@@ -1,7 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kimikoe_app/providers/idol_group_list_providere.dart';
+import 'package:kimikoe_app/providers/groups_providere.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
@@ -38,7 +38,7 @@ class _IdolGroupListScreenState extends ConsumerState<IdolGroupListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(idolGroupListProvider);
+    final state = ref.watch(groupsProvider);
     final isLoading = state.isLoading;
     final groups = state.groups;
 
@@ -51,7 +51,7 @@ class _IdolGroupListScreenState extends ConsumerState<IdolGroupListScreen> {
       content = RefreshIndicator(
         onRefresh: () async {
           await ref
-              .read(idolGroupListProvider.notifier)
+              .read(groupsProvider.notifier)
               .fetchGroupList(supabase: supabase, logger: logger);
         },
         child: GridView.builder(

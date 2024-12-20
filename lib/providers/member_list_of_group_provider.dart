@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/models/idol.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
-import 'package:kimikoe_app/providers/idol_group_list_providere.dart';
+import 'package:kimikoe_app/providers/groups_providere.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
@@ -18,7 +18,7 @@ class MemberListInGroupNotifier extends StateNotifier<AsyncValue<List<Idol>>> {
 
   Future<void> fetchIdols() async {
     try {
-      final group = ref.watch(idolGroupListProvider.notifier).getGroupById(
+      final group = ref.watch(groupsProvider.notifier).getGroupById(
             groupId,
             logger: logger,
           );

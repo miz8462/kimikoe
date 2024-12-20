@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_utils.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:mockito/mockito.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -142,13 +143,12 @@ void main() {
       },
     ];
     test('正常にデータIDを取得できる', () {
-      final idolId =
-          fetchSelectedDataIdFromName(list: mockDataList, name: 'test idol');
+      final idolId = findDataIdByName(list: mockDataList, name: 'test idol');
       expect(idolId, 1);
     });
     test('指定された名前がない場合、例外をスローする', () {
       expect(
-        () => fetchSelectedDataIdFromName(
+        () => findDataIdByName(
           list: mockDataList,
           name: 'test idol3',
         ),

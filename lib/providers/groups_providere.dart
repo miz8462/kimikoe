@@ -8,27 +8,27 @@ import 'package:logger/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 // 二つ以上の状態を管理する場合Stateクラスを別に作って管理するといい
-class IdolGroupListState {
-  IdolGroupListState({
+class GroupsState {
+  GroupsState({
     this.groups = const [],
     this.isLoading = false,
   });
   final List<IdolGroup> groups;
   final bool isLoading;
 
-  IdolGroupListState copyWith({
+  GroupsState copyWith({
     List<IdolGroup>? groups,
     bool? isLoading,
   }) {
-    return IdolGroupListState(
+    return GroupsState(
       groups: groups ?? this.groups,
       isLoading: isLoading ?? this.isLoading,
     );
   }
 }
 
-class IdolGroupListNotifier extends StateNotifier<IdolGroupListState> {
-  IdolGroupListNotifier() : super(IdolGroupListState());
+class GroupsNotifier extends StateNotifier<GroupsState> {
+  GroupsNotifier() : super(GroupsState());
 
   Future<void> initialize({
     required SupabaseClient supabase,
@@ -121,9 +121,9 @@ class IdolGroupListNotifier extends StateNotifier<IdolGroupListState> {
   }
 }
 
-final idolGroupListProvider =
-    StateNotifierProvider<IdolGroupListNotifier, IdolGroupListState>((ref) {
-  final notifier = IdolGroupListNotifier();
+final groupsProvider =
+    StateNotifierProvider<GroupsNotifier, GroupsState>((ref) {
+  final notifier = GroupsNotifier();
   notifier.initialize(
     supabase: supabase,
     logger: logger,

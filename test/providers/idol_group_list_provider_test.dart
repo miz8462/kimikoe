@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
-import 'package:kimikoe_app/providers/idol_group_list_providere.dart';
+import 'package:kimikoe_app/providers/groups_providere.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:mockito/mockito.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -10,7 +10,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../test_utils/mocks/logger_mock.dart';
 
 void main() {
-  late IdolGroupListNotifier notifier;
+  late GroupsNotifier notifier;
   late SupabaseClient mockSupabase;
   late SupabaseClient errorSupabase;
   late MockLogger mockLogger;
@@ -29,7 +29,7 @@ void main() {
     });
     mockLogger = MockLogger();
 
-    notifier = IdolGroupListNotifier();
+    notifier = GroupsNotifier();
     await notifier.initialize(
       supabase: mockSupabase,
       logger: mockLogger,
@@ -42,15 +42,15 @@ void main() {
 
   group('IdolGroupListState', () {
     test('クラスの初期化', () {
-      final state = IdolGroupListState();
+      final state = GroupsState();
 
-      expect(state, isA<IdolGroupListState>());
+      expect(state, isA<GroupsState>());
       expect(state.groups, isA<List<IdolGroup>>());
       expect(state.isLoading, isFalse);
     });
 
     test('クラスをcopyWithで上書き', () {
-      final state = IdolGroupListState();
+      final state = GroupsState();
       final newGroups = [
         IdolGroup(
           name: 'test group',
@@ -139,21 +139,21 @@ void main() {
     test('プロバイダーの初期化', () async {
       final container = ProviderContainer(
         overrides: [
-          idolGroupListProvider.overrideWith(
+          groupsProvider.overrideWith(
             (ref) => notifier,
           ),
         ],
       );
 
       await container
-          .read(idolGroupListProvider.notifier)
+          .read(groupsProvider.notifier)
           .initialize(supabase: mockSupabase, logger: mockLogger);
 
-      final state = container.read(idolGroupListProvider);
+      final state = container.read(groupsProvider);
 
       verify(mockLogger.i('アイドルグループのリストを取得中...')).called(2);
 
-      expect(state, isA<IdolGroupListState>());
+      expect(state, isA<GroupsState>());
       expect(state.groups.length, 1);
       expect(state.groups.first.name, 'test group');
     });

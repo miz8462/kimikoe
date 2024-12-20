@@ -8,7 +8,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
-import 'package:kimikoe_app/providers/idol_group_list_providere.dart';
+import 'package:kimikoe_app/providers/groups_providere.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
@@ -175,7 +175,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
       _isSending = false;
     });
 
-    await ref.read(idolGroupListProvider.notifier).fetchGroupList(
+    await ref.read(groupsProvider.notifier).fetchGroupList(
           supabase: supabase,
           logger: logger,
         );

@@ -13,7 +13,7 @@ import '../test_utils/test_helpers.dart';
 void main() {
   group('ArtistListNotifier', () {
     late MockLogger mockLogger;
-    late ArtistListNotifier notifier;
+    late ArtistsNotifier notifier;
     setUp(() {
       mockLogger = MockLogger();
       final artist = Artist(
@@ -22,7 +22,7 @@ void main() {
         imageUrl: 'https://example.com/test.jpg',
       );
 
-      notifier = ArtistListNotifier([artist], logger: mockLogger);
+      notifier = ArtistsNotifier([artist], logger: mockLogger);
     });
     test('アーティストデータを取得する', () {
       final result = notifier.getArtistById(1);
@@ -89,9 +89,8 @@ void main() {
         logger: mockLogger,
       );
 
-      final artists =
-          await container.read(artistListFromSupabaseProvider.future);
-          
+      final artists = await container.read(artistsFromSupabaseProvider.future);
+
       expect(artists.length, 1);
       expect(artists.first.name, 'Artist 1');
       verify(mockLogger.i('Supabaseからアーティストデータを取得中...')).called(1);
@@ -108,7 +107,7 @@ void main() {
         logger: mockLogger,
       );
       try {
-        await container.read(artistListFromSupabaseProvider.future);
+        await container.read(artistsFromSupabaseProvider.future);
       } catch (e) {
         verify(
           mockLogger.e(
@@ -136,10 +135,10 @@ void main() {
     );
 
     // StateNotifier インスタンスを取得
-    container.read(artistListProvider.notifier);
-    await container.read(artistListFromSupabaseProvider.future);
+    container.read(artistsProvider.notifier);
+    await container.read(artistsFromSupabaseProvider.future);
     // 現在の「状態」にアクセス
-    final emptyList = container.read(artistListProvider);
+    final emptyList = container.read(artistsProvider);
 
     // DBが空の時は、空のリストを返す
     expect(emptyList, isEmpty);
@@ -165,16 +164,16 @@ void main() {
     }
 
     // プロバイダーのキャッシュをクリア
-    container.refresh(artistListFromSupabaseProvider);
-    container.refresh(artistListProvider);
+    container.refresh(artistsFromSupabaseProvider);
+    container.refresh(artistsProvider);
 
     // テストに必要なデータを事前にロードする必要がある
-    await container.read(artistListFromSupabaseProvider.future);
+    await container.read(artistsFromSupabaseProvider.future);
 
     // StateNotifier インスタンスを取得
-    final artistsNotifier = container.read(artistListProvider.notifier);
+    final artistsNotifier = container.read(artistsProvider.notifier);
     // 現在の「状態」にアクセス
-    final artistList = container.read(artistListProvider);
+    final artistList = container.read(artistsProvider);
 
     expect(artistList.length, 2);
 

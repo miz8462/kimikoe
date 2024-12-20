@@ -17,6 +17,7 @@ import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_insert.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_update.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_utils.dart';
 import 'package:kimikoe_app/utils/bool_check.dart';
 import 'package:kimikoe_app/utils/color_code_to_string_hex.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
@@ -211,7 +212,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
       await _fetchIdAndNameGroupList();
     }
     if (groupName.isNotEmpty) {
-      selectedGroupId = fetchSelectedDataIdFromName(
+      selectedGroupId = findDataIdByName(
         list: _groupIdAndNameList,
         name: groupName,
       );

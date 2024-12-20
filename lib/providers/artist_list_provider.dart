@@ -2,12 +2,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/models/artist.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_utils.dart';
 import 'package:kimikoe_app/utils/logging_util.dart';
 import 'package:logger/logger.dart';
 
-class ArtistListNotifier extends StateNotifier<List<Artist>> {
-  ArtistListNotifier(
+class ArtistsNotifier extends StateNotifier<List<Artist>> {
+  ArtistsNotifier(
     super.state, {
     required this.logger,
   });
@@ -35,28 +35,27 @@ class ArtistListNotifier extends StateNotifier<List<Artist>> {
   }
 }
 
-final artistListFromSupabaseProvider =
-    FutureProvider<List<Artist>>((ref) async {
+final artistsFromSupabaseProvider = FutureProvider<List<Artist>>((ref) async {
   // プロバイダーを作り、そこを通すことで
   // ProviderContainerでオーバーライドしたモックを受け取ることができる
   final logger = ref.read(loggerProvider);
   final supabase = ref.read(supabaseProvider);
 
-  return fetchArtistList(supabase: supabase, logger: logger);
+  return createArtistList(supabase: supabase, logger: logger);
 });
 
-final artistListProvider =
-    StateNotifierProvider<ArtistListNotifier, List<Artist>>((ref) {
+final artistsProvider =
+    StateNotifierProvider<ArtistsNotifier, List<Artist>>((ref) {
   final logger = ref.read(loggerProvider);
-  final asyncValue = ref.watch(artistListFromSupabaseProvider);
+  final asyncValue = ref.watch(artistsFromSupabaseProvider);
 
   logAsyncValue(asyncValue: asyncValue, logger: logger);
 
   return asyncValue.maybeWhen(
-    data: (artists) => ArtistListNotifier(artists, logger: logger),
+    data: (artists) => ArtistsNotifier(artists, logger: logger),
     orElse: () {
       logger.w('データが見つからないため、空のアーティストリストを返します');
-      return ArtistListNotifier([], logger: logger);
+      return ArtistsNotifier([], logger: logger);
     },
   );
 });

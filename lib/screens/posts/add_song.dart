@@ -17,6 +17,7 @@ import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_insert.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_update.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_utils.dart';
 import 'package:kimikoe_app/utils/bool_check.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
@@ -191,7 +192,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
 
     // 「歌詞追加」の歌詞と歌手をjson形式でまとめる e.g. {'':,'singerId':idolId}
     for (var index = 0; index < _lyricAndSingerList.length; index++) {
-      final idolId = fetchSelectedDataIdFromName(
+      final idolId = findDataIdByName(
         list: _idolIdAndNameList,
         name: _singerListControllers[index].text,
       );
@@ -240,7 +241,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
       await _fetchIdAndNameLists();
     }
     selectedGroupId =
-        fetchSelectedDataIdFromName(list: _groupIdAndNameList, name: groupName);
+        findDataIdByName(list: _groupIdAndNameList, name: groupName);
 
     // 作詞家登録
     final lyricistName = _lyricistNameController.text;
@@ -257,7 +258,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
       await _fetchIdAndNameLists();
     }
     if (lyricistName.isNotEmpty) {
-      selectedLyricistId = fetchSelectedDataIdFromName(
+      selectedLyricistId = findDataIdByName(
         list: _artistIdAndNameList,
         name: lyricistName,
       );
@@ -278,7 +279,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
       await _fetchIdAndNameLists();
     }
     if (composerName.isNotEmpty) {
-      selectedComposerId = fetchSelectedDataIdFromName(
+      selectedComposerId = findDataIdByName(
         list: _artistIdAndNameList,
         name: composerName,
       );

@@ -10,7 +10,7 @@ void main() {
   test('loggerProvider', () {
     final mockLogger = MockLogger();
     final container = createContainer(
-      overrides: [loggerProvider.overrideWith((ref)=> mockLogger)],
+      overrides: [loggerProvider.overrideWith((ref) => mockLogger)],
     );
 
     // Loggerインスタンスチェック
