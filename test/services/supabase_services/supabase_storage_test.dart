@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_upload_to_storage.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_storage.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -33,11 +33,11 @@ void main() {
   tearDown(() async {
     mockHttpClient.reset();
   });
-  
+
   // HACK: Supabase CLIでのローカル環境でテストができるらしいよ。よくわからなかった
   group('uploadImageToStorage', () {
     // TODO: 実装時テスト名要変更
-    testWidgets('uploadImageToStorageの正常動作', (WidgetTester tester) async {});
+    testWidgets('画像をストレージにアップロード', (WidgetTester tester) async {});
     testWidgets('uploadImageToStorageの例外処理', (WidgetTester tester) async {
       final mockContext = await createMockContext(tester);
       var didThrowError = false;
@@ -60,5 +60,11 @@ void main() {
 
       expect(didThrowError, isTrue);
     });
+  });
+
+  // HACK: Supabase CLI でできるらしいよ
+  group('fetchImageUrl', () {
+    testWidgets('fetchImageUrlの正常動作', (WidgetTester tester) async {});
+    testWidgets('fetchImageUrlの例外処理', (WidgetTester tester) async {});
   });
 }

@@ -130,12 +130,6 @@ void main() {
     });
   });
 
-  // HACK: Supabase CLI でできるらしいよ
-  group('fetchImageUrl', () {
-    testWidgets('fetchImageUrlの正常動作', (WidgetTester tester) async {});
-    testWidgets('fetchImageUrlの例外処理', (WidgetTester tester) async {});
-  });
-
   group('fetchSelectedDataIdFromName', () {
     final mockDataList = <Map<String, dynamic>>[
       {
