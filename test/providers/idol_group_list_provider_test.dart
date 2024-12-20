@@ -136,7 +136,7 @@ void main() {
   });
 
   group('idolGroupListProvider', () {
-    test('プロバイダーの初期化', () {
+    test('プロバイダーの初期化', () async {
       final container = ProviderContainer(
         overrides: [
           idolGroupListProvider.overrideWith(
@@ -145,9 +145,13 @@ void main() {
         ],
       );
 
+      await container
+          .read(idolGroupListProvider.notifier)
+          .initialize(supabase: mockSupabase, logger: mockLogger);
+
       final state = container.read(idolGroupListProvider);
 
-      verify(mockLogger.i('アイドルグループのリストを取得中...')).called(1);
+      verify(mockLogger.i('アイドルグループのリストを取得中...')).called(2);
 
       expect(state, isA<IdolGroupListState>());
       expect(state.groups.length, 1);
