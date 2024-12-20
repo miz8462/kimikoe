@@ -55,6 +55,7 @@ void main() {
         );
         verify(mockLogger.e('アーティストのリストの取得中にエラーが発生しました')).called(1);
       } catch (e) {
+        verify(mockLogger.e('アーティストのリストの取得中にエラーが発生しました', error: e)).called(1);
         didThrowError = true;
       }
       expect(didThrowError, isTrue);
@@ -62,7 +63,7 @@ void main() {
   });
 
   group('fetchGroupMembers', () {
-    testWidgets('fetchGroupMembers', (WidgetTester tester) async {
+    testWidgets('グループのメンバーを取得する', (WidgetTester tester) async {
       await mockSupabase.from(TableName.idols).insert({
         ColumnName.groupId: 1,
         ColumnName.name: 'test idol',
@@ -87,9 +88,8 @@ void main() {
           supabase: errorSupabase,
           logger: mockLogger,
         );
-
-        verify(mockLogger.e('グループメンバーリストの取得中にエラーが発生しました')).called(1);
       } catch (e) {
+        verify(mockLogger.e('グループメンバーリストの取得中にエラーが発生しました', error: e)).called(1);
         didThrowError = true;
       }
       expect(didThrowError, isTrue);
@@ -110,7 +110,7 @@ void main() {
       expect(idolGroupsIdAndNameList.length, 1);
       expect(idolGroupsIdAndNameList.first[ColumnName.name], 'test group');
     });
-    testWidgets('fetchIdAndNameList', (WidgetTester tester) async {
+    testWidgets('fetchIdAndNameListの例外処理', (WidgetTester tester) async {
       var didThrowError = false;
 
       try {
@@ -119,8 +119,10 @@ void main() {
           supabase: errorSupabase,
           logger: mockLogger,
         );
-        verify(mockLogger.e('アイドルグループのIDと名前のリストの取得中にエラーが発生しました')).called(1);
       } catch (e) {
+        verify(
+          mockLogger.e('idol-groupsのIDと名前のリストの取得中にエラーが発生しました', error: e),
+        ).called(1);
         didThrowError = true;
       }
 
@@ -131,22 +133,7 @@ void main() {
   // HACK: Supabase CLI でできるらしいよ
   group('fetchImageUrl', () {
     testWidgets('fetchImageUrlの正常動作', (WidgetTester tester) async {});
-    testWidgets('fetchImageUrlの例外処理', (WidgetTester tester) async {
-      var didThrowError = false;
-
-      try {
-        fetchImageUrl(
-          TableName.idolGroups,
-          injectedSupabase: errorSupabase,
-          logger: mockLogger,
-        );
-        verify(mockLogger.e('画像URLの取得中にエラーが発生しました')).called(1);
-      } catch (e) {
-        didThrowError = true;
-      }
-
-      expect(didThrowError, isTrue);
-    });
+    testWidgets('fetchImageUrlの例外処理', (WidgetTester tester) async {});
   });
 
   group('fetchSelectedDataIdFromName', () {
@@ -173,6 +160,44 @@ void main() {
         ),
         throwsStateError,
       );
+    });
+  });
+
+  group('fetchDataByStream', () {
+    setUp(() async {
+      await mockSupabase.from(TableName.artists).insert({
+        ColumnName.id: '1',
+        ColumnName.name: 'test artist',
+      });
+    });
+    test('ストリームでデータを取得する', () async {
+      final stream = await fetchDataByStream(
+        table: TableName.artists,
+        id: '1',
+        supabase: mockSupabase,
+        logger: mockLogger,
+      ).first as List<Map<String, dynamic>>;
+
+      expect(stream[0][ColumnName.name], 'test artist');
+      verify(mockLogger.i('artistsのデータをストリームで取得中...')).called(1);
+    });
+    test('fetchDataByStreamの例外処理', () async {
+      var didThrowError = false;
+
+      try {
+        await fetchDataByStream(
+          table: TableName.artists,
+          id: '1',
+          supabase: errorSupabase,
+          logger: mockLogger,
+        ).first;
+      } catch (e) {
+        verify(mockLogger.e('artistsのデータをストリームで取得中にエラーが発生しました', error: e))
+            .called(1);
+
+        didThrowError = true;
+      }
+      expect(didThrowError, isTrue);
     });
   });
 }

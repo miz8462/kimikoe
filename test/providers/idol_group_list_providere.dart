@@ -35,10 +35,11 @@ class IdolGroupListNotifier extends StateNotifier<IdolGroupListState> {
       logger.i('アイドルグループのリストを取得中...');
       state = state.copyWith(isLoading: true);
 
-      final data = await fetchDatabyStream(
+      final data = await fetchDataByStream(
         table: TableName.idolGroups,
         id: ColumnName.id,
         supabase: supabase,
+        logger: logger,
       ).first as List<Map<String, dynamic>>;
 
       final groups = data.map<IdolGroup>((group) {

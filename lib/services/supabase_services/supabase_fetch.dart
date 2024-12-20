@@ -125,15 +125,18 @@ int fetchSelectedDataIdFromName({
   return selectedDataId;
 }
 
-Stream<dynamic> fetchDatabyStream({
+Stream<dynamic> fetchDataByStream({
   required String table,
   required String id,
   required SupabaseClient supabase,
-}) {
+  required Logger logger,
+}) async* {
   try {
     final stream = supabase.from(table).stream(primaryKey: [id]);
     logger.i('$tableのデータをストリームで取得中...');
-    return stream;
+    await for (final data in stream) {
+      yield data;
+    }
   } catch (e) {
     logger.e('$tableのデータをストリームで取得中にエラーが発生しました', error: e);
     rethrow;
