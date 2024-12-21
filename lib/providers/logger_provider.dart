@@ -5,10 +5,14 @@ final loggerProvider = Provider<Logger>((ref) {
   return logger;
 });
 
-final logger = Logger(
-  printer: PrettyPrinter(
-    lineLength: 70,
-    methodCount: 0,
-    errorMethodCount: 10,
-  ),
-);
+late Logger logger;
+
+void initializeLogger() {
+  logger = Logger(
+    printer: PrettyPrinter(
+      lineLength: 70,
+      methodCount: 0,
+      errorMethodCount: 10,
+    ),
+  );
+}

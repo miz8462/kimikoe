@@ -27,7 +27,6 @@ class MemberListInGroupNotifier extends StateNotifier<AsyncValue<List<Idol>>> {
       final response = await fetchGroupMembers(
         groupId,
         supabase: supabase,
-        logger: logger,
       );
 
       final idols = response.map((idol) {

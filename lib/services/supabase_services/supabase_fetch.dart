@@ -1,17 +1,18 @@
 // READ
 import 'package:kimikoe_app/models/table_and_column_name.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:logger/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<List<Map<String, dynamic>>> fetchArtists({
   required SupabaseClient supabase,
-  required Logger logger,
 }) async {
   try {
     final response = await supabase.from(TableName.artists).select();
     logger.i('アーティストのリストを取得しました');
     return response;
   } catch (e) {
+
     logger.e('アーティストのリストの取得中にエラーが発生しました', error: e);
     rethrow;
   }
@@ -20,7 +21,6 @@ Future<List<Map<String, dynamic>>> fetchArtists({
 Future<List<Map<String, dynamic>>> fetchGroupMembers(
   int groupId, {
   required SupabaseClient supabase,
-  required Logger logger,
 }) async {
   try {
     final response = await supabase
@@ -38,7 +38,6 @@ Future<List<Map<String, dynamic>>> fetchGroupMembers(
 Future<List<Map<String, dynamic>>> fetchIdAndNameList(
   String tableName, {
   required SupabaseClient supabase,
-  required Logger logger,
 }) async {
   try {
     final response = await supabase
@@ -56,7 +55,6 @@ Stream<dynamic> fetchDataByStream({
   required String table,
   required String id,
   required SupabaseClient supabase,
-  required Logger logger,
 }) async* {
   try {
     final stream = supabase.from(table).stream(primaryKey: [id]);

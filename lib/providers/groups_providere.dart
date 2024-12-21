@@ -52,7 +52,6 @@ class GroupsNotifier extends StateNotifier<GroupsState> {
         table: TableName.idolGroups,
         id: ColumnName.id,
         supabase: supabase,
-        logger: logger,
       ).first as List<Map<String, dynamic>>;
 
       final groups = data.map<IdolGroup>((group) {

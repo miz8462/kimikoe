@@ -4,6 +4,8 @@ import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/providers/user_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+
+
 class AuthNotifier extends StateNotifier<Session?> {
   AuthNotifier() : super(null);
 

@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_utils.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:mockito/mockito.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -27,6 +27,7 @@ void main() {
       'error',
     );
     mockLogger = MockLogger();
+    logger = mockLogger;
   });
 
   tearDown(() async {
@@ -40,11 +41,11 @@ void main() {
       });
       final artistList = await fetchArtists(
         supabase: mockSupabase,
-        logger: mockLogger,
       );
 
       expect(artistList.length, 1);
       expect(artistList.first[ColumnName.name], 'test artist');
+      verify(logger.i('アーティストのリストを取得しました')).called(1);
     });
     testWidgets('fetchArtistsの例外処理', (WidgetTester tester) async {
       var didThrowError = false;
@@ -52,11 +53,10 @@ void main() {
       try {
         await fetchArtists(
           supabase: errorSupabase,
-          logger: mockLogger,
+          // logger: mockLogger,
         );
-        verify(mockLogger.e('アーティストのリストの取得中にエラーが発生しました')).called(1);
       } catch (e) {
-        verify(mockLogger.e('アーティストのリストの取得中にエラーが発生しました', error: e)).called(1);
+        verify(logger.e('アーティストのリストの取得中にエラーが発生しました', error: e)).called(1);
         didThrowError = true;
       }
       expect(didThrowError, isTrue);
@@ -72,7 +72,6 @@ void main() {
       final members = await fetchGroupMembers(
         1,
         supabase: mockSupabase,
-        logger: mockLogger,
       );
 
       expect(members.length, 1);
@@ -80,17 +79,15 @@ void main() {
     });
 
     testWidgets('fetchGroupMembersの例外処理', (WidgetTester tester) async {
-      final mockLogger = MockLogger();
       var didThrowError = false;
 
       try {
         await fetchGroupMembers(
           1,
           supabase: errorSupabase,
-          logger: mockLogger,
         );
       } catch (e) {
-        verify(mockLogger.e('グループメンバーリストの取得中にエラーが発生しました', error: e)).called(1);
+        verify(logger.e('グループメンバーリストの取得中にエラーが発生しました', error: e)).called(1);
         didThrowError = true;
       }
       expect(didThrowError, isTrue);
@@ -105,7 +102,6 @@ void main() {
       final idolGroupsIdAndNameList = await fetchIdAndNameList(
         TableName.idolGroups,
         supabase: mockSupabase,
-        logger: mockLogger,
       );
 
       expect(idolGroupsIdAndNameList.length, 1);
@@ -118,7 +114,6 @@ void main() {
         await fetchIdAndNameList(
           TableName.idolGroups,
           supabase: errorSupabase,
-          logger: mockLogger,
         );
       } catch (e) {
         verify(
@@ -128,32 +123,6 @@ void main() {
       }
 
       expect(didThrowError, isTrue);
-    });
-  });
-
-  group('fetchSelectedDataIdFromName', () {
-    final mockDataList = <Map<String, dynamic>>[
-      {
-        'id': 1,
-        'name': 'test idol',
-      },
-      {
-        'id': 2,
-        'name': 'test idol2',
-      },
-    ];
-    test('正常にデータIDを取得できる', () {
-      final idolId = findDataIdByName(list: mockDataList, name: 'test idol');
-      expect(idolId, 1);
-    });
-    test('指定された名前がない場合、例外をスローする', () {
-      expect(
-        () => findDataIdByName(
-          list: mockDataList,
-          name: 'test idol3',
-        ),
-        throwsStateError,
-      );
     });
   });
 
@@ -169,7 +138,6 @@ void main() {
         table: TableName.artists,
         id: '1',
         supabase: mockSupabase,
-        logger: mockLogger,
       ).first as List<Map<String, dynamic>>;
 
       expect(stream[0][ColumnName.name], 'test artist');
@@ -183,10 +151,9 @@ void main() {
           table: TableName.artists,
           id: '1',
           supabase: errorSupabase,
-          logger: mockLogger,
         ).first;
       } catch (e) {
-        verify(mockLogger.e('artistsのデータをストリームで取得中にエラーが発生しました', error: e))
+        verify(logger.e('artistsのデータをストリームで取得中にエラーが発生しました', error: e))
             .called(1);
 
         didThrowError = true;

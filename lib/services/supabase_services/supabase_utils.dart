@@ -12,7 +12,9 @@ Future<List<Artist>> createArtistList({
 }) async {
   try {
     logger.i('Supabaseからアーティストデータを取得中...');
-    final response = await fetchArtists(supabase: supabase, logger: logger);
+    final response = await fetchArtists(
+      supabase: supabase,
+    );
     logger.i('${response.length}件のアーティストデータをSupabaseから取得しました');
     final artists = response.map<Artist>((artist) {
       final imageUrl = fetchImageUrl(
