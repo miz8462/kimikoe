@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_insert.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../test_utils/mocks/logger_mock.dart';
+
 void main() {
+  logger = MockLogger();
   late final SupabaseClient errorSupabase;
   late final SupabaseClient mockSupabase;
   late final MockSupabaseHttpClient mockHttpClient;

@@ -12,7 +12,6 @@ void main() {
   late final SupabaseClient errorSupabase;
   late final SupabaseClient mockSupabase;
   late final MockSupabaseHttpClient mockHttpClient;
-  late final MockLogger mockLogger;
 
   setUpAll(() async {
     mockHttpClient = MockSupabaseHttpClient();
@@ -26,8 +25,7 @@ void main() {
       'error',
       'error',
     );
-    mockLogger = MockLogger();
-    logger = mockLogger;
+    logger = MockLogger();
   });
 
   tearDown(() async {
@@ -53,7 +51,6 @@ void main() {
       try {
         await fetchArtists(
           supabase: errorSupabase,
-          // logger: mockLogger,
         );
       } catch (e) {
         verify(logger.e('アーティストのリストの取得中にエラーが発生しました', error: e)).called(1);
@@ -117,7 +114,7 @@ void main() {
         );
       } catch (e) {
         verify(
-          mockLogger.e('idol-groupsのIDと名前のリストの取得中にエラーが発生しました', error: e),
+          logger.e('idol-groupsのIDと名前のリストの取得中にエラーが発生しました', error: e),
         ).called(1);
         didThrowError = true;
       }
@@ -141,7 +138,7 @@ void main() {
       ).first as List<Map<String, dynamic>>;
 
       expect(stream[0][ColumnName.name], 'test artist');
-      verify(mockLogger.i('artistsのデータをストリームで取得中...')).called(1);
+      verify(logger.i('artistsのデータをストリームで取得中...')).called(1);
     });
     test('fetchDataByStreamの例外処理', () async {
       var didThrowError = false;

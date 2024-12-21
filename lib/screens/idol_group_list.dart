@@ -52,7 +52,7 @@ class _IdolGroupListScreenState extends ConsumerState<IdolGroupListScreen> {
         onRefresh: () async {
           await ref
               .read(groupsProvider.notifier)
-              .fetchGroupList(supabase: supabase, logger: logger);
+              .fetchGroupList(supabase: supabase);
         },
         child: GridView.builder(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),

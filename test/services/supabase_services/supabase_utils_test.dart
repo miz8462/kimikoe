@@ -13,7 +13,6 @@ void main() {
   late final SupabaseClient errorSupabase;
   late final SupabaseClient mockSupabase;
   late final MockSupabaseHttpClient mockHttpClient;
-  late final MockLogger mockLogger;
 
   setUpAll(() async {
     mockHttpClient = MockSupabaseHttpClient();
@@ -27,8 +26,7 @@ void main() {
       'error',
       'error',
     );
-    mockLogger = MockLogger();
-    logger = mockLogger;
+    logger = MockLogger();
   });
 
   tearDown(() async {

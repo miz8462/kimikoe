@@ -3,7 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/utils/pickers/int_picker.dart';
 
+import '../../test_utils/mocks/logger_mock.dart';
+
 void main() {
+  logger = MockLogger();
+
   group(
     'IntPickerウィジェットテスト',
     () {

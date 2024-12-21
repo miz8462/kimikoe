@@ -4,6 +4,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/utils/open_links.dart';
 import 'package:mockito/mockito.dart';
 import 'package:url_launcher_platform_interface/url_launcher_platform_interface.dart';
@@ -11,9 +12,11 @@ import 'package:url_launcher_platform_interface/url_launcher_platform_interface.
 import '../test_utils/matchers/in_app_browser_configuration_matcher.dart';
 import '../test_utils/matchers/in_app_web_view_configuration_matcher.dart';
 import '../test_utils/mocks/http_client_mock.dart';
+import '../test_utils/mocks/logger_mock.dart';
 import '../test_utils/mocks/url_launcher_platform_mock.dart';
 
 void main() {
+  logger = MockLogger();
   late MockUrlLauncherPlatform mockUrlLauncher;
   late MockClient mockClient;
 

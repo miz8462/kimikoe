@@ -4,14 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
-import 'package:logger/logger.dart';
 import 'package:mockito/mockito.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 // モックのファイルとコンテキスト
 class MockFile extends Mock implements File {}
-
-class MockLogger extends Mock implements Logger {}
 
 class MockBuildContext extends Mock implements BuildContext {}
 
@@ -51,7 +48,6 @@ void main() {
 
     String mockFetchImageUrl(
       String imagePath, {
-      required Logger logger,
       SupabaseClient? injectedSupabase,
     }) {
       return 'https://example.com/$imagePath';

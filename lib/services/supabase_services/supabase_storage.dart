@@ -6,7 +6,6 @@ import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/utils/show_log_and_snack_bar.dart';
-import 'package:logger/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> uploadImageToStorage({
@@ -33,7 +32,6 @@ Future<void> uploadImageToStorage({
 // HACK: Supabase CLI でできるらしいよ
 String fetchImageUrl(
   String imagePath, {
-  required Logger logger,
   SupabaseClient? injectedSupabase,
 }) {
   // XXX: ｲｼﾞﾙﾅｷｹﾝ

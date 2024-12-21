@@ -8,11 +8,8 @@ import '../test_utils/mocks/logger_mock.dart';
 import '../test_utils/test_widgets.dart';
 
 void main() {
-  // MockLoggerを各テスト前に初期化
-  late MockLogger mockLogger;
   setUpAll(() {
-    mockLogger = MockLogger();
-    logger = mockLogger;
+    logger = MockLogger();
   });
   group('showLogAndSnackBar関数のテスト', () {
     testWidgets('ログとスナックバーの表示テスト', (tester) async {

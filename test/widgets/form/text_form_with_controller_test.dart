@@ -3,9 +3,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/widgets/form/text_form_with_controller.dart';
 
+import '../../test_utils/mocks/logger_mock.dart';
 import '../../test_utils/test_widgets.dart';
 
 void main() {
+  logger = MockLogger();
+
   testWidgets('TextFormWithControllerウィジェット', (WidgetTester tester) async {
     final formKey = GlobalKey<FormState>();
     final label = 'Test Label';

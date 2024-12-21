@@ -11,7 +11,7 @@ final groupSongsProvider =
   try {
     final group = ref
         .watch(groupsProvider.notifier)
-        .getGroupById(groupId, logger: logger);
+        .getGroupById(groupId);
     final groupName = group!.name;
     final artistList = ref.watch(artistsProvider.notifier);
 

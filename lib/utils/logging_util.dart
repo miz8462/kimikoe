@@ -1,9 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:logger/logger.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
 
 void logAsyncValue<T>({
   required AsyncValue<T> asyncValue,
-  required Logger logger,
 }) {
   asyncValue.when(
     data: (data) {

@@ -17,7 +17,6 @@ Future<List<Artist>> createArtistList({
     final artists = response.map<Artist>((artist) {
       final imageUrl = fetchImageUrl(
         artist[ColumnName.imageUrl],
-        logger: logger,
         injectedSupabase: supabase,
       );
       return Artist(

@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/groups_providere.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:mockito/mockito.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -13,7 +14,6 @@ void main() {
   late GroupsNotifier notifier;
   late SupabaseClient mockSupabase;
   late SupabaseClient errorSupabase;
-  late MockLogger mockLogger;
 
   setUp(() async {
     mockSupabase = SupabaseClient(
@@ -27,12 +27,11 @@ void main() {
       ColumnName.name: 'test group',
       ColumnName.imageUrl: 'https://example.com/test.jpg',
     });
-    mockLogger = MockLogger();
+    logger = MockLogger();
 
     notifier = GroupsNotifier();
     await notifier.initialize(
       supabase: mockSupabase,
-      logger: mockLogger,
     );
   });
 
@@ -72,8 +71,8 @@ void main() {
       expect(notifier.state.isLoading, isFalse);
       expect(notifier.state.groups.length, 1);
       expect(notifier.state.groups.first.name, 'test group');
-      verify(mockLogger.i('アイドルグループのリストを取得中...')).called(1);
-      verify(mockLogger.i('アイドルグループのリストを1件取得しました')).called(1);
+      verify(logger.i('アイドルグループのリストを取得中...')).called(1);
+      verify(logger.i('アイドルグループのリストを1件取得しました')).called(1);
     });
 
     test('initializeでエラーが発生した場合は例外をスロー', () async {
@@ -81,12 +80,11 @@ void main() {
       try {
         await notifier.initialize(
           supabase: errorSupabase,
-          logger: mockLogger,
         );
       } catch (e, stackTrace) {
         didThrowError = true;
         verify(
-          mockLogger.e(
+          logger.e(
             'アイドルグループのリストを取得中にエラーが発生しました',
             error: e,
             stackTrace: stackTrace,
@@ -101,31 +99,28 @@ void main() {
         name: 'test group2',
         imageUrl: 'https://example.com/test2.jpg',
       );
-      notifier.addGroup(newGroup, logger: mockLogger);
+      notifier.addGroup(newGroup);
 
       expect(notifier.state.groups.length, 2);
       expect(notifier.state.groups.last.name, 'test group2');
-      verify(mockLogger.i('アイドルグループを追加しています: test group2')).called(1);
+      verify(logger.i('アイドルグループを追加しています: test group2')).called(1);
     });
 
     test('removeGroup', () {
       expect(notifier.state.groups.length, 1);
-      notifier.removeGroup(
-        notifier.state.groups.first,
-        logger: mockLogger,
-      );
+      notifier.removeGroup(notifier.state.groups.first);
       expect(notifier.state.groups.isEmpty, isTrue);
     });
 
     test('getGroupByID', () {
       expect(notifier.state.groups.length, 1);
-      expect(notifier.getGroupById(1, logger: mockLogger), isA<IdolGroup>());
+      expect(notifier.getGroupById(1), isA<IdolGroup>());
       try {
-        expect(notifier.getGroupById(2, logger: mockLogger), isNull);
-        verify(mockLogger.e('IDが 2 のアイドルグループが見つかりませんでした')).called(1);
+        expect(notifier.getGroupById(2), isNull);
+        verify(logger.e('IDが 2 のアイドルグループが見つかりませんでした')).called(1);
       } catch (e, stackTrace) {
         verify(
-          mockLogger.e(
+          logger.e(
             'ID:2 のグループを見つける際にエラーが発生しました',
             error: e,
             stackTrace: stackTrace,
@@ -147,11 +142,11 @@ void main() {
 
       await container
           .read(groupsProvider.notifier)
-          .initialize(supabase: mockSupabase, logger: mockLogger);
+          .initialize(supabase: mockSupabase);
 
       final state = container.read(groupsProvider);
 
-      verify(mockLogger.i('アイドルグループのリストを取得中...')).called(2);
+      verify(logger.i('アイドルグループのリストを取得中...')).called(2);
 
       expect(state, isA<GroupsState>());
       expect(state.groups.length, 1);

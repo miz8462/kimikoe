@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/artist.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/artist_list_provider.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:mockito/mockito.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -11,18 +12,19 @@ import '../test_utils/mocks/logger_mock.dart';
 import '../test_utils/test_helpers.dart';
 
 void main() {
+  setUpAll(() {
+    logger = MockLogger();
+  });
   group('ArtistListNotifier', () {
-    late MockLogger mockLogger;
     late ArtistsNotifier notifier;
     setUp(() {
-      mockLogger = MockLogger();
       final artist = Artist(
         id: 1,
         name: 'test artist',
         imageUrl: 'https://example.com/test.jpg',
       );
 
-      notifier = ArtistsNotifier([artist], logger: mockLogger);
+      notifier = ArtistsNotifier([artist]);
     });
     test('アーティストデータを取得する', () {
       final result = notifier.getArtistById(1);
@@ -32,17 +34,17 @@ void main() {
     test('IDがnullの場合はnullを返す', () {
       final result = notifier.getArtistById(null);
       expect(result, isNull);
-      verify(mockLogger.w('アーティストのIDがNULLです')).called(1);
+      verify(logger.w('アーティストのIDがNULLです')).called(1);
     });
 
     test('IDが見つからない場合は例外をスローする', () {
       expect(() => notifier.getArtistById(999), throwsA(isA<StateError>()));
-      verify(mockLogger.e('IDが 999 のアーティストが見つかりませんでした'));
+      verify(logger.e('IDが 999 のアーティストが見つかりませんでした'));
       //
       try {
         notifier.getArtistById(999);
       } catch (e) {
-        verify(mockLogger.e('ID:999 のアーティストを見つける際にエラーが発生しました', error: e));
+        verify(logger.e('ID:999 のアーティストを見つける際にエラーが発生しました', error: e));
       }
     });
   });
@@ -51,7 +53,6 @@ void main() {
     late final SupabaseClient mockSupabase;
     late final SupabaseClient errorSupabase;
     late final MockSupabaseHttpClient mockHttpClient;
-    late final MockLogger mockLogger;
 
     setUpAll(() {
       mockHttpClient = MockSupabaseHttpClient();
@@ -64,7 +65,6 @@ void main() {
         'error',
         'error',
       );
-      mockLogger = MockLogger();
     });
 
     setUp(() async {
@@ -86,16 +86,15 @@ void main() {
       // ProviderContainerを作りモックを渡す
       final container = supabaseContainer(
         supabaseClient: mockSupabase,
-        logger: mockLogger,
       );
 
       final artists = await container.read(artistsFromSupabaseProvider.future);
 
       expect(artists.length, 1);
       expect(artists.first.name, 'Artist 1');
-      verify(mockLogger.i('Supabaseからアーティストデータを取得中...')).called(1);
-      verify(mockLogger.i('1件のアーティストデータをSupabaseから取得しました')).called(1);
-      verify(mockLogger.i('1件のアーティストデータをリストにしました')).called(1);
+      verify(logger.i('Supabaseからアーティストデータを取得中...')).called(1);
+      verify(logger.i('1件のアーティストデータをSupabaseから取得しました')).called(1);
+      verify(logger.i('1件のアーティストデータをリストにしました')).called(1);
 
       // 忘れずコンテナは破棄する。そうしないと他のテストに影響してしまう。
       container.dispose();
@@ -104,13 +103,12 @@ void main() {
     test('Supabaseからデータを取得中にエラーが発生した場合', () async {
       final container = supabaseContainer(
         supabaseClient: errorSupabase,
-        logger: mockLogger,
       );
       try {
         await container.read(artistsFromSupabaseProvider.future);
       } catch (e) {
         verify(
-          mockLogger.e(
+          logger.e(
             'アーティストリストの取得またはマッピング中にエラーが発生しました',
             error: anything,
           ),
@@ -123,16 +121,12 @@ void main() {
   });
 
   test('artistListProvider', () async {
-    final mockLogger = MockLogger();
     final mockSupabase = SupabaseClient(
       'https://mock.supabase.co',
       'fakeAnonKey',
       httpClient: MockSupabaseHttpClient(),
     );
-    final container = supabaseContainer(
-      supabaseClient: mockSupabase,
-      logger: mockLogger,
-    );
+    final container = supabaseContainer(supabaseClient: mockSupabase);
 
     // StateNotifier インスタンスを取得
     container.read(artistsProvider.notifier);

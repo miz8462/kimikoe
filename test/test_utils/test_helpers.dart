@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
-import 'mocks/logger_mock.dart';
 
 /// ProviderContainerを作成するユーティリティ（ボイラープレート）
 ProviderContainer createContainer({
@@ -27,12 +24,10 @@ ProviderContainer createContainer({
 
 ProviderContainer supabaseContainer({
   required SupabaseClient supabaseClient,
-  required MockLogger logger,
 }) {
   final container = createContainer(
     overrides: [
       supabaseProvider.overrideWithValue(supabaseClient),
-      loggerProvider.overrideWithValue(logger),
     ],
   );
 

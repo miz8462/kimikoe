@@ -4,14 +4,9 @@ import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_utils.dart';
 import 'package:kimikoe_app/utils/logging_util.dart';
-import 'package:logger/logger.dart';
 
 class ArtistsNotifier extends StateNotifier<List<Artist>> {
-  ArtistsNotifier(
-    super.state, {
-    required this.logger,
-  });
-  final Logger logger;
+  ArtistsNotifier(super.state);
 
   Artist? getArtistById(int? id) {
     if (id == null) {
@@ -48,13 +43,13 @@ final artistsProvider =
   final logger = ref.read(loggerProvider);
   final asyncValue = ref.watch(artistsFromSupabaseProvider);
 
-  logAsyncValue(asyncValue: asyncValue, logger: logger);
+  logAsyncValue(asyncValue: asyncValue);
 
   return asyncValue.maybeWhen(
-    data: (artists) => ArtistsNotifier(artists, logger: logger),
+    data: ArtistsNotifier.new,
     orElse: () {
       logger.w('データが見つからないため、空のアーティストリストを返します');
-      return ArtistsNotifier([], logger: logger);
+      return ArtistsNotifier([]);
     },
   );
 });

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_update.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:mockito/mockito.dart';
@@ -13,7 +14,6 @@ void main() {
   late final SupabaseClient errorSupabase;
   late final SupabaseClient mockSupabase;
   late final MockSupabaseHttpClient mockHttpClient;
-  late final MockLogger mockLogger;
 
   setUpAll(() async {
     mockHttpClient = MockSupabaseHttpClient();
@@ -27,7 +27,7 @@ void main() {
       'error',
       'error',
     );
-    mockLogger = MockLogger();
+    logger = MockLogger();
   });
 
   tearDown(() async {
@@ -119,7 +119,7 @@ void main() {
           context: mockContext,
           supabase: errorSupabase,
         );
-        verify(mockLogger.i('グループの更新中にエラーが発生しました。グループ名: error')).called(1);
+        verify(logger.i('グループの更新中にエラーが発生しました。グループ名: error')).called(1);
       } catch (e) {
         didThrowError = true;
       }

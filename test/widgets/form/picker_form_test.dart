@@ -3,9 +3,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/widgets/form/picker_form.dart';
 
+import '../../test_utils/mocks/logger_mock.dart';
 import '../../test_utils/test_widgets.dart';
 
 void main() {
+  logger = MockLogger();
+  
   testWidgets('PickerFormウィジェット', (WidgetTester tester) async {
     final label = 'Test Label';
     final controller = TextEditingController();

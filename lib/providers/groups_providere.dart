@@ -4,7 +4,6 @@ import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
-import 'package:logger/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 // 二つ以上の状態を管理する場合Stateクラスを別に作って管理するといい
@@ -32,17 +31,14 @@ class GroupsNotifier extends StateNotifier<GroupsState> {
 
   Future<void> initialize({
     required SupabaseClient supabase,
-    required Logger logger,
   }) async {
     await fetchGroupList(
       supabase: supabase,
-      logger: logger,
     );
   }
 
   Future<void> fetchGroupList({
     required SupabaseClient supabase,
-    required Logger logger,
   }) async {
     try {
       logger.i('アイドルグループのリストを取得中...');
@@ -80,27 +76,22 @@ class GroupsNotifier extends StateNotifier<GroupsState> {
   }
 
   void addGroup(
-    IdolGroup newGroup, {
-    required Logger logger,
-  }) {
+    IdolGroup newGroup,
+  ) {
     logger.i('アイドルグループを追加しています: ${newGroup.name}');
     state = state.copyWith(groups: [...state.groups, newGroup]);
   }
 
   void removeGroup(
-    IdolGroup group, {
-    required Logger logger,
-  }) {
+    IdolGroup group,
+  ) {
     logger.i('アイlドルグループを削除しています: ${group.name}');
     state = state.copyWith(
       groups: state.groups.where((g) => g.id != group.id).toList(),
     );
   }
 
-  IdolGroup? getGroupById(
-    int id, {
-    required Logger logger,
-  }) {
+  IdolGroup? getGroupById(int id) {
     try {
       return state.groups.firstWhere(
         (group) => group.id == id,
@@ -125,7 +116,6 @@ final groupsProvider =
   final notifier = GroupsNotifier();
   notifier.initialize(
     supabase: supabase,
-    logger: logger,
   );
   return notifier;
 });
