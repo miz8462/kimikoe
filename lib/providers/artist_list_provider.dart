@@ -38,10 +38,9 @@ class ArtistsNotifier extends StateNotifier<List<Artist>> {
 final artistsFromSupabaseProvider = FutureProvider<List<Artist>>((ref) async {
   // プロバイダーを作り、そこを通すことで
   // ProviderContainerでオーバーライドしたモックを受け取ることができる
-  final logger = ref.read(loggerProvider);
   final supabase = ref.read(supabaseProvider);
 
-  return createArtistList(supabase: supabase, logger: logger);
+  return createArtistList(supabase: supabase);
 });
 
 final artistsProvider =

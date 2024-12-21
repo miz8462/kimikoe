@@ -17,14 +17,12 @@ Future<void> deleteDataFromTable({
     if (!context.mounted) return;
     showLogAndSnackBar(
       context: context,
-      logger: logger,
       message: 'データを削除しました。名前: $targetValue',
     );
     logger.i('データを削除しました。名前: $targetValue');
   } catch (e) {
     showLogAndSnackBar(
       context: context,
-      logger: logger,
       message: 'データの削除中にエラーが発生しました。名前: $targetValue',
       isError: true,
     );

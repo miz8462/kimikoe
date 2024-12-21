@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
 
 void showLogAndSnackBar({
   required BuildContext context,
-  required Logger logger,
   required String message,
   bool isError = false,
 }) {

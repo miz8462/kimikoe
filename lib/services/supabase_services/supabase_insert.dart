@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
-import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/utils/show_log_and_snack_bar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -21,13 +20,11 @@ Future<void> insertArtistData({
     if (!context.mounted) return;
     showLogAndSnackBar(
       context: context,
-      logger: logger,
       message: 'アーティストを登録しました: $name',
     );
   } catch (e) {
     showLogAndSnackBar(
       context: context,
-      logger: logger,
       message: 'アーティストの登録中にエラーが発生しました: $name',
       isError: true,
     );
@@ -61,13 +58,11 @@ Future<void> insertIdolGroupData({
     if (!context.mounted) return;
     showLogAndSnackBar(
       context: context,
-      logger: logger,
       message: 'グループを登録しました: $name',
     );
   } catch (e) {
     showLogAndSnackBar(
       context: context,
-      logger: logger,
       message: 'グループの登録中にエラーが発生しました: $name',
       isError: true,
     );
@@ -105,13 +100,11 @@ Future<void> insertIdolData({
     if (!context.mounted) return;
     showLogAndSnackBar(
       context: context,
-      logger: logger,
       message: 'アイドルを登録しました: $name',
     );
   } catch (e) {
     showLogAndSnackBar(
       context: context,
-      logger: logger,
       message: 'アイドルの登録中にエラーが発生しました: $name',
       isError: true,
     );
@@ -145,13 +138,11 @@ Future<void> insertSongData({
     if (!context.mounted) return;
     showLogAndSnackBar(
       context: context,
-      logger: logger,
       message: '曲を登録しました: $title',
     );
   } catch (e) {
     showLogAndSnackBar(
       context: context,
-      logger: logger,
       message: '曲の登録中にエラーが発生しました: $title',
       isError: true,
     );

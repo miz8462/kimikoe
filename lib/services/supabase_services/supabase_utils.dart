@@ -3,12 +3,10 @@ import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_storage.dart';
-import 'package:logger/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<List<Artist>> createArtistList({
   required SupabaseClient supabase,
-  required Logger logger,
 }) async {
   try {
     logger.i('Supabaseからアーティストデータを取得中...');

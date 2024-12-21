@@ -1,7 +1,6 @@
 // READ
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:logger/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<List<Map<String, dynamic>>> fetchArtists({
@@ -12,7 +11,6 @@ Future<List<Map<String, dynamic>>> fetchArtists({
     logger.i('アーティストのリストを取得しました');
     return response;
   } catch (e) {
-
     logger.e('アーティストのリストの取得中にエラーが発生しました', error: e);
     rethrow;
   }

@@ -32,13 +32,11 @@ Future<void> updateIdolGroup({
     if (!context.mounted) return;
     showLogAndSnackBar(
       context: context,
-      logger: logger,
       message: 'グループを更新しました。グループ名: $name',
     );
   } catch (e) {
     showLogAndSnackBar(
       context: context,
-      logger: logger,
       message: 'グループの更新中にエラーが発生しました。グループ名: $name',
       isError: true,
     );
@@ -77,13 +75,11 @@ Future<void> updateIdol({
     if (!context.mounted) return;
     showLogAndSnackBar(
       context: context,
-      logger: logger,
       message: 'アイドルデータを更新しました。グループ名: $name',
     );
   } catch (e) {
     showLogAndSnackBar(
       context: context,
-      logger: logger,
       message: 'アイドルデータの更新中にエラーが発生しました。アイドル名: $name',
       isError: true,
     );
@@ -119,13 +115,11 @@ Future<void> updateSong({
     if (!context.mounted) return;
     showLogAndSnackBar(
       context: context,
-      logger: logger,
       message: '曲を更新しました。曲名: $title',
     );
   } catch (e) {
     showLogAndSnackBar(
       context: context,
-      logger: logger,
       message: '曲の更新中にエラーが発生しました。曲名: $title',
       isError: true,
     );
@@ -152,13 +146,11 @@ Future<void> updateUser({
     if (!context.mounted) return;
     showLogAndSnackBar(
       context: context,
-      logger: logger,
       message: 'ユーザーを更新しました。ユーザー名: $name',
     );
   } catch (e) {
     showLogAndSnackBar(
       context: context,
-      logger: logger,
       message: 'ユーザーの更新中にエラーが発生しました。ユーザー名: $name',
       isError: true,
     );

@@ -22,7 +22,6 @@ Future<void> uploadImageToStorage({
     if (!context.mounted) return;
     showLogAndSnackBar(
       context: context,
-      logger: logger,
       message: '画像をストレージにアップロードしました',
     );
   } catch (e) {
