@@ -39,7 +39,7 @@ void main() {
     notifier.dispose();
   });
 
-  group('IdolGroupListState', () {
+  group('GroupsState', () {
     test('クラスの初期化', () {
       final state = GroupsState();
 
@@ -66,7 +66,7 @@ void main() {
     });
   });
 
-  group('IdolGroupListNotifier', () {
+  group('GroupsNotifier', () {
     test('initializeでアイドルグループのリストを取得', () async {
       expect(notifier.state.isLoading, isFalse);
       expect(notifier.state.groups.length, 1);
@@ -130,7 +130,7 @@ void main() {
     });
   });
 
-  group('idolGroupListProvider', () {
+  group('GroupsProvider', () {
     test('プロバイダーの初期化', () async {
       final container = ProviderContainer(
         overrides: [

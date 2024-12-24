@@ -2,29 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/models/idol.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
+import 'package:kimikoe_app/providers/fetch_group_members_provider.dart';
 import 'package:kimikoe_app/providers/groups_providere.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
 
-class MemberListInGroupNotifier extends StateNotifier<AsyncValue<List<Idol>>> {
-  MemberListInGroupNotifier(this.ref, this.groupId)
-      : super(const AsyncLoading()) {
-    fetchIdols();
-  }
+class GroupMembersNotifier extends StateNotifier<AsyncValue<List<Idol>>> {
+  GroupMembersNotifier(this.ref, this.groupId) : super(const AsyncLoading());
 
   final Ref ref;
   final int groupId;
 
+  Future<void> initialize() async {
+    return fetchIdols();
+  }
+
   Future<void> fetchIdols() async {
     try {
-      final group = ref.watch(groupsProvider.notifier).getGroupById(groupId);
+      final groupsNotifier = ref.watch(groupsProvider.notifier);
+      final group = groupsNotifier.getGroupById(groupId);
       final groupName = group!.name;
       logger.i('Supabaseから $groupName のメンバーリストを取得中...');
-      final response = await fetchGroupMembers(
+      print('groupName: $groupName');
+
+      final fechGroupMembers = ref.read(fetchGroupMembersProvider);
+      final response = await fechGroupMembers(
         groupId,
         supabase: supabase,
       );
+      print('ここだよ～');
+      print('response: $response');
 
       final idols = response.map((idol) {
         return Idol(
@@ -68,7 +75,9 @@ class MemberListInGroupNotifier extends StateNotifier<AsyncValue<List<Idol>>> {
   }
 }
 
-final memberListOfGroupProvider = StateNotifierProvider.family<
-    MemberListInGroupNotifier, AsyncValue<List<Idol>>, int>(
-  MemberListInGroupNotifier.new,
-);
+final groupMembersProvider = StateNotifierProvider.family<GroupMembersNotifier,
+    AsyncValue<List<Idol>>, int>((ref, groupId) {
+  final notifier = GroupMembersNotifier(ref, groupId);
+  notifier.initialize();
+  return notifier;
+});

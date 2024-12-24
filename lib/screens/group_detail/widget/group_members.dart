@@ -4,7 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
-import 'package:kimikoe_app/providers/member_list_of_group_provider.dart';
+import 'package:kimikoe_app/providers/group_members_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 
 class GroupMembers extends ConsumerWidget {
@@ -16,7 +16,7 @@ class GroupMembers extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final members = ref.watch(memberListOfGroupProvider(group.id!));
+    final members = ref.watch(groupMembersProvider(group.id!));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
