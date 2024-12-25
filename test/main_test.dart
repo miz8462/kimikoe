@@ -14,7 +14,9 @@ import 'test_utils/mocks/supabase_client_mock.dart';
 
 void main() {
   final mockLogger = MockLogger();
-  setUp(() async {
+  setUpAll(() async {});
+
+  testWidgets('アプリが正常に起動する', (WidgetTester tester) async {
     await dotenv.load();
     SharedPreferences.setMockInitialValues({});
     await Supabase.initialize(
@@ -22,9 +24,6 @@ void main() {
       anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
     );
     logger = mockLogger;
-  });
-
-  testWidgets('アプリが正常に起動する', (WidgetTester tester) async {
     final mockSupabaseClient = MockSupabaseClient();
     final mockAuth = MockGoTrueClient();
     when(mockSupabaseClient.auth).thenReturn(mockAuth);
