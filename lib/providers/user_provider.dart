@@ -10,7 +10,13 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
   UserProfileNotifier() : super(null);
 
   Future<void> fetchUserProfile() async {
-    final currentUserId = supabase.auth.currentUser!.id;
+    final currentUser = supabase.auth.currentUser;
+    print('CURRENT USER:$currentUser');
+    if (currentUser == null) {
+      logger.i('ユーザーがログインしていません');
+      return;
+    }
+    final currentUserId = currentUser.id;
 
     try {
       logger.i('ユーザーID $currentUserId のプロフィールを取得中...');

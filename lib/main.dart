@@ -16,6 +16,7 @@ final sessionProvider = StateProvider<Session?>((ref) => null);
 Future<void> main() async {
   // Flutterの初期化
   WidgetsFlutterBinding.ensureInitialized();
+  initializeLogger();
   await dotenv.load();
 
   // Supabaseの初期化

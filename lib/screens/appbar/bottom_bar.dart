@@ -86,7 +86,6 @@ class _BottomBarState extends ConsumerState<BottomBar> {
   Widget build(BuildContext context) {
     final currentIndex = widget.navigationShell.currentIndex;
     final user = ref.watch(userProfileProvider);
-
     if (user == null) {
       return Scaffold(
         body: Center(

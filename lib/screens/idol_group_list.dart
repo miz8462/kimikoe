@@ -72,7 +72,6 @@ class _IdolGroupListScreenState extends ConsumerState<IdolGroupListScreen> {
 
     return Scaffold(
       appBar: const TopBar(
-        // imageUrl: 'assets/images/Kimikoe_Logo_S.svg',
         pageTitle: 'グループリスト',
         showLeading: false,
       ),

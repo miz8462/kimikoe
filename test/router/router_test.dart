@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
+import 'package:kimikoe_app/screens/idol_group_list.dart';
 import 'package:kimikoe_app/screens/sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -21,10 +23,8 @@ void main() {
     );
     logger = mockLogger;
   });
-  group('Router', () {
-    testWidgets('初期ルートがログイン画面', (WidgetTester tester) async {
-      await tester.pumpWidget(const KimikoeApp());
-      expect(find.byType(SignInScreen), findsOneWidget);
-    });
+  testWidgets('初期ルートがログイン画面', (WidgetTester tester) async {
+    await tester.pumpWidget(ProviderScope(child: const KimikoeApp()));
+    expect(find.byType(SignInScreen), findsOneWidget);
   });
 }
