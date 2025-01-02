@@ -11,9 +11,9 @@ import 'test_utils/mocks/logger_mock.dart';
 import 'test_utils/mocks/supabase_client_mock.dart';
 import 'test_utils/test_helpers.dart';
 
-void main() {
+void main() async{
   final mockLogger = MockLogger();
-  testSupabaseSetUpAll(mockLogger);
+  await testSupabaseSetUpAll(mockLogger);
 
   testWidgets('アプリが正常に起動する', (WidgetTester tester) async {
     final mockSupabaseClient = MockSupabaseClient();

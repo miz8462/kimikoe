@@ -70,7 +70,7 @@ Future<List<Map<String, dynamic>>> mockFetchGroupMembers(
   ];
 }
 
-void testSupabaseSetUpAll(MockLogger mockLogger) {
+Future<void> testSupabaseSetUpAll(MockLogger mockLogger) async {
   setUpAll(() async {
     await dotenv.load();
     SharedPreferences.setMockInitialValues({});
