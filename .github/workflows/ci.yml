@@ -82,15 +82,15 @@ jobs:
 
       - name: Install Android SDK platforms 
         run: |
-          yes | /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager --install "platforms;android-35" "system-images;android-35;default;x86_64" 
+          yes | /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager --install "platforms;android-34" "system-images;android-34;default;x86_64" 
           echo "Installed system images:"
           ls -R /usr/local/android-sdk/system-images/
 
       - name: Verify system images 
-        run: ls /usr/local/android-sdk/system-images/android-35/default/x86_64
+        run: ls /usr/local/android-sdk/system-images/android-34/default/x86_64
         
       - name: Create Android emulator 
-        run: echo "no" | /usr/local/android-sdk/cmdline-tools/tools/bin/avdmanager create avd --force --name test --package "system-images;android-35;default;x86_64"
+        run: echo "no" | /usr/local/android-sdk/cmdline-tools/tools/bin/avdmanager create avd --force --name test --package "system-images;android-34;default;x86_64"
 
       - name: List available AVDs
         run: /usr/local/android-sdk/cmdline-tools/tools/bin/avdmanager list avd
