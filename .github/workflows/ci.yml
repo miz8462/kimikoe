@@ -79,11 +79,14 @@ jobs:
           echo "export PATH=\$PATH:/usr/local/android-sdk/platform-tools" >> $GITHUB_ENV 
 
       - name: Accept licenses 
-        run: yes | /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager --licenses || true
-        
-      - name: List available system images 
-        id: list-images
-        run: /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager --list
+        run: |
+        expect -c '
+        spawn /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager --licenses
+        expect {
+          "Accept? (y/N):" { send "y\r"; exp_continue }
+          eof
+        }
+        '
 
       - name: Install Android SDK platforms 
         run: |
