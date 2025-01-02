@@ -83,7 +83,7 @@ jobs:
         run: /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager "platforms;android-29" "system-images;android-29;default;x86_64" 
         
       - name: Create Android emulator 
-        run: echo "no" | /usr/local/android-sdk/cmdline-tools/tools/bin/avdmanager create avd --force --name test --package "system-images;android-29;default;x86_64"
+        run: echo "no" | /usr/local/android-sdk/cmdline-tools/tools/bin/avdmanager create avd --force --name test --package "system-images;android-29;google_apis;x86_64"
 
       - name: Start Android emulator 
         run: |
