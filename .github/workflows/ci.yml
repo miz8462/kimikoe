@@ -89,8 +89,9 @@ jobs:
             "Accept? (y/N):" { exp_send "y\r"; exp_continue } 
             eof } 
           '
-      - name List installed system images
-        run: echo "Installed system images:" 
+      - name: List installed system images
+        run: |
+          echo "Installed system images:" 
           ls -R /usr/local/android-sdk/system-images/ 
 
       - name: Verify system images 
