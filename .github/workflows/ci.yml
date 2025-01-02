@@ -80,9 +80,9 @@ jobs:
       - name: Analyze project source
         run: flutter analyze
 
-      - name: Run tests
-        run: flutter test --coverage # --machine でJSONに形式に変換できる。より高度な自動解析ではJSONにする必要がある。
-        
+      - name: Run integration tests 
+        run: flutter test integration_test/main_test.dart
+
       - name: Upload Code Coverage to Codecov
         uses: codecov/codecov-action@v5
         with: 
