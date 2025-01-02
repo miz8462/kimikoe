@@ -2,7 +2,7 @@ class TableName {
   TableName._(); // coverage:ignore-line
   static const artists = 'artists';
   static const idols = 'idols';
-  static const idolGroups = 'idol-groups';
+  static const idolGroups = 'idol_groups';
   static const profiles = 'profiles';
   static const songs = 'songs';
   static const images = 'images'; // storage名

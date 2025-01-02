@@ -33,7 +33,6 @@ Future<void> main() async {
   // スマホを横にしても画面が回転しない
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-  // アプリの実行
   runApp(
     ProviderScope(
       overrides: [loggerProvider.overrideWith((ref) => logger)],

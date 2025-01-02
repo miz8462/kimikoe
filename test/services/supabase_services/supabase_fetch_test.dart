@@ -114,7 +114,7 @@ void main() {
         );
       } catch (e) {
         verify(
-          logger.e('idol-groupsのIDと名前のリストの取得中にエラーが発生しました', error: e),
+          logger.e('idol_groupsのIDと名前のリストの取得中にエラーが発生しました', error: e),
         ).called(1);
         didThrowError = true;
       }
