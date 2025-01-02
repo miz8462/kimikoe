@@ -60,53 +60,8 @@ jobs:
           distribution: 'zulu' # See 'Supported distributions' for available options
           java-version: '21'
 
-      - name: Install necessary tools
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wget unzip expect
-
-      - name: Install Android SDK tools 
-        run: | 
-          sudo apt-get update 
-          sudo apt-get install -y wget unzip 
-          wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip -O commandlinetools-linux.zip 
-          sudo mkdir -p /usr/local/android-sdk/cmdline-tools 
-          sudo unzip commandlinetools-linux.zip -d /usr/local/android-sdk/cmdline-tools 
-        
-          sudo mv /usr/local/android-sdk/cmdline-tools/cmdline-tools /usr/local/android-sdk/cmdline-tools/tools 
-          echo "export ANDROID_SDK_ROOT=/usr/local/android-sdk" >> $GITHUB_ENV 
-          echo "export PATH=\$PATH:/usr/local/android-sdk/cmdline-tools/tools/bin" >> $GITHUB_ENV 
-          echo "export PATH=\$PATH:/usr/local/android-sdk/platform-tools" >> $GITHUB_ENV 
-
-      - name: Accept licenses 
-        run: yes | /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager --licenses || true
-      
-      - name: Clear cache 
-        run: sudo rm -rf /usr/local/android-sdk/.cache
-        
-      - name: Install Android SDK platforms 
-        run: |
-          yes | /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager --licenses --install "platforms;android-34" "system-images;android-34;default;x86_64" 
-
-      - name: List installed system images
-        run: |
-          echo "Installed system images:" 
-          ls -R /usr/local/android-sdk/system-images/ 
-
-      - name: Verify system images 
-        run: ls /usr/local/android-sdk/system-images/android-34/default/x86_64
-        
-      - name: Create Android emulator 
-        run: echo "no" | /usr/local/android-sdk/cmdline-tools/tools/bin/avdmanager create avd --force --name test --package "system-images;android-34;default;x86_64"
-
-      - name: List available AVDs
-        run: /usr/local/android-sdk/cmdline-tools/tools/bin/avdmanager list avd
-
-      - name: Start Android emulator 
-        run: |
-          nohup emulator -avd test -no-audio -no-window & 
-          adb wait-for-device 
-          adb shell input keyevent 82 &
+      - name: Set up Android Emulator 
+        uses: faruktoptas/android-github-actions-emulator@latest
 
       # コードチェック、テスト
       - name: Check Code Formatting 
