@@ -51,12 +51,11 @@ jobs:
             ${{ runner.os }}-supabase-
 
       # Supabase CLIのインストール 
-      steps:
-        - uses: supabase/setup-cli@v1
-          with:
-            version: '2.1.1'
-        - run: supabase init
-        - run: supabase db start
+      - uses: supabase/setup-cli@v1
+        with:
+          version: '2.1.1'
+      - run: supabase init
+      - run: supabase db start
 
 
       # 依存関係のキャッシュ
