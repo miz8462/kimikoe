@@ -169,7 +169,7 @@ set
     check_function_bodies = off;
 
 CREATE
-OR REPLACE FUNCTION public.handle_new_user() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER AS $ function $ BEGIN
+OR REPLACE FUNCTION public.handle_new_user() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER AS $function$ BEGIN
 INSERT INTO
     public.profiles (id, email, name, image_url)
 VALUES
@@ -184,7 +184,7 @@ RETURN NEW;
 
 END;
 
-$ function $;
+$function$;
 
 grant delete on table "public"."artists" to "anon";
 
