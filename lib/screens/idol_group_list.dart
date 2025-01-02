@@ -1,8 +1,8 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kimikoe_app/providers/connectivity_provider.dart';
 import 'package:kimikoe_app/providers/groups_providere.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/widgets/card/group_card_l.dart';
@@ -16,23 +16,31 @@ class IdolGroupListScreen extends ConsumerStatefulWidget {
 
 class _IdolGroupListScreenState extends ConsumerState<IdolGroupListScreen> {
   @override
-  Widget build(BuildContext context) {
-    final connectivityResult = ref.watch(connectivityProvider);
-    final state = ref.watch(groupsProvider);
-    final isLoading = state.isLoading;
-    final groups = state.groups;
+  void initState() {
+    super.initState();
+    _checkConnectivity();
+  }
 
-    if (connectivityResult == ConnectivityResult.none) {
-      return Scaffold(
-        appBar: TopBar(
-          pageTitle: 'グループリスト',
-          showLeading: false,
-        ),
-        body: const Center(
-          child: Text('インターネットに接続されていません'),
+  // グループリストページを開く際、ネットに繋がっていない場合
+  // エラーメッセージを表示する。connectivity_plus
+  Future<void> _checkConnectivity() async {
+    final connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult.contains(ConnectivityResult.none)) {
+      logger.e('インターネットに接続されていません');
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('インターネットに接続されていません。接続を確認してください。'),
         ),
       );
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(groupsProvider);
+    final isLoading = state.isLoading;
+    final groups = state.groups;
 
     late Widget content;
     if (isLoading) {
