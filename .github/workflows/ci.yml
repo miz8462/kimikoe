@@ -76,6 +76,9 @@ jobs:
       - name: Accept licenses 
         run: yes | /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager --licenses 
         
+      - name: List available system images 
+        run: /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager --list
+
       - name: Install Android SDK platforms 
         run: /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager "platforms;android-29" "system-images;android-29;default;x86_64" 
         
