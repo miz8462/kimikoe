@@ -79,15 +79,8 @@ jobs:
           echo "export PATH=\$PATH:/usr/local/android-sdk/platform-tools" >> $GITHUB_ENV 
 
       - name: Accept licenses 
-        run: |
-        expect -c '
-        spawn /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager --licenses
-        expect {
-          "Accept? (y/N):" { send "y\r"; exp_continue }
-          eof
-        }
-        '
-
+        run: yes | /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager --licenses || true
+        
       - name: Install Android SDK platforms 
         run: |
           expect -c '
