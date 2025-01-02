@@ -74,9 +74,17 @@ Future<void> testSupabaseSetUpAll(MockLogger mockLogger) async {
   setUpAll(() async {
     await dotenv.load();
     SharedPreferences.setMockInitialValues({});
+
+    final supabaseUrl = dotenv.env['LOCAL_SUPABASE_URL'];
+    final supabaseAnonKey = dotenv.env['LOCAL_SUPABASE_ANON_KEY'];
+
+    if (supabaseUrl == null || supabaseAnonKey == null) {
+      throw ArgumentError('Supabase URL and Anon Key cannot be null');
+    }
+
     await Supabase.initialize(
-      url: dotenv.env['LOCAL_SUPABASE_URL']!,
-      anonKey: dotenv.env['LOCAL_SUPABASE_ANON_KEY']!,
+      url: supabaseUrl,
+      anonKey: supabaseAnonKey,
     );
     logger = mockLogger;
   });
