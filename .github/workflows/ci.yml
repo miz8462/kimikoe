@@ -58,7 +58,11 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: 'zulu' # See 'Supported distributions' for available options
-          java-version: '21' 
+          java-version: '21'
+
+      - name: Install necessary tools
+        run: |
+          sudo apt-get update sudo apt-get install -y wget unzip expect
 
       - name: Install Android SDK tools 
         run: | 
