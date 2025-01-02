@@ -86,7 +86,7 @@ jobs:
         
       - name: Install Android SDK platforms 
         run: |
-          yes | /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager --install "platforms;android-34" "system-images;android-34;default;x86_64" 
+          yes | /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager --licenses --install "platforms;android-34" "system-images;android-34;default;x86_64" 
 
       - name: List installed system images
         run: |
