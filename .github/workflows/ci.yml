@@ -81,7 +81,8 @@ jobs:
         run: /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager --list
 
       - name: Install Android SDK platforms 
-        run: yes | /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager --install "platforms;android-35" "system-images;android-35;default;x86_64" 
+        run: |
+          yes | /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager --install "platforms;android-35" "system-images;android-35;default;x86_64" 
           echo "Installed system images:"
           ls -R /usr/local/android-sdk/system-images/
 
