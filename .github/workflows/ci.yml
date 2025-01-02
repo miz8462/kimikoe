@@ -80,6 +80,9 @@ jobs:
 
       - name: Accept licenses 
         run: yes | /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager --licenses || true
+      
+      - name: Clear cache 
+        run: sudo rm -rf /usr/local/android-sdk/.cache
         
       - name: Install Android SDK platforms 
         run: |
