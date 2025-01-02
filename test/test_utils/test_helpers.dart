@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
-import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import 'mocks/logger_mock.dart';
 
 /// ProviderContainerを作成するユーティリティ（ボイラープレート）
 ProviderContainer createContainer({
@@ -66,8 +70,14 @@ Future<List<Map<String, dynamic>>> mockFetchGroupMembers(
   ];
 }
 
-SupabaseClient createMockSupabaseClient() => SupabaseClient(
-      'https://mock.supabase.co',
-      'fakeAnonKey',
-      httpClient: MockSupabaseHttpClient(),
+void testSupabaseSetUpAll(MockLogger mockLogger) {
+  setUpAll(() async {
+    await dotenv.load();
+    SharedPreferences.setMockInitialValues({});
+    await Supabase.initialize(
+      url: dotenv.env['LOCAL_SUPABASE_URL']!,
+      anonKey: dotenv.env['LOCAL_SUPABASE_ANON_KEY']!,
     );
+    logger = mockLogger;
+  });
+}

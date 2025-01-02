@@ -5,29 +5,25 @@ import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:mockito/mockito.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'test_utils/mocks/go_true_client_mock.dart';
 import 'test_utils/mocks/logger_mock.dart';
 import 'test_utils/mocks/supabase_client_mock.dart';
+import 'test_utils/test_helpers.dart';
 
 void main() {
   final mockLogger = MockLogger();
-  setUpAll(() async {
-    await dotenv.load();
-    SharedPreferences.setMockInitialValues({});
-    await Supabase.initialize(
-      url: dotenv.env['SUPABASE_URL']!,
-      anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
-    );
-    logger = mockLogger;
-  });
+  testSupabaseSetUpAll(mockLogger);
 
   testWidgets('アプリが正常に起動する', (WidgetTester tester) async {
     final mockSupabaseClient = MockSupabaseClient();
     final mockAuth = MockGoTrueClient();
     when(mockSupabaseClient.auth).thenReturn(mockAuth);
+
+    // 初期かテスト
+    expect(logger, isNotNull);
+    expect(dotenv.env['LOCAL_SUPABASE_URL'], isNotNull);
+    expect(dotenv.env['LOCAL_SUPABASE_ANON_KEY'], isNotNull);
 
     await tester.pumpWidget(
       ProviderScope(
@@ -41,4 +37,6 @@ void main() {
 
     expect(find.byType(KimikoeApp), findsOneWidget);
   });
+
+  testWidgets('ログイン', (WidgetTester tester) async {});
 }
