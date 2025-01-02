@@ -61,30 +61,32 @@ jobs:
           java-version: '21' 
 
       - name: Install Android SDK tools 
-        run: |
+        run: | 
           sudo apt-get update 
           sudo apt-get install -y wget unzip 
-          wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip -O commandlinetools-linux.zip 
+          wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip -O commandlinetools-linux.zip 
           sudo mkdir -p /usr/local/android-sdk/cmdline-tools 
-          sudo unzip -d /usr/local/android-sdk/cmdline-tools commandlinetools-linux.zip 
+          sudo unzip commandlinetools-linux.zip -d /usr/local/android-sdk/cmdline-tools 
+        
           sudo mv /usr/local/android-sdk/cmdline-tools/cmdline-tools /usr/local/android-sdk/cmdline-tools/tools 
           echo "export ANDROID_SDK_ROOT=/usr/local/android-sdk" >> $GITHUB_ENV 
           echo "export PATH=\$PATH:/usr/local/android-sdk/cmdline-tools/tools/bin" >> $GITHUB_ENV 
-          echo "export PATH=\$PATH:/usr/local/android-sdk/platform-tools" >> $GITHUB_ENV
-          echo "export ANDROID_HOME=/usr/local/android-sdk" >> $GITHUB_ENV
-          
+          echo "export PATH=\$PATH:/usr/local/android-sdk/platform-tools" >> $GITHUB_ENV 
+
       - name: Accept licenses 
-        run: yes | /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager --licenses
-
-      - name: Install Android SDK 
-        run: sdkmanager "platforms;android-29" "system-images;android-29;default;x86_64"
-
+        run: yes | /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager --licenses 
+        
+      - name: Install Android SDK platforms 
+        run: /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager "platforms;android-29" "system-images;android-29;default;x86_64" 
+        
       - name: Create Android emulator 
-        run: avdmanager create avd --name test --package "system-images;android-29;default;x86_64"
+        run: echo "no" | /usr/local/android-sdk/cmdline-tools/tools/bin/avdmanager create avd --force --name test --package "system-images;android-29;default;x86_64"
 
       - name: Start Android emulator 
         run: |
-          nohup emulator -avd test -no-audio -no-window & adb wait-for-device adb shell input keyevent 82 &
+          nohup emulator -avd test -no-audio -no-window & 
+          adb wait-for-device 
+          adb shell input keyevent 82 &
 
       - name: Check Code Formatting 
         run: dart format .
