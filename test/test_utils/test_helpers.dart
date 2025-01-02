@@ -73,6 +73,7 @@ Future<List<Map<String, dynamic>>> mockFetchGroupMembers(
 Future<void> testSupabaseSetUpAll(MockLogger mockLogger) async {
   setUpAll(() async {
     await dotenv.load();
+    initializeLogger(); 
     SharedPreferences.setMockInitialValues({});
 
     final supabaseUrl = dotenv.env['LOCAL_SUPABASE_URL'];
