@@ -86,12 +86,8 @@ jobs:
         
       - name: Install Android SDK platforms 
         run: |
-          expect -c '
-          spawn /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager --install "platforms;android-34" "system-images;android-34;default;x86_64" 
-          expect { 
-            "Accept? (y/N):" { exp_send "y\r"; exp_continue } 
-            eof } 
-          '
+          yes | /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager --install "platforms;android-34" "system-images;android-34;default;x86_64" 
+
       - name: List installed system images
         run: |
           echo "Installed system images:" 
