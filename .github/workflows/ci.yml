@@ -19,10 +19,6 @@ jobs:
           touch .env
           echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env
           echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}" >> .env
-
-          echo "LOCAL_SUPABASE_URL=${{ secrets.LOCAL_SUPABASE_URL }}" >> .env
-          echo "LOCAL_SUPABASE_ANON_KEY=${{ secrets.LOCAL_SUPABASE_ANON_KEY }}" >> .env
-
           echo "GOOGLE_OAUTH_IOS_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_IOS_CLIENT_ID }}" >> .env
           echo "GOOGLE_OAUTH_WEB_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_WEB_CLIENT_ID }}" >> .env
 
@@ -68,15 +64,16 @@ jobs:
         run: |
           sudo apt-get update 
           sudo apt-get install -y wget unzip 
-          wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip 
-          sudo unzip commandlinetools-linux-7583922_latest.zip -d /usr/local/android-sdk 
+          wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip -O commandlinetools-linux.zip 
+          sudo mkdir -p /usr/local/android-sdk/cmdline-tools 
+          sudo unzip -d /usr/local/android-sdk/cmdline-tools commandlinetools-linux.zip 
+          sudo mv /usr/local/android-sdk/cmdline-tools/cmdline-tools /usr/local/android-sdk/cmdline-tools/tools 
           echo "export ANDROID_SDK_ROOT=/usr/local/android-sdk" >> $GITHUB_ENV 
-          echo  "export PATH=\$PATH:/usr/local/android-sdk/cmdline-tools/tools/bin" >>  $GITHUB_ENV 
-          echo "export PATH=\$PATH:/usr/local/android-sdk/platform-tools" >>  $GITHUB_ENV 
+          echo "export PATH=\$PATH:/usr/local/android-sdk/cmdline-tools/tools/bin" >> $GITHUB_ENV 
+          echo "export PATH=\$PATH:/usr/local/android-sdk/platform-tools" >> $GITHUB_ENV
           
       - name: Accept licenses 
-        run: yes | sdkmanager --licenses
-  
+        run: yes | /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager --licenses   
       - name: Install Android SDK 
         run: sdkmanager "platforms;android-29" "system-images;android-29;default;x86_64"        
       - name: Create Android emulator 
