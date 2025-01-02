@@ -90,7 +90,7 @@ jobs:
             eof } 
           '
       - name List installed system images
-        run: |
+        run:
           echo "Installed system images:" 
           ls -R /usr/local/android-sdk/system-images/ 
 
