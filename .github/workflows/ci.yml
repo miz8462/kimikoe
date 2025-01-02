@@ -35,27 +35,9 @@ jobs:
           restore-keys: | 
             ${{ runner.os }}-flutter-
 
-      
-      # Flutter SDKのインストール 
       - uses: subosito/flutter-action@v2 
         with: 
           flutter-version: '3.24.0' # latestはダメだった
-
-      # Supabase CLIのキャッシュ 
-      - name: Cache Supabase CLI 
-        uses: actions/cache@v3 
-        with: 
-          path: ~/.supabase 
-          key: ${{ runner.os }}-supabase-${{ hashFiles('**/pubspec.yaml') }} 
-          restore-keys: | 
-            ${{ runner.os }}-supabase-
-
-      # Supabase CLIのインストール 
-      - uses: supabase/setup-cli@v1
-        with:
-          version: '2.1.1'
-      - run: supabase db start
-
 
       # 依存関係のキャッシュ
       - name: Cache dependencies 
@@ -70,9 +52,25 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get
-
+      
       - name: Check for outdated dependencies 
         run: flutter pub outdated
+
+      
+      # アンドロイドエミュレータの環境を構築
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with: java-version: '11' 
+  
+      - name: Install Android SDK 
+        run: sdkmanager "platforms;android-29" 
+        
+      - name: Create Android emulator 
+        run: avdmanager create avd --name test --package "system-images;android-29;default;x86_64" 
+        
+      - name: Start Android emulator 
+        run: |
+          nohup emulator -avd test -no-audio -no-window & adb wait-for-device adb shell input keyevent 82 &
 
       - name: Check Code Formatting 
         run: dart format .
@@ -80,8 +78,11 @@ jobs:
       - name: Analyze project source
         run: flutter analyze
 
+      - name: Run unit tests
+        run: flutter test --coverage  
+
       - name: Run integration tests 
-        run: flutter test integration_test/main_test.dart
+        run: flutter test integration_test/main_test.dart --coverage 
 
       - name: Upload Code Coverage to Codecov
         uses: codecov/codecov-action@v5
