@@ -63,9 +63,9 @@ jobs:
         uses: actions/setup-java@v4 
         with: 
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
           
-      - name: Set up Android Emulator 
+      - name: Set up Android Emulator and Integration Test
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
@@ -83,9 +83,6 @@ jobs:
 
       - name: Run unit tests
         run: flutter test --coverage  
-
-      - name: Run integration tests 
-        run: flutter test integration_test/main_test.dart --coverage 
 
       - name: Upload Code Coverage to Codecov
         uses: codecov/codecov-action@v5
