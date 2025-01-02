@@ -18,13 +18,15 @@ jobs:
         run: |
           touch .env
           echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env
-          echo "SUPABASE_URL_LOCAL=${{ secrets.SUPABASE_URL_LOCAL }}" >> .env
           echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}" >> .env
-          echo "SUPABASE_ANON_KEY_LOCAL=${{ secrets.SUPABASE_ANON_KEY_LOCAL }}" >> .env
+
+          echo "LOCAL_SUPABASE_URL=${{ secrets.LOCAL_SUPABASE_URL }}" >> .env
+          echo "LOCL_SUPABASE_ANON_KEY=${{ secrets.LOCAL_SUPABASE_ANON_KEY }}" >> .env
 
           echo "GOOGLE_OAUTH_IOS_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_IOS_CLIENT_ID }}" >> .env
           echo "GOOGLE_OAUTH_WEB_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_WEB_CLIENT_ID }}" >> .env
 
+      # Flutter SDKのキャッシュ
       - name: Cache Flutter SDK 
         uses: actions/cache@v3 
         with: 
@@ -33,11 +35,31 @@ jobs:
           restore-keys: | 
             ${{ runner.os }}-flutter-
 
+      
       # Flutter SDKのインストール 
       - uses: subosito/flutter-action@v2 
         with: 
           flutter-version: '3.24.0' # latestはダメだった
 
+      # Supabase CLIのキャッシュ 
+      - name: Cache Supabase CLI 
+        uses: actions/cache@v3 
+        with: 
+          path: ~/.supabase 
+          key: ${{ runner.os }}-supabase-${{ hashFiles('**/pubspec.yaml') }} 
+          restore-keys: | 
+            ${{ runner.os }}-supabase-
+
+      # Supabase CLIのインストール 
+      steps:
+        - uses: supabase/setup-cli@v1
+          with:
+            version: '2.1.1'
+        - run: supabase init
+        - run: supabase db start
+
+
+      # 依存関係のキャッシュ
       - name: Cache dependencies 
         uses: actions/cache@v3 
         with: 

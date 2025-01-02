@@ -5,13 +5,14 @@ import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:mockito/mockito.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'test_utils/mocks/go_true_client_mock.dart';
 import 'test_utils/mocks/logger_mock.dart';
 import 'test_utils/mocks/supabase_client_mock.dart';
 import 'test_utils/test_helpers.dart';
 
-void main() async{
+void main() async {
   final mockLogger = MockLogger();
   await testSupabaseSetUpAll(mockLogger);
 
@@ -24,6 +25,7 @@ void main() async{
     expect(logger, isNotNull);
     expect(dotenv.env['LOCAL_SUPABASE_URL'], isNotNull);
     expect(dotenv.env['LOCAL_SUPABASE_ANON_KEY'], isNotNull);
+    expect(Supabase.instance.client, isNotNull);
 
     await tester.pumpWidget(
       ProviderScope(
@@ -37,6 +39,4 @@ void main() async{
 
     expect(find.byType(KimikoeApp), findsOneWidget);
   });
-
-  testWidgets('ログイン', (WidgetTester tester) async {});
 }
