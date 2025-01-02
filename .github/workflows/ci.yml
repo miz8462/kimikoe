@@ -88,9 +88,11 @@ jobs:
           expect { 
             "Accept? (y/N):" { exp_send "y\r"; exp_continue } 
             eof } 
+          '
+      - name List installed system images
+        run: |
           echo "Installed system images:" 
           ls -R /usr/local/android-sdk/system-images/ 
-          '
 
       - name: Verify system images 
         run: ls /usr/local/android-sdk/system-images/android-34/default/x86_64
