@@ -21,7 +21,7 @@ jobs:
           echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}" >> .env
 
           echo "LOCAL_SUPABASE_URL=${{ secrets.LOCAL_SUPABASE_URL }}" >> .env
-          echo "LOCL_SUPABASE_ANON_KEY=${{ secrets.LOCAL_SUPABASE_ANON_KEY }}" >> .env
+          echo "LOCAL_SUPABASE_ANON_KEY=${{ secrets.LOCAL_SUPABASE_ANON_KEY }}" >> .env
 
           echo "GOOGLE_OAUTH_IOS_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_IOS_CLIENT_ID }}" >> .env
           echo "GOOGLE_OAUTH_WEB_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_WEB_CLIENT_ID }}" >> .env
