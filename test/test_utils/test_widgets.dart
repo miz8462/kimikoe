@@ -7,7 +7,7 @@ Widget buildTestWidget({
   List<Override>? overrides,
 }) {
   return ProviderScope(
-    overrides: overrides!,
+    overrides: overrides ?? [],
     child: MaterialApp(
       home: Scaffold(
         body: Builder(

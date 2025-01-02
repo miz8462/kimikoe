@@ -20,7 +20,7 @@ void main() {
     final mockAuth = MockGoTrueClient();
     when(mockSupabaseClient.auth).thenReturn(mockAuth);
 
-    // 初期かテスト
+    // 初期化テスト
     expect(logger, isNotNull);
     expect(dotenv.env['LOCAL_SUPABASE_URL'], isNotNull);
     expect(dotenv.env['LOCAL_SUPABASE_ANON_KEY'], isNotNull);
