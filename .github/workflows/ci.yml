@@ -71,14 +71,17 @@ jobs:
           echo "export ANDROID_SDK_ROOT=/usr/local/android-sdk" >> $GITHUB_ENV 
           echo "export PATH=\$PATH:/usr/local/android-sdk/cmdline-tools/tools/bin" >> $GITHUB_ENV 
           echo "export PATH=\$PATH:/usr/local/android-sdk/platform-tools" >> $GITHUB_ENV
+          echo "export ANDROID_HOME=/usr/local/android-sdk" >> $GITHUB_ENV
           
       - name: Accept licenses 
-        run: yes | /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager --licenses   
+        run: yes | /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager --licenses
+
       - name: Install Android SDK 
-        run: sdkmanager "platforms;android-29" "system-images;android-29;default;x86_64"        
+        run: sdkmanager "platforms;android-29" "system-images;android-29;default;x86_64"
+
       - name: Create Android emulator 
-        run: avdmanager create avd --name test --package "system-images;android-29;default;x86_64" 
-        
+        run: avdmanager create avd --name test --package "system-images;android-29;default;x86_64"
+
       - name: Start Android emulator 
         run: |
           nohup emulator -avd test -no-audio -no-window & adb wait-for-device adb shell input keyevent 82 &
