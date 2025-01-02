@@ -63,10 +63,22 @@ jobs:
         with:
           distribution: 'zulu' # See 'Supported distributions' for available options
           java-version: '21' 
+
+      - name: Install Android SDK tools 
+        run: |
+          sudo apt-get update 
+          sudo apt-get install -y 
+          wget wget https://dl.google.com/android/repository/ commandlinetools-linux-7583922_latest.zip 
+          sudo unzip commandlinetools-linux-7583922_latest.zip -d /usr/local/android-sdk 
+          echo "export ANDROID_SDK_ROOT=/usr/local/android-sdk" >> $GITHUB_ENV 
+          echo  "export PATH=\$PATH:/usr/local/android-sdk/cmdline-tools/tools/bin" >>  $GITHUB_ENV 
+          echo "export PATH=\$PATH:/usr/local/android-sdk/platform-tools" >>  $GITHUB_ENV 
+          
+      - name: Accept licenses 
+        run: yes | sdkmanager --licenses
   
       - name: Install Android SDK 
-        run: sdkmanager "platforms;android-29" 
-        
+        run: sdkmanager "platforms;android-29" "system-images;android-29;default;x86_64"        
       - name: Create Android emulator 
         run: avdmanager create avd --name test --package "system-images;android-29;default;x86_64" 
         
