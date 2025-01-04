@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        api-level: [30]
+        api-level: 21, 23, 29]
     steps:
       - uses: actions/checkout@v4 # リポジトリのコードをクローン
       
