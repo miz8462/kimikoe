@@ -74,6 +74,17 @@ jobs:
         with: 
           distribution: 'zulu'
           java-version: '17'
+
+      # エミュレーターのキャッシュ 
+      - name: Cache Android Emulator 
+        uses: actions/cache@v3 
+        with: 
+          path: |
+            ~/.android/avd
+            ~/.android/avd/emu-grpc-timeout
+          key: ${{ runner.os }}-android-emulator-${{ hashFiles('**/android.emulator') }} 
+          restore-keys: |
+            ${{ runner.os }}-android-emulator-
           
       - name: Set up Android Emulator and Integration Test
         uses: reactivecircus/android-emulator-runner@v2
