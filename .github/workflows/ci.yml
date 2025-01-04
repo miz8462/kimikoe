@@ -112,6 +112,16 @@ jobs:
               exit 1
             fi
 
+      # インテグレーションテストのカバレッジファイルの確認
+      - name: Verify integration test coverage
+        run: |
+          if [ -f coverage/lcov.info ]; then
+            echo "Integration test coverage file exists."
+          else
+            echo "Integration test coverage file does not exist."
+            exit 1
+          fi
+
       # - name: Save integration test coverage 
       #   run: mv coverage/lcov.info coverage/integration_test/lcov.info
 
