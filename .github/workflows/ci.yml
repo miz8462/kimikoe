@@ -122,8 +122,8 @@ jobs:
       # - name: Save integration test coverage 
       #   run: mv coverage/lcov.info coverage/integration_test/lcov.info
 
-      # - name: Merge coverage files
-      #   run: lcov -a coverage/lcov.info -a coverage/integration_test/lcov.info -o coverage/lcov.info
+      - name: Merge coverage files
+        run: lcov -a coverage/lcov.info -a coverage/integration_lcov.info -o coverage/lcov.info
 
         
       - name: Upload Code Coverage to Codecov
