@@ -105,7 +105,12 @@ jobs:
           profile: Nexus 6
           script: 
             flutter test integration_test/main_test.dart --coverage 
-            if [ -f coverage/lcov.info ]; then echo "Integration test coverage file exists." else echo "Integration test coverage file does not exist." exit 1 fi
+            if [ -f coverage/lcov.info ]; then 
+              echo "Integration test coverage file exists."
+            else
+              echo "Integration test coverage file does not exist."
+              exit 1
+            fi
 
       # - name: Save integration test coverage 
       #   run: mv coverage/lcov.info coverage/integration_test/lcov.info
