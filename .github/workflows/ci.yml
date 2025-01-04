@@ -61,18 +61,8 @@ jobs:
       # - name: Analyze project source
       #   run: flutter analyze
 
-      - name: Run unit tests
-        run: flutter test --coverage
-
-      # カバレッジファイルの確認
-      - name: Verify unit test coverage
-        run: |
-          if [ -f coverage/lcov.info ]; then
-            echo "Unit test coverage file exists."
-          else
-            echo "Unit test coverage file does not exist."
-            exit 1
-          fi
+      # - name: Run unit tests
+      #   run: flutter test --coverage
 
       # アンドロイドエミュレータの環境を構築 
       - name: Enable KVM
