@@ -119,15 +119,17 @@ jobs:
             exit 1
           fi
 
-      # - name: Save integration test coverage 
-      #   run: mv coverage/lcov.info coverage/integration_test/lcov.info
-
       # coverageディレクトリの中身の確認
       - name: Check coverage directory
         run: ls -la coverage  
 
-      # - name: Merge coverage files
-      #   run: lcov -a coverage/lcov.info -a coverage/integration_lcov.info -o coverage/lcov.info
+      - name: Install lcov
+        run: 
+          sudo apt-get update
+          sudo apt-get install lcov
+
+      - name: Merge coverage files
+        run: lcov -a coverage/lcov.info -a coverage/integration_lcov.info -o coverage/lcov.info
 
         
       - name: Upload Code Coverage to Codecov
