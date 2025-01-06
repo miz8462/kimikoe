@@ -61,7 +61,7 @@ jobs:
       - name: Analyze project source
         run: flutter analyze
 
-      - name: Run unit tests
+      - name: Unit Test
         run: flutter test --coverage
 
       # アンドロイドエミュレータの環境を構築 
@@ -109,20 +109,6 @@ jobs:
           disable-animations: true
           script: flutter test integration_test/main_test.dart --coverage --coverage-path=coverage/integration_lcov.info
 
-      # インテグレーションテストのカバレッジファイルの確認
-      - name: Verify integration test coverage
-        run: |
-          if [ -f coverage/integration_lcov.info ]; then
-            echo "Integration test coverage file exists."
-          else
-            echo "Integration test coverage file does not exist."
-            exit 1
-          fi
-
-      # coverageディレクトリの中身の確認
-      - name: Check coverage directory
-        run: ls -la coverage  
-
       - name: Install lcov
         run: |
           sudo apt-get update
@@ -130,7 +116,6 @@ jobs:
 
       - name: Merge coverage files
         run: lcov -a coverage/lcov.info -a coverage/integration_lcov.info -o coverage/lcov.info
-
         
       - name: Upload Code Coverage to Codecov
         uses: codecov/codecov-action@v5

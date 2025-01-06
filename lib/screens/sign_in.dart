@@ -1,20 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:kimikoe_app/main.dart';
-import 'package:kimikoe_app/models/table_and_column_name.dart';
-import 'package:kimikoe_app/providers/auth_provider.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
-import 'package:kimikoe_app/providers/user_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
+import 'package:kimikoe_app/services/auth_methods.dart';
 import 'package:kimikoe_app/widgets/button/social_login_button.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -36,168 +32,29 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   var _isLogin = true;
 
   late final StreamSubscription<AuthState> _authStateSubscription;
-
-  bool _validateAndSaveForm() {
-    final isValid = _formKey.currentState!.validate();
-
-    if (!isValid) {
-      return false;
-    }
-
-    _formKey.currentState!.save();
-    return true;
-  }
-
-  void _showErrorMessage(AuthException error) {
-    String errorMessage;
-    switch (error.code) {
-      case 'email_exists':
-        errorMessage = 'メールアドレスは既に登録されています。別のメールアドレスを使用してください。';
-      case 'user_already_exists':
-        errorMessage = 'ユーザーはすでに存在しています。ログインを試してください。';
-      case 'user_not_found':
-        errorMessage = 'ユーザーが見つかりません。メールアドレスを確認するか、新しいアカウントを作成してください。';
-      case 'invalid_credentials':
-        errorMessage = 'メールアドレスまたはパスワードが正しくありません。もう一度確認してください。';
-      default:
-        errorMessage = 'エラーが発生しました: ${error.message}';
-    }
-
-    logger.e('認証エラーが発生しました。エラーメッセージ: $errorMessage');
-
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(errorMessage),
-      ),
-    );
-  }
-
-  void _handleAuthError(AuthException error, String operation) {
-    _showErrorMessage(error);
-    logger.e('$operation 中に認証エラーが発生しました。エラーメッセージ: ${error.message}');
-  }
-
-  void _handleGeneralAuthError(Object error) {
-    logger.e('認証エラーが発生しました。エラーメッセージ: $error');
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('認証エラーが発生しました'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-  }
+  late final AuthMethods _authMethods;
 
   Future<void> _signUp() async {
-    if (!_validateAndSaveForm()) {
-      return;
-    }
-
-    try {
-      logger.d('サインアップを開始しました。メールアドレス: $_enteredEmail');
-      final response = await supabase.auth.signUp(
-        email: _enteredEmail,
-        password: _enteredPassword,
-        data: {
-          'username': _enteredName,
-        },
-      );
-
-      final userId = response.user?.id;
-      final userData = response.user?.userMetadata;
-      if (userId != null) {
-        await supabase.from(TableName.profiles).update({
-          ColumnName.name: userData!['username'],
-          ColumnName.imageUrl: noImage,
-        }).eq(
-          ColumnName.id,
-          userId,
-        );
-      }
-      logger.i('サインアップが成功しました。ユーザーID: $userId');
-
-      await Future<dynamic>.delayed(Duration(milliseconds: 200));
-    } on AuthException catch (e) {
-      if (!mounted) return;
-      _handleAuthError(e, 'サインアップ');
-      return;
-    }
-
-    if (mounted) {
-      context.goNamed(RoutingPath.groupList);
-    }
+    await _authMethods.signUp(_enteredEmail, _enteredPassword, _enteredName);
   }
 
   Future<void> _logIn() async {
-    if (!_validateAndSaveForm()) {
-      return;
-    }
-
-    try {
-      await ref.read(authProvider.notifier).logIn(
-            _enteredEmail,
-            _enteredPassword,
-            ref,
-          );
-      logger.i('ログインが成功しました。メールアドレス: $_enteredEmail');
-
-      await Future<dynamic>.delayed(Duration(milliseconds: 200));
-    } on AuthException catch (e) {
-      if (!mounted) return;
-      _handleAuthError(e, 'ログイン');
-    }
-
-    if (mounted) {
-      context.go(RoutingPath.groupList);
-    }
+    await _authMethods.logIn(_enteredEmail, _enteredPassword);
   }
 
   Future<void> _googleSignIn() async {
-    final webClientId = dotenv.env['GOOGLE_OAUTH_WEB_CLIENT_ID'];
-    final iosClientId = dotenv.env['GOOGLE_OAUTH_IOS_CLIENT_ID'];
-
-    try {
-      logger.d('Googleサインインを開始しました。');
-
-      final googleSignIn = GoogleSignIn(
-        clientId: iosClientId,
-        serverClientId: webClientId,
-      );
-      final googleUser = await googleSignIn.signIn();
-      final googleAuth = await googleUser!.authentication;
-      final accessToken = googleAuth.accessToken;
-      final idToken = googleAuth.idToken;
-
-      if (accessToken == null) {
-        throw Exception('アクセストークンが見つかりません。');
-      }
-      if (idToken == null) {
-        throw Exception('IDトークンが見つかりません。');
-      }
-
-      await supabase.auth.signInWithIdToken(
-        provider: OAuthProvider.google,
-        idToken: idToken,
-        accessToken: accessToken,
-      );
-
-      await ref.read(userProfileProvider.notifier).fetchUserProfile();
-      logger.i('Googleサインインが成功しました。ユーザー: ${googleUser.displayName}');
-
-      await Future<dynamic>.delayed(Duration(microseconds: 200));
-    } catch (e) {
-      logger.e('Googleサインインエラー: $e');
-    }
+    await _authMethods.googleSignIn();
   }
 
   @override
   void initState() {
     super.initState();
-    if (isDebugMode) {
-      logger.d('initStateが呼び出されました');
-    }
+
+    _authMethods = AuthMethods(
+      context: context,
+      ref: ref,
+      formKey: _formKey,
+    );
 
     _authStateSubscription = supabase.auth.onAuthStateChange.listen(
       (data) async {
@@ -230,9 +87,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   void dispose() {
     _authStateSubscription.cancel();
     super.dispose();
-    if (isDebugMode) {
-      logger.d('disposeが呼び出されました');
-    }
   }
 
   @override
@@ -302,6 +156,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                               return null;
                             },
                             onSaved: (value) {
+                              if (value == null) {
+                                logger.e('メールアドレスがnullです');
+                              }
                               _enteredEmail = value!;
                             },
                           ),
@@ -340,6 +197,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                               return null;
                             },
                             onSaved: (value) {
+                              if (value == null) {
+                                logger.e('パスワードがnullです');
+                              }
                               _enteredPassword = value!;
                             },
                           ),
@@ -387,10 +247,14 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                             widthFactor: 1,
                             child: ElevatedButton(
                               onPressed: () async {
-                                try {
-                                  _isLogin ? await _logIn() : await _signUp();
-                                } catch (error) {
-                                  _handleGeneralAuthError(error);
+                                if (_formKey.currentState!.validate()) {
+                                  _formKey.currentState!.save();
+                                  try {
+                                    _isLogin ? await _logIn() : await _signUp();
+                                  } catch (error, stackTrace) {
+                                    _authMethods.handleGeneralAuthError(
+                                        error, stackTrace);
+                                  }
                                 }
                               },
                               style: ElevatedButton.styleFrom(

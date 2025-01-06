@@ -39,8 +39,6 @@ Future<void> main() async {
       child: const KimikoeApp(),
     ),
   );
-
-  providerContainer.dispose();
 }
 
 extension ContextExtension on BuildContext {
