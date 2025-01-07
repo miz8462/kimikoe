@@ -41,7 +41,7 @@ jobs:
       - name: Cache dependencies 
         uses: actions/cache@v3 
         with: 
-          path:
+          path: |
             ~/.pub-cache
             ~/.flutter 
           key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.yaml') }} 
