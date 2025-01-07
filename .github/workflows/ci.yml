@@ -79,8 +79,9 @@ jobs:
       
       - name: Setup Android SDK 
         uses: android-actions/setup-android@v2
-        with: api-level: 33
-        components: 'platform-tools'
+        with: 
+          api-level: 33
+          components: 'platform-tools'
       - name: Accept Licenses 
         run: yes | sdkmanager --licenses
       
