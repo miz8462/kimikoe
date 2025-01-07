@@ -76,17 +76,6 @@ jobs:
         with: 
           distribution: 'zulu'
           java-version: '17'
-      
-      - name: Setup Android SDK 
-        uses: android-actions/setup-android@v2
-        with: 
-          api-level: 33
-          components: 'platform-tools'
-      - name: Accept Licenses 
-        run: yes | sdkmanager --licenses
-      
-      - name: Install Android SDK Components 
-        run: sdkmanager "platform-tools" "platforms;android-${{ matrix.api-level }}" "system-images;android-${{ matrix.api-level }};google_apis;x86_64"
 
       # エミュレーターのキャッシュ 
       - name: Gradle cache
@@ -107,6 +96,7 @@ jobs:
         with:
           api-level: ${{ matrix.api-level }}
           target: google_apis
+          arch: x86_64
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: false
@@ -117,6 +107,7 @@ jobs:
         with:
           api-level: ${{ matrix.api-level }}
           target: google_apis
+          arch: x86_64
           force-avd-creation: false
           emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
