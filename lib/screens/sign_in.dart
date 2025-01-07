@@ -253,7 +253,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                     _isLogin ? await _logIn() : await _signUp();
                                   } catch (error, stackTrace) {
                                     _authMethods.handleGeneralAuthError(
-                                        error, stackTrace);
+                                      error,
+                                      stackTrace,
+                                    );
                                   }
                                 }
                               },

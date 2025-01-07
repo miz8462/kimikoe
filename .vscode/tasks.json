@@ -1,0 +1,19 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run Emulator",
+      "type": "shell",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "C:\\Users\\wwr20\\Documents\\Scripts\\RunEmulatorAndMove.ps1"
+      ],
+      "problemMatcher": [],
+      "isBackground": true
+    }
+  ]
+}
