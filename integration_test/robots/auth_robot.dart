@@ -49,14 +49,6 @@ class AuthRobot extends Robot<SignInScreen> {
   Future<void> tapLoginOrSignUpButton() async {
     final loginButtonFinder = find.byKey(Key('loginButton'));
     expect(loginButtonFinder, findsOneWidget);
-
-    await tester.scrollUntilVisible(
-      loginButtonFinder,
-      200,
-      scrollable: find
-          .ancestor(of: loginButtonFinder, matching: find.byType(Scrollable))
-          .first, // 特定のScrollableを指定
-    );
     await tester.tap(loginButtonFinder);
     await tester.pumpAndSettle();
   }
