@@ -5,8 +5,6 @@ import 'package:kimikoe_app/screens/idol_group_list.dart';
 import 'package:kimikoe_app/screens/sign_in.dart';
 import 'package:robot/robot.dart';
 
-import '../integration_test_utils/pump_until_found.dart';
-
 class AuthRobot extends Robot<SignInScreen> {
   AuthRobot(super.tester);
 
@@ -50,6 +48,8 @@ class AuthRobot extends Robot<SignInScreen> {
 
   Future<void> tapLoginOrSignUpButton() async {
     final loginButtonFinder = find.byKey(Key('loginButton'));
+    expect(loginButtonFinder, findsOneWidget);
+    print('ログインボタンが見つかりましたか: ${loginButtonFinder.evaluate().isNotEmpty}');
     await tester.tap(loginButtonFinder);
     await tester.pumpAndSettle();
   }
@@ -57,7 +57,6 @@ class AuthRobot extends Robot<SignInScreen> {
   Future<void> tapGoogleLoginButton() async {}
 
   Future<void> expectHomeScreen() async {
-    await tester.pumpUntilFound(find.byType(IdolGroupListScreen));
     expect(find.byType(IdolGroupListScreen), findsOneWidget);
   }
 }
