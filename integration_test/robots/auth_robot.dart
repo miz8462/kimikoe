@@ -50,6 +50,7 @@ class AuthRobot extends Robot<SignInScreen> {
     final loginButtonFinder = find.byKey(Key('loginButton'));
     expect(loginButtonFinder, findsOneWidget);
     print('ログインボタンが見つかりましたか: ${loginButtonFinder.evaluate().isNotEmpty}');
+    await tester.scrollUntilVisible(loginButtonFinder, 500);
     await tester.tap(loginButtonFinder);
     await tester.pumpAndSettle();
   }
