@@ -91,6 +91,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
@@ -98,7 +99,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                height: 300,
+                height: screenHeight * 0.3,
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -112,7 +113,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 ),
               ),
               Container(
-                height: 800,
+                height: screenHeight * 0.7,
                 color: mainColor,
                 child: Center(
                   child: FractionallySizedBox(
