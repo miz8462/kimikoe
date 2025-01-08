@@ -123,6 +123,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                         children: [
                           const Gap(60),
                           TextFormField(
+                            key: Key('emailField'),
                             style: const TextStyle(color: textWhite),
                             autocorrect: false,
                             keyboardType: TextInputType.emailAddress,
@@ -164,6 +165,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           ),
                           const Gap(20),
                           TextFormField(
+                            key: Key('passwordField'),
                             style: const TextStyle(color: textWhite),
                             autocorrect: false,
                             keyboardType: TextInputType.visiblePassword,
@@ -206,6 +208,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           Gap(spaceS),
                           if (!_isLogin)
                             TextFormField(
+                              key: Key('nameField'),
                               style: const TextStyle(color: textWhite),
                               autocorrect: false,
                               keyboardType: TextInputType.name,

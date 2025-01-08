@@ -1004,6 +1004,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.6.3"
+  robot:
+    dependency: "direct dev"
+    description:
+      name: robot
+      sha256: d944dcc1a158df485afcfd405f84828af1e32d2a63dac0d1de07141288ffe5ab
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.3"
   rxdart:
     dependency: transitive
     description:

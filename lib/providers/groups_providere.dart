@@ -64,7 +64,9 @@ class GroupsNotifier extends StateNotifier<GroupsState> {
         );
       }).toList();
       logger.i('アイドルグループのリストを${groups.length}件取得しました');
-      state = state.copyWith(groups: groups, isLoading: false);
+      if (mounted) {
+        state = state.copyWith(groups: groups, isLoading: false);
+      }
     } catch (e, stackTrace) {
       logger.e(
         'アイドルグループのリストを取得中にエラーが発生しました',

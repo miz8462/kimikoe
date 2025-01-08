@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
@@ -69,7 +69,7 @@ class AuthMethods {
     if (error is AuthException) {
       logger.e('AuthExceptionの詳細: ${error.code}, ${error.message}');
     }
-    if (formKey.currentState?.mounted ?? false) {
+    if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('認証エラーが発生しました'),
@@ -109,16 +109,14 @@ class AuthMethods {
 
       await Future<dynamic>.delayed(Duration(milliseconds: 200));
     } on AuthException catch (e) {
-      if (!formKey.currentState!.mounted) return;
+      if (!context.mounted) return;
       _handleAuthError(e, 'サインアップ');
       return;
     }
 
-    // if(mounted)ではウィジェットが破棄されたタイミングでウィジェットを確認していたためエラーになる
-    // 現在のフレームのレンダリングが完了した後にコールバックを実行
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamed(RoutingPath.groupList);
-    });
+    if (context.mounted) {
+      context.go(RoutingPath.groupList);
+    }
   }
 
   Future<void> logIn(String email, String password) async {
@@ -136,15 +134,13 @@ class AuthMethods {
 
       await Future<dynamic>.delayed(Duration(milliseconds: 200));
     } on AuthException catch (e) {
-      if (!formKey.currentState!.mounted) return;
+      if (!context.mounted) return;
       _handleAuthError(e, 'ログイン');
     }
 
-    // if(mounted)ではウィジェットが破棄されたタイミングでウィジェットを確認していたためエラーになる
-    // 現在のフレームのレンダリングが完了した後にコールバックを実行
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamed(RoutingPath.groupList);
-    });
+    if (context.mounted) {
+      context.go(RoutingPath.groupList);
+    }
   }
 
   Future<void> googleSignIn() async {
