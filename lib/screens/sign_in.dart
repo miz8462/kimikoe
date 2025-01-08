@@ -38,8 +38,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     await _authMethods.signUp(_enteredEmail, _enteredPassword, _enteredName);
   }
 
-  Future<void> _logIn() async {
-    await _authMethods.logIn(_enteredEmail, _enteredPassword);
+  Future<void> _login() async {
+    await _authMethods.login(_enteredEmail, _enteredPassword);
   }
 
   Future<void> _googleSignIn() async {
@@ -254,7 +254,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                 if (_formKey.currentState!.validate()) {
                                   _formKey.currentState!.save();
                                   try {
-                                    _isLogin ? await _logIn() : await _signUp();
+                                    _isLogin ? await _login() : await _signUp();
                                   } catch (error, stackTrace) {
                                     _authMethods.handleGeneralAuthError(
                                       error,

@@ -24,7 +24,7 @@ void main() async {
 
     await robot.enterEmail(email);
     await robot.enterPassword(password);
-    await robot.tapLoginButton();
+    await robot.tapLoginOrSignUpButton();
     logger.d('ログインボタンタップ完了');
 
     await tester.pumpAndSettle();

@@ -7,7 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class AuthNotifier extends StateNotifier<Session?> {
   AuthNotifier() : super(null);
 
-  Future<void> logIn(String email, String password, WidgetRef ref) async {
+  Future<void> login(String email, String password, WidgetRef ref) async {
     try {
       logger.i('ログインを試みています: email = $email');
       final response = await supabase.auth.signInWithPassword(
@@ -27,7 +27,7 @@ class AuthNotifier extends StateNotifier<Session?> {
     }
   }
 
-  Future<void> logOut(WidgetRef ref) async {
+  Future<void> logout(WidgetRef ref) async {
     try {
       logger.i('ログアウトを試みています');
       await supabase.auth.signOut();

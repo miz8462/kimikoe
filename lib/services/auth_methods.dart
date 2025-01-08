@@ -119,13 +119,13 @@ class AuthMethods {
     }
   }
 
-  Future<void> logIn(String email, String password) async {
+  Future<void> login(String email, String password) async {
     if (!_validateAndSaveForm()) {
       return;
     }
 
     try {
-      await ref.read(authProvider.notifier).logIn(
+      await ref.read(authProvider.notifier).login(
             email,
             password,
             ref,

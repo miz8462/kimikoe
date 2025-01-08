@@ -43,19 +43,13 @@ class AuthRobot extends Robot<SignInScreen> {
   }
 
   Future<void> tapToggleAuthButton() async {
-    final signUpTextFinder = find.byKey('switchButton');
+    final signUpTextFinder = find.byKey(Key('switchButton'));
     await tester.tap(signUpTextFinder);
     await tester.pumpAndSettle();
   }
 
-  Future<void> tapSignUpButton() async {
-    final loginButtonFinder = find.byKey('loginButton');
-    await tester.tap(loginButtonFinder);
-    await tester.pumpAndSettle();
-  }
-
-  Future<void> tapLoginButton() async {
-    final loginButtonFinder = find.byKey('loginButton');
+  Future<void> tapLoginOrSignUpButton() async {
+    final loginButtonFinder = find.byKey(Key('loginButton'));
     await tester.tap(loginButtonFinder);
     await tester.pumpAndSettle();
   }
