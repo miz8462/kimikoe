@@ -25,13 +25,13 @@ void main() async {
     await robot.enterEmail(email);
     await robot.enterPassword(password);
     await tester.pumpAndSettle();
-    // await robot.tapLoginOrSignUpButton();
-    // logger.d('ログインボタンタップ完了');
+    await robot.tapLoginOrSignUpButton();
+    logger.d('ログインボタンタップ完了');
 
-    // await tester.pumpAndSettle();
-    // logger.d('画面遷移完了');
-    // await robot.expectHomeScreen();
-    // logger.d('ホーム画面表示完了');
+    await tester.pumpAndSettle();
+    logger.d('画面遷移完了');
+    await robot.expectHomeScreen();
+    logger.d('ホーム画面表示完了');
   });
   // testWidgets('サインアップ', (WidgetTester tester) async {});
   // testWidgets('Googleサインイン', (WidgetTester tester) async {});
