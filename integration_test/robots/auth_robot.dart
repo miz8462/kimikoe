@@ -5,6 +5,8 @@ import 'package:kimikoe_app/screens/idol_group_list.dart';
 import 'package:kimikoe_app/screens/sign_in.dart';
 import 'package:robot/robot.dart';
 
+import '../integration_test_utils/wait_for_condition.dart';
+
 class AuthRobot extends Robot<SignInScreen> {
   AuthRobot(super.tester);
 
@@ -63,8 +65,18 @@ class AuthRobot extends Robot<SignInScreen> {
     } catch (error) {
       print('スクロール中にエラーが発生しました: $error');
     }
-    await tester.tap(loginButtonFinder);
-    await tester.pumpAndSettle();
+// ボタンの中心点をタップ
+    final renderObject = tester.renderObject(loginButtonFinder);
+    Offset tapPosition;
+    if (renderObject is RenderBox) {
+      tapPosition =
+          renderObject.localToGlobal(renderObject.size.center(Offset.zero));
+    } else {
+      throw StateError('RenderObject is not a RenderBox');
+    }
+
+    await tester.tapAt(tapPosition);
+    await waitForCondition(tester, find.byType(IdolGroupListScreen));
   }
 
   Future<void> tapGoogleLoginButton() async {}
