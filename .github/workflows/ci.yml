@@ -80,14 +80,6 @@ jobs:
       # エミュレーターのキャッシュ 
       - name: Gradle cache
         uses: gradle/actions/setup-gradle@v4
-
-      - name: SDK Cache 
-        uses: actions/cache@v4
-        with:
-          path: ~/.android/sdk
-          key: sdk-${{ runner.os }}-${{ matrix.api-level }}
-          restore-keys: |
-            sdk-${{ runner.os }}-
         
       - name: AVD cache
         uses: actions/cache@v4
@@ -109,32 +101,6 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: false
           script: echo "Generated AVD snapshot for caching."
-
-      - name: Save Emulator State 
-        if: steps.avd-cache.outputs.cache-hit != 'true' 
-        run: |
-          mkdir -p $HOME/.android/avd_snapshots
-          adb emu avd snapshot save snapshot_name
-          mv $HOME/.android/avd/*.img $HOME/.android/avd_snapshots
-        shell: bash
-        
-      - name: Restore Emulator State
-        if: steps.avd-cache.outputs.cache-hit == 'true'
-        run: |
-          mkdir -p $HOME/.android/avd
-          ls $HOME/.android/avd_snapshots # 復元前にファイルを確認
-          mv $HOME/.android/avd_snapshots/*.img $HOME/.android/avd/
-          ls $HOME/.android/avd # 復元後にファイルを確認
-          adb emu avd snapshot load snapshot_name
-        shell: bash
-
-      - name: Debug AVD Cache
-        run: |
-          echo "AVD Cache directory:"
-          ls -l $HOME/.android/avd_snapshots
-          echo "AVD directory:"
-          ls -l $HOME/.android/avd
-        shell: bash
 
       - name: Integration Test
         uses: reactivecircus/android-emulator-runner@v2
