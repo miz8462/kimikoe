@@ -102,7 +102,8 @@ jobs:
           disable-animations: false
           script: echo "Generated AVD snapshot for caching."
 
-      - name: Save Emulator State if: steps.avd-cache.outputs.cache-hit != 'true' 
+      - name: Save Emulator State 
+        if: steps.avd-cache.outputs.cache-hit != 'true' 
         run: |
           adb emu avd snapshot save snapshot_name
           mkdir -p $HOME/.android/avd_snapshots
