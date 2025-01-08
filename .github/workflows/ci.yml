@@ -113,16 +113,25 @@ jobs:
       - name: Save Emulator State 
         if: steps.avd-cache.outputs.cache-hit != 'true' 
         run: |
-          adb emu avd snapshot save snapshot_name
           mkdir -p $HOME/.android/avd_snapshots
+          adb emu avd snapshot save snapshot_name
           mv $HOME/.android/avd/*.img $HOME/.android/avd_snapshots
         shell: bash
         
       - name: Restore Emulator State
         if: steps.avd-cache.outputs.cache-hit == 'true'
         run: |
+          mkdir -p $HOME/.android/avd
           mv $HOME/.android/avd_snapshots/*.img $HOME/.android/avd/
           adb emu avd snapshot load snapshot_name
+        shell: bash
+
+      - name: Debug AVD Cache
+        run: |
+          echo "AVD Cache directory:"
+          ls -l $HOME/.android/avd_snapshots
+          echo "AVD directory:"
+          ls -l $HOME/.android/avd
         shell: bash
 
       - name: Integration Test
