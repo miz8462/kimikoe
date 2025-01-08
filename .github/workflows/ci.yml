@@ -111,7 +111,7 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: flutter test integration_test/main_test.dart --coverage --coverage-path=coverage/integration_lcov.info
+          script: flutter test integration_test --coverage --coverage-path=coverage/integration_lcov.info
 
       - name: Install lcov
         run: |
