@@ -249,6 +249,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           FractionallySizedBox(
                             widthFactor: 1,
                             child: ElevatedButton(
+                              key: Key('loginButton'),
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
                                   _formKey.currentState!.save();
@@ -278,6 +279,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           ),
                           const Gap(6),
                           TextButton(
+                            key: Key('switchButton'),
                             onPressed: () {
                               setState(() {
                                 _isLogin = !_isLogin;
