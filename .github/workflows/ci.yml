@@ -122,7 +122,9 @@ jobs:
         if: steps.avd-cache.outputs.cache-hit == 'true'
         run: |
           mkdir -p $HOME/.android/avd
+          ls $HOME/.android/avd_snapshots # 復元前にファイルを確認
           mv $HOME/.android/avd_snapshots/*.img $HOME/.android/avd/
+          ls $HOME/.android/avd # 復元後にファイルを確認
           adb emu avd snapshot load snapshot_name
         shell: bash
 
