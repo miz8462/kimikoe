@@ -102,6 +102,20 @@ jobs:
           disable-animations: false
           script: echo "Generated AVD snapshot for caching."
 
+      - name: Save Emulator State if: steps.avd-cache.outputs.cache-hit != 'true' 
+        run: |
+          adb emu avd snapshot save snapshot_name
+          mkdir -p $HOME/.android/avd_snapshots
+          mv $HOME/.android/avd/*.img $HOME/.android/avd_snapshots
+        shell: bash
+        
+      - name: Restore Emulator State
+        if: steps.avd-cache.outputs.cache-hit == 'true'
+        run: |
+          mv $HOME/.android/avd_snapshots/*.img $HOME/.android/avd/
+          adb emu avd snapshot load snapshot_name
+        shell: bash
+
       - name: Integration Test
         uses: reactivecircus/android-emulator-runner@v2
         with:
