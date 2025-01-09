@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
+import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_delete.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -27,6 +28,7 @@ void main() {
       'error',
     );
     logger = MockLogger();
+    supabase = mockSupabase;
   });
 
   tearDown(() async {
@@ -44,10 +46,9 @@ void main() {
       final artists = await mockSupabase.from(TableName.artists).select();
       expect(artists.last[ColumnName.name], 'delete artist');
 
-      await deleteDataFromTable(
+      await deleteDataById(
         table: TableName.artists,
-        targetColumn: ColumnName.id,
-        targetValue: '1',
+        id: '1',
         context: mockContext,
         supabase: mockSupabase,
       );
@@ -74,10 +75,9 @@ void main() {
       final artists = await mockSupabase.from(TableName.artists).select();
       expect(artists.last[ColumnName.name], 'cannot delete artist');
       try {
-        await deleteDataFromTable(
+        await deleteDataById(
           table: TableName.artists,
-          targetColumn: ColumnName.id,
-          targetValue: '1',
+          id: '1',
           context: mockContext,
           supabase: errorSupabase,
         );

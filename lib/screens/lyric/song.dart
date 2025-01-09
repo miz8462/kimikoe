@@ -48,10 +48,9 @@ class _SongScreenState extends State<SongScreen> {
       builder: (context) {
         return DeleteAlertDialog(
           onDelete: () async {
-            await deleteDataFromTable(
+            await deleteDataById(
               table: TableName.songs,
-              targetColumn: ColumnName.id,
-              targetValue: widget.song.id.toString(),
+              id: widget.song.id.toString(),
               context: context,
               supabase: supabase,
             );

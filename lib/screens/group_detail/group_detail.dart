@@ -34,10 +34,9 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
       builder: (context) {
         return DeleteAlertDialog(
           onDelete: () async {
-            await deleteDataFromTable(
+            await deleteDataById(
               table: TableName.idolGroups,
-              targetColumn: ColumnName.id,
-              targetValue: widget.group.id.toString(),
+              id: widget.group.id.toString(),
               context: context,
               supabase: supabase,
             );

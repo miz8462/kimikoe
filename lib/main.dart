@@ -24,6 +24,8 @@ Future<void> main() async {
     url: dotenv.env['SUPABASE_URL']!,
     anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
   );
+  initializeSupabaseClient();
+  final supabase = providerContainer.read(supabaseProvider);
   supabase.auth.onAuthStateChange.listen(
     (data) {
       providerContainer.read(sessionProvider.notifier).state = data.session;

@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kimikoe_app/models/table_and_column_name.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
+import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/screens/idol_group_list.dart';
 import 'package:kimikoe_app/screens/sign_in.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_delete.dart';
 import 'package:robot/robot.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../integration_test_utils/wait_for_condition.dart';
 
@@ -16,9 +21,9 @@ class AuthRobot extends Robot<SignInScreen> {
 
   Future<void> show() async {
     await tester.pumpWidget(
-      ProviderScope(
-        child: MaterialApp(
-          home: SignInScreen(),
+      MaterialApp(
+        home: ScaffoldMessenger(
+          child: Scaffold(body: SignInScreen()),
         ),
       ),
     );
@@ -83,5 +88,40 @@ class AuthRobot extends Robot<SignInScreen> {
 
   Future<void> expectHomeScreen() async {
     expect(find.byType(IdolGroupListScreen), findsOneWidget);
+  }
+
+  Future<void> deleteUser() async {
+    await dotenv.load();
+    final supabaseAdmin = SupabaseClient(
+      'https://inngzyruhkuljrsvujfw.supabase.co',
+      '''eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlubmd6eXJ1aGt1bGpyc3Z1amZ3Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcxMzgzMzE3MywiZXhwIjoyMDI5NDA5MTczfQ.IiYhaEUplr9Fe_il-wk_sdbSRDgVRqwQ3qTDz4unzuQ''',
+    );
+    final context = tester.element(find.byType(IdolGroupListScreen));
+    try {
+      await deleteDataById(
+        table: TableName.profiles,
+        id: supabase.auth.currentUser!.id,
+        context: context,
+        supabase: supabaseAdmin,
+      );
+      logger.d('テストユーザープロフィール削除完了');
+    } catch (e) {
+      logger.e('テストユーザープロフィール削除中にエラーが発生しました: $e');
+    }
+  }
+
+  Future<void> deleteUserAdmin() async {
+    await dotenv.load();
+    final supabaseAdmin = SupabaseClient(
+      dotenv.env['SUPABASE_URL']!,
+      dotenv.env['SERVICE_ROLE_KEY']!,
+    );
+    logger.d(dotenv.env['SUPABASE_URL']);
+    try {
+      await supabaseAdmin.auth.admin.deleteUser(supabase.auth.currentUser!.id);
+      logger.d('テストユーザーアカウント削除完了');
+    } catch (e) {
+      logger.e('テストユーザー削除中にエラーが発生しました: $e');
+    }
   }
 }
