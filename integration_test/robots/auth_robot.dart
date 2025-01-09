@@ -91,18 +91,13 @@ class AuthRobot extends Robot<SignInScreen> {
   }
 
   Future<void> deleteUser() async {
-    await dotenv.load();
-    final supabaseAdmin = SupabaseClient(
-      'https://inngzyruhkuljrsvujfw.supabase.co',
-      '''eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlubmd6eXJ1aGt1bGpyc3Z1amZ3Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcxMzgzMzE3MywiZXhwIjoyMDI5NDA5MTczfQ.IiYhaEUplr9Fe_il-wk_sdbSRDgVRqwQ3qTDz4unzuQ''',
-    );
     final context = tester.element(find.byType(IdolGroupListScreen));
     try {
       await deleteDataById(
         table: TableName.profiles,
         id: supabase.auth.currentUser!.id,
         context: context,
-        supabase: supabaseAdmin,
+        supabase: supabase,
       );
       logger.d('テストユーザープロフィール削除完了');
     } catch (e) {
