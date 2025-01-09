@@ -12,8 +12,7 @@ Future<void> deleteDataById({
   required SupabaseClient supabase,
 }) async {
   try {
-    final response = await supabase.from(table).delete().eq(ColumnName.id, id);
-    logger.d(response.toString());
+    await supabase.from(table).delete().eq(ColumnName.id, id);
 
     if (context.mounted) {
       SchedulerBinding.instance.addPostFrameCallback((_) {
