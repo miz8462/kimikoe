@@ -111,7 +111,6 @@ class AuthRobot extends Robot<SignInScreen> {
       dotenv.env['SUPABASE_URL']!,
       dotenv.env['SERVICE_ROLE_KEY']!,
     );
-    logger.d(dotenv.env['SUPABASE_URL']);
     try {
       await supabaseAdmin.auth.admin.deleteUser(supabase.auth.currentUser!.id);
       logger.d('テストユーザーアカウント削除完了');
