@@ -103,8 +103,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox(height: 80),
                       Image(
                         image: AssetImage('assets/images/Kimikoe_Logo.png'),
                       ),
