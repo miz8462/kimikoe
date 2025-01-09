@@ -38,7 +38,7 @@ void main() async {
     await robot.expectHomeScreen();
 
     // テストデータ削除
-    await robot.deleteUser();
-    // await robot.deleteUserAdmin();
+    // await robot.deleteUser();
+    await robot.deleteUserAdmin();
   });
 }
