@@ -39,6 +39,6 @@ void main() async {
 
     // テストデータ削除
     await robot.deleteUser();
-    await robot.deleteUserAdmin();
+    // await robot.deleteUserAdmin();
   });
 }
