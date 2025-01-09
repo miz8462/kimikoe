@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
-import 'package:kimikoe_app/providers/groups_providere.dart';
+import 'package:kimikoe_app/providers/groups_provider.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:mockito/mockito.dart';

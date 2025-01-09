@@ -16,7 +16,8 @@ void main() async {
     }
     await tester.pumpAndSettle();
 
-    final email = 'doskoi@test.com';
+    final email = createRandomEmail();
+    
     final password = 'doskoidoskoi';
     final name = 'doskoi';
 
@@ -38,7 +39,12 @@ void main() async {
     await robot.expectHomeScreen();
 
     // テストデータ削除
-    // await robot.deleteUser();
+    await robot.deleteUser();
     // await robot. deleteUserAdmin();
   });
 }
+
+String createRandomEmail() {
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      return 'testuser$timestamp@example.com';
+    }

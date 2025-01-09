@@ -8,7 +8,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
-import 'package:kimikoe_app/providers/groups_providere.dart';
+import 'package:kimikoe_app/providers/groups_provider.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';

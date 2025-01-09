@@ -7,7 +7,7 @@ import 'dart:async' as _i4;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart' as _i3;
 import 'package:kimikoe_app/models/idol_group.dart' as _i6;
-import 'package:kimikoe_app/providers/groups_providere.dart' as _i2;
+import 'package:kimikoe_app/providers/groups_provider.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:state_notifier/state_notifier.dart' as _i7;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i5;
