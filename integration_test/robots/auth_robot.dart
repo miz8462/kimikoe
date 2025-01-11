@@ -90,6 +90,10 @@ class AuthRobot extends Robot<SignInScreen> {
     expect(find.byType(IdolGroupListScreen), findsOneWidget);
   }
 
+  Future<void> signOut() async {
+    await supabase.auth.signOut();
+  }
+
   Future<void> deleteUser() async {
     final context = tester.element(find.byType(IdolGroupListScreen));
     try {
