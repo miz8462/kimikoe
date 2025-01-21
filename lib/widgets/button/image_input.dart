@@ -59,14 +59,14 @@ class _ImageInputState extends State<ImageInput> {
     Widget content = StyledButton(
       widget.label,
       onPressed: _getImageFromMobileStorage,
-      backgroundColor: mainColor.withOpacity(0.8),
+      backgroundColor: mainColor.withValues(alpha: 0.8),
     );
 
     if (_selectedImage != null || _hasEditingImage) {
       content = Container(
         decoration: BoxDecoration(
           border: Border.all(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
           ),
         ),
         height: 250,

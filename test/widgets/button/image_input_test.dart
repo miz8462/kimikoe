@@ -25,7 +25,10 @@ void main() {
       expect(button, findsOneWidget);
       expect(find.text('test label'), findsOneWidget);
       final buttonWidget = tester.widget<StyledButton>(button);
-      expect(buttonWidget.backgroundColor, equals(mainColor.withOpacity(0.8)));
+      expect(
+        buttonWidget.backgroundColor,
+        equals(mainColor.withValues(alpha: 0.8)),
+      );
     });
 
     testWidgets('画像選択機能のテスト', (WidgetTester tester) async {

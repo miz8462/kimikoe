@@ -93,7 +93,7 @@ class _SongScreenState extends State<SongScreen> {
               GroupColorAndNameList(group: group, memberFuture: _memberFuture),
               const Gap(spaceS),
               Divider(
-                color: mainColor.withOpacity(0.3),
+                color: mainColor.withValues(alpha: 0.3),
                 thickness: 2,
               ),
               const Gap(spaceS),

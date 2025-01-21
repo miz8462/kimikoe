@@ -77,7 +77,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                 group: group,
               ),
               Divider(
-                color: mainColor.withOpacity(0.3),
+                color: mainColor.withValues(alpha: 0.3),
                 thickness: 2,
               ),
               GroupMembers(group: group),

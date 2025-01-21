@@ -417,7 +417,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                       StyledButton(
                         '歌詞追加',
                         onPressed: _addNewLyricItem,
-                        backgroundColor: mainColor.withOpacity(0.7),
+                        backgroundColor: mainColor.withValues(alpha: 0.7),
                       ),
                       const Gap(spaceS),
                       ImageInput(

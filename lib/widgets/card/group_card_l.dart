@@ -28,7 +28,7 @@ class GroupCardL extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.3), // 影の色
+              color: Colors.black.withValues(alpha: 0.3), // 影の色
               offset: const Offset(4, 4), // 右下方向に影をオフセット
               blurRadius: 5, // 影のぼかしの大きさ
             ),

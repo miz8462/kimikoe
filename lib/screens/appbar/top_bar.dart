@@ -119,10 +119,10 @@ class AppBarBottom extends StatelessWidget implements PreferredSizeWidget {
     return Container(
       height: 2,
       decoration: BoxDecoration(
-        color: mainColor.withOpacity(0.9),
+        color: mainColor.withValues(alpha: 0.9),
         boxShadow: [
           BoxShadow(
-            color: mainColor.withOpacity(0.5),
+            color: mainColor.withValues(alpha: 0.5),
             blurRadius: 2,
           ),
         ],

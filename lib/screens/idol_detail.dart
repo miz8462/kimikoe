@@ -199,7 +199,7 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
             Divider(
-              color: mainColor.withOpacity(0.3),
+              color: mainColor.withValues(alpha: 0.3),
               thickness: 2,
             ),
             Text(
