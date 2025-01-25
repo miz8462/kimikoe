@@ -156,8 +156,11 @@ class AuthMethods {
       );
       final googleUser = await googleSignIn.signIn();
       final googleAuth = await googleUser!.authentication;
+      logger.d(googleAuth);
       final accessToken = googleAuth.accessToken;
+      logger.d(accessToken);
       final idToken = googleAuth.idToken;
+      logger.d(idToken);
 
       if (accessToken == null) {
         throw Exception('アクセストークンが見つかりません。');
@@ -176,8 +179,8 @@ class AuthMethods {
       logger.i('Googleサインインが成功しました。ユーザー: ${googleUser.displayName}');
 
       await Future<dynamic>.delayed(Duration(microseconds: 200));
-    } catch (e) {
-      logger.e('Googleサインインエラー: $e');
+    } catch (e, stackTrace) {
+      logger.e('Googleサインインエラー: $e', stackTrace: stackTrace);
     }
   }
 }

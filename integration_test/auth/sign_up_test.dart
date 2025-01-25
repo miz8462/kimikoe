@@ -39,8 +39,6 @@ void main() async {
     await robot.expectHomeScreen();
 
     // テストデータ削除
-    await robot.signOut();
-    await tester.pumpAndSettle();
     await robot.deleteUser();
     await robot.deleteUserAdmin();
   });

@@ -70,7 +70,7 @@ class AuthRobot extends Robot<SignInScreen> {
     } catch (error) {
       print('スクロール中にエラーが発生しました: $error');
     }
-// ボタンの中心点をタップ
+    // ボタンの中心点をタップ
     final renderObject = tester.renderObject(loginButtonFinder);
     Offset tapPosition;
     if (renderObject is RenderBox) {
@@ -84,10 +84,10 @@ class AuthRobot extends Robot<SignInScreen> {
     await waitForCondition(tester, find.byType(IdolGroupListScreen));
   }
 
-  Future<void> tapGoogleLoginButton() async {}
-
-  Future<void> expectHomeScreen() async {
-    expect(find.byType(IdolGroupListScreen), findsOneWidget);
+  Future<void> tapGoogleLoginButton() async {
+    final signUpTextFinder = find.byKey(Key('googleLoginButton'));
+    await tester.tap(signUpTextFinder);
+    await tester.pumpAndSettle();
   }
 
   Future<void> signOut() async {
@@ -121,5 +121,9 @@ class AuthRobot extends Robot<SignInScreen> {
     } catch (e) {
       logger.e('テストユーザー削除中にエラーが発生しました: $e');
     }
+  }
+
+  Future<void> expectHomeScreen() async {
+    expect(find.byType(IdolGroupListScreen), findsOneWidget);
   }
 }

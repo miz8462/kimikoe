@@ -325,7 +325,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              SocialLoginButton(
+                              SocialLoginButton(key: Key('googleLoginButton'),
                                 _googleSignIn,
                                 imagePath: 'assets/images/google.svg',
                               ),
