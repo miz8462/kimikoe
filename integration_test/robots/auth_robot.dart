@@ -30,26 +30,22 @@ class AuthRobot extends Robot<SignInScreen> {
   }
 
   Future<void> enterEmail(String email) async {
-    final emailFieldFinder = find.byKey(Key('emailField'));
-    await tester.enterText(emailFieldFinder, email);
+    await tester.enterText(find.byKey(Key('emailField')), email);
     await tester.pumpAndSettle();
   }
 
   Future<void> enterPassword(String password) async {
-    final passwordFieldFinder = find.byKey(Key('passwordField'));
-    await tester.enterText(passwordFieldFinder, password);
+    await tester.enterText(find.byKey(Key('passwordField')), password);
     await tester.pumpAndSettle();
   }
 
   Future<void> enterName(String name) async {
-    final nameFieldFinder = find.byKey(Key('nameField'));
-    await tester.enterText(nameFieldFinder, name);
+    await tester.enterText(find.byKey(Key('nameField')), name);
     await tester.pumpAndSettle();
   }
 
   Future<void> tapToggleAuthButton() async {
-    final signUpTextFinder = find.byKey(Key('switchButton'));
-    await tester.tap(signUpTextFinder);
+    await tester.tap(find.byKey(Key('switchButton')));
     await tester.pumpAndSettle();
   }
 
@@ -85,13 +81,13 @@ class AuthRobot extends Robot<SignInScreen> {
   }
 
   Future<void> tapGoogleLoginButton() async {
-    final signUpTextFinder = find.byKey(Key('googleLoginButton'));
-    await tester.tap(signUpTextFinder);
+    await tester.tap(find.byKey(Key('googleLoginButton')));
     await tester.pumpAndSettle();
   }
 
-  Future<void> signOut() async {
-    await supabase.auth.signOut();
+  Future<void> tapLogoutButton() async {
+    await tester.tap(find.byKey(Key('logoutButton')));
+    await tester.pumpAndSettle();
   }
 
   Future<void> deleteUser() async {
@@ -125,5 +121,9 @@ class AuthRobot extends Robot<SignInScreen> {
 
   Future<void> expectHomeScreen() async {
     expect(find.byType(IdolGroupListScreen), findsOneWidget);
+  }
+
+  Future<void> expectSignInScreen() async {
+    expect(find.byType(SignInScreen), findsOneWidget);
   }
 }
