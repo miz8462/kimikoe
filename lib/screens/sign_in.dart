@@ -94,12 +94,13 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: SingleChildScrollView(
-        child: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: screenHeight),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                height: screenHeight * 0.3,
+                height: screenHeight * 0.25,
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -113,7 +114,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 ),
               ),
               Container(
-                height: screenHeight * 0.7,
+                constraints: BoxConstraints(minHeight: screenHeight * 0.75),
                 color: mainColor,
                 child: Center(
                   child: FractionallySizedBox(
@@ -325,7 +326,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              SocialLoginButton(key: Key('googleLoginButton'),
+                              SocialLoginButton(
+                                key: Key('googleLoginButton'),
                                 _googleSignIn,
                                 imagePath: 'assets/images/google.svg',
                               ),
