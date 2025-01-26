@@ -1,7 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:kimikoe_app/screens/sign_in.dart';
 
 import '../integration_test_utils/auth_utils.dart';
+import '../integration_test_utils/wait_for_condition.dart';
 import '../robots/auth_robot.dart';
 
 void main() async {
@@ -15,8 +17,8 @@ void main() async {
     await robot.expectHomeScreen();
 
     await robot.tapLogoutButton();
-    await tester.pump(Duration(seconds: 5));
-    
+    await tester.pump(Duration(seconds: 2));
+
     await robot.expectSignInScreen();
   });
 }

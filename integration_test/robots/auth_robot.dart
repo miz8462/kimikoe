@@ -118,6 +118,7 @@ class AuthRobot extends Robot<SignInScreen> {
   }
 
   Future<void> expectSignInScreen() async {
+    await waitForCondition(tester, find.byType(SignInScreen));
     expect(find.byType(SignInScreen), findsOneWidget);
   }
 }
