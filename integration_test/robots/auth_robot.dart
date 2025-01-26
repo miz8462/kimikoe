@@ -80,11 +80,6 @@ class AuthRobot extends Robot<SignInScreen> {
     await waitForCondition(tester, find.byType(IdolGroupListScreen));
   }
 
-  Future<void> tapGoogleLoginButton() async {
-    await tester.tap(find.byKey(Key('googleLoginButton')));
-    await tester.pumpAndSettle();
-  }
-
   Future<void> tapLogoutButton() async {
     await tester.tap(find.byKey(Key('logoutButton')));
     await tester.pumpAndSettle();

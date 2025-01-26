@@ -38,9 +38,9 @@ void main() async {
     // ホーム画面に遷移したことを確認
     await robot.expectHomeScreen();
 
-    // // テストデータ削除
-    // await robot.deleteUser();
-    // await robot.deleteUserAdmin();
+    // テストデータ削除
+    await robot.deleteUser();
+    await robot.deleteUserAdmin();
   });
 }
 
