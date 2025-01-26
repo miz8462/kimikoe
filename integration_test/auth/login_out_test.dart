@@ -1,9 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:kimikoe_app/screens/sign_in.dart';
 
 import '../integration_test_utils/auth_utils.dart';
-import '../integration_test_utils/wait_for_condition.dart';
 import '../robots/auth_robot.dart';
 
 void main() async {
