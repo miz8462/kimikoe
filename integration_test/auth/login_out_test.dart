@@ -15,6 +15,7 @@ void main() async {
     await robot.expectHomeScreen();
 
     await robot.tapLogoutButton();
+    await tester.pump(Duration(seconds: 1));
     
     await robot.expectSignInScreen();
   });
