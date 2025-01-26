@@ -15,12 +15,12 @@ Future<void> deleteDataById({
     await supabase.from(table).delete().eq(ColumnName.id, id);
 
     if (context.mounted) {
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        showLogAndSnackBar(
-          context: context,
-          message: 'データを削除しました。ID: $id',
-        );
-      });
+      // SchedulerBinding.instance.addPostFrameCallback((_) {
+      //   showLogAndSnackBar(
+      //     context: context,
+      //     message: 'データを削除しました。ID: $id',
+      //   );
+      // });
       logger.i('データを削除しました。ID: $id');
     }
   } catch (e) {

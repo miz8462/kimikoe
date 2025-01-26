@@ -99,7 +99,6 @@ class AuthRobot extends Robot<SignInScreen> {
         context: context,
         supabase: supabase,
       );
-      logger.d('テストユーザープロフィール削除完了');
     } catch (e) {
       logger.e('テストユーザープロフィール削除中にエラーが発生しました: $e');
     }
@@ -113,7 +112,6 @@ class AuthRobot extends Robot<SignInScreen> {
     );
     try {
       await supabaseAdmin.auth.admin.deleteUser(supabase.auth.currentUser!.id);
-      logger.d('テストユーザーアカウント削除完了');
     } catch (e) {
       logger.e('テストユーザー削除中にエラーが発生しました: $e');
     }
