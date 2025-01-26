@@ -112,6 +112,7 @@ class AuthRobot extends Robot<SignInScreen> {
     );
     try {
       await supabaseAdmin.auth.admin.deleteUser(supabase.auth.currentUser!.id);
+      logger.i('テストユーザーを削除しました');
     } catch (e) {
       logger.e('テストユーザー削除中にエラーが発生しました: $e');
     }
