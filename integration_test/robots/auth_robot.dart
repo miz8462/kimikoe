@@ -53,31 +53,42 @@ class AuthRobot extends Robot<SignInScreen> {
     final loginButtonFinder = find.byKey(Key('loginButton'));
     expect(loginButtonFinder, findsOneWidget);
 
-    // スクロールしてウィジェットを表示
+    // まず通常のタップを試みる
     try {
-      await tester.scrollUntilVisible(
-        loginButtonFinder,
-        200,
-        scrollable: find
-            .ancestor(of: loginButtonFinder, matching: find.byType(Scrollable))
-            .first, // 特定のScrollableを指定
-      );
-      await tester.pumpAndSettle(); // スクロール後に画面を更新
+      await tester.tap(loginButtonFinder);
+      await tester.pumpAndSettle();
+      return;
     } catch (error) {
-      print('スクロール中にエラーが発生しました: $error');
-    }
-    // ボタンの中心点をタップ
-    final renderObject = tester.renderObject(loginButtonFinder);
-    Offset tapPosition;
-    if (renderObject is RenderBox) {
-      tapPosition =
-          renderObject.localToGlobal(renderObject.size.center(Offset.zero));
-    } else {
-      throw StateError('RenderObject is not a RenderBox');
-    }
+      // 通常のタップが失敗した場合（ボタンが画面外にある場合）は
+      // スクロールしてからタップを試みる
+      try {
+        await tester.scrollUntilVisible(
+          loginButtonFinder,
+          200,
+          scrollable: find
+              .ancestor(
+                of: loginButtonFinder,
+                matching: find.byType(Scrollable),
+              )
+              .first,
+        );
+        await tester.pumpAndSettle();
 
-    await tester.tapAt(tapPosition);
-    await waitForCondition(tester, find.byType(IdolGroupListScreen));
+        // ボタンの中心点をタップ
+        final renderObject = tester.renderObject(loginButtonFinder);
+        if (renderObject is RenderBox) {
+          final tapPosition =
+              renderObject.localToGlobal(renderObject.size.center(Offset.zero));
+          await tester.tapAt(tapPosition);
+          await tester.pumpAndSettle();
+        } else {
+          throw StateError('RenderObject is not a RenderBox');
+        }
+      } catch (scrollError) {
+        print('スクロールまたはタップ中にエラーが発生しました: $scrollError');
+        rethrow;
+      }
+    }
   }
 
   Future<void> tapLogoutButton() async {
@@ -113,7 +124,24 @@ class AuthRobot extends Robot<SignInScreen> {
     }
   }
 
+  Future<void> expectEmailErrorMessage() async {
+    expect(find.text('正しいメールアドレスを入力してください'), findsOneWidget);
+  }
+
+  Future<void> expectPasswordErrorMessage() async {
+    expect(find.text('正しいパスワードを入力してください'), findsOneWidget);
+  }
+
+  Future<void> expectPasswordLengthErrorMessage() async {
+    expect(find.text('パスワードは8文字以上入力してください'), findsOneWidget);
+  }
+
+  Future<void> expectNameErrorMessage() async {
+    expect(find.text('名前は2文字以上入力してください'), findsOneWidget);
+  }
+
   Future<void> expectHomeScreen() async {
+    await waitForCondition(tester, find.byType(IdolGroupListScreen));
     expect(find.byType(IdolGroupListScreen), findsOneWidget);
   }
 

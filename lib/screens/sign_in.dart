@@ -154,7 +154,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                               if (value == null ||
                                   value.isEmpty ||
                                   !value.contains('@')) {
-                                return '正しいE-Mailを入力してください';
+                                return '正しいメールアドレスを入力してください';
                               }
                               return null;
                             },

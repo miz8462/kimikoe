@@ -8,7 +8,7 @@ import '../robots/auth_robot.dart';
 void main() async {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('サインアップ', (WidgetTester tester) async {
+  testWidgets('サインアップ成功', (WidgetTester tester) async {
     await app.main();
 
     if (supabase.auth.currentSession != null) {
@@ -41,6 +41,29 @@ void main() async {
     // テストデータ削除
     await robot.deleteUser();
     await robot.deleteUserAdmin();
+  });
+
+  testWidgets('サインアップ失敗', (WidgetTester tester) async {
+    await app.main();
+
+    if (supabase.auth.currentSession != null) {
+      await supabase.auth.signOut();
+    }
+    await tester.pumpAndSettle();
+
+    final robot = AuthRobot(tester);
+    await tester.pumpAndSettle();
+
+    await robot.tapToggleAuthButton();
+    await tester.pumpAndSettle();
+
+    // 何も入力せずにサインアップボタンをタップ
+    await robot.tapLoginOrSignUpButton();
+    await tester.pumpAndSettle();
+
+    await robot.expectEmailErrorMessage();
+    await robot.expectPasswordLengthErrorMessage();
+    await robot.expectNameErrorMessage();
   });
 }
 
