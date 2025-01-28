@@ -53,42 +53,24 @@ class AuthRobot extends Robot<SignInScreen> {
     final loginButtonFinder = find.byKey(Key('loginButton'));
     expect(loginButtonFinder, findsOneWidget);
 
-    // まず通常のタップを試みる
-    try {
-      await tester.tap(loginButtonFinder);
-      await tester.pumpAndSettle();
-      return;
-    } catch (error) {
-      // 通常のタップが失敗した場合（ボタンが画面外にある場合）は
-      // スクロールしてからタップを試みる
-      try {
-        await tester.scrollUntilVisible(
-          loginButtonFinder,
-          200,
-          scrollable: find
-              .ancestor(
-                of: loginButtonFinder,
-                matching: find.byType(Scrollable),
-              )
-              .first,
-        );
-        await tester.pumpAndSettle();
+    // スクロール可能なウィジェットを探す
+    final scrollable = find.byType(Scrollable).first;
 
-        // ボタンの中心点をタップ
-        final renderObject = tester.renderObject(loginButtonFinder);
-        if (renderObject is RenderBox) {
-          final tapPosition =
-              renderObject.localToGlobal(renderObject.size.center(Offset.zero));
-          await tester.tapAt(tapPosition);
-          await tester.pumpAndSettle();
-        } else {
-          throw StateError('RenderObject is not a RenderBox');
-        }
-      } catch (scrollError) {
-        print('スクロールまたはタップ中にエラーが発生しました: $scrollError');
-        rethrow;
-      }
-    }
+    // ボタンが見えるようにスクロール
+    await tester.scrollUntilVisible(
+      loginButtonFinder,
+      500,
+      scrollable: scrollable,
+    );
+    await tester.pumpAndSettle();
+
+    // ensureVisibleを使用してボタンが確実に表示されるようにする
+    await tester.ensureVisible(loginButtonFinder);
+    await tester.pumpAndSettle();
+
+    // タップを実行
+    await tester.tap(loginButtonFinder, warnIfMissed: false);
+    await tester.pumpAndSettle();
   }
 
   Future<void> tapLogoutButton() async {

@@ -20,11 +20,22 @@ Future<void> main() async {
   await dotenv.load();
 
   // Supabaseの初期化
-  await Supabase.initialize(
-    url: dotenv.env['SUPABASE_URL']!,
-    anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
-  );
-  initializeSupabaseClient();
+  try {
+    await Supabase.initialize(
+      url: dotenv.env['SUPABASE_URL']!,
+      anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
+    );
+    initializeSupabaseClient();
+  } catch (e) {
+    // すでに初期化されている場合は無視
+    if (e.toString().contains('already initialized')) {
+      logger.i('Supabaseは既に初期化されています');
+    } else {
+      // その他のエラーは再スロー
+      rethrow;
+    }
+  }
+
   final supabase = providerContainer.read(supabaseProvider);
   supabase.auth.onAuthStateChange.listen(
     (data) {
