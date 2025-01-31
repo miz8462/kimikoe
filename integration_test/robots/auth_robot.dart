@@ -86,7 +86,7 @@ class AuthRobot extends Robot<SignInScreen> {
     await enterEmail(testEmail);
     await enterPassword(testPassword);
     await tester.pumpAndSettle();
-    
+
     await tapLoginOrSignUpButton();
     await tester.pumpAndSettle();
   }
@@ -130,19 +130,19 @@ class AuthRobot extends Robot<SignInScreen> {
     }
   }
 
-  Future<void> expectEmailErrorMessage() async {
+  void expectEmailErrorMessage()  {
     expect(find.text('正しいメールアドレスを入力してください'), findsOneWidget);
   }
 
-  Future<void> expectPasswordErrorMessage() async {
+  void expectPasswordErrorMessage()  {
     expect(find.text('正しいパスワードを入力してください'), findsOneWidget);
   }
 
-  Future<void> expectPasswordLengthErrorMessage() async {
+  void expectPasswordLengthErrorMessage()  {
     expect(find.text('パスワードは8文字以上入力してください'), findsOneWidget);
   }
 
-  Future<void> expectNameErrorMessage() async {
+  void expectNameErrorMessage() {
     expect(find.text('名前は2文字以上入力してください'), findsOneWidget);
   }
 

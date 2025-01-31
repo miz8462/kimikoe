@@ -38,8 +38,8 @@ void main() async {
       await robot.enterEmail(emailWithoutAtMark);
       await robot.tapLoginOrSignUpButton();
 
-      await robot.expectEmailErrorMessage();
-      await robot.expectPasswordErrorMessage();
+      robot.expectEmailErrorMessage();
+      robot.expectPasswordErrorMessage();
     });
   });
 }

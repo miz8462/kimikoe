@@ -39,8 +39,8 @@ class _IdolGroupListScreenState extends ConsumerState<IdolGroupListScreen> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(groupsProvider);
-    final isLoading = state.isLoading;
     final groups = state.groups;
+    final isLoading = state.isLoading;
 
     late Widget content;
     if (isLoading) {
@@ -60,8 +60,7 @@ class _IdolGroupListScreenState extends ConsumerState<IdolGroupListScreen> {
             crossAxisCount: 2, // 横に表示する数
             crossAxisSpacing: 18, // 横のスペース
             mainAxisSpacing: 15, // 縦のスペース
-          ),
-          itemCount: groups.length,
+          ),itemCount: groups.length,
           itemBuilder: (BuildContext context, int index) {
             final group = groups[index];
             return GroupCardL(group: group);

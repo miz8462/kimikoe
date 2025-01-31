@@ -65,9 +65,9 @@ void main() async {
       await robot.tapLoginOrSignUpButton();
       await tester.pumpAndSettle();
 
-      await robot.expectEmailErrorMessage();
-      await robot.expectPasswordLengthErrorMessage();
-      await robot.expectNameErrorMessage();
+      robot.expectEmailErrorMessage();
+      robot.expectPasswordLengthErrorMessage();
+      robot.expectNameErrorMessage();
     });
   });
 }
