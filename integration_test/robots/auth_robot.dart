@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kimikoe_app/main.dart' as app;
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
@@ -18,6 +19,9 @@ class AuthRobot extends Robot<SignInScreen> {
   late String email;
   late String password;
   late String name;
+
+  static const String testEmail = 'doskoi@doskoi.com';
+  static const String testPassword = 'doskoidoskoi';
 
   Future<void> show() async {
     await tester.pumpWidget(
@@ -76,6 +80,26 @@ class AuthRobot extends Robot<SignInScreen> {
   Future<void> tapLogoutButton() async {
     await tester.tap(find.byKey(Key('logoutButton')));
     await tester.pumpAndSettle();
+  }
+
+  Future<void> login() async {
+    await enterEmail(testEmail);
+    await enterPassword(testPassword);
+    await tester.pumpAndSettle();
+    
+    await tapLoginOrSignUpButton();
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> initializeAndLogin() async {
+    await app.main();
+    await tester.pumpAndSettle();
+
+    if (supabase.auth.currentSession != null) {
+      await supabase.auth.signOut();
+    }
+
+    await login();
   }
 
   Future<void> deleteUser() async {

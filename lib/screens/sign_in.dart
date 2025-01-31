@@ -159,9 +159,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                               return null;
                             },
                             onSaved: (value) {
-                              if (value == null) {
-                                logger.e('メールアドレスがnullです');
-                              }
                               _enteredEmail = value!;
                             },
                           ),
@@ -201,9 +198,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                               return null;
                             },
                             onSaved: (value) {
-                              if (value == null) {
-                                logger.e('パスワードがnullです');
-                              }
                               _enteredPassword = value!;
                             },
                           ),

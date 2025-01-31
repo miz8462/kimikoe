@@ -4,7 +4,6 @@ import 'package:kimikoe_app/main.dart' as app;
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/screens/sign_in.dart';
 
-import '../integration_test_utils/auth_utils.dart';
 import '../integration_test_utils/wait_for_condition.dart';
 import '../robots/auth_robot.dart';
 
@@ -13,16 +12,9 @@ void main() async {
 
   group('ログインテスト', () {
     testWidgets('ログイン成功', (WidgetTester tester) async {
-      await app.main();
-      await tester.pumpAndSettle();
-
-      if (supabase.auth.currentSession != null) {
-        await supabase.auth.signOut();
-      }
-
-      await login(tester);
-
       final robot = AuthRobot(tester);
+
+      await robot.initializeAndLogin();
 
       await robot.expectHomeScreen();
 

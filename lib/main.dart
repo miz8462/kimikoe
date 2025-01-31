@@ -7,9 +7,6 @@ import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-// `dart.vm.product` フラグは、Dartの仮想マシンがプロダクションモードで実行されているかを示す。
-// プロダクションモード (リリースモード) では true、デバッグモードでは false。
-bool isDebugMode = const bool.fromEnvironment('dart.vm.product') == false;
 final providerContainer = ProviderContainer();
 final sessionProvider = StateProvider<Session?>((ref) => null);
 
