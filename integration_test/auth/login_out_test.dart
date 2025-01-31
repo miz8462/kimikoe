@@ -19,7 +19,6 @@ void main() async {
       await robot.expectHomeScreen();
 
       await robot.tapLogoutButton();
-      await tester.pumpAndSettle();
 
       await robot.expectSignInScreen();
     });
@@ -36,7 +35,7 @@ void main() async {
       final robot = AuthRobot(tester);
 
       await robot.enterEmail(emailWithoutAtMark);
-      await robot.tapLoginOrSignUpButton();
+      await robot.tapLoginButton();
 
       robot.expectEmailErrorMessage();
       robot.expectPasswordErrorMessage();

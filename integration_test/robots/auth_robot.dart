@@ -23,14 +23,14 @@ class AuthRobot extends Robot<SignInScreen> {
   static const String testEmail = 'doskoi@doskoi.com';
   static const String testPassword = 'doskoidoskoi';
 
-  Future<void> show() async {
-    await tester.pumpWidget(
-      MaterialApp(
-        home: ScaffoldMessenger(
-          child: Scaffold(body: SignInScreen()),
-        ),
-      ),
-    );
+  Future<void> launchApp() async {
+    await app.main();
+
+    if (supabase.auth.currentSession != null) {
+      await supabase.auth.signOut();
+    }
+
+    await waitForScreen(SignInScreen);
   }
 
   Future<void> enterEmail(String email) async {
@@ -53,7 +53,7 @@ class AuthRobot extends Robot<SignInScreen> {
     await tester.pumpAndSettle();
   }
 
-  Future<void> tapLoginOrSignUpButton() async {
+  Future<void> tapLoginButton() async {
     final loginButtonFinder = find.byKey(Key('loginButton'));
     expect(loginButtonFinder, findsOneWidget);
 
@@ -82,22 +82,30 @@ class AuthRobot extends Robot<SignInScreen> {
     await tester.pumpAndSettle();
   }
 
+  Future<void> waitForScreen(Type screenType) async {
+    await waitForCondition(tester, find.byType(screenType));
+  }
+
   Future<void> login() async {
     await enterEmail(testEmail);
     await enterPassword(testPassword);
     await tester.pumpAndSettle();
 
-    await tapLoginOrSignUpButton();
+    await tapLoginButton();
     await tester.pumpAndSettle();
   }
 
-  Future<void> initializeAndLogin() async {
-    await app.main();
-    await tester.pumpAndSettle();
+  Future<void> signUp(String email, String password, String name) async {
+    await tapToggleAuthButton();
 
-    if (supabase.auth.currentSession != null) {
-      await supabase.auth.signOut();
-    }
+    await enterEmail(email);
+    await enterPassword(password);
+    await enterName(name);
+    await tapLoginButton();
+  }
+
+  Future<void> initializeAndLogin() async {
+    await launchApp();
 
     await login();
   }
@@ -130,15 +138,15 @@ class AuthRobot extends Robot<SignInScreen> {
     }
   }
 
-  void expectEmailErrorMessage()  {
+  void expectEmailErrorMessage() {
     expect(find.text('正しいメールアドレスを入力してください'), findsOneWidget);
   }
 
-  void expectPasswordErrorMessage()  {
+  void expectPasswordErrorMessage() {
     expect(find.text('正しいパスワードを入力してください'), findsOneWidget);
   }
 
-  void expectPasswordLengthErrorMessage()  {
+  void expectPasswordLengthErrorMessage() {
     expect(find.text('パスワードは8文字以上入力してください'), findsOneWidget);
   }
 
@@ -147,12 +155,12 @@ class AuthRobot extends Robot<SignInScreen> {
   }
 
   Future<void> expectHomeScreen() async {
-    await waitForCondition(tester, find.byType(IdolGroupListScreen));
+    await waitForScreen(IdolGroupListScreen);
     expect(find.byType(IdolGroupListScreen), findsOneWidget);
   }
 
   Future<void> expectSignInScreen() async {
-    await waitForCondition(tester, find.byType(SignInScreen));
+    await waitForScreen(SignInScreen);
     expect(find.byType(SignInScreen), findsOneWidget);
   }
 }
