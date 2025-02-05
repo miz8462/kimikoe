@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kimikoe_app/screens/idol_group_list.dart';
 
 import '../robots/auth_robot.dart';
 import '../robots/home_robot.dart';
@@ -10,10 +11,10 @@ void main() {
 
     final robot = HomeRobot(tester);
 
-    await robot.expectHomeScreen();
+    await robot.expectScreen(IdolGroupListScreen);
 
     await robot.refreshScreen();
 
-    await robot.expectHomeScreen();
+    await robot.expectScreen(IdolGroupListScreen);
   });
 }

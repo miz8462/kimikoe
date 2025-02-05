@@ -11,9 +11,9 @@ import 'package:kimikoe_app/services/supabase_services/supabase_delete.dart';
 import 'package:robot/robot.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../integration_test_utils/wait_for_condition.dart';
+import 'robot_mixin.dart';
 
-class AuthRobot extends Robot<SignInScreen> {
+class AuthRobot extends Robot<SignInScreen> with RobotMixin {
   AuthRobot(super.tester);
 
   late String email;
@@ -34,23 +34,19 @@ class AuthRobot extends Robot<SignInScreen> {
   }
 
   Future<void> enterEmail(String email) async {
-    await tester.enterText(find.byKey(Key('emailField')), email);
-    await tester.pumpAndSettle();
+    await enterTextByKey(keyValue: 'emailField', enterValue: email);
   }
 
   Future<void> enterPassword(String password) async {
-    await tester.enterText(find.byKey(Key('passwordField')), password);
-    await tester.pumpAndSettle();
+    await enterTextByKey(keyValue: 'passwordField', enterValue: password);
   }
 
   Future<void> enterName(String name) async {
-    await tester.enterText(find.byKey(Key('nameField')), name);
-    await tester.pumpAndSettle();
+    await enterTextByKey(keyValue: 'nameField', enterValue: name);
   }
 
   Future<void> tapToggleAuthButton() async {
-    await tester.tap(find.byKey(Key('switchButton')));
-    await tester.pumpAndSettle();
+    await tapButton('switchButton');
   }
 
   Future<void> tapLoginButton() async {
@@ -73,17 +69,11 @@ class AuthRobot extends Robot<SignInScreen> {
     await tester.pumpAndSettle();
 
     // タップを実行
-    await tester.tap(loginButtonFinder, warnIfMissed: false);
-    await tester.pumpAndSettle();
+    await tapButton('loginButton');
   }
 
   Future<void> tapLogoutButton() async {
-    await tester.tap(find.byKey(Key('logoutButton')));
-    await tester.pumpAndSettle();
-  }
-
-  Future<void> waitForScreen(Type screenType) async {
-    await waitForCondition(tester, find.byType(screenType));
+    await tapButton('logoutButton');
   }
 
   Future<void> login() async {
@@ -152,15 +142,5 @@ class AuthRobot extends Robot<SignInScreen> {
 
   void expectNameErrorMessage() {
     expect(find.text('名前は2文字以上入力してください'), findsOneWidget);
-  }
-
-  Future<void> expectHomeScreen() async {
-    await waitForScreen(IdolGroupListScreen);
-    expect(find.byType(IdolGroupListScreen), findsOneWidget);
-  }
-
-  Future<void> expectSignInScreen() async {
-    await waitForScreen(SignInScreen);
-    expect(find.byType(SignInScreen), findsOneWidget);
   }
 }

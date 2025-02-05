@@ -3,9 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/screens/idol_group_list.dart';
 import 'package:robot/robot.dart';
 
-import '../integration_test_utils/wait_for_condition.dart';
+import 'robot_mixin.dart';
 
-class HomeRobot extends Robot<IdolGroupListScreen> {
+class HomeRobot extends Robot<IdolGroupListScreen> with RobotMixin {
   HomeRobot(super.tester);
 
   Future<void> refreshScreen() async {
@@ -15,10 +15,5 @@ class HomeRobot extends Robot<IdolGroupListScreen> {
       1000,
     );
     await tester.pumpAndSettle();
-  }
-
-  Future<void> expectHomeScreen() async {
-    await waitForCondition(tester, find.byType(IdolGroupListScreen));
-    expect(find.byType(IdolGroupListScreen), findsOneWidget);
   }
 }

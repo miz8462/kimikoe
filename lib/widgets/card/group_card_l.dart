@@ -17,6 +17,7 @@ class GroupCardL extends StatelessWidget {
   Widget build(BuildContext context) {
     final image = imageProvider ?? NetworkImage(group.imageUrl);
     return GestureDetector(
+      key: Key('group'),
       onTap: () => context.push(
         '${RoutingPath.groupList}/${RoutingPath.songList}',
         extra: group,
