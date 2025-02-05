@@ -8,12 +8,11 @@ import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/screens/idol_group_list.dart';
 import 'package:kimikoe_app/screens/sign_in.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_delete.dart';
-import 'package:robot/robot.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'robot_mixin.dart';
+import 'custom_robot.dart';
 
-class AuthRobot extends Robot<SignInScreen> with RobotMixin {
+class AuthRobot extends CustomRobot<SignInScreen> {
   AuthRobot(super.tester);
 
   late String email;

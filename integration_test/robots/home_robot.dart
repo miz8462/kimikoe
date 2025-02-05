@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/screens/idol_group_list.dart';
-import 'package:robot/robot.dart';
 
-import 'robot_mixin.dart';
+import 'custom_robot.dart';
 
-class HomeRobot extends Robot<IdolGroupListScreen> with RobotMixin {
+class HomeRobot extends CustomRobot<IdolGroupListScreen> {
   HomeRobot(super.tester);
 
   Future<void> refreshScreen() async {

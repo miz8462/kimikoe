@@ -1,8 +1,9 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:robot/robot.dart';
 
-mixin RobotMixin {
-  WidgetTester get tester;
+class CustomRobot<T extends Widget> extends Robot<Widget> {
+  CustomRobot(super.tester);
 
   Future<void> tapButton(String keyValue) async {
     await tester.tap(find.byKey(Key(keyValue)));

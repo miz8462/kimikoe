@@ -1,12 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/screens/song_list.dart';
 
-import 'robot_mixin.dart';
+import 'custom_robot.dart';
 
-class NavigationRobot with RobotMixin {
-  const NavigationRobot(this.tester);
-  @override
-  final WidgetTester tester;
+class NavigationRobot extends CustomRobot {
+  NavigationRobot(super.tester);
 
   Future<void> toSongList() async {
     await tapFirstInList('group');
