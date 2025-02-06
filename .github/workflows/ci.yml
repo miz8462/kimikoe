@@ -52,18 +52,18 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
       
-      # - name: Check for outdated dependencies 
-      #   run: flutter pub outdated
+      - name: Check for outdated dependencies 
+        run: flutter pub outdated
 
-      # # コードチェック、テスト
-      # - name: Check Code Formatting 
-      #   run: dart format .
+      # コードチェック、テスト
+      - name: Check Code Formatting 
+        run: dart format .
   
-      # - name: Analyze project source
-      #   run: flutter analyze
+      - name: Analyze project source
+        run: flutter analyze
 
-      # - name: Unit Test
-      #   run: flutter test --coverage
+      - name: Unit Test
+        run: flutter test --coverage
 
       # アンドロイドエミュレータの環境を構築 
       - name: Enable KVM

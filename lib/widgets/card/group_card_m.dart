@@ -23,6 +23,7 @@ class GroupCardM extends StatelessWidget {
     final image = imageProvider ?? NetworkImage(groupImage);
 
     return GestureDetector(
+      key: Key('group-card-m'),
       onTap: () {
         context.pushNamed(RoutingPath.groupDetail, extra: group);
       },

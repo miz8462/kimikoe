@@ -32,6 +32,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
       Padding(
         padding: const EdgeInsets.only(top: 12),
         child: PopupMenuButton<int>(
+          key: const Key('top-bar-menu'),
           icon: const Icon(Icons.more_vert),
           color: Colors.white,
           offset: const Offset(0, 40),
@@ -59,6 +60,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
           },
           itemBuilder: (context) => [
             PopupMenuItem<int>(
+              key: const Key('edit'),
               value: 0,
               child: ListTile(
                 leading:
@@ -68,6 +70,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
             ),
             if (!isGroup && !isUser)
               PopupMenuItem<int>(
+                key: const Key('delete'),
                 value: 1,
                 child: ListTile(
                   leading: Icon(

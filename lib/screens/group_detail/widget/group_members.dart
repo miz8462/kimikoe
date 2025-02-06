@@ -57,6 +57,7 @@ class GroupMembers extends ConsumerWidget {
                                 ),
                                 const Gap(spaceS),
                                 Text(
+                                  key: Key('member-$index'),
                                   member.name,
                                   style: const TextStyle(fontSize: fontS),
                                 ),

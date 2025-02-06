@@ -91,9 +91,11 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
       _selectedColor = Colors.lightBlue;
     }
 
+    // 色設定
     if (_idol.color == null) {
       color = Colors.lightBlue;
-    }
+    } else {
+      color = _idol.color!;}
     _selectedColor = _isEditing ? color : Colors.lightBlue;
 
     _groupNameController = TextEditingController(

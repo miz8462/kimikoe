@@ -12,7 +12,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'custom_robot.dart';
 
-class AuthRobot extends CustomRobot<SignInScreen> {
+class AuthRobot extends CustomBaseRobot<SignInScreen> {
   AuthRobot(super.tester);
 
   late String email;

@@ -41,6 +41,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
               children: [
                 StyledButton(
                   '歌詞登録',
+                  key: Key('add-song'),
                   onPressed: () {
                     Navigator.of(context).pop();
                     context.push(RoutingPath.addSong);
@@ -48,6 +49,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                 ),
                 StyledButton(
                   'グループ登録',
+                  key: Key('add-group'),
                   onPressed: () {
                     Navigator.of(context).pop();
                     context.push(RoutingPath.addGroup);
@@ -55,6 +57,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                 ),
                 StyledButton(
                   'アイドル登録',
+                  key: Key('add-idol'),
                   onPressed: () {
                     Navigator.of(context).pop();
                     context.push(RoutingPath.addIdol);
@@ -62,6 +65,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                 ),
                 StyledButton(
                   '作詞・作曲家登録',
+                  key: Key('add-artist'),
                   onPressed: () {
                     Navigator.of(context).pop();
                     context.push(RoutingPath.addArtist);
@@ -123,6 +127,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
           ),
           NavigationDestination(
             icon: Icon(
+              key: Key('add-button'),
               Icons.add_box_outlined,
               color: currentIndex == addIndex ? textDark : textWhite,
             ),
@@ -130,6 +135,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
           ),
           NavigationDestination(
             icon: CircleAvatar(
+              key: Key('user-avatar'),
               backgroundImage: NetworkImage(imageUrl),
               radius: avaterSizeS,
             ),
@@ -137,7 +143,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
           ),
           // TODO: 開発用ログアウトボタン
           NavigationDestination(
-            icon: Icon(key: Key('logoutButton'),Icons.logout),
+            icon: Icon(key: Key('logoutButton'), Icons.logout),
             label: 'ログアウト',
           ),
         ],
