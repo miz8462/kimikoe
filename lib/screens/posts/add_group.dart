@@ -185,108 +185,107 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: TopBar(
         pageTitle: _isEditing ? 'グループ編集' : 'グループ登録',
         showLeading: _isEditing,
       ),
       body: SingleChildScrollView(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: screenHeight),
-          child: Padding(
-            padding: screenPadding,
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    '*必須項目',
-                    style: TextStyle(color: textGray),
-                  ),
-                  InputForm(
-                    initialValue: _isEditing ? _group.name : '',
-                    label: '*グループ名',
-                    validator: _groupNameValidator,
-                    onSaved: (value) {
-                      _enteredName = value!;
-                    },
-                  ),
-                  const Gap(spaceS),
-                  ImageInput(
-                    imageUrl: _group.imageUrl,
-                    onPickImage: (image) {
-                      _selectedImage = image;
-                      _isImageChanged = true;
-                    },
-                    label: 'グループ画像',
-                  ),
-                  const Gap(spaceS),
-                  PickerForm(
-                    label: '結成年',
-                    controller: _yearController,
-                    picker: _pickYear,
-                    onSaved: (value) {
-                      _selectedYear = value;
-                    },
-                  ),
-                  const Gap(spaceS),
-                  InputForm(
-                    initialValue: _isEditing ? _group.officialUrl : '',
-                    label: '公式サイト URL',
-                    keyboardType: TextInputType.url,
-                    validator: urlValidator,
-                    onSaved: (value) {
-                      _enteredOfficialUrl = value!;
-                    },
-                  ),
-                  const Gap(spaceS),
-                  InputForm(
-                    initialValue: _isEditing ? _group.twitterUrl : '',
-                    label: 'Twitter URL',
-                    keyboardType: TextInputType.url,
-                    validator: urlValidator,
-                    onSaved: (value) {
-                      _enteredTwitterUrl = value!;
-                    },
-                  ),
-                  const Gap(spaceS),
-                  InputForm(
-                    initialValue: _isEditing ? _group.instagramUrl : '',
-                    label: 'Instagram Url',
-                    keyboardType: TextInputType.url,
-                    validator: urlValidator,
-                    onSaved: (value) {
-                      _enteredInstagramUrl = value!;
-                    },
-                  ),
-                  const Gap(spaceS),
-                  InputForm(
-                    initialValue: _isEditing ? _group.scheduleUrl : '',
-                    label: 'Schedule Url',
-                    keyboardType: TextInputType.url,
-                    validator: urlValidator,
-                    onSaved: (value) {
-                      _enteredScheduleUrl = value!;
-                    },
-                  ),
-                  const Gap(spaceS),
-                  ExpandedTextForm(
-                    initialValue: _isEditing ? _group.comment : null,
-                    onTextChanged: (value) {
-                      _enteredComment = value!;
-                    },
-                    label: '備考',
-                  ),
-                  const Gap(spaceS),
-                  StyledButton(
-                    '登録',
-                    onPressed: _isSending ? null : _submitGroup,
-                    isSending: _isSending,
-                  ),
-                ],
-              ),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  '*必須項目',
+                  style: TextStyle(color: textGray),
+                ),
+                InputForm(
+                  initialValue: _isEditing ? _group.name : '',
+                  label: '*グループ名',
+                  validator: _groupNameValidator,
+                  onSaved: (value) {
+                    _enteredName = value!;
+                  },
+                ),
+                const Gap(spaceS),
+                ImageInput(
+                  imageUrl: _group.imageUrl,
+                  onPickImage: (image) {
+                    _selectedImage = image;
+                    _isImageChanged = true;
+                  },
+                  label: 'グループ画像',
+                ),
+                const Gap(spaceS),
+                PickerForm(
+                  label: '結成年',
+                  controller: _yearController,
+                  picker: _pickYear,
+                  onSaved: (value) {
+                    _selectedYear = value;
+                  },
+                ),
+                const Gap(spaceS),
+                InputForm(
+                  initialValue: _isEditing ? _group.officialUrl : '',
+                  label: '公式サイト URL',
+                  keyboardType: TextInputType.url,
+                  validator: urlValidator,
+                  onSaved: (value) {
+                    _enteredOfficialUrl = value!;
+                  },
+                ),
+                const Gap(spaceS),
+                InputForm(
+                  initialValue: _isEditing ? _group.twitterUrl : '',
+                  label: 'Twitter URL',
+                  keyboardType: TextInputType.url,
+                  validator: urlValidator,
+                  onSaved: (value) {
+                    _enteredTwitterUrl = value!;
+                  },
+                ),
+                const Gap(spaceS),
+                InputForm(
+                  initialValue: _isEditing ? _group.instagramUrl : '',
+                  label: 'Instagram Url',
+                  keyboardType: TextInputType.url,
+                  validator: urlValidator,
+                  onSaved: (value) {
+                    _enteredInstagramUrl = value!;
+                  },
+                ),
+                const Gap(spaceS),
+                InputForm(
+                  initialValue: _isEditing ? _group.scheduleUrl : '',
+                  label: 'Schedule Url',
+                  keyboardType: TextInputType.url,
+                  validator: urlValidator,
+                  onSaved: (value) {
+                    _enteredScheduleUrl = value!;
+                  },
+                ),
+                const Gap(spaceS),
+                ExpandedTextForm(
+                  initialValue: _isEditing ? _group.comment : null,
+                  onTextChanged: (value) {
+                    _enteredComment = value!;
+                  },
+                  label: '備考',
+                ),
+                const Gap(spaceS),
+                StyledButton(
+                  '登録',
+                  onPressed: _isSending ? null : _submitGroup,
+                  isSending: _isSending,
+                ),
+                                const Gap(spaceM),
+
+              ],
             ),
           ),
         ),
