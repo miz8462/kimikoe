@@ -11,7 +11,6 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
 
   Future<void> fetchUserProfile() async {
     final currentUser = supabase.auth.currentUser;
-    print('CURRENT USER:$currentUser');
     if (currentUser == null) {
       logger.i('ユーザーがログインしていません');
       return;

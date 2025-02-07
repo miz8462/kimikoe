@@ -64,8 +64,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<!-- TODO: google sign in の設定 クライアントIDを作り直し隠す -->
-				<string>com.googleusercontent.apps.1032178590415-9ckrdflipm1p0q0vvdqk213ntt137dqh</string>
+				<string>com.googleusercontent.apps.1032178590415-eiei8uch74636dv740kqaurtf891d3ii</string>
 			</array>
 		</dict>
 	</array>

@@ -326,6 +326,10 @@ class _AddSongScreenState extends State<AddSongScreen> {
     return textInputValidator(value, 'タイトル');
   }
 
+  String? _lyricValidator(String? value) {
+    return textInputValidator(value, '歌詞');
+  }
+
   Future<void> _pickReleaseDate() async {
     await picker.DatePicker.showDatePicker(
       context,
@@ -400,7 +404,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                             TextFormWithController(
                               controller: _lyricListControllers[i],
                               label: '*歌詞',
-                              validator: _titleValidator,
+                              validator: _lyricValidator,
                               onSaved: (value) {
                                 _lyricAndSingerList[i]['lyric'] = value ?? '';
                               },

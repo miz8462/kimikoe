@@ -10,6 +10,11 @@ class NavigationRobot extends CustomBaseRobot {
     await tapFirstInList('group');
   }
 
+  Future<void> toSongInfo() async {
+    await toSongList();
+    await tapButton('song-card');
+  }
+
   Future<void> toGroupDetail() async {
     await toSongList();
     await tapButton('group-card-m');

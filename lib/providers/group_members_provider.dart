@@ -23,15 +23,12 @@ class GroupMembersNotifier extends StateNotifier<AsyncValue<List<Idol>>> {
       final group = groupsNotifier.getGroupById(groupId);
       final groupName = group!.name;
       logger.i('Supabaseから $groupName のメンバーリストを取得中...');
-      print('groupName: $groupName');
 
       final fechGroupMembers = ref.read(fetchGroupMembersProvider);
       final response = await fechGroupMembers(
         groupId,
         supabase: supabase,
       );
-      print('ここだよ～');
-      print('response: $response');
 
       final idols = response.map((idol) {
         return Idol(

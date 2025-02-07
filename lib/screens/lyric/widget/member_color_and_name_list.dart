@@ -30,11 +30,13 @@ class _GroupColorAndNameListState extends State<GroupColorAndNameList> {
           return handleMemberFetchError(snapshot.error);
         } else if (snapshot.hasData) {
           final members = snapshot.data!;
-          return Row(
+          return Wrap(
+            runSpacing: spaceS,
             children: members.map<Widget>((member) {
               final color = Color(int.parse(member[ColumnName.color]));
               final name = member[ColumnName.name];
               return Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
                     width: circleSize,

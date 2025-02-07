@@ -40,7 +40,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 StyledButton(
-                  '歌詞登録',
+                  '歌詞',
                   key: Key('add-song'),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -48,7 +48,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                   },
                 ),
                 StyledButton(
-                  'グループ登録',
+                  'グループ',
                   key: Key('add-group'),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -56,7 +56,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                   },
                 ),
                 StyledButton(
-                  'アイドル登録',
+                  'アイドル',
                   key: Key('add-idol'),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -64,7 +64,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                   },
                 ),
                 StyledButton(
-                  '作詞・作曲家登録',
+                  '作詞・作曲家',
                   key: Key('add-artist'),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -123,7 +123,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
               Icons.home_outlined,
               color: currentIndex == homeIndex ? textDark : textWhite,
             ),
-            label: 'ホーム',
+            label: '',
           ),
           NavigationDestination(
             icon: Icon(
@@ -131,7 +131,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
               Icons.add_box_outlined,
               color: currentIndex == addIndex ? textDark : textWhite,
             ),
-            label: '登録',
+            label: '',
           ),
           NavigationDestination(
             icon: CircleAvatar(
@@ -139,12 +139,12 @@ class _BottomBarState extends ConsumerState<BottomBar> {
               backgroundImage: NetworkImage(imageUrl),
               radius: avaterSizeS,
             ),
-            label: 'ユーザー',
+            label: '',
           ),
           // TODO: 開発用ログアウトボタン
           NavigationDestination(
             icon: Icon(key: Key('logoutButton'), Icons.logout),
-            label: 'ログアウト',
+            label: '',
           ),
         ],
       ),
