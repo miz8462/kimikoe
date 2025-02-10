@@ -6,6 +6,14 @@ import 'custom_robot.dart';
 class FormRobot extends CustomRobot<Form> {
   FormRobot(super.tester);
 
+  Future<void> ensureSubmitButton() async {
+    await ensureVisibleButton('submit');
+  }
+
+  Future<void> tapSubmitButton() async {
+    await tapButton('submit');
+  }
+
   Future<void> enterName(String name) async {
     await enterTextByKey(keyValue: 'name', enterValue: name);
   }

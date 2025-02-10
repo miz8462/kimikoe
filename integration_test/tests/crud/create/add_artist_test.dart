@@ -20,8 +20,10 @@ void main() {
     final formRobot = FormRobot(tester);
     await formRobot.enterName('test-artist');
     await formRobot.enterComment('test-comment');
-    await formRobot.tapButton('submit');
+    await formRobot.ensureSubmitButton();
+    await formRobot.tapSubmitButton();
 
+    await formRobot.waitForScreen(IdolGroupListScreen);
     formRobot.expectAddArtistSuccessMessage();
   });
 }
