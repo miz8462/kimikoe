@@ -33,6 +33,7 @@ dependencies:
   font_awesome_flutter: ^10.8.0
   connectivity_plus: ^6.1.0
   shared_preferences: ^2.3.3
+  collection: ^1.19.0
 
 dev_dependencies:
   flutter_test:

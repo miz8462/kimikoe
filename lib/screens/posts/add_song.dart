@@ -378,6 +378,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                         style: TextStyle(color: textGray, fontSize: fontSS),
                       ),
                       InputForm(
+                        key: Key('title'),
                         initialValue: _isEditing ? _song.title : _enteredTitle,
                         label: '*タイトル',
                         validator: _titleValidator,
@@ -389,6 +390,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                       // Text('グループを選ぶと歌手を絞り込めます。'),
                       // Gap(spaceS),
                       CustomDropdownMenu(
+                        key: Key('group'),
                         label: '*グループ選択',
                         dataList: _groupIdAndNameList,
                         controller: _groupNameController,
@@ -402,6 +404,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                           children: [
                             Text('${i + 1}'),
                             TextFormWithController(
+                              key: Key('lyric_$i'),
                               controller: _lyricListControllers[i],
                               label: '*歌詞',
                               validator: _lyricValidator,
@@ -411,6 +414,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                             ),
                             const Gap(spaceS),
                             CustomDropdownMenu(
+                              key: Key('singer_$i'),
                               label: '*歌手',
                               dataList: _idolIdAndNameList,
                               controller: _singerListControllers[i],
@@ -419,12 +423,14 @@ class _AddSongScreenState extends State<AddSongScreen> {
                           ],
                         ),
                       StyledButton(
+                        key: Key('add_lyric'),
                         '歌詞追加',
                         onPressed: _addNewLyricItem,
                         backgroundColor: mainColor.withValues(alpha: 0.7),
                       ),
                       const Gap(spaceS),
                       ImageInput(
+                        key: Key('image'),
                         imageUrl: _song.imageUrl,
                         onPickImage: (image) {
                           _selectedImage = image;
@@ -434,18 +440,21 @@ class _AddSongScreenState extends State<AddSongScreen> {
                       ),
                       const Gap(spaceS),
                       CustomDropdownMenu(
+                        key: Key('lyricist'),
                         label: '作詞家',
                         dataList: _artistIdAndNameList,
                         controller: _lyricistNameController,
                       ),
                       const Gap(spaceS),
                       CustomDropdownMenu(
+                        key: Key('composer'),
                         label: '作曲家',
                         dataList: _artistIdAndNameList,
                         controller: _composerNameController,
                       ),
                       const Gap(spaceS),
                       PickerForm(
+                        key: Key('release_date'),
                         label: '発売日',
                         controller: _releaseDateController,
                         picker: _pickReleaseDate,
@@ -459,6 +468,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                       ),
                       const Gap(spaceS),
                       ExpandedTextForm(
+                        key: Key('comment'),
                         initialValue:
                             _isEditing ? _song.comment : _enteredComment,
                         onTextChanged: (value) {
@@ -470,6 +480,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                       ),
                       const Gap(spaceS),
                       StyledButton(
+                        key: Key('submit'),
                         '登録',
                         onPressed: _isSending ? null : _submitSong,
                         isSending: _isSending,

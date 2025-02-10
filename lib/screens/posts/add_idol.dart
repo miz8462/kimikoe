@@ -95,7 +95,8 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     if (_idol.color == null) {
       color = Colors.lightBlue;
     } else {
-      color = _idol.color!;}
+      color = _idol.color!;
+    }
     _selectedColor = _isEditing ? color : Colors.lightBlue;
 
     _groupNameController = TextEditingController(
@@ -392,6 +393,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                         style: TextStyle(color: textGray, fontSize: fontSS),
                       ),
                       InputForm(
+                        key: Key('name'),
                         initialValue:
                             _isEditing ? _idol.name : _enteredIdolName,
                         label: '*名前',
@@ -402,6 +404,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       ),
                       const Gap(spaceS),
                       CustomDropdownMenu(
+                        key: Key('group'),
                         label: 'グループ選択',
                         dataList: _groupIdAndNameList,
                         controller: _groupNameController,
@@ -410,6 +413,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       Row(
                         children: [
                           CircularButton(
+                            key: Key('color'),
                             color: _selectedColor,
                             onPressed: _pickColor,
                           ),
@@ -424,6 +428,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       ),
                       const Gap(spaceS),
                       ImageInput(
+                        key: Key('image'),
                         imageUrl: _idol.imageUrl,
                         onPickImage: (image) {
                           _selectedImage = image;
@@ -433,6 +438,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       ),
                       const Gap(spaceS),
                       PickerForm(
+                        key: Key('birthYear'),
                         label: '生まれた年',
                         controller: _birthYearController,
                         initialValue: '2000',
@@ -447,6 +453,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       ),
                       const Gap(spaceS),
                       PickerForm(
+                        key: Key('birthDay'),
                         label: '生まれた日付',
                         controller: _birthDayController,
                         initialValue: '06-15',
@@ -461,6 +468,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       ),
                       const Gap(spaceS),
                       PickerForm(
+                        key: Key('height'),
                         label: '身長',
                         controller: _heightController,
                         picker: _pickHeight,
@@ -474,6 +482,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       ),
                       const Gap(spaceS),
                       InputForm(
+                        key: Key('hometown'),
                         initialValue:
                             _isEditing ? _idol.hometown : _enteredHometown,
                         label: '出身地',
@@ -484,6 +493,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       ),
                       const Gap(spaceS),
                       PickerForm(
+                        key: Key('debutYear'),
                         label: 'デビュー年',
                         controller: _debutYearController,
                         picker: _pickDebutYear,
@@ -498,6 +508,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       ),
                       const Gap(spaceS),
                       ExpandedTextForm(
+                        key: Key('comment'),
                         initialValue:
                             _isEditing ? _idol.comment : _enteredComment,
                         onTextChanged: (value) {
@@ -509,6 +520,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       ),
                       const Gap(spaceS),
                       StyledButton(
+                        key: Key('submit'),
                         '登録',
                         onPressed: _isSending ? null : _submitIdol,
                         isSending: _isSending,

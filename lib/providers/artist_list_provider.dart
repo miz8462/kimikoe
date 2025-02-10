@@ -3,32 +3,6 @@ import 'package:kimikoe_app/models/artist.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_utils.dart';
-import 'package:kimikoe_app/utils/logging_util.dart';
-
-class ArtistsNotifier extends StateNotifier<List<Artist>> {
-  ArtistsNotifier(super.state);
-
-  Artist? getArtistById(int? id) {
-    if (id == null) {
-      logger.w('アーティストのIDがNULLです');
-      return null;
-    }
-    try {
-      return state.firstWhere(
-        (artist) => artist.id == id,
-        orElse: () {
-          final message = 'IDが $id のアーティストが見つかりませんでした';
-          logger.e(message);
-          throw StateError(message);
-        },
-      );
-    } catch (e) {
-      logger.e('ID:$id のアーティストを見つける際にエラーが発生しました', error: e);
-      if (e is StateError) rethrow;
-      return null;
-    }
-  }
-}
 
 final artistsFromSupabaseProvider = FutureProvider<List<Artist>>((ref) async {
   // プロバイダーを作り、そこを通すことで
@@ -38,18 +12,24 @@ final artistsFromSupabaseProvider = FutureProvider<List<Artist>>((ref) async {
   return createArtistList(supabase: supabase);
 });
 
-final artistsProvider =
-    StateNotifierProvider<ArtistsNotifier, List<Artist>>((ref) {
-  final logger = ref.read(loggerProvider);
+final artistsListProvider = Provider<List<Artist>>((ref) {
   final asyncValue = ref.watch(artistsFromSupabaseProvider);
-
-  logAsyncValue(asyncValue: asyncValue);
-
-  return asyncValue.maybeWhen(
-    data: ArtistsNotifier.new,
-    orElse: () {
-      logger.w('データが見つからないため、空のアーティストリストを返します');
-      return ArtistsNotifier([]);
-    },
+  return asyncValue.when(
+    data: (artists) => artists,
+    error: (_, __) => [],
+    loading: () => [],
   );
+});
+
+// アーティスト検索用のプロバイダー
+final artistByIdProvider = Provider.family<Artist?, int>((ref, id) {
+  final artists = ref.watch(artistsListProvider);
+  try {
+    return artists.firstWhere(
+      (artist) => artist.id == id,
+    );
+  } catch (e) {
+    logger.e('ID:$id のアーティストを見つける際にエラーが発生しました', error: e);
+    return null;
+  }
 });

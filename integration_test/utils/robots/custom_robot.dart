@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:robot/robot.dart';
 
-class CustomBaseRobot<T extends Widget> extends Robot<Widget> {
-  CustomBaseRobot(super.tester);
+class CustomRobot<T extends Widget> extends Robot<Widget> {
+  CustomRobot(super.tester);
 
   Future<void> tapButton(String keyValue) async {
     await tester.tap(find.byKey(Key(keyValue)));

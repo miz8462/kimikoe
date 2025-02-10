@@ -3,7 +3,7 @@ import 'package:kimikoe_app/screens/posts/add_idol.dart';
 
 import 'custom_robot.dart';
 
-class NavigationRobot extends CustomBaseRobot {
+class NavigationRobot extends CustomRobot {
   NavigationRobot(super.tester);
 
   Future<void> toSongList() async {

@@ -102,14 +102,12 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               SizedBox(
                 height: screenHeight * 0.25,
                 child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Image(
-                        image: AssetImage('assets/images/Kimikoe_Logo.png'),
-                      ),
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 60),
+                    child: Text(
+                      'キミコエ',
+                      style: TextStyle(fontSize: 36, color: mainColor),
+                    ),
                   ),
                 ),
               ),
@@ -123,9 +121,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                       key: _formKey,
                       child: Column(
                         children: [
-                          const Gap(60),
                           TextFormField(
-                            key: Key('emailField'),
+                            key: Key('email'),
                             style: const TextStyle(color: textWhite),
                             autocorrect: false,
                             keyboardType: TextInputType.emailAddress,
@@ -164,7 +161,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           ),
                           const Gap(20),
                           TextFormField(
-                            key: Key('passwordField'),
+                            key: Key('password'),
                             style: const TextStyle(color: textWhite),
                             autocorrect: false,
                             keyboardType: TextInputType.visiblePassword,
@@ -204,7 +201,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           Gap(spaceS),
                           if (!_isLogin)
                             TextFormField(
-                              key: Key('nameField'),
+                              key: Key('name'),
                               style: const TextStyle(color: textWhite),
                               autocorrect: false,
                               keyboardType: TextInputType.name,

@@ -204,6 +204,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                   style: TextStyle(color: textGray),
                 ),
                 InputForm(
+                  key: Key('name'),
                   initialValue: _isEditing ? _group.name : '',
                   label: '*グループ名',
                   validator: _groupNameValidator,
@@ -213,6 +214,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                 ),
                 const Gap(spaceS),
                 ImageInput(
+                  key: Key('image'),
                   imageUrl: _group.imageUrl,
                   onPickImage: (image) {
                     _selectedImage = image;
@@ -222,6 +224,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                 ),
                 const Gap(spaceS),
                 PickerForm(
+                  key: Key('year'),
                   label: '結成年',
                   controller: _yearController,
                   picker: _pickYear,
@@ -231,6 +234,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                 ),
                 const Gap(spaceS),
                 InputForm(
+                  key: Key('official'),
                   initialValue: _isEditing ? _group.officialUrl : '',
                   label: '公式サイト URL',
                   keyboardType: TextInputType.url,
@@ -241,6 +245,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                 ),
                 const Gap(spaceS),
                 InputForm(
+                  key: Key('twitter'),
                   initialValue: _isEditing ? _group.twitterUrl : '',
                   label: 'Twitter URL',
                   keyboardType: TextInputType.url,
@@ -251,6 +256,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                 ),
                 const Gap(spaceS),
                 InputForm(
+                  key: Key('instagram'),
                   initialValue: _isEditing ? _group.instagramUrl : '',
                   label: 'Instagram Url',
                   keyboardType: TextInputType.url,
@@ -261,6 +267,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                 ),
                 const Gap(spaceS),
                 InputForm(
+                  key: Key('schedule'),
                   initialValue: _isEditing ? _group.scheduleUrl : '',
                   label: 'Schedule Url',
                   keyboardType: TextInputType.url,
@@ -271,6 +278,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                 ),
                 const Gap(spaceS),
                 ExpandedTextForm(
+                  key: Key('comment'),
                   initialValue: _isEditing ? _group.comment : null,
                   onTextChanged: (value) {
                     _enteredComment = value!;
@@ -279,12 +287,12 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                 ),
                 const Gap(spaceS),
                 StyledButton(
+                  key: Key('submit'),
                   '登録',
                   onPressed: _isSending ? null : _submitGroup,
                   isSending: _isSending,
                 ),
-                                const Gap(spaceM),
-
+                const Gap(spaceM),
               ],
             ),
           ),

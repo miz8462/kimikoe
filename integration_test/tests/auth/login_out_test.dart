@@ -5,7 +5,7 @@ import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/screens/idol_group_list.dart';
 import 'package:kimikoe_app/screens/sign_in.dart';
 
-import '../robots/auth_robot.dart';
+import '../../utils/robots/auth_robot.dart';
 
 void main() async {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();

@@ -12,7 +12,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'custom_robot.dart';
 
-class AuthRobot extends CustomBaseRobot<SignInScreen> {
+class AuthRobot extends CustomRobot<SignInScreen> {
   AuthRobot(super.tester);
 
   late String email;
@@ -33,15 +33,15 @@ class AuthRobot extends CustomBaseRobot<SignInScreen> {
   }
 
   Future<void> enterEmail(String email) async {
-    await enterTextByKey(keyValue: 'emailField', enterValue: email);
+    await enterTextByKey(keyValue: 'email', enterValue: email);
   }
 
   Future<void> enterPassword(String password) async {
-    await enterTextByKey(keyValue: 'passwordField', enterValue: password);
+    await enterTextByKey(keyValue: 'password', enterValue: password);
   }
 
   Future<void> enterName(String name) async {
-    await enterTextByKey(keyValue: 'nameField', enterValue: name);
+    await enterTextByKey(keyValue: 'name', enterValue: name);
   }
 
   Future<void> tapToggleAuthButton() async {

@@ -119,12 +119,14 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
                     style: TextStyle(color: textGray),
                   ),
                   InputForm(
+                    key: Key('name'),
                     label: '*アーティスト名',
                     validator: _nameValidator,
                     onSaved: (value) => _enteredName = value!,
                   ),
                   const Gap(spaceS),
                   ImageInput(
+                    key: Key('image'),
                     onPickImage: (image) {
                       _selectedImage = image;
                     },
@@ -132,6 +134,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
                   ),
                   const Gap(spaceS),
                   ExpandedTextForm(
+                    key: Key('comment'),
                     label: '備考',
                     onTextChanged: (value) {
                       setState(() {
@@ -141,6 +144,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
                   ),
                   const Gap(spaceS),
                   StyledButton(
+                    key: Key('submit'),
                     '登録',
                     onPressed: _isSending ? null : _submitArtist,
                     isSending: _isSending,

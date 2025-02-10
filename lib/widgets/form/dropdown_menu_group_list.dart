@@ -36,10 +36,13 @@ class _CustomDropdownMenuState extends State<CustomDropdownMenu> {
         filled: true,
       ),
       dropdownMenuEntries: widget.dataList.map((value) {
+        final id = value[ColumnName.id];
+        final name = value[ColumnName.name];
         return DropdownMenuEntry<DropdownIdAndName>(
           value: DropdownIdAndName(
-            id: value[ColumnName.id],
-            name: value[ColumnName.name],
+            key: Key('name'),
+            id: id,
+            name: name,
           ),
           label: value[ColumnName.name].toString(),
         );

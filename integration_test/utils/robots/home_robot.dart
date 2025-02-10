@@ -4,7 +4,7 @@ import 'package:kimikoe_app/screens/idol_group_list.dart';
 
 import 'custom_robot.dart';
 
-class HomeRobot extends CustomBaseRobot<IdolGroupListScreen> {
+class HomeRobot extends CustomRobot<IdolGroupListScreen> {
   HomeRobot(super.tester);
 
   Future<void> refreshScreen() async {
