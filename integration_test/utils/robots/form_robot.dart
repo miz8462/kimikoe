@@ -51,7 +51,7 @@ class FormRobot extends CustomRobot<Form> {
   Future<void> selectYear() async {
     await tapWidget(
       find.descendant(
-        of: find.byKey(WidgetKeys.year),
+        of: find.byKey(Key(WidgetKeys.year)),
         matching: find.byType(TextFormField),
       ),
     );
