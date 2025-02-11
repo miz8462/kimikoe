@@ -49,6 +49,13 @@ class FormRobot extends CustomRobot<Form> {
   }
 
   Future<void> selectYear() async {
+    await tester.ensureVisible(
+      find.descendant(
+        of: find.byKey(Key(WidgetKeys.year)),
+        matching: find.byType(TextFormField),
+      ),
+    );
+
     await tester.tap(
       find.descendant(
         of: find.byKey(Key(WidgetKeys.year)),
