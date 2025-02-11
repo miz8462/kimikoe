@@ -53,6 +53,7 @@ class FormRobot extends CustomRobot<Form> {
     await tester.pumpAndSettle();
 
     await tester.ensureVisible(find.byType(ListWheelScrollView));
+    await tester.pumpAndSettle();
     await tester.drag(find.byType(ListWheelScrollView), const Offset(0, -100));
     await tester.pumpAndSettle();
 
