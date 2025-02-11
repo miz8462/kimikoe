@@ -1,5 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:kimikoe_app/models/table_and_column_name.dart';
+import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/screens/idol_group_list.dart';
 
 import '../../../utils/robots/auth_robot.dart';
@@ -9,15 +11,15 @@ import '../../../utils/robots/navigation_robot.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('アーティスト登録', (WidgetTester tester) async {
+  testWidgets('グループ登録', (WidgetTester tester) async {
     final authRobot = AuthRobot(tester);
     await authRobot.initializeAndLogin();
 
     final naviRobot = NavigationRobot(tester);
     await naviRobot.waitForScreen(IdolGroupListScreen);
-    await naviRobot.toAddArtist();
+    await naviRobot.toAddGroup();
 
-    final name = 'test-artist';
+    final name = 'test-group';
     final comment = 'test-comment';
     final formRobot = FormRobot(tester);
     await formRobot.enterName(name);
@@ -26,23 +28,24 @@ void main() {
     await formRobot.tapSubmitButton();
 
     await formRobot.waitForScreen(IdolGroupListScreen);
-    formRobot.expectAddArtistSuccessMessage();
+    formRobot.expectSuccessMessage(dataType: 'グループ', name: name);
 
-    await formRobot.deleteTestArtist(name);
+    await formRobot.deleteTestData(table: TableName.idolGroups, name: name);
   });
 
-  testWidgets('アーティストヴァリデーション', (WidgetTester tester) async {
+  testWidgets('グループヴァリデーション', (WidgetTester tester) async {
     final authRobot = AuthRobot(tester);
     await authRobot.initializeAndLogin();
 
     final naviRobot = NavigationRobot(tester);
     await naviRobot.waitForScreen(IdolGroupListScreen);
-    await naviRobot.toAddArtist();
+    await naviRobot.toAddGroup();
 
     final formRobot = FormRobot(tester);
 
     await formRobot.ensureSubmitButton();
     await formRobot.tapSubmitButton();
-    formRobot.expectValidationMessage();
+    await formRobot.ensureVisibleWidget(WidgetKeys.name);
+    formRobot.expectValidationMessage('グループ');
   });
 }

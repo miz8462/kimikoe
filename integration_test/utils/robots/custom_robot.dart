@@ -5,7 +5,7 @@ import 'package:robot/robot.dart';
 class CustomRobot<T extends Widget> extends Robot<Widget> {
   CustomRobot(super.tester);
 
-  Future<void> ensureVisibleButton(String keyValue) async {
+  Future<void> ensureVisibleWidget(String keyValue) async {
     await tester.ensureVisible(find.byKey(Key(keyValue)));
     await tester.pumpAndSettle();
   }

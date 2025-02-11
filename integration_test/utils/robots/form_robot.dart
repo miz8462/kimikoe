@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_delete.dart';
 
@@ -10,7 +9,7 @@ class FormRobot extends CustomRobot<Form> {
   FormRobot(super.tester);
 
   Future<void> ensureSubmitButton() async {
-    await ensureVisibleButton(WidgetKeys.submit);
+    await ensureVisibleWidget(WidgetKeys.submit);
   }
 
   Future<void> tapSubmitButton() async {
@@ -49,15 +48,23 @@ class FormRobot extends CustomRobot<Form> {
     await enterTextByKey(keyValue: WidgetKeys.comment, enterValue: comment);
   }
 
-  void expectAddArtistSuccessMessage() {
-    expect(find.text('アーティストを登録しました: test-artist'), findsOneWidget);
+  void expectSuccessMessage({
+    required String dataType,
+    required String name,
+  }) {
+    expect(find.text('$dataTypeを登録しました: $name'), findsOneWidget);
   }
 
-  void expectValidationMessage() {
-    expect(find.text('アーティスト名を入力してください。'), findsOneWidget);
+  void expectValidationMessage(
+    String dataType,
+  ) {
+    expect(find.text('$dataType名を入力してください。'), findsOneWidget);
   }
 
-  Future<void> deleteTestArtist(String name) async {
-    await deleteDataByName(table: TableName.artists, name: name);
+  Future<void> deleteTestData({
+    required String table,
+    required String name,
+  }) async {
+    await deleteDataByName(table: table, name: name);
   }
 }

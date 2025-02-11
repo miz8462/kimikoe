@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/screens/idol_group_list.dart';
 
 import '../../../utils/robots/auth_robot.dart';
@@ -26,9 +27,9 @@ void main() {
     await formRobot.tapSubmitButton();
 
     await formRobot.waitForScreen(IdolGroupListScreen);
-    formRobot.expectAddArtistSuccessMessage();
+    formRobot.expectSuccessMessage(dataType: 'アーティスト', name: name);
 
-    await formRobot.deleteTestArtist(name);
+    await formRobot.deleteTestData(table: TableName.artists, name: name);
   });
 
   testWidgets('アーティストヴァリデーション', (WidgetTester tester) async {
@@ -43,6 +44,6 @@ void main() {
 
     await formRobot.ensureSubmitButton();
     await formRobot.tapSubmitButton();
-    formRobot.expectValidationMessage();
+    formRobot.expectValidationMessage('アーティスト');
   });
 }
