@@ -52,7 +52,7 @@ class FormRobot extends CustomRobot<Form> {
     await tapWidget(WidgetKeys.year);
     await tester.pumpAndSettle();
 
-    expect(find.byType(ListWheelScrollView), findsOneWidget);
+    await tester.ensureVisible(find.byType(ListWheelScrollView));
     await tester.drag(find.byType(ListWheelScrollView), const Offset(0, -100));
     await tester.pumpAndSettle();
 
