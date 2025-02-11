@@ -24,7 +24,15 @@ jobs:
           echo "SERVICE_ROLE_KEY=${{ secrets.SERVICE_ROLE_KEY }}" >> .env
           echo "GOOGLE_OAUTH_IOS_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_IOS_CLIENT_ID }}" >> .env
           echo "GOOGLE_OAUTH_WEB_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_WEB_CLIENT_ID }}" >> .env
-
+      
+      # ~/.android/advancedFeatures.iniファイルを作成し、設定を追加
+      - name: Create advancedFeatures.ini file
+        run: |
+          mkdir -p ~/.android
+          touch ~/.android/advancedFeatures.ini
+          echo "Vulkan = off" >> ~/.android/advancedFeatures.ini
+          echo "GLDirectMem = on" >> ~/.android/advancedFeatures.ini
+      
       # Flutter SDKのキャッシュ
       - name: Cache Flutter SDK 
         uses: actions/cache@v3 
