@@ -47,8 +47,8 @@ class CustomRobot<T extends Widget> extends Robot<Widget> {
     }
   }
 
-  Future<void> waitForScreen(Type screenType) async {
-    await waitForCondition(find.byType(screenType));
+  Future<void> waitForScreen(Type screen) async {
+    await waitForCondition(find.byType(screen));
   }
 
   Future<void> expectScreen(Type screen) async {

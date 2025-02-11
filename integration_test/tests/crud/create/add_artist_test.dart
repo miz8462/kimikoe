@@ -17,13 +17,32 @@ void main() {
     await naviRobot.waitForScreen(IdolGroupListScreen);
     await naviRobot.toAddArtist();
 
+    final name = 'test-artist';
+    final comment = 'test-comment';
     final formRobot = FormRobot(tester);
-    await formRobot.enterName('test-artist');
-    await formRobot.enterComment('test-comment');
+    await formRobot.enterName(name);
+    await formRobot.enterComment(comment);
     await formRobot.ensureSubmitButton();
     await formRobot.tapSubmitButton();
 
     await formRobot.waitForScreen(IdolGroupListScreen);
     formRobot.expectAddArtistSuccessMessage();
+
+    await formRobot.deleteTestArtist(name);
+  });
+
+  testWidgets('アーティストヴァリデーション', (WidgetTester tester) async {
+    final authRobot = AuthRobot(tester);
+    await authRobot.initializeAndLogin();
+
+    final naviRobot = NavigationRobot(tester);
+    await naviRobot.waitForScreen(IdolGroupListScreen);
+    await naviRobot.toAddArtist();
+
+    final formRobot = FormRobot(tester);
+
+    await formRobot.ensureSubmitButton();
+    await formRobot.tapSubmitButton();
+    formRobot.expectValidationMessage();
   });
 }

@@ -48,6 +48,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
       setState(() {
         _isSending = false;
       });
+      return;
     }
 
     FocusScope.of(context).unfocus();

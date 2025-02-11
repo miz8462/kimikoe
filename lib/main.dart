@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
+import 'package:kimikoe_app/models/environment_keys.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -19,8 +20,8 @@ Future<void> main() async {
   // Supabaseの初期化
   try {
     await Supabase.initialize(
-      url: dotenv.env['SUPABASE_URL']!,
-      anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
+      url: dotenv.env[EnvironmentKeys.supabaseUrl]!,
+      anonKey: dotenv.env[EnvironmentKeys.supabaseAnonKey]!,
     );
     initializeSupabaseClient();
   } catch (e) {

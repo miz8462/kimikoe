@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/main.dart' as app;
+import 'package:kimikoe_app/models/environment_keys.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
+import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/screens/idol_group_list.dart';
@@ -68,11 +70,11 @@ class AuthRobot extends CustomRobot<SignInScreen> {
     await tester.pumpAndSettle();
 
     // タップを実行
-    await tapButton('loginButton');
+    await tapButton(WidgetKeys.loginButton);
   }
 
   Future<void> tapLogoutButton() async {
-    await tapButton('logoutButton');
+    await tapButton(WidgetKeys.logoutButton);
   }
 
   Future<void> login() async {
@@ -116,8 +118,8 @@ class AuthRobot extends CustomRobot<SignInScreen> {
   Future<void> deleteUserAdmin() async {
     await dotenv.load();
     final supabaseAdmin = SupabaseClient(
-      dotenv.env['SUPABASE_URL']!,
-      dotenv.env['SERVICE_ROLE_KEY']!,
+      dotenv.env[EnvironmentKeys.supabaseUrl]!,
+      dotenv.env[EnvironmentKeys.serviceRoleKey]!,
     );
     try {
       await supabaseAdmin.auth.admin.deleteUser(supabase.auth.currentUser!.id);
