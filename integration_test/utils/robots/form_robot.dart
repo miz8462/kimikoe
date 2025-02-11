@@ -49,7 +49,12 @@ class FormRobot extends CustomRobot<Form> {
   }
 
   Future<void> selectYear() async {
-    await tapWidget(WidgetKeys.year);
+    await tapWidget(
+      find.descendant(
+        of: find.byKey(WidgetKeys.year),
+        matching: find.byType(TextFormField),
+      ),
+    );
     await tester.pumpAndSettle();
 
     await tester.ensureVisible(find.byType(ListWheelScrollView));
