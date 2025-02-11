@@ -42,19 +42,19 @@ void main() {
     await formRobot.deleteTestData(table: TableName.idolGroups, name: name);
   });
 
-  // testWidgets('グループヴァリデーション', (WidgetTester tester) async {
-  //   final authRobot = AuthRobot(tester);
-  //   await authRobot.initializeAndLogin();
+  testWidgets('グループヴァリデーション', (WidgetTester tester) async {
+    final authRobot = AuthRobot(tester);
+    await authRobot.initializeAndLogin();
 
-  //   final naviRobot = NavigationRobot(tester);
-  //   await naviRobot.waitForWidget(IdolGroupListScreen);
-  //   await naviRobot.toAddGroup();
+    final naviRobot = NavigationRobot(tester);
+    await naviRobot.waitForWidget(IdolGroupListScreen);
+    await naviRobot.toAddGroup();
 
-  //   final formRobot = FormRobot(tester);
+    final formRobot = FormRobot(tester);
 
-  //   await formRobot.ensureSubmitButton();
-  //   await formRobot.tapSubmitButton();
-  //   await formRobot.ensureVisibleWidget(WidgetKeys.name);
-  //   formRobot.expectValidationMessage('グループ');
-  // });
+    await formRobot.ensureSubmitButton();
+    await formRobot.tapSubmitButton();
+    await formRobot.ensureVisibleWidget(WidgetKeys.name);
+    formRobot.expectValidationMessage('グループ');
+  });
 }
