@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
-import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_delete.dart';
-import 'package:kimikoe_app/utils/pickers/custom_picker.dart';
 
 import 'custom_robot.dart';
 
