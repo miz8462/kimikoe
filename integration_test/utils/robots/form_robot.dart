@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_delete.dart';
+import 'package:kimikoe_app/utils/pickers/custom_picker.dart';
 
 import 'custom_robot.dart';
 
@@ -13,7 +15,7 @@ class FormRobot extends CustomRobot<Form> {
   }
 
   Future<void> tapSubmitButton() async {
-    await tapButton(WidgetKeys.submit);
+    await tapWidget(WidgetKeys.submit);
   }
 
   Future<void> enterName(String name) async {
@@ -46,6 +48,21 @@ class FormRobot extends CustomRobot<Form> {
 
   Future<void> enterComment(String comment) async {
     await enterTextByKey(keyValue: WidgetKeys.comment, enterValue: comment);
+  }
+
+  Future<void> selectYear() async {
+    await tapWidget(WidgetKeys.year);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ListWheelScrollView), findsOneWidget);
+    await tester.drag(find.byType(ListWheelScrollView), const Offset(0, -100));
+    await tester.pumpAndSettle();
+
+    // Pickerの外をタップして値を確定
+    await tester.tapAt(const Offset(10, 10));
+    await tester.pumpAndSettle();
+
+    expect(find.text('2023'), findsOneWidget);
   }
 
   void expectSuccessMessage({

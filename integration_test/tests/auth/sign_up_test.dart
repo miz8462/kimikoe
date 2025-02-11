@@ -19,7 +19,7 @@ void main() async {
 
       await robot.signUp(email, password, name);
 
-      await robot.expectScreen(IdolGroupListScreen);
+      await robot.expectWidget(IdolGroupListScreen);
 
       // テストデータ削除
       await robot.deleteUser();
@@ -30,7 +30,7 @@ void main() async {
       final robot = AuthRobot(tester);
       await robot.launchApp();
 
-      await robot.waitForScreen(SignInScreen);
+      await robot.waitForWidget(SignInScreen);
 
       await robot.tapToggleAuthButton();
 

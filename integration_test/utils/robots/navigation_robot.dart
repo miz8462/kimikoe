@@ -8,15 +8,15 @@ class NavigationRobot extends CustomRobot {
   NavigationRobot(super.tester);
 
   Future<void> tapAddButton() async {
-    await tapButton(WidgetKeys.addButton);
+    await tapWidget(WidgetKeys.addButton);
   }
 
   Future<void> tapTopBarMenu() async {
-    await tapButton(WidgetKeys.topBarMenu);
+    await tapWidget(WidgetKeys.topBarMenu);
   }
 
   Future<void> tapEdit() async {
-    await tapButton(WidgetKeys.edit);
+    await tapWidget(WidgetKeys.edit);
   }
 
   Future<void> toSongList() async {
@@ -25,12 +25,12 @@ class NavigationRobot extends CustomRobot {
 
   Future<void> toSongInfo() async {
     await toSongList();
-    await tapButton(WidgetKeys.songCard);
+    await tapWidget(WidgetKeys.songCard);
   }
 
   Future<void> toGroupDetail() async {
     await toSongList();
-    await tapButton(WidgetKeys.groupCardM);
+    await tapWidget(WidgetKeys.groupCardM);
   }
 
   Future<void> toEditGroup() async {
@@ -41,38 +41,38 @@ class NavigationRobot extends CustomRobot {
 
   Future<void> toIdolDetail() async {
     await toGroupDetail();
-    await tapButton(WidgetKeys.member);
+    await tapWidget(WidgetKeys.member0);
   }
 
   Future<void> toEditIdol() async {
     await toIdolDetail();
     await tapTopBarMenu();
     await tapEdit();
-    await waitForScreen(AddIdolScreen);
+    await waitForWidget(AddIdolScreen);
   }
 
   Future<void> toAddSong() async {
     await tapAddButton();
-    await tapButton(WidgetKeys.addSong);
+    await tapWidget(WidgetKeys.addSong);
   }
 
   Future<void> toAddGroup() async {
     await tapAddButton();
-    await tapButton(WidgetKeys.addGroup);
+    await tapWidget(WidgetKeys.addGroup);
   }
 
   Future<void> toAddIdol() async {
     await tapAddButton();
-    await tapButton(WidgetKeys.addIdol);
+    await tapWidget(WidgetKeys.addIdol);
   }
 
   Future<void> toAddArtist() async {
     await tapAddButton();
-    await tapButton(WidgetKeys.addArtist);
+    await tapWidget(WidgetKeys.addArtist);
   }
 
   Future<void> toUserInfo() async {
-    await tapButton(WidgetKeys.userAvatar);
+    await tapWidget(WidgetKeys.userAvatar);
   }
 
   Future<void> toEditUser() async {

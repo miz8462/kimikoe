@@ -10,7 +10,7 @@ class CustomRobot<T extends Widget> extends Robot<Widget> {
     await tester.pumpAndSettle();
   }
 
-  Future<void> tapButton(String keyValue) async {
+  Future<void> tapWidget(String keyValue) async {
     await tester.tap(find.byKey(Key(keyValue)));
     await tester.pumpAndSettle();
   }
@@ -47,12 +47,12 @@ class CustomRobot<T extends Widget> extends Robot<Widget> {
     }
   }
 
-  Future<void> waitForScreen(Type screen) async {
-    await waitForCondition(find.byType(screen));
+  Future<void> waitForWidget(Type widget) async {
+    await waitForCondition(find.byType(widget));
   }
 
-  Future<void> expectScreen(Type screen) async {
-    await waitForScreen(screen);
-    expect(find.byType(screen), findsOneWidget);
+  Future<void> expectWidget(Type widget) async {
+    await waitForWidget(widget);
+    expect(find.byType(widget), findsOneWidget);
   }
 }

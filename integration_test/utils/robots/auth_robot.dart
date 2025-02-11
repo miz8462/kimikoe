@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/main.dart' as app;
@@ -31,50 +30,33 @@ class AuthRobot extends CustomRobot<SignInScreen> {
       await supabase.auth.signOut();
     }
 
-    await waitForScreen(SignInScreen);
+    await waitForWidget(SignInScreen);
   }
 
   Future<void> enterEmail(String email) async {
-    await enterTextByKey(keyValue: 'email', enterValue: email);
+    await enterTextByKey(keyValue: WidgetKeys.email, enterValue: email);
   }
 
   Future<void> enterPassword(String password) async {
-    await enterTextByKey(keyValue: 'password', enterValue: password);
+    await enterTextByKey(keyValue: WidgetKeys.password, enterValue: password);
   }
 
   Future<void> enterName(String name) async {
-    await enterTextByKey(keyValue: 'name', enterValue: name);
+    await enterTextByKey(keyValue: WidgetKeys.name, enterValue: name);
   }
 
   Future<void> tapToggleAuthButton() async {
-    await tapButton('switchButton');
+    await tapWidget(WidgetKeys.switchButton);
   }
 
   Future<void> tapLoginButton() async {
-    final loginButtonFinder = find.byKey(Key('loginButton'));
-    expect(loginButtonFinder, findsOneWidget);
-
-    // スクロール可能なウィジェットを探す
-    final scrollable = find.byType(Scrollable).first;
-
-    // ボタンが見えるようにスクロール
-    await tester.scrollUntilVisible(
-      loginButtonFinder,
-      500,
-      scrollable: scrollable,
-    );
+    await ensureVisibleWidget(WidgetKeys.loginButton);
     await tester.pumpAndSettle();
-
-    // ensureVisibleを使用してボタンが確実に表示されるようにする
-    await tester.ensureVisible(loginButtonFinder);
-    await tester.pumpAndSettle();
-
-    // タップを実行
-    await tapButton(WidgetKeys.loginButton);
+    await tapWidget(WidgetKeys.loginButton);
   }
 
   Future<void> tapLogoutButton() async {
-    await tapButton(WidgetKeys.logoutButton);
+    await tapWidget(WidgetKeys.logoutButton);
   }
 
   Future<void> login() async {

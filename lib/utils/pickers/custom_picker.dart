@@ -13,6 +13,7 @@ class CustomYearPicker extends DatePickerModel {
           currentTime: currentTime,
         );
 
+
   @override
   List<int> layoutProportions() {
     return [1, 0, 0]; // 年のみ表示

@@ -15,7 +15,7 @@ void main() {
     await authRobot.initializeAndLogin();
 
     final naviRobot = NavigationRobot(tester);
-    await naviRobot.waitForScreen(IdolGroupListScreen);
+    await naviRobot.waitForWidget(IdolGroupListScreen);
     await naviRobot.toAddArtist();
 
     final name = 'test-artist';
@@ -26,7 +26,7 @@ void main() {
     await formRobot.ensureSubmitButton();
     await formRobot.tapSubmitButton();
 
-    await formRobot.waitForScreen(IdolGroupListScreen);
+    await formRobot.waitForWidget(IdolGroupListScreen);
     formRobot.expectSuccessMessage(dataType: 'アーティスト', name: name);
 
     await formRobot.deleteTestData(table: TableName.artists, name: name);
@@ -37,7 +37,7 @@ void main() {
     await authRobot.initializeAndLogin();
 
     final naviRobot = NavigationRobot(tester);
-    await naviRobot.waitForScreen(IdolGroupListScreen);
+    await naviRobot.waitForWidget(IdolGroupListScreen);
     await naviRobot.toAddArtist();
 
     final formRobot = FormRobot(tester);

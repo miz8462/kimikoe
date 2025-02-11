@@ -16,11 +16,11 @@ void main() async {
 
       await robot.initializeAndLogin();
 
-      await robot.expectScreen(IdolGroupListScreen);
+      await robot.expectWidget(IdolGroupListScreen);
 
       await robot.tapLogoutButton();
 
-      await robot.expectScreen(SignInScreen);
+      await robot.expectWidget(SignInScreen);
     });
 
     testWidgets('ログイン失敗', (WidgetTester tester) async {

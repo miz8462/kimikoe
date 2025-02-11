@@ -14,8 +14,8 @@ void main() {
     await authRobot.initializeAndLogin();
 
     final naviRobot = NavigationRobot(tester);
-    await naviRobot.waitForScreen(IdolGroupListScreen);
+    await naviRobot.waitForWidget(IdolGroupListScreen);
     await naviRobot.toEditUser();
-    await naviRobot.expectScreen(EditUserScreen);
+    await naviRobot.expectWidget(EditUserScreen);
   });
 }

@@ -73,6 +73,8 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     } else {
       _yearController = TextEditingController(text: '2020');
     }
+
+    _selectedYear = _yearController.text;
   }
 
   @override
@@ -226,6 +228,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                 PickerForm(
                   key: Key('year'),
                   label: '結成年',
+                  initialValue: _selectedYear,
                   controller: _yearController,
                   picker: _pickYear,
                   onSaved: (value) {

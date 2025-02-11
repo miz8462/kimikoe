@@ -11,10 +11,10 @@ void main() {
 
     final robot = HomeRobot(tester);
 
-    await robot.expectScreen(IdolGroupListScreen);
+    await robot.expectWidget(IdolGroupListScreen);
 
     await robot.refreshScreen();
 
-    await robot.expectScreen(IdolGroupListScreen);
+    await robot.expectWidget(IdolGroupListScreen);
   });
 }
