@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
+import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 
 class GroupCardM extends StatelessWidget {
@@ -23,7 +24,7 @@ class GroupCardM extends StatelessWidget {
     final image = imageProvider ?? NetworkImage(groupImage);
 
     return GestureDetector(
-      key: Key('group-card-m'),
+      key: Key(WidgetKeys.groupCardM),
       onTap: () {
         context.pushNamed(RoutingPath.groupDetail, extra: group);
       },

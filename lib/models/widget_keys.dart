@@ -26,12 +26,14 @@ class WidgetKeys {
   static const String switchButton = 'switchButton';
   static const String loginButton = 'loginButton';
   static const String logoutButton = 'logoutButton';
+  static const String googleButton = 'googleButton';
   // navigation
   static const String group = 'group';
   static const String songCard = 'songCard';
   static const String groupCardM = 'groupCardM';
   static const String topBarMenu = 'topBarMenu';
   static const String edit = 'edit';
+  static const String delete = 'delete';
   static const String member0 = 'member-0';
   static const String addButton = 'addButton';
   static const String addSong = 'addSong';

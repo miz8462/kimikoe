@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/song.dart';
+import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 
 class SongCard extends ConsumerWidget {
@@ -45,7 +46,7 @@ class SongCard extends ConsumerWidget {
     };
 
     return GestureDetector(
-      key: Key('song-card'),
+      key: Key(WidgetKeys.songCard),
       onTap: () => context.pushNamed(RoutingPath.lyric, extra: data),
       child: Card(
         elevation: 6,

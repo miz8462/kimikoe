@@ -123,7 +123,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                       child: Column(
                         children: [
                           TextFormField(
-                            key: Key('email'),
+                            key: Key(WidgetKeys.email),
                             style: const TextStyle(color: textWhite),
                             autocorrect: false,
                             keyboardType: TextInputType.emailAddress,
@@ -162,7 +162,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           ),
                           const Gap(20),
                           TextFormField(
-                            key: Key('password'),
+                            key: Key(WidgetKeys.password),
                             style: const TextStyle(color: textWhite),
                             autocorrect: false,
                             keyboardType: TextInputType.visiblePassword,
@@ -243,7 +243,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           FractionallySizedBox(
                             widthFactor: 1,
                             child: ElevatedButton(
-                              key: Key('loginButton'),
+                              key: Key(WidgetKeys.loginButton),
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
                                   _formKey.currentState!.save();
@@ -273,7 +273,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           ),
                           const Gap(6),
                           TextButton(
-                            key: Key('switchButton'),
+                            key: Key(WidgetKeys.switchButton),
                             onPressed: () {
                               setState(() {
                                 _isLogin = !_isLogin;
@@ -319,7 +319,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SocialLoginButton(
-                                key: Key('googleLoginButton'),
+                                key: Key(WidgetKeys.googleButton),
                                 _googleSignIn,
                                 imagePath: 'assets/images/google.svg',
                               ),
