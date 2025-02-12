@@ -38,13 +38,13 @@ class AuthMethods {
     String errorMessage;
     switch (error.code) {
       case 'email_exists':
-        errorMessage = 'メールアドレスは既に登録されています。別のメールアドレスを使用してください。';
+        errorMessage = 'メールアドレスは既に登録されています。別のメールアドレスを使用してください';
       case 'user_already_exists':
-        errorMessage = 'ユーザーはすでに存在しています。ログインを試してください。';
+        errorMessage = 'ユーザーはすでに存在しています。ログインを試してください';
       case 'user_not_found':
-        errorMessage = 'ユーザーが見つかりません。メールアドレスを確認するか、新しいアカウントを作成してください。';
+        errorMessage = 'ユーザーが見つかりません。メールアドレスを確認するか、新しいアカウントを作成してください';
       case 'invalid_credentials':
-        errorMessage = 'メールアドレスまたはパスワードが正しくありません。もう一度確認してください。';
+        errorMessage = 'メールアドレスまたはパスワードが正しくありません。もう一度確認してください';
       default:
         errorMessage = 'エラーが発生しました: ${error.message}';
     }
@@ -148,7 +148,7 @@ class AuthMethods {
     final iosClientId = dotenv.env['GOOGLE_OAUTH_IOS_CLIENT_ID'];
 
     try {
-      logger.d('Googleサインインを開始しました。');
+      logger.d('Googleサインインを開始しました');
 
       final googleSignIn = GoogleSignIn(
         clientId: iosClientId,
@@ -163,10 +163,10 @@ class AuthMethods {
       logger.d(idToken);
 
       if (accessToken == null) {
-        throw Exception('アクセストークンが見つかりません。');
+        throw Exception('アクセストークンが見つかりません');
       }
       if (idToken == null) {
-        throw Exception('IDトークンが見つかりません。');
+        throw Exception('IDトークンが見つかりません');
       }
 
       await supabase.auth.signInWithIdToken(

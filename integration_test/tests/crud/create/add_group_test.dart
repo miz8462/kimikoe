@@ -27,6 +27,7 @@ void main() {
     final comment = 'test-comment';
     final formRobot = FormRobot(tester);
     await formRobot.enterName(name);
+    await formRobot.selectImage();
     await formRobot.selectYear();
     await formRobot.enterOfficial(official);
     await formRobot.enterTwitter(twitter);

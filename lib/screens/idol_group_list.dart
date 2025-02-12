@@ -30,7 +30,7 @@ class _IdolGroupListScreenState extends ConsumerState<IdolGroupListScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('インターネットに接続されていません。接続を確認してください。'),
+          content: Text('インターネットに接続されていません。接続を確認してください'),
         ),
       );
     }

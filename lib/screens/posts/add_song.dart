@@ -10,6 +10,7 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:kimikoe_app/models/song.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
+import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
@@ -390,13 +391,13 @@ class _AddSongScreenState extends State<AddSongScreen> {
                       // Text('グループを選ぶと歌手を絞り込めます。'),
                       // Gap(spaceS),
                       CustomDropdownMenu(
-                        key: Key('group'),
+                        key: Key(WidgetKeys.group),
                         label: '*グループ選択',
                         dataList: _groupIdAndNameList,
                         controller: _groupNameController,
                       ),
                       const Gap(spaceS),
-                      const Text('歌詞と歌手はワンフレーム単位のセットで登録してください。'),
+                      const Text('歌詞と歌手はワンフレーム単位のセットで登録'),
                       const Gap(spaceS),
                       for (int i = 0; i < _lyricAndSingerList.length; i++)
                         Column(
@@ -468,7 +469,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                       ),
                       const Gap(spaceS),
                       ExpandedTextForm(
-                        key: Key('comment'),
+                        key: Key(WidgetKeys.comment),
                         initialValue:
                             _isEditing ? _song.comment : _enteredComment,
                         onTextChanged: (value) {

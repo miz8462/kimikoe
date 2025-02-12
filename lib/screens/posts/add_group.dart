@@ -8,6 +8,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
+import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/groups_provider.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
@@ -206,7 +207,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                   style: TextStyle(color: textGray),
                 ),
                 InputForm(
-                  key: Key('name'),
+                  key: Key(WidgetKeys.name),
                   initialValue: _isEditing ? _group.name : '',
                   label: '*グループ名',
                   validator: _groupNameValidator,
@@ -216,7 +217,6 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                 ),
                 const Gap(spaceS),
                 ImageInput(
-                  key: Key('image'),
                   imageUrl: _group.imageUrl,
                   onPickImage: (image) {
                     _selectedImage = image;
@@ -226,7 +226,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                 ),
                 const Gap(spaceS),
                 PickerForm(
-                  key: Key('year'),
+                  key: Key(WidgetKeys.year),
                   label: '結成年',
                   initialValue: _selectedYear,
                   controller: _yearController,
@@ -237,7 +237,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                 ),
                 const Gap(spaceS),
                 InputForm(
-                  key: Key('official'),
+                  key: Key(WidgetKeys.official),
                   initialValue: _isEditing ? _group.officialUrl : '',
                   label: '公式サイト URL',
                   keyboardType: TextInputType.url,
@@ -248,7 +248,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                 ),
                 const Gap(spaceS),
                 InputForm(
-                  key: Key('twitter'),
+                  key: Key(WidgetKeys.twitter),
                   initialValue: _isEditing ? _group.twitterUrl : '',
                   label: 'Twitter URL',
                   keyboardType: TextInputType.url,
@@ -259,7 +259,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                 ),
                 const Gap(spaceS),
                 InputForm(
-                  key: Key('instagram'),
+                  key: Key(WidgetKeys.instagram),
                   initialValue: _isEditing ? _group.instagramUrl : '',
                   label: 'Instagram Url',
                   keyboardType: TextInputType.url,
@@ -270,7 +270,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                 ),
                 const Gap(spaceS),
                 InputForm(
-                  key: Key('schedule'),
+                  key: Key(WidgetKeys.schedule),
                   initialValue: _isEditing ? _group.scheduleUrl : '',
                   label: 'Schedule Url',
                   keyboardType: TextInputType.url,
@@ -281,7 +281,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                 ),
                 const Gap(spaceS),
                 ExpandedTextForm(
-                  key: Key('comment'),
+                  key: Key(WidgetKeys.comment),
                   initialValue: _isEditing ? _group.comment : null,
                   onTextChanged: (value) {
                     _enteredComment = value!;

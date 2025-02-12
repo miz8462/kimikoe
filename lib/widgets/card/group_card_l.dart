@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
+import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 
 class GroupCardL extends StatelessWidget {
@@ -17,7 +18,7 @@ class GroupCardL extends StatelessWidget {
   Widget build(BuildContext context) {
     final image = imageProvider ?? NetworkImage(group.imageUrl);
     return GestureDetector(
-      key: Key('group'),
+      key: Key(WidgetKeys.group),
       onTap: () => context.push(
         '${RoutingPath.groupList}/${RoutingPath.songList}',
         extra: group,

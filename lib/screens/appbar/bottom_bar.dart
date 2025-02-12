@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/auth_provider.dart';
 import 'package:kimikoe_app/providers/user_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
@@ -41,7 +42,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
               children: [
                 StyledButton(
                   '歌詞',
-                  key: Key('add-song'),
+                  key: Key(WidgetKeys.addSong),
                   onPressed: () {
                     Navigator.of(context).pop();
                     context.push(RoutingPath.addSong);
@@ -49,7 +50,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                 ),
                 StyledButton(
                   'グループ',
-                  key: Key('add-group'),
+                  key: Key(WidgetKeys.addGroup),
                   onPressed: () {
                     Navigator.of(context).pop();
                     context.push(RoutingPath.addGroup);
@@ -57,7 +58,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                 ),
                 StyledButton(
                   'アイドル',
-                  key: Key('add-idol'),
+                  key: Key(WidgetKeys.addIdol),
                   onPressed: () {
                     Navigator.of(context).pop();
                     context.push(RoutingPath.addIdol);
@@ -65,7 +66,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                 ),
                 StyledButton(
                   '作詞・作曲家',
-                  key: Key('add-artist'),
+                  key: Key(WidgetKeys.addArtist),
                   onPressed: () {
                     Navigator.of(context).pop();
                     context.push(RoutingPath.addArtist);
@@ -127,7 +128,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
           ),
           NavigationDestination(
             icon: Icon(
-              key: Key('add-button'),
+              key: Key(WidgetKeys.addButton),
               Icons.add_box_outlined,
               color: currentIndex == addIndex ? textDark : textWhite,
             ),
@@ -135,7 +136,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
           ),
           NavigationDestination(
             icon: CircleAvatar(
-              key: Key('user-avatar'),
+              key: Key(WidgetKeys.userAvatar),
               backgroundImage: NetworkImage(imageUrl),
               radius: avaterSizeS,
             ),
@@ -143,7 +144,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
           ),
           // TODO: 開発用ログアウトボタン
           NavigationDestination(
-            icon: Icon(key: Key('logoutButton'), Icons.logout),
+            icon: Icon(key: Key(WidgetKeys.logoutButton), Icons.logout),
             label: '',
           ),
         ],

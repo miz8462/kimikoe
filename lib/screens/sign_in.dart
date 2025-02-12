@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/extensions/context_extension.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
+import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
@@ -201,7 +202,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           Gap(spaceS),
                           if (!_isLogin)
                             TextFormField(
-                              key: Key('name'),
+                              key: Key(WidgetKeys.name),
                               style: const TextStyle(color: textWhite),
                               autocorrect: false,
                               keyboardType: TextInputType.name,

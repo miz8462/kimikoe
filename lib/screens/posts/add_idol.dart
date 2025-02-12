@@ -10,6 +10,7 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/enums/idol_colors.dart';
 import 'package:kimikoe_app/models/idol.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
+import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
@@ -393,7 +394,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                         style: TextStyle(color: textGray, fontSize: fontSS),
                       ),
                       InputForm(
-                        key: Key('name'),
+                        key: Key(WidgetKeys.name),
                         initialValue:
                             _isEditing ? _idol.name : _enteredIdolName,
                         label: '*名前',
@@ -404,7 +405,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       ),
                       const Gap(spaceS),
                       CustomDropdownMenu(
-                        key: Key('group'),
+                        key: Key(WidgetKeys.group),
                         label: 'グループ選択',
                         dataList: _groupIdAndNameList,
                         controller: _groupNameController,
@@ -413,7 +414,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       Row(
                         children: [
                           CircularButton(
-                            key: Key('color'),
+                            key: Key(WidgetKeys.color),
                             color: _selectedColor,
                             onPressed: _pickColor,
                           ),
@@ -428,7 +429,6 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       ),
                       const Gap(spaceS),
                       ImageInput(
-                        key: Key('image'),
                         imageUrl: _idol.imageUrl,
                         onPickImage: (image) {
                           _selectedImage = image;
@@ -438,7 +438,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       ),
                       const Gap(spaceS),
                       PickerForm(
-                        key: Key('birthYear'),
+                        key: Key(WidgetKeys.birthYear),
                         label: '生まれた年',
                         controller: _birthYearController,
                         initialValue: '2000',
@@ -453,7 +453,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       ),
                       const Gap(spaceS),
                       PickerForm(
-                        key: Key('birthDay'),
+                        key: Key(WidgetKeys.birthday),
                         label: '生まれた日付',
                         controller: _birthDayController,
                         initialValue: '06-15',
@@ -468,7 +468,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       ),
                       const Gap(spaceS),
                       PickerForm(
-                        key: Key('height'),
+                        key: Key(WidgetKeys.height),
                         label: '身長',
                         controller: _heightController,
                         picker: _pickHeight,
@@ -482,7 +482,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       ),
                       const Gap(spaceS),
                       InputForm(
-                        key: Key('hometown'),
+                        key: Key(WidgetKeys.hometown),
                         initialValue:
                             _isEditing ? _idol.hometown : _enteredHometown,
                         label: '出身地',
@@ -493,7 +493,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       ),
                       const Gap(spaceS),
                       PickerForm(
-                        key: Key('debutYear'),
+                        key: Key(WidgetKeys.debutYear),
                         label: 'デビュー年',
                         controller: _debutYearController,
                         picker: _pickDebutYear,
@@ -508,7 +508,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       ),
                       const Gap(spaceS),
                       ExpandedTextForm(
-                        key: Key('comment'),
+                        key: Key(WidgetKeys.comment),
                         initialValue:
                             _isEditing ? _idol.comment : _enteredComment,
                         onTextChanged: (value) {
@@ -520,7 +520,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       ),
                       const Gap(spaceS),
                       StyledButton(
-                        key: Key('submit'),
+                        key: Key(WidgetKeys.submit),
                         '登録',
                         onPressed: _isSending ? null : _submitIdol,
                         isSending: _isSending,

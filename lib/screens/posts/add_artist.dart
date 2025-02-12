@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
+import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
@@ -120,7 +121,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
                     style: TextStyle(color: textGray),
                   ),
                   InputForm(
-                    key: Key('name'),
+                    key: Key(WidgetKeys.name),
                     label: '*アーティスト名',
                     validator: _nameValidator,
                     onSaved: (value) => _enteredName = value!,
@@ -128,6 +129,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
                   const Gap(spaceS),
                   ImageInput(
                     key: Key('image'),
+                    imageUrl: noImage,
                     onPickImage: (image) {
                       _selectedImage = image;
                     },
@@ -135,7 +137,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
                   ),
                   const Gap(spaceS),
                   ExpandedTextForm(
-                    key: Key('comment'),
+                    key: Key(WidgetKeys.comment),
                     label: '備考',
                     onTextChanged: (value) {
                       setState(() {

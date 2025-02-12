@@ -2,7 +2,13 @@ class WidgetKeys {
   // form
   static const String name = 'name';
   static const String title = 'title';
+  static const String image = 'image';
   static const String year = 'year';
+  static const String color = 'color';
+  static const String height = 'height';
+  static const String birthYear = 'birthYear';
+  static const String birthday = 'birthday';
+  static const String debutYear = 'debutYear';
   static const String official = 'official';
   static const String twitter = 'twitter';
   static const String instagram = 'instagram';
@@ -18,15 +24,15 @@ class WidgetKeys {
   static const String logoutButton = 'logoutButton';
   // navigation
   static const String group = 'group';
-  static const String songCard = 'song-card';
-  static const String groupCardM = 'group-card-m';
-  static const String topBarMenu = 'top-bar-menu';
+  static const String songCard = 'songCard';
+  static const String groupCardM = 'groupCardM';
+  static const String topBarMenu = 'topBarMenu';
   static const String edit = 'edit';
   static const String member0 = 'member-0';
-  static const String addButton = 'add-button';
-  static const String addSong = 'add-song';
-  static const String addGroup = 'add-group';
-  static const String addIdol = 'add-idol';
-  static const String addArtist = 'add-artist';
-  static const String userAvatar = 'user-avatar';
+  static const String addButton = 'addButton';
+  static const String addSong = 'addSong';
+  static const String addGroup = 'addGroup';
+  static const String addIdol = 'addIdol';
+  static const String addArtist = 'addArtist';
+  static const String userAvatar = 'userAvatar';
 }
