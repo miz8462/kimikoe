@@ -434,7 +434,6 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                           _selectedImage = image;
                           _isImageChanged = true;
                         },
-                        label: 'イメージ画像',
                       ),
                       const Gap(spaceS),
                       PickerForm(

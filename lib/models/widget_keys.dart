@@ -3,6 +3,7 @@ class WidgetKeys {
   static const String name = 'name';
   static const String title = 'title';
   static const String image = 'image';
+  static const String lyric = 'lyric';
   static const String year = 'year';
   static const String color = 'color';
   static const String height = 'height';
@@ -14,6 +15,9 @@ class WidgetKeys {
   static const String instagram = 'instagram';
   static const String schedule = 'schedule';
   static const String hometown = 'hometown';
+  static const String lyricist = 'lyricist';
+  static const String composer = 'composer';
+  static const String releaseDate = 'releaseDate';
   static const String comment = 'comment';
   static const String submit = 'submit';
   // auth

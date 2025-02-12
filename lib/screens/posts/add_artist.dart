@@ -128,12 +128,10 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
                   ),
                   const Gap(spaceS),
                   ImageInput(
-                    key: Key('image'),
                     imageUrl: noImage,
                     onPickImage: (image) {
                       _selectedImage = image;
                     },
-                    label: 'アーティスト画像',
                   ),
                   const Gap(spaceS),
                   ExpandedTextForm(
@@ -147,7 +145,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
                   ),
                   const Gap(spaceS),
                   StyledButton(
-                    key: Key('submit'),
+                    key: Key(WidgetKeys.submit),
                     '登録',
                     onPressed: _isSending ? null : _submitArtist,
                     isSending: _isSending,

@@ -222,7 +222,6 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                     _selectedImage = image;
                     _isImageChanged = true;
                   },
-                  label: 'グループ画像',
                 ),
                 const Gap(spaceS),
                 PickerForm(
@@ -290,7 +289,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
                 ),
                 const Gap(spaceS),
                 StyledButton(
-                  key: Key('submit'),
+                  key: Key(WidgetKeys.submit),
                   '登録',
                   onPressed: _isSending ? null : _submitGroup,
                   isSending: _isSending,

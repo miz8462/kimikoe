@@ -379,7 +379,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                         style: TextStyle(color: textGray, fontSize: fontSS),
                       ),
                       InputForm(
-                        key: Key('title'),
+                        key: Key(WidgetKeys.title),
                         initialValue: _isEditing ? _song.title : _enteredTitle,
                         label: '*タイトル',
                         validator: _titleValidator,
@@ -405,7 +405,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                           children: [
                             Text('${i + 1}'),
                             TextFormWithController(
-                              key: Key('lyric_$i'),
+                              key: Key('lyric-$i'),
                               controller: _lyricListControllers[i],
                               label: '*歌詞',
                               validator: _lyricValidator,
@@ -424,38 +424,36 @@ class _AddSongScreenState extends State<AddSongScreen> {
                           ],
                         ),
                       StyledButton(
-                        key: Key('add_lyric'),
+                        key: Key(WidgetKeys.lyric),
                         '歌詞追加',
                         onPressed: _addNewLyricItem,
                         backgroundColor: mainColor.withValues(alpha: 0.7),
                       ),
                       const Gap(spaceS),
                       ImageInput(
-                        key: Key('image'),
                         imageUrl: _song.imageUrl,
                         onPickImage: (image) {
                           _selectedImage = image;
                           _isImageChanged = true;
                         },
-                        label: 'イメージ画像',
                       ),
                       const Gap(spaceS),
                       CustomDropdownMenu(
-                        key: Key('lyricist'),
+                        key: Key(WidgetKeys.lyricist),
                         label: '作詞家',
                         dataList: _artistIdAndNameList,
                         controller: _lyricistNameController,
                       ),
                       const Gap(spaceS),
                       CustomDropdownMenu(
-                        key: Key('composer'),
+                        key: Key(WidgetKeys.composer),
                         label: '作曲家',
                         dataList: _artistIdAndNameList,
                         controller: _composerNameController,
                       ),
                       const Gap(spaceS),
                       PickerForm(
-                        key: Key('release_date'),
+                        key: Key(WidgetKeys.releaseDate),
                         label: '発売日',
                         controller: _releaseDateController,
                         picker: _pickReleaseDate,
@@ -481,7 +479,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                       ),
                       const Gap(spaceS),
                       StyledButton(
-                        key: Key('submit'),
+                        key: Key(WidgetKeys.submit),
                         '登録',
                         onPressed: _isSending ? null : _submitSong,
                         isSending: _isSending,

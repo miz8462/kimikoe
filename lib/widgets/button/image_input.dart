@@ -2,20 +2,19 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/services/image_picker_service.dart';
 
 class ImageInput extends StatefulWidget {
   const ImageInput({
-    required this.label,
     required this.onPickImage,
+    required this.imageUrl,
     super.key,
-    this.imageUrl,
     this.imagePickerService,
   });
 
-  final String label;
   final void Function(File image) onPickImage;
-  final String? imageUrl;
+  final String imageUrl;
   final ImagePickerService? imagePickerService;
 
   @override
@@ -23,17 +22,15 @@ class ImageInput extends StatefulWidget {
 }
 
 class _ImageInputState extends State<ImageInput> {
-  late File? _selectedImage;
-  bool _hasEditingImage = false;
+  late File _selectedImage;
+  bool _hasEditingImage = true;
   late ImagePickerService _imagePickerService;
 
   @override
   void initState() {
     super.initState();
     _imagePickerService = widget.imagePickerService ?? ImagePickerServiceImpl();
-    if (widget.imageUrl != null) {
-      _hasEditingImage = true;
-    }
+    _selectedImage = File(widget.imageUrl);
   }
 
   Future<File?> _getImageFromMobileStorage() async {
@@ -48,8 +45,8 @@ class _ImageInputState extends State<ImageInput> {
       _hasEditingImage = false;
     });
 
-    widget.onPickImage(_selectedImage!);
-    return _selectedImage!;
+    widget.onPickImage(_selectedImage);
+    return _selectedImage;
   }
 
   @override
@@ -67,15 +64,15 @@ class _ImageInputState extends State<ImageInput> {
         onTap: _getImageFromMobileStorage,
         child: _hasEditingImage
             ? Image(
-                key: Key('image'),
-                image: NetworkImage(widget.imageUrl!),
+                key: Key(WidgetKeys.image),
+                image: NetworkImage(widget.imageUrl),
                 fit: BoxFit.cover,
                 width: double.infinity,
                 height: double.infinity,
               )
             : Image.file(
-                key: Key('image'),
-                _selectedImage!,
+                key: Key(WidgetKeys.image),
+                _selectedImage,
                 fit: BoxFit.cover,
                 width: double.infinity,
                 height: double.infinity,
