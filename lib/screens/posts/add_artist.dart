@@ -94,7 +94,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
   }
 
   String? _nameValidator(String? value) {
-    return textInputValidator(value, 'アーティスト名');
+    return textInputValidator(value, '名前');
   }
 
   @override

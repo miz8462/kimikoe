@@ -10,6 +10,7 @@ class WidgetKeys {
   static const String birthYear = 'birthYear';
   static const String birthday = 'birthday';
   static const String debutYear = 'debutYear';
+  static const String dropdownEntry = 'dropdownEntry';
   static const String official = 'official';
   static const String twitter = 'twitter';
   static const String instagram = 'instagram';

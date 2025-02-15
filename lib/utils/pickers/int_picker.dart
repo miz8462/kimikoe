@@ -23,7 +23,10 @@ class _IntPickerState extends State<IntPicker> {
   @override
   void initState() {
     super.initState();
-    widget.controller.text = widget.initialNum.toString();
+    // 画面のビルドが完了した後に状態を変更
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.controller.text = widget.initialNum.toString();
+    });
   }
 
   @override

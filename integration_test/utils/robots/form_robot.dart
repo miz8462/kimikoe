@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
@@ -53,34 +54,80 @@ class FormRobot extends CustomRobot<Form> {
     await enterTextByKey(keyValue: WidgetKeys.comment, enterValue: comment);
   }
 
-  Future<void> selectYear() async {
-    await tester.ensureVisible(
-      find.descendant(
-        of: find.byKey(Key(WidgetKeys.year)),
-        matching: find.byType(TextFormField),
-      ),
+  Future<void> pickDate(String expectDate, String keyValue) async {
+    final dateFormField = find.descendant(
+      of: find.byKey(Key(keyValue)),
+      matching: find.byType(TextFormField),
     );
+    await tester.ensureVisible(dateFormField);
 
-    await tester.tap(
-      find.descendant(
-        of: find.byKey(Key(WidgetKeys.year)),
-        matching: find.byType(TextFormField),
-      ),
-    );
+    await tester.tap(dateFormField);
     await tester.pumpAndSettle();
 
     // picker
-    await tester.ensureVisible(find.byType(ListWheelScrollView));
+    final scroll = find.byType(ListWheelScrollView).first;
+    await tester.ensureVisible(scroll);
     await tester.pumpAndSettle();
-    await tester.drag(find.byType(ListWheelScrollView), const Offset(0, -100));
+    await tester.drag(scroll, const Offset(0, -100));
     await tester.pumpAndSettle();
 
     // Pickerの外をタップして値を確定
     await tester.tapAt(const Offset(10, 10));
     await tester.pumpAndSettle();
 
-    // -100ドラッグしたら2023になる
-    expect(find.text('2023'), findsOneWidget);
+    // -100ドラッグしたら+3される
+    expect(find.text(expectDate), findsOneWidget);
+  }
+
+  Future<void> pickNumber(String expectYear, String keyValue) async {
+    final yearFormField = find.descendant(
+      of: find.byKey(Key(keyValue)),
+      matching: find.byType(TextFormField),
+    );
+    await tester.ensureVisible(yearFormField);
+
+    await tester.tap(yearFormField);
+    await tester.pumpAndSettle();
+
+    // picker
+    final scroll = find.byType(ListWheelScrollView);
+    await tester.ensureVisible(scroll);
+    await tester.pumpAndSettle();
+    await tester.drag(scroll, const Offset(0, -100));
+    await tester.pumpAndSettle();
+
+    // Pickerの外をタップして値を確定
+    await tester.tapAt(const Offset(10, 10));
+    await tester.pumpAndSettle();
+
+    // -100ドラッグしたら+3される
+    expect(find.text(expectYear), findsOneWidget);
+  }
+
+  Future<void> pickColor() async {
+    await ensureVisibleWidget(WidgetKeys.color);
+
+    await tapWidget(WidgetKeys.color);
+    await tester.pumpAndSettle();
+
+    await tester.tap(
+      find
+          .descendant(
+            of: find.byType(BlockPicker),
+            matching: find.byType(RichText),
+          )
+          .first,
+    );
+    await tester.pumpAndSettle();
+    await tester.tapAt(const Offset(10, 10));
+    await tester.pumpAndSettle();
+
+    final redButton = find.byWidgetPredicate(
+      (widget) =>
+          widget is OutlinedButton &&
+          (widget.style?.backgroundColor?.resolve({}) == Colors.red),
+    );
+    expect(redButton, findsOneWidget);
   }
 
   Future<void> selectImage() async {
@@ -91,6 +138,14 @@ class FormRobot extends CustomRobot<Form> {
     await tester.pumpAndSettle();
   }
 
+  Future<void> selectGroup() async {
+    await tapWidget(WidgetKeys.group);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('BYBBiT').last);
+    await tester.pumpAndSettle();
+  }
+
   void expectSuccessMessage({
     required String dataType,
     required String name,
@@ -98,10 +153,10 @@ class FormRobot extends CustomRobot<Form> {
     expect(find.text('$dataTypeを登録しました: $name'), findsOneWidget);
   }
 
-  void expectValidationMessage(
-    String dataType,
-  ) {
-    expect(find.text('$dataType名を入力してください'), findsOneWidget);
+  void expectValidationMessage({
+    String? dataType = '名前',
+  }) {
+    expect(find.text('$dataTypeを入力してください'), findsOneWidget);
   }
 
   Future<void> deleteTestData({
@@ -119,10 +174,10 @@ class FormRobot extends CustomRobot<Form> {
       (MethodCall methodCall) async {
         if (methodCall.method == 'pickImage') {
           // テスト用画像のパスを取得
-          final byteData = await rootBundle.load('assets/test_image.jpg');
+          final byteData = await rootBundle.load('assets/test.jpg');
           final tempDir = await getTemporaryDirectory();
           final tempPath = tempDir.path;
-          final file = File('$tempPath/test_image.jpg');
+          final file = File('$tempPath/test.jpg');
           await file.writeAsBytes(
             byteData.buffer
                 .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes),

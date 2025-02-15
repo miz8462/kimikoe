@@ -44,6 +44,6 @@ void main() {
 
     await formRobot.ensureSubmitButton();
     await formRobot.tapSubmitButton();
-    formRobot.expectValidationMessage('アーティスト');
+    formRobot.expectValidationMessage();
   });
 }

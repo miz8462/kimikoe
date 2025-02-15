@@ -28,7 +28,7 @@ void main() {
     final formRobot = FormRobot(tester);
     await formRobot.enterName(name);
     await formRobot.selectImage();
-    await formRobot.selectYear();
+    await formRobot.pickNumber('2023', WidgetKeys.year);
     await formRobot.enterOfficial(official);
     await formRobot.enterTwitter(twitter);
     await formRobot.enterInstagram(instagram);
@@ -56,6 +56,6 @@ void main() {
     await formRobot.ensureSubmitButton();
     await formRobot.tapSubmitButton();
     await formRobot.ensureVisibleWidget(WidgetKeys.name);
-    formRobot.expectValidationMessage('グループ');
+    formRobot.expectValidationMessage();
   });
 }

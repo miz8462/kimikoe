@@ -85,7 +85,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
   }
 
   String? _groupNameValidator(String? value) {
-    return textInputValidator(value, 'グループ名');
+    return textInputValidator(value, '名前');
   }
 
   Future<void> _pickYear() async {
