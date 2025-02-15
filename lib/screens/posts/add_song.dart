@@ -360,7 +360,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
     });
   }
 
-  void _updateGroupSelected(bool isSelected) {
+  void _updateGroupSelected({required bool isSelected}) {
     setState(() {
       _isGroupSelected = isSelected;
     });
