@@ -15,11 +15,11 @@ import 'custom_robot.dart';
 class FormRobot extends CustomRobot<Form> {
   FormRobot(super.tester);
 
-  Future<void> ensureSubmitButton() async {
-    await ensureVisibleWidget(WidgetKeys.submit);
-  }
-
   Future<void> tapSubmitButton() async {
+    logger.d('ここだよ～');
+    await ensureVisibleWidget(WidgetKeys.submit);
+    await tester.pumpAndSettle();
+    logger.d('ここだよ～1');
     await tapWidget(WidgetKeys.submit);
   }
 
@@ -60,27 +60,34 @@ class FormRobot extends CustomRobot<Form> {
   }
 
   Future<void> pickDate(String expectDate, String keyValue) async {
+    // 日付フィールドまでスクロール
+    await ensureVisibleWidget(keyValue);
+    await tester.pumpAndSettle();
+
+    // TextFormFieldを見つけてタップ
     final dateFormField = find.descendant(
       of: find.byKey(Key(keyValue)),
       matching: find.byType(TextFormField),
     );
+
     await tester.ensureVisible(dateFormField);
+    await tester.pumpAndSettle();
 
     await tester.tap(dateFormField);
     await tester.pumpAndSettle();
 
-    // picker
+    // ピッカーのスクロール
     final scroll = find.byType(ListWheelScrollView).first;
     await tester.ensureVisible(scroll);
     await tester.pumpAndSettle();
+
     await tester.drag(scroll, const Offset(0, -100));
     await tester.pumpAndSettle();
 
-    // Pickerの外をタップして値を確定
+    // ピッカーの外をタップして値を確定
     await tester.tapAt(const Offset(10, 10));
     await tester.pumpAndSettle();
 
-    // -100ドラッグしたら+3される
     expect(find.text(expectDate), findsOneWidget);
   }
 
@@ -159,11 +166,43 @@ class FormRobot extends CustomRobot<Form> {
     await tester.pumpAndSettle();
   }
 
-  Future<void> selectArtist(String keyValue) async {
-    await tapWidget(keyValue);
+  Future<void> selectLyricist() async {
+    await tapWidget(WidgetKeys.lyricist);
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('otsumami').last);
+    final lyricist = find
+        .descendant(
+          of: find.byKey(Key(WidgetKeys.lyricist)),
+          matching: find.text('otsumami'),
+        )
+        .last;
+    await tester.ensureVisible(lyricist);
+    await tester.tap(lyricist);
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> selectComposer() async {
+    // まずComposerフィールドまでスクロール
+    await ensureVisibleWidget(WidgetKeys.composer);
+    await tester.pumpAndSettle();
+
+    // ドロップダウンをタップ
+    await tapWidget(WidgetKeys.composer);
+    await tester.pumpAndSettle();
+
+    // 選択肢までスクロール
+    final composer = find
+        .descendant(
+          of: find.byKey(Key(WidgetKeys.composer)),
+          matching: find.text('otsumami'),
+        )
+        .last;
+
+    await tester.ensureVisible(composer);
+    await tester.pumpAndSettle();
+
+    // タップ
+    await tester.tap(composer);
     await tester.pumpAndSettle();
   }
 

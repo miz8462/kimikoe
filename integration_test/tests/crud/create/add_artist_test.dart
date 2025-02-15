@@ -23,7 +23,6 @@ void main() {
     final formRobot = FormRobot(tester);
     await formRobot.enterName(name);
     await formRobot.enterComment(comment);
-    await formRobot.ensureSubmitButton();
     await formRobot.tapSubmitButton();
 
     await formRobot.waitForWidget(IdolGroupListScreen);
@@ -42,7 +41,6 @@ void main() {
 
     final formRobot = FormRobot(tester);
 
-    await formRobot.ensureSubmitButton();
     await formRobot.tapSubmitButton();
     formRobot.expectValidationMessage();
   });

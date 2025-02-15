@@ -24,7 +24,14 @@ class CustomRobot<T extends Widget> extends Robot<Widget> {
     required String keyValue,
     required String enterValue,
   }) async {
+    await ensureVisibleWidget(keyValue);
+    await tester.pumpAndSettle();
+
     await tester.enterText(find.byKey(Key(keyValue)), enterValue);
+    await tester.pumpAndSettle();
+
+    // フォーカスを外す
+    FocusScope.of(tester.element(find.byKey(Key(keyValue)))).unfocus();
     await tester.pumpAndSettle();
   }
 

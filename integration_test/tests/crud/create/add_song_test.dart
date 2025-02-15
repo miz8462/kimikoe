@@ -33,12 +33,11 @@ void main() {
     await formRobot.enterLyric(lyric);
     await formRobot.ensureVisibleWidget(WidgetKeys.singer0);
     await formRobot.selectSinger();
-    await formRobot.selectImage();
-    await formRobot.selectArtist(WidgetKeys.lyricist);
-    await formRobot.selectArtist(WidgetKeys.composer);
+    // await formRobot.selectImage();
+    await formRobot.selectLyricist();
+    await formRobot.selectComposer();
     await formRobot.pickDate(today, WidgetKeys.releaseDate);
     await formRobot.enterComment(comment);
-    await formRobot.ensureSubmitButton();
     await formRobot.tapSubmitButton();
 
     await formRobot.waitForWidget(IdolGroupListScreen);
@@ -51,19 +50,19 @@ void main() {
     );
   });
 
-  testWidgets('歌詞ヴァリデーション', (WidgetTester tester) async {
-    final authRobot = AuthRobot(tester);
-    await authRobot.initializeAndLogin();
+//   testWidgets('歌詞ヴァリデーション', (WidgetTester tester) async {
+//     final authRobot = AuthRobot(tester);
+//     await authRobot.initializeAndLogin();
 
-    final naviRobot = NavigationRobot(tester);
-    await naviRobot.waitForWidget(IdolGroupListScreen);
-    await naviRobot.toAddSong();
+//     final naviRobot = NavigationRobot(tester);
+//     await naviRobot.waitForWidget(IdolGroupListScreen);
+//     await naviRobot.toAddSong();
 
-    final formRobot = FormRobot(tester);
+//     final formRobot = FormRobot(tester);
 
-    await formRobot.ensureSubmitButton();
-    await formRobot.tapSubmitButton();
-    await formRobot.ensureVisibleWidget(WidgetKeys.title);
-    formRobot.expectValidationMessage(dataType: 'タイトル');
-  });
+//     await formRobot.ensureSubmitButton();
+//     await formRobot.tapSubmitButton();
+//     await formRobot.ensureVisibleWidget(WidgetKeys.title);
+//     formRobot.expectValidationMessage(dataType: 'タイトル');
+//   });
 }

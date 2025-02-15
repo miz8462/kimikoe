@@ -34,7 +34,6 @@ void main() {
     await formRobot.enterInstagram(instagram);
     await formRobot.enterSchedule(schedule);
     await formRobot.enterComment(comment);
-    await formRobot.ensureSubmitButton();
     await formRobot.tapSubmitButton();
 
     await formRobot.waitForWidget(IdolGroupListScreen);
@@ -53,7 +52,6 @@ void main() {
 
     final formRobot = FormRobot(tester);
 
-    await formRobot.ensureSubmitButton();
     await formRobot.tapSubmitButton();
     await formRobot.ensureVisibleWidget(WidgetKeys.name);
     formRobot.expectValidationMessage();

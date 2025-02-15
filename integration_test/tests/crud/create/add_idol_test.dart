@@ -33,7 +33,6 @@ void main() {
     await formRobot.enterHometown(hometown);
     await formRobot.pickNumber('2023', WidgetKeys.debutYear);
     await formRobot.enterComment(comment);
-    await formRobot.ensureSubmitButton();
     await formRobot.tapSubmitButton();
 
     await formRobot.waitForWidget(IdolGroupListScreen);
@@ -52,7 +51,6 @@ void main() {
 
     final formRobot = FormRobot(tester);
 
-    await formRobot.ensureSubmitButton();
     await formRobot.tapSubmitButton();
     await formRobot.ensureVisibleWidget(WidgetKeys.name);
     formRobot.expectValidationMessage();
