@@ -22,7 +22,6 @@ void main() {
 
     final title = 'test-song';
     final lyric = 'test-lyric';
-    final singer = 'test-singer';
     final now = DateTime.now();
     final today = formatDateTimeToXXXX(date: now, formatStyle: 'yyyy/MM/dd');
     final comment = 'test-comment';
@@ -33,9 +32,8 @@ void main() {
     await formRobot.ensureVisibleWidget(WidgetKeys.lyric0);
     await formRobot.enterLyric(lyric);
     await formRobot.ensureVisibleWidget(WidgetKeys.singer0);
-    await formRobot.selectImage();
-    await formRobot.enterLyric(singer);
     await formRobot.selectSinger();
+    await formRobot.selectImage();
     await formRobot.selectArtist(WidgetKeys.lyricist);
     await formRobot.selectArtist(WidgetKeys.composer);
     await formRobot.pickDate(today, WidgetKeys.releaseDate);

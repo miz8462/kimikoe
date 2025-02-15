@@ -36,7 +36,7 @@ class FormRobot extends CustomRobot<Form> {
   }
 
   Future<void> enterOfficial(String official) async {
-    await enterTextByKey(keyValue: WidgetKeys.singer0, enterValue: official);
+    await enterTextByKey(keyValue: WidgetKeys.official, enterValue: official);
   }
 
   Future<void> enterTwitter(String twitter) async {
