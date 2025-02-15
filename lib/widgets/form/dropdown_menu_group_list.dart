@@ -17,7 +17,7 @@ class CustomDropdownMenu extends StatefulWidget {
   final List<Map<String, dynamic>> dataList;
   final TextEditingController controller;
   final bool isSelected;
-  final ValueChanged<bool>? onSelectedChanged;
+  final void Function({required bool isSelected})? onSelectedChanged;
 
   @override
   State<CustomDropdownMenu> createState() => _CustomDropdownMenuState();
@@ -63,9 +63,7 @@ class _CustomDropdownMenuState extends State<CustomDropdownMenu> {
           isSelected = true;
         });
 
-        if (widget.onSelectedChanged != null) {
-          widget.onSelectedChanged!(isSelected);
-        }
+        widget.onSelectedChanged?.call(isSelected: isSelected);
       },
     );
   }
