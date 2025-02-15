@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/dropdown_id_and_name.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
-import 'package:kimikoe_app/widgets/form/dropdown_menu_group_list.dart';
+import 'package:kimikoe_app/widgets/form/custom_dropdown_menu.dart';
 
 import '../../test_utils/test_widgets.dart';
 

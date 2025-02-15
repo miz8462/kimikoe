@@ -167,17 +167,26 @@ class FormRobot extends CustomRobot<Form> {
   }
 
   Future<void> selectLyricist() async {
+    // まずLyricistフィールドまでスクロール
+    await ensureVisibleWidget(WidgetKeys.lyricist);
+    await tester.pumpAndSettle();
+
+    // ドロップダウンをタップ
     await tapWidget(WidgetKeys.lyricist);
     await tester.pumpAndSettle();
 
-    final lyricist = find
-        .descendant(
-          of: find.byKey(Key(WidgetKeys.lyricist)),
-          matching: find.text('otsumami'),
-        )
-        .last;
-    await tester.ensureVisible(lyricist);
-    await tester.tap(lyricist);
+    // ドロップダウンメニューの選択肢を見つける
+    final menuItem = find.text('otsumami').last;
+
+    // メニュー項目が表示されるまで少し待つ
+    await tester.pump(const Duration(milliseconds: 500));
+
+    // メニュー項目までスクロール
+    await tester.ensureVisible(menuItem);
+    await tester.pumpAndSettle();
+
+    // メニュー項目をタップ
+    await tester.tap(menuItem, warnIfMissed: false);
     await tester.pumpAndSettle();
   }
 
@@ -190,19 +199,18 @@ class FormRobot extends CustomRobot<Form> {
     await tapWidget(WidgetKeys.composer);
     await tester.pumpAndSettle();
 
-    // 選択肢までスクロール
-    final composer = find
-        .descendant(
-          of: find.byKey(Key(WidgetKeys.composer)),
-          matching: find.text('otsumami'),
-        )
-        .last;
+   // ドロップダウンメニューの選択肢を見つける
+    final menuItem = find.text('otsumami').last;
 
-    await tester.ensureVisible(composer);
+    // メニュー項目が表示されるまで少し待つ
+    await tester.pump(const Duration(milliseconds: 500));
+
+    // メニュー項目までスクロール
+    await tester.ensureVisible(menuItem);
     await tester.pumpAndSettle();
 
-    // タップ
-    await tester.tap(composer);
+    // メニュー項目をタップ
+    await tester.tap(menuItem, warnIfMissed: false);
     await tester.pumpAndSettle();
   }
 
