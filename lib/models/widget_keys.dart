@@ -19,6 +19,9 @@ class WidgetKeys {
   static const String lyricist = 'lyricist';
   static const String composer = 'composer';
   static const String releaseDate = 'releaseDate';
+  static const String addLyric = 'addLyric';
+  static const String lyric0 = 'lyric-0';
+  static const String singer0 = 'singer-0';
   static const String comment = 'comment';
   static const String submit = 'submit';
   // auth

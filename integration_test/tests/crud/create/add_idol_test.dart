@@ -28,7 +28,7 @@ void main() {
     await formRobot.pickColor();
     await formRobot.selectImage();
     await formRobot.pickNumber('2003', WidgetKeys.birthYear);
-    await formRobot.pickDate('09-15', WidgetKeys.birthday);
+    await formRobot.pickDate('09/15', WidgetKeys.birthday);
     await formRobot.pickNumber('163', WidgetKeys.height);
     await formRobot.enterHometown(hometown);
     await formRobot.pickNumber('2023', WidgetKeys.debutYear);
@@ -39,7 +39,7 @@ void main() {
     await formRobot.waitForWidget(IdolGroupListScreen);
     formRobot.expectSuccessMessage(dataType: 'アイドル', name: name);
 
-    await formRobot.deleteTestData(table: TableName.idolGroups, name: name);
+    await formRobot.deleteTestData(table: TableName.idols, name: name);
   });
 
   testWidgets('アイドルヴァリデーション', (WidgetTester tester) async {

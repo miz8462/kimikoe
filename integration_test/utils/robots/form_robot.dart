@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_delete.dart';
@@ -30,8 +31,12 @@ class FormRobot extends CustomRobot<Form> {
     await enterTextByKey(keyValue: WidgetKeys.title, enterValue: title);
   }
 
+  Future<void> enterLyric(String lyric) async {
+    await enterTextByKey(keyValue: WidgetKeys.lyric0, enterValue: lyric);
+  }
+
   Future<void> enterOfficial(String official) async {
-    await enterTextByKey(keyValue: WidgetKeys.official, enterValue: official);
+    await enterTextByKey(keyValue: WidgetKeys.singer0, enterValue: official);
   }
 
   Future<void> enterTwitter(String twitter) async {
@@ -142,7 +147,23 @@ class FormRobot extends CustomRobot<Form> {
     await tapWidget(WidgetKeys.group);
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('BYBBiT').last);
+    await tester.tap(find.text('タイトル未定').last);
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> selectSinger() async {
+    await tapWidget(WidgetKeys.singer0);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('阿部葉菜').last);
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> selectArtist(String keyValue) async {
+    await tapWidget(keyValue);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('otsumami').last);
     await tester.pumpAndSettle();
   }
 
@@ -162,8 +183,9 @@ class FormRobot extends CustomRobot<Form> {
   Future<void> deleteTestData({
     required String table,
     required String name,
+    String columnName = ColumnName.name,
   }) async {
-    await deleteDataByName(table: table, name: name);
+    await deleteDataByName(table: table, targetColumn: columnName, name: name);
     logger.i('テストデータを削除しました');
   }
 

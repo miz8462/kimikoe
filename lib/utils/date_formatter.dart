@@ -22,12 +22,12 @@ String formatStringDateToJapaneseWithYear(String strDate) {
 
 String formatStringDateToMMdd(String strDate) {
   final date = DateTime.parse(strDate);
-  final formatter = DateFormat('MM-dd');
+  final formatter = DateFormat('MM/dd');
   return formatter.format(date);
 }
 
-String formatStringDateToSlash(String date) {
-  final birthDay = DateTime.parse(date);
+String formatStringDateToSlash(String strDate) {
+  final birthDay = DateTime.parse(strDate);
   final formatter = DateFormat('yyyy/MM/dd');
   return formatter.format(birthDay);
 }

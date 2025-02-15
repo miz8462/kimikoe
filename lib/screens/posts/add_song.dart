@@ -71,6 +71,8 @@ class _AddSongScreenState extends State<AddSongScreen> {
   var _isSending = false;
   var _isFetching = true;
   var _isImageChanged = false;
+  var _isGroupSelected = false;
+
   late bool _isEditing;
 
   @override
@@ -168,11 +170,11 @@ class _AddSongScreenState extends State<AddSongScreen> {
   }
 
   Future<void> _submitSong() async {
-    logger.i('フォーム送信開始');
-
     setState(() {
       _isSending = true;
     });
+
+    if (!_isGroupSelected) return;
 
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
@@ -185,6 +187,8 @@ class _AddSongScreenState extends State<AddSongScreen> {
       });
       return;
     }
+
+    logger.i('フォーム送信開始');
 
     FocusScope.of(context).unfocus();
 
@@ -240,7 +244,6 @@ class _AddSongScreenState extends State<AddSongScreen> {
     }
     selectedGroupId =
         findDataIdByName(list: _groupIdAndNameList, name: groupName);
-
     // 作詞家登録
     final lyricistName = _lyricistNameController.text;
     final isSelectedLyricistInList =
@@ -357,6 +360,12 @@ class _AddSongScreenState extends State<AddSongScreen> {
     });
   }
 
+  void _updateGroupSelected(bool isSelected) {
+    setState(() {
+      _isGroupSelected = isSelected;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return _isFetching
@@ -388,6 +397,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                         },
                       ),
                       const Gap(spaceS),
+                      // TODO: 未実装
                       // Text('グループを選ぶと歌手を絞り込めます。'),
                       // Gap(spaceS),
                       CustomDropdownMenu(
@@ -395,7 +405,10 @@ class _AddSongScreenState extends State<AddSongScreen> {
                         label: '*グループ選択',
                         dataList: _groupIdAndNameList,
                         controller: _groupNameController,
+                        isSelected: _isGroupSelected,
+                        onSelectedChanged: _updateGroupSelected,
                       ),
+                      if (_isGroupSelected) Text('true'),
                       const Gap(spaceS),
                       const Text('歌詞と歌手はワンフレーム単位のセットで登録'),
                       const Gap(spaceS),
@@ -415,7 +428,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                             ),
                             const Gap(spaceS),
                             CustomDropdownMenu(
-                              key: Key('singer_$i'),
+                              key: Key('singer-$i'),
                               label: '*歌手',
                               dataList: _idolIdAndNameList,
                               controller: _singerListControllers[i],
@@ -424,7 +437,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                           ],
                         ),
                       StyledButton(
-                        key: Key(WidgetKeys.lyric),
+                        key: Key(WidgetKeys.addLyric),
                         '歌詞追加',
                         onPressed: _addNewLyricItem,
                         backgroundColor: mainColor.withValues(alpha: 0.7),
@@ -481,7 +494,8 @@ class _AddSongScreenState extends State<AddSongScreen> {
                       StyledButton(
                         key: Key(WidgetKeys.submit),
                         '登録',
-                        onPressed: _isSending ? null : _submitSong,
+                        onPressed: _submitSong,
+                        // _isSending ? null : _submitSong,
                         isSending: _isSending,
                       ),
                       const Gap(spaceS),

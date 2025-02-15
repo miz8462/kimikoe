@@ -42,9 +42,10 @@ Future<void> deleteDataById({
 Future<void> deleteDataByName({
   required String table,
   required String name,
+  String targetColumn = ColumnName.name,
 }) async {
   try {
-    await supabase.from(table).delete().eq(ColumnName.name, name);
+    await supabase.from(table).delete().eq(targetColumn, name);
 
     logger.i('データを削除しました。ID: $name');
   } catch (e) {
