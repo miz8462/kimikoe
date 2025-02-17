@@ -29,13 +29,13 @@ class SongInfoCard extends StatelessWidget {
                 ),
                 const Spacer(),
                 StyledText(
-                  '作詞：${song.lyricist?.name ?? "作詞: 不明"}',
+                  '作詞：${song.lyricist?.name ?? "不明"}',
                 ),
                 StyledText(
-                  '作曲：${song.composer?.name ?? "作曲: 不明"}',
+                  '作曲：${song.composer?.name ?? "不明"}',
                 ),
                 StyledText(
-                  '発売日：${song.releaseDate ?? "発売日: 不明"}',
+                  '発売日：${song.releaseDate ?? "不明"}',
                 ),
               ],
             ),

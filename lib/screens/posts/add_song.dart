@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
     as picker;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
@@ -11,6 +12,7 @@ import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:kimikoe_app/models/song.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
+import 'package:kimikoe_app/providers/group_songs_provider.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
@@ -31,7 +33,7 @@ import 'package:kimikoe_app/widgets/form/picker_form.dart';
 import 'package:kimikoe_app/widgets/form/text_form_with_controller.dart';
 import 'package:kimikoe_app/widgets/form/text_input_form.dart';
 
-class AddSongScreen extends StatefulWidget {
+class AddSongScreen extends ConsumerStatefulWidget {
   const AddSongScreen({
     super.key,
     this.song,
@@ -42,10 +44,10 @@ class AddSongScreen extends StatefulWidget {
   final bool? isEditing;
 
   @override
-  State<AddSongScreen> createState() => _AddSongScreenState();
+  ConsumerState<AddSongScreen> createState() => _AddSongScreenState();
 }
 
-class _AddSongScreenState extends State<AddSongScreen> {
+class _AddSongScreenState extends ConsumerState<AddSongScreen> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _groupNameController;
   late TextEditingController _lyricistNameController;
@@ -320,6 +322,8 @@ class _AddSongScreenState extends State<AddSongScreen> {
     setState(() {
       _isSending = false;
     });
+
+    ref.watch(groupSongsProvider(selectedGroupId));
 
     if (!mounted) return;
 
