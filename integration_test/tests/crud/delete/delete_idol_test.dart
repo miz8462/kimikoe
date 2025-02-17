@@ -20,7 +20,7 @@ void main() {
     final name = 'test-idol';
     final formRobot = FormRobot(tester);
     await formRobot.enterName(name);
-    await formRobot.selectGroup(groupName: 'test-group-sapporo');
+    await formRobot.selectGroup(groupName: 'test-group-not-delete');
     await formRobot.tapSubmitButton();
 
     await formRobot.waitForWidget(IdolGroupListScreen);

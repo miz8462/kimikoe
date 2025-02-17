@@ -24,7 +24,7 @@ class NavigationRobot extends CustomRobot {
     await tapWidget(WidgetKeys.delete);
   }
 
-  Future<void> toSongList({String groupName = 'test-group-sapporo'}) async {
+  Future<void> toSongList({String groupName = 'test-group-not-delete'}) async {
     await ensureVisibleWidget(groupName);
     await tapWidget(groupName);
   }
