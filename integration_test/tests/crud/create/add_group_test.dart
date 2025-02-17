@@ -19,7 +19,7 @@ void main() {
     await naviRobot.waitForWidget(IdolGroupListScreen);
     await naviRobot.toAddGroup();
 
-    final name = 'test-group';
+    final name = 'test-group0';
     final official = 'https://example.com';
     final twitter = 'https://twitter.com/test';
     final instagram = 'https://instagram.com/test';

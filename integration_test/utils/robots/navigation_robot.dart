@@ -20,11 +20,11 @@ class NavigationRobot extends CustomRobot {
     await tapWidget(WidgetKeys.edit);
   }
 
-  Future<void> tapDelete() async {
+  Future<void> tapDeleteMenu() async {
     await tapWidget(WidgetKeys.delete);
   }
 
-  Future<void> toSongList({String groupName = 'test-group'}) async {
+  Future<void> toSongList({String groupName = 'test-group-sapporo'}) async {
     await ensureVisibleWidget(groupName);
     await tapWidget(groupName);
   }

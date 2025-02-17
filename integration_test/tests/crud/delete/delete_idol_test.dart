@@ -29,7 +29,7 @@ void main() {
     // 削除
     await naviRobot.toIdolDetail();
     await naviRobot.tapTopBarMenu();
-    await naviRobot.tapDelete();
+    await naviRobot.tapDeleteMenu();
     await naviRobot.tapDeleteYes();
     await naviRobot.expectWidget(IdolGroupListScreen);
   });
