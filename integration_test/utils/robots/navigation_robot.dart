@@ -31,7 +31,7 @@ class NavigationRobot extends CustomRobot {
 
   Future<void> toSongInfo() async {
     await toSongList();
-    await tapWidget(WidgetKeys.songCard);
+    await tapFirstInList(WidgetKeys.songCard);
   }
 
   Future<void> toGroupDetail() async {
