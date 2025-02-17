@@ -150,11 +150,15 @@ class FormRobot extends CustomRobot<Form> {
     await tester.pumpAndSettle();
   }
 
-  Future<void> selectGroup() async {
+  Future<void> selectGroup({String groupName = 'タイトル未定'}) async {
     await tapWidget(WidgetKeys.group);
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('タイトル未定').last);
+    final group = find.text(groupName).last; // ふたつ見つかるのでlast
+    await tester.ensureVisible(group);
+    await tester.pumpAndSettle();
+
+    await tester.tap(group);
     await tester.pumpAndSettle();
   }
 
@@ -199,7 +203,7 @@ class FormRobot extends CustomRobot<Form> {
     await tapWidget(WidgetKeys.composer);
     await tester.pumpAndSettle();
 
-   // ドロップダウンメニューの選択肢を見つける
+    // ドロップダウンメニューの選択肢を見つける
     final menuItem = find.text('otsumami').last;
 
     // メニュー項目が表示されるまで少し待つ

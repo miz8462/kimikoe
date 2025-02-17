@@ -28,7 +28,7 @@ void main() {
     await formRobot.pickColor();
     await formRobot.selectImage();
     await formRobot.pickNumber('2003', WidgetKeys.birthYear);
-    await formRobot.pickDate('09/15', WidgetKeys.birthday);
+    await formRobot.pickDate('09-15', WidgetKeys.birthday);
     await formRobot.pickNumber('163', WidgetKeys.height);
     await formRobot.enterHometown(hometown);
     await formRobot.pickNumber('2023', WidgetKeys.debutYear);

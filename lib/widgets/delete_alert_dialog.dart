@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
+import 'package:kimikoe_app/router/routing_path.dart';
 
 class DeleteAlertDialog extends StatelessWidget {
   const DeleteAlertDialog({
@@ -19,11 +22,13 @@ class DeleteAlertDialog extends StatelessWidget {
       content: const Text('削除したデータは復元できません。\nそれでも削除しますか？'),
       actions: [
         TextButton(
+          key: Key(WidgetKeys.deleteYes),
           onPressed: () async {
             try {
               await onDelete();
               if (!context.mounted) return;
-              Navigator.of(context).pop();
+              context.pop();
+              context.pushReplacement(RoutingPath.groupList);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(successMessage)),
               );

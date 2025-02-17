@@ -22,7 +22,7 @@ String formatStringDateToJapaneseWithYear(String strDate) {
 
 String formatStringDateToMMdd(String strDate) {
   final date = DateTime.parse(strDate);
-  final formatter = DateFormat('MM/dd');
+  final formatter = DateFormat('MM-dd');
   return formatter.format(date);
 }
 

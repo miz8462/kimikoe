@@ -5,6 +5,7 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:kimikoe_app/models/idol.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
+import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
@@ -67,6 +68,7 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
       context: context,
       builder: (context) {
         return DeleteAlertDialog(
+          key: Key(WidgetKeys.deleteIdol),
           onDelete: () async {
             await deleteDataById(
               table: TableName.idols,

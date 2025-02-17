@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/screens/posts/add_idol.dart';
@@ -17,6 +18,10 @@ class NavigationRobot extends CustomRobot {
 
   Future<void> tapEdit() async {
     await tapWidget(WidgetKeys.edit);
+  }
+
+  Future<void> tapDelete() async {
+    await tapWidget(WidgetKeys.delete);
   }
 
   Future<void> toSongList() async {
@@ -41,6 +46,13 @@ class NavigationRobot extends CustomRobot {
 
   Future<void> toIdolDetail() async {
     await toGroupDetail();
+    await tapWidget(WidgetKeys.member0);
+  }
+
+  Future<void> toTestIdolDetail({required String groupName}) async {
+    await ensureVisibleWidget(groupName);
+    await tapWidget(groupName);
+    await tapWidget(WidgetKeys.groupCardM);
     await tapWidget(WidgetKeys.member0);
   }
 
@@ -79,5 +91,19 @@ class NavigationRobot extends CustomRobot {
     await toUserInfo();
     await tapTopBarMenu();
     await tapEdit();
+  }
+
+  Future<void> tapDeleteYes() async {
+    final deleteAlert = find.byKey(Key(WidgetKeys.deleteIdol));
+    final deleteYes = find.byKey(Key(WidgetKeys.deleteYes));
+    await tester.pump(Duration(milliseconds: 500)); // アラートが表示されるのを待つ
+    await tester.tap(find.descendant(of: deleteAlert, matching: deleteYes));
+    await tester.pump(Duration(milliseconds: 500));
+  }
+
+  void expectDeleteMessage({
+    required String name,
+  }) {
+    expect(find.text('$nameのデータが削除されました'), findsOneWidget);
   }
 }

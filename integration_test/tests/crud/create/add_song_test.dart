@@ -33,7 +33,6 @@ void main() {
     await formRobot.enterLyric(lyric);
     await formRobot.ensureVisibleWidget(WidgetKeys.singer0);
     await formRobot.selectSinger();
-    // await formRobot.selectImage();
     await formRobot.selectLyricist();
     await formRobot.selectComposer();
     await formRobot.pickDate(today, WidgetKeys.releaseDate);

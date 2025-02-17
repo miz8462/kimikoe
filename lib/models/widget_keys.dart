@@ -38,6 +38,8 @@ class WidgetKeys {
   static const String topBarMenu = 'topBarMenu';
   static const String edit = 'edit';
   static const String delete = 'delete';
+  static const String deleteIdol = 'deleteIdol';
+  static const String deleteYes = 'deleteYes';
   static const String member0 = 'member-0';
   static const String addButton = 'addButton';
   static const String addSong = 'addSong';
