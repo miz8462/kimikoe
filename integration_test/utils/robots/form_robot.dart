@@ -16,10 +16,8 @@ class FormRobot extends CustomRobot<Form> {
   FormRobot(super.tester);
 
   Future<void> tapSubmitButton() async {
-    logger.d('ここだよ～');
     await ensureVisibleWidget(WidgetKeys.submit);
     await tester.pumpAndSettle();
-    logger.d('ここだよ～1');
     await tapWidget(WidgetKeys.submit);
   }
 

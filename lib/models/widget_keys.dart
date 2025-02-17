@@ -40,7 +40,7 @@ class WidgetKeys {
   static const String delete = 'delete';
   static const String deleteIdol = 'deleteIdol';
   static const String deleteYes = 'deleteYes';
-  static const String member0 = 'member-0';
+  static const String members = 'members';
   static const String addButton = 'addButton';
   static const String addSong = 'addSong';
   static const String addGroup = 'addGroup';

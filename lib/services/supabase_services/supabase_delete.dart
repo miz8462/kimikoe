@@ -47,9 +47,9 @@ Future<void> deleteDataByName({
   try {
     await supabase.from(table).delete().eq(targetColumn, name);
 
-    logger.i('データを削除しました。ID: $name');
+    logger.i('$nameのデータを削除しました');
   } catch (e) {
-    logger.e('データの削除中にエラーが発生しました。ID: $name', error: e);
+    logger.e('$nameの削除中にエラーが発生しました', error: e);
     rethrow;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
@@ -6,7 +7,7 @@ import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:kimikoe_app/models/idol.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
+import 'package:kimikoe_app/providers/group_members_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_delete.dart';
@@ -14,7 +15,7 @@ import 'package:kimikoe_app/utils/date_formatter.dart';
 import 'package:kimikoe_app/utils/open_links.dart';
 import 'package:kimikoe_app/widgets/delete_alert_dialog.dart';
 
-class IdolDetailScreen extends StatefulWidget {
+class IdolDetailScreen extends ConsumerStatefulWidget {
   const IdolDetailScreen({
     required this.idol,
     super.key,
@@ -23,10 +24,10 @@ class IdolDetailScreen extends StatefulWidget {
   final Idol idol;
 
   @override
-  State<IdolDetailScreen> createState() => _IdolDetailScreenState();
+  ConsumerState<IdolDetailScreen> createState() => _IdolDetailScreenState();
 }
 
-class _IdolDetailScreenState extends State<IdolDetailScreen> {
+class _IdolDetailScreenState extends ConsumerState<IdolDetailScreen> {
   Uri? twitterWebUrl;
   Uri? twitterDeepLinkUrl;
   Uri? instagramWebUrl;
@@ -70,12 +71,15 @@ class _IdolDetailScreenState extends State<IdolDetailScreen> {
         return DeleteAlertDialog(
           key: Key(WidgetKeys.deleteIdol),
           onDelete: () async {
-            await deleteDataById(
+            await deleteDataByName(
               table: TableName.idols,
-              id: widget.idol.id.toString(),
-              context: context,
-              supabase: supabase,
+              name: widget.idol.name,
             );
+
+            final groupId = widget.idol.group!.id;
+            await ref
+                .read(groupMembersProvider(groupId!).notifier)
+                .fetchIdols();
           },
           successMessage: '${widget.idol.name}のデータが削除されました',
           errorMessage: '${widget.idol.name}のデータの削除に失敗しました',

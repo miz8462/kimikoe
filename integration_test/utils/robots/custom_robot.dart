@@ -20,6 +20,11 @@ class CustomRobot<T extends Widget> extends Robot<Widget> {
     await tester.pumpAndSettle();
   }
 
+  Future<void> tapLastInList(String keyValue) async {
+    await tester.tap(find.byKey(Key(keyValue)).last);
+    await tester.pumpAndSettle();
+  }
+
   Future<void> enterTextByKey({
     required String keyValue,
     required String enterValue,

@@ -24,8 +24,9 @@ class NavigationRobot extends CustomRobot {
     await tapWidget(WidgetKeys.delete);
   }
 
-  Future<void> toSongList() async {
-    await tapFirstInList(WidgetKeys.group);
+  Future<void> toSongList({String groupName = 'test-group'}) async {
+    await ensureVisibleWidget(groupName);
+    await tapWidget(groupName);
   }
 
   Future<void> toSongInfo() async {
@@ -46,14 +47,7 @@ class NavigationRobot extends CustomRobot {
 
   Future<void> toIdolDetail() async {
     await toGroupDetail();
-    await tapWidget(WidgetKeys.member0);
-  }
-
-  Future<void> toTestIdolDetail({required String groupName}) async {
-    await ensureVisibleWidget(groupName);
-    await tapWidget(groupName);
-    await tapWidget(WidgetKeys.groupCardM);
-    await tapWidget(WidgetKeys.member0);
+    await tapLastInList(WidgetKeys.members);
   }
 
   Future<void> toEditIdol() async {
@@ -99,11 +93,5 @@ class NavigationRobot extends CustomRobot {
     await tester.pump(Duration(milliseconds: 500)); // アラートが表示されるのを待つ
     await tester.tap(find.descendant(of: deleteAlert, matching: deleteYes));
     await tester.pump(Duration(milliseconds: 500));
-  }
-
-  void expectDeleteMessage({
-    required String name,
-  }) {
-    expect(find.text('$nameのデータが削除されました'), findsOneWidget);
   }
 }

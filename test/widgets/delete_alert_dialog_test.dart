@@ -34,7 +34,7 @@ void main() {
 
       await tester.tap(find.byKey(Key(WidgetKeys.deleteYes)));
       expect(deleteCalled, true);
-
+      
       // スナックバーが表示されるのを待つ
       await tester.pump(Duration(milliseconds: 500));
 

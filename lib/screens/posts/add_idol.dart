@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
     as picker;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
@@ -11,6 +12,7 @@ import 'package:kimikoe_app/models/enums/idol_colors.dart';
 import 'package:kimikoe_app/models/idol.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
+import 'package:kimikoe_app/providers/group_members_provider.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
@@ -36,7 +38,7 @@ import 'package:kimikoe_app/widgets/form/text_input_form.dart';
 
 List<Color> colorsList = IdolColors.values.map((color) => color.rgb).toList();
 
-class AddIdolScreen extends StatefulWidget {
+class AddIdolScreen extends ConsumerStatefulWidget {
   const AddIdolScreen({
     super.key,
     this.idol,
@@ -47,10 +49,10 @@ class AddIdolScreen extends StatefulWidget {
   final bool? isEditing;
 
   @override
-  State<AddIdolScreen> createState() => _AddIdolScreenState();
+  ConsumerState<AddIdolScreen> createState() => _AddIdolScreenState();
 }
 
-class _AddIdolScreenState extends State<AddIdolScreen> {
+class _AddIdolScreenState extends ConsumerState<AddIdolScreen> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _groupNameController;
   late TextEditingController _birthYearController;
@@ -139,12 +141,6 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
   }
 
   Future<void> _submitIdol() async {
-    logger.i('アイドル登録フォーム送信開始');
-
-    setState(() {
-      _isSending = true;
-    });
-
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       logger.i('ヴァリデーションに成功しました');
@@ -155,6 +151,21 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
       });
       return;
     }
+
+    if (_enteredIdolName == '' || _groupNameController.text == '') {
+      logger.d(_enteredIdolName);
+      logger.d(_groupNameController.text);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('必須項目を入力してください')),
+      );
+      return;
+    }
+
+    logger.i('アイドル登録フォーム送信開始');
+
+    setState(() {
+      _isSending = true;
+    });
 
     FocusScope.of(context).unfocus();
 
@@ -261,6 +272,10 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
     setState(() {
       _isSending = false;
     });
+
+    await ref
+        .read(groupMembersProvider(selectedGroupId!).notifier)
+        .fetchIdols();
 
     if (!mounted) {
       return;
@@ -406,7 +421,7 @@ class _AddIdolScreenState extends State<AddIdolScreen> {
                       const Gap(spaceS),
                       CustomDropdownMenu(
                         key: Key(WidgetKeys.group),
-                        label: 'グループ選択',
+                        label: '*グループ選択',
                         dataList: _groupIdAndNameList,
                         controller: _groupNameController,
                       ),
