@@ -18,26 +18,28 @@ class SongInfoCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 10, bottom: 6),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                StyledText(
-                  song.group!.name,
-                  fontSize: fontM,
-                ),
-                const Spacer(),
-                StyledText(
-                  '作詞：${song.lyricist?.name ?? "不明"}',
-                ),
-                StyledText(
-                  '作曲：${song.composer?.name ?? "不明"}',
-                ),
-                StyledText(
-                  '発売日：${song.releaseDate ?? "不明"}',
-                ),
-              ],
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10, bottom: 6),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  StyledText(
+                    song.group!.name,
+                    fontSize: fontM,
+                  ),
+                  const Spacer(),
+                  StyledText(
+                    '作詞：${song.lyricist?.name ?? "不明"}',
+                  ),
+                  StyledText(
+                    '作曲：${song.composer?.name ?? "不明"}',
+                  ),
+                  StyledText(
+                    '発売日：${song.releaseDate ?? "不明"}',
+                  ),
+                ],
+              ),
             ),
           ),
           Image.network(
