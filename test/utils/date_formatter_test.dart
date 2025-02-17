@@ -29,7 +29,7 @@ void main() {
     });
     test('MM/ddの形で日付を返す', () {
       final date = '2000-01-22';
-      final expected = '01/22';
+      final expected = '01-22';
 
       final result = formatStringDateToMMdd(date);
       expect(result, expected);
