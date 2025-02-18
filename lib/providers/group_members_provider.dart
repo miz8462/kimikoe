@@ -62,25 +62,6 @@ class GroupMembersNotifier extends StateNotifier<AsyncValue<List<Idol>>> {
     }
   }
 
-  Future<void> addNewIdol(Idol newIdol) async {
-    try {
-      final idols = state.value?.toList() ?? [];
-      idols.add(newIdol);
-      state = AsyncData(idols);
-
-      logger.i('新しいアイドルを追加しました: ${newIdol.name}');
-
-      await fetchIdols();
-    } catch (e, stackTrace) {
-      logger.e(
-        '新しいアイドルの追加中にエラーが発生しました',
-        error: e,
-        stackTrace: stackTrace,
-      );
-      state = AsyncError(e, stackTrace);
-    }
-  }
-
   Idol? getIdolById(int id) {
     return state.value?.firstWhere(
       (idol) => idol.id == id,

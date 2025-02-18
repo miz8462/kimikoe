@@ -179,11 +179,13 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     });
 
     await ref.read(groupsProvider.notifier).fetchGroupList(supabase: supabase);
+
     if (!mounted) {
       return;
     }
 
     context.pushReplacement(RoutingPath.groupList);
+    // TODO: GoRouterを学んだのち、編集の場合はグループ詳細へ遷移するようにする
   }
 
   @override
