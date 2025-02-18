@@ -113,33 +113,54 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
   }
 
   void _initializeEditingFields() {
-    final jsonLyrics = jsonDecode(_song.lyrics) as List<Map<String, String>>;
-    _groupNameController = TextEditingController(text: _song.group!.name);
-    if (_song.lyricist?.name == null) {
-      _lyricistNameController = TextEditingController();
-    } else {
-      _lyricistNameController =
-          TextEditingController(text: _song.lyricist!.name);
-    }
-    if (_song.lyricist?.name == null) {
-      _composerNameController = TextEditingController();
-    } else {
-      _composerNameController =
-          TextEditingController(text: _song.composer!.name);
-    }
-    _releaseDateController = TextEditingController(text: _song.releaseDate);
-    // 歌詞と担当歌手データ
-    for (final lyricData in jsonLyrics) {
-      // singerIdから歌手の名前を取得
-      final singerId = lyricData['singerId'];
-      final selectedMember =
-          _idolIdAndNameList.firstWhere((member) => member['id'] == singerId);
+    try {
+      _isGroupSelected = true;
+      // JSONデータをデコード
+      final decodedLyrics = jsonDecode(_song.lyrics) as List;
+      final jsonLyrics = decodedLyrics.map((item) {
+        if (item is Map<String, dynamic>) {
+          return {
+            'lyric': item['lyric']?.toString() ?? '',
+            'singerId': item['singerId']?.toString() ?? '',
+          };
+        }
+        return {'lyric': '', 'singerId': ''};
+      }).toList();
 
-      _lyricAndSingerList.add(lyricData);
-      _lyricListControllers
-          .add(TextEditingController(text: lyricData['lyric']));
-      _singerListControllers
-          .add(TextEditingController(text: selectedMember['name'].toString()));
+      _groupNameController = TextEditingController(text: _song.group!.name);
+      _lyricistNameController = TextEditingController(
+        text: _song.lyricist?.name ?? '',
+      );
+      _composerNameController = TextEditingController(
+        text: _song.composer?.name ?? '',
+      );
+      _releaseDateController = TextEditingController(text: _song.releaseDate);
+
+      // 歌詞と担当歌手データ
+      for (final lyricData in jsonLyrics) {
+        final singerId = int.tryParse(lyricData['singerId'] ?? '');
+        final selectedMember = singerId != null
+            ? _idolIdAndNameList.firstWhere(
+                (member) => member['id'] == singerId,
+                orElse: () => {'name': ''},
+              )
+            : {'name': ''};
+
+        _lyricAndSingerList.add(lyricData);
+        _lyricListControllers.add(
+          TextEditingController(text: lyricData['lyric']),
+        );
+        _singerListControllers.add(
+          TextEditingController(text: selectedMember['name'].toString()),
+        );
+      }
+    } catch (e) {
+      logger.e('歌詞データの初期化中にエラーが発生しました', error: e);
+      // エラー時のフォールバック処理
+      _groupNameController = TextEditingController(text: _song.group!.name);
+      _lyricistNameController = TextEditingController();
+      _composerNameController = TextEditingController();
+      _releaseDateController = TextEditingController();
     }
   }
 
@@ -200,7 +221,7 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
         list: _idolIdAndNameList,
         name: _singerListControllers[index].text,
       );
-      _lyricAndSingerList[index]['singerId'] = idolId;
+      _lyricAndSingerList[index]['singerId'] = idolId.toString();
     }
 
     // 歌詞と歌手のセットをjsonにする

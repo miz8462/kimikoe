@@ -10,7 +10,7 @@ late Logger logger;
 void initializeLogger() {
   logger = Logger(
     printer: PrettyPrinter(
-      lineLength: 70,
+      lineLength: 50,
       methodCount: 0,
       errorMethodCount: 10,
     ),

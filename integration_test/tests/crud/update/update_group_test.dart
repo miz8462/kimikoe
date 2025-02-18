@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:kimikoe_app/screens/group_detail/group_detail.dart';
 import 'package:kimikoe_app/screens/idol_group_list.dart';
 import 'package:kimikoe_app/screens/posts/add_group.dart';
 
@@ -15,8 +14,8 @@ void main() {
     // ログイン
     final authRobot = AuthRobot(tester);
     await authRobot.initializeAndLogin();
-    
-    // グループ編集ページへ画面遷移
+
+    // 編集ページへ画面遷移
     final naviRobot = NavigationRobot(tester);
     await naviRobot.waitForWidget(IdolGroupListScreen);
     await naviRobot.toEditGroup();

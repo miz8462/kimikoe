@@ -1,9 +1,30 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:integration_test/integration_test.dart';
+import 'package:kimikoe_app/screens/idol_group_list.dart';
+import 'package:kimikoe_app/screens/posts/edit_user.dart';
+
+import '../../../utils/robots/auth_robot.dart';
+import '../../../utils/robots/navigation_robot.dart';
 
 void main() {
-  testWidgets(
-    'ユーザー更新',
-    (WidgetTester tester) async {},
-    skip: true,
-  );
+  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+
+  testWidgets('ユーザーを編集する', (WidgetTester tester) async {
+    // ログイン
+    final authRobot = AuthRobot(tester);
+    await authRobot.initializeAndLogin();
+
+    // 編集ページへ画面遷移
+    final naviRobot = NavigationRobot(tester);
+    await naviRobot.waitForWidget(IdolGroupListScreen);
+    await naviRobot.toEditUser();
+    await naviRobot.expectWidget(EditUserScreen);
+
+    // 編集しホームに戻る
+    // final editComment = 'edit-comment';
+    // final formRobot = FormRobot(tester);
+    // await formRobot.enterComment(editComment);
+    // await formRobot.tapSubmitButton();
+    // await formRobot.expectWidget(IdolGroupListScreen);
+  });
 }
