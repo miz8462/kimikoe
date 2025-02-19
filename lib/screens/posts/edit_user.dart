@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/user_profile.dart';
+import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/providers/user_provider.dart';
@@ -120,6 +121,7 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
                   style: TextStyle(color: textGray),
                 ),
                 InputForm(
+                  key: Key(WidgetKeys.name),
                   initialValue: user.name,
                   label: '*名前',
                   validator: _nameValidator,
@@ -129,6 +131,7 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
                 ),
                 const Gap(spaceS),
                 InputForm(
+                  key: Key(WidgetKeys.email),
                   initialValue: user.email,
                   label: '*メール',
                   validator: _emailValidator,
@@ -147,6 +150,7 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
                 // ),
                 // const Gap(spaceS),
                 ExpandedTextForm(
+                  key: Key(WidgetKeys.comment),
                   initialValue: user.comment,
                   onTextChanged: (value) {
                     setState(() {
@@ -158,6 +162,7 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
                 const Gap(spaceS),
                 StyledButton(
                   '登録',
+                  key: Key(WidgetKeys.submit),
                   onPressed: _isSending ? null : _submitUserProfile,
                   isSending: _isSending,
                 ),

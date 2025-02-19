@@ -146,12 +146,12 @@ Future<void> updateUser({
     if (!context.mounted) return;
     showLogAndSnackBar(
       context: context,
-      message: 'ユーザーを更新しました。ユーザー名: $name',
+      message: 'ユーザー情報を更新しました',
     );
   } catch (e) {
     showLogAndSnackBar(
       context: context,
-      message: 'ユーザーの更新中にエラーが発生しました。ユーザー名: $name',
+      message: 'ユーザー情報の更新中にエラーが発生しました',
       isError: true,
     );
     rethrow;

@@ -223,6 +223,10 @@ class FormRobot extends CustomRobot<Form> {
     expect(find.text('$dataTypeを登録しました: $name'), findsOneWidget);
   }
 
+  void expectSuccessMessageEditUser() {
+    expect(find.text('ユーザー情報を更新しました'), findsOneWidget);
+  }
+
   void expectValidationMessage({
     String? dataType = '名前',
   }) {
