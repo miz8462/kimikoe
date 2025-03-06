@@ -16,6 +16,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
     this.editRoute,
     this.data,
     this.delete,
+    this.logout,
   });
   final String? imageUrl;
   final String pageTitle;
@@ -26,9 +27,10 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   final String? editRoute;
   final Map<String, Object>? data;
   final void Function()? delete;
+  final void Function()? logout;
 
   // 編集、削除機能。グループ、ユーザーの時は削除なし
-  List<Widget> _buildEditAndDeleteActions(BuildContext context) {
+  List<Widget> _buildMenu(BuildContext context) {
     return [
       Padding(
         padding: const EdgeInsets.only(top: 12),
@@ -49,6 +51,9 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
               } else if (item == 1 && !isGroup && !isUser) {
                 delete?.call();
                 logger.i('削除アクションがトリガーされました');
+              } else if (item == 2 && isUser) {
+                logout?.call();
+                logger.i('ログアウトアクションがトリガーされました');
               }
             } catch (e) {
               logger.e('メニューアクションの処理中にエラーが発生しました', error: e);
@@ -87,6 +92,24 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 ),
               ),
+            if (isUser)
+              PopupMenuItem<int>(
+                key: const Key(WidgetKeys.logout),
+                value: 2,
+                child: ListTile(
+                  leading: Icon(
+                    Icons.logout,
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                  title: Text(
+                    'ログアウト',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(color: Theme.of(context).colorScheme.error),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
@@ -106,7 +129,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       centerTitle: true,
-      actions: isEditing ? _buildEditAndDeleteActions(context) : null,
+      actions: isEditing ? _buildMenu(context) : null,
       bottom: const AppBarBottom(),
     );
   }

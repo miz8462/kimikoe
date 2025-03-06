@@ -29,7 +29,6 @@ class WidgetKeys {
   static const String password = 'password';
   static const String switchButton = 'switchButton';
   static const String loginButton = 'loginButton';
-  static const String logoutButton = 'logoutButton';
   static const String googleButton = 'googleButton';
   // navigation
   static const String group = 'group';
@@ -40,6 +39,7 @@ class WidgetKeys {
   static const String delete = 'delete';
   static const String deleteIdol = 'deleteIdol';
   static const String deleteYes = 'deleteYes';
+  static const String logout = 'logout';
   static const String members = 'members';
   static const String addButton = 'addButton';
   static const String addSong = 'addSong';

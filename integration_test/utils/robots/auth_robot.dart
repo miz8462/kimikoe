@@ -55,10 +55,6 @@ class AuthRobot extends CustomRobot<SignInScreen> {
     await tapWidget(WidgetKeys.loginButton);
   }
 
-  Future<void> tapLogoutButton() async {
-    await tapWidget(WidgetKeys.logoutButton);
-  }
-
   Future<void> login() async {
     await enterEmail(testEmail);
     await enterPassword(testPassword);

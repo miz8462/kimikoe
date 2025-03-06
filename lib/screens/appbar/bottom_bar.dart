@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
-import 'package:kimikoe_app/providers/auth_provider.dart';
 import 'package:kimikoe_app/providers/user_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/widgets/button/styled_button.dart';
@@ -80,13 +79,6 @@ class _BottomBarState extends ConsumerState<BottomBar> {
     );
   }
 
-  Future<void> _signOut() async {
-    await ref.read(authProvider.notifier).logout(ref);
-    if (mounted) {
-      context.go('/');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final currentIndex = widget.navigationShell.currentIndex;
@@ -109,8 +101,6 @@ class _BottomBarState extends ConsumerState<BottomBar> {
         onDestinationSelected: (index) {
           if (index == addIndex) {
             _openAddOverlay(context);
-          } else if (index == logoutIndex) {
-            _signOut();
           } else {
             widget.navigationShell.goBranch(
               index,
@@ -124,7 +114,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
               Icons.home_outlined,
               color: currentIndex == homeIndex ? textDark : textWhite,
             ),
-            label: '',
+            label: 'ホーム',
           ),
           NavigationDestination(
             icon: Icon(
@@ -132,7 +122,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
               Icons.add_box_outlined,
               color: currentIndex == addIndex ? textDark : textWhite,
             ),
-            label: '',
+            label: '追加',
           ),
           NavigationDestination(
             icon: CircleAvatar(
@@ -140,12 +130,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
               backgroundImage: NetworkImage(imageUrl),
               radius: avaterSizeS,
             ),
-            label: '',
-          ),
-          // TODO: 開発用ログアウトボタン
-          NavigationDestination(
-            icon: Icon(key: Key(WidgetKeys.logoutButton), Icons.logout),
-            label: '',
+            label: 'ユーザー',
           ),
         ],
       ),

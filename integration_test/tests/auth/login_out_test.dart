@@ -6,19 +6,24 @@ import 'package:kimikoe_app/screens/idol_group_list.dart';
 import 'package:kimikoe_app/screens/sign_in.dart';
 
 import '../../utils/robots/auth_robot.dart';
+import '../../utils/robots/navigation_robot.dart';
 
 void main() async {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  group('ログインテスト', () {
-    testWidgets('ログイン成功', (WidgetTester tester) async {
+  group('ログイン、ログアウトテスト', () {
+    testWidgets('ログイン、ログアウト成功', (WidgetTester tester) async {
       final robot = AuthRobot(tester);
 
       await robot.initializeAndLogin();
 
       await robot.expectWidget(IdolGroupListScreen);
 
-      await robot.tapLogoutButton();
+      final naviRobot = NavigationRobot(tester);
+
+      await naviRobot.toUserInfo();
+      await naviRobot.tapTopBarMenu();
+      await naviRobot.tapLogoutMenu();
 
       await robot.expectWidget(SignInScreen);
     });

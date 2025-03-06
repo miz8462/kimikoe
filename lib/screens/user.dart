@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/providers/auth_provider.dart';
 import 'package:kimikoe_app/providers/user_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
@@ -21,6 +23,13 @@ class UserScreen extends ConsumerWidget {
       'isEditing': isEditing,
     };
 
+    Future<void> logout() async {
+      await ref.read(authProvider.notifier).logout(ref);
+      if (context.mounted) {
+        context.go('/');
+      }
+    }
+
     return Scaffold(
       appBar: TopBar(
         pageTitle: 'ユーザー情報',
@@ -28,6 +37,7 @@ class UserScreen extends ConsumerWidget {
         editRoute: RoutingPath.editUser,
         isUser: true,
         data: data,
+        logout: logout,
       ),
       body: Padding(
         padding: screenPadding,
