@@ -24,32 +24,29 @@ class _GroupInfoState extends State<GroupInfo> {
   Uri? scheduleDeepLinkUrl;
 
   Future<void> _getOfficialUrl(String? url) async {
+    if (!mounted) return;
     officialUrl = await convertUrlStringToUri(url);
-    setState(() {});
   }
 
   Future<void> _getTwitterUrls(String? url) async {
+    if (!mounted) return;
     final urls = await fetchWebUrlAndDeepLinkUrl(url, scheme: twitterScheme);
     twitterWebUrl = urls.webUrl;
     twitterDeepLinkUrl = urls.deepLinkUrl;
-
-    setState(() {});
   }
 
   Future<void> _getInstagramUrls(String? url) async {
+    if (!mounted) return;
     final urls = await fetchWebUrlAndDeepLinkUrl(url, scheme: instagramScheme);
     instagramWebUrl = urls.webUrl;
     instagramDeepLinkUrl = urls.deepLinkUrl;
-
-    setState(() {});
   }
 
   Future<void> _getScheduleUrls(String? url) async {
+    if (!mounted) return;
     final urls = await fetchWebUrlAndDeepLinkUrl(url);
     scheduleWebUrl = urls.webUrl;
     scheduleDeepLinkUrl = urls.deepLinkUrl;
-
-    setState(() {});
   }
 
   @override
