@@ -53,6 +53,12 @@ class GroupMembers extends ConsumerWidget {
                                   decoration: BoxDecoration(
                                     borderRadius: borderRadius12,
                                     color: member.color,
+                                    border: (member.color == Colors.white)
+                                        ? Border.all(
+                                            width: 0.5,
+                                            color: Colors.grey,
+                                          )
+                                        : null,
                                   ),
                                 ),
                                 const Gap(spaceS),

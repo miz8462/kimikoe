@@ -3,7 +3,8 @@ import 'package:kimikoe_app/kimikoe_app.dart';
 
 class CircularButton extends StatelessWidget {
   const CircularButton({
-    required this.onPressed, super.key,
+    required this.onPressed,
+    super.key,
     this.color = mainColor,
   });
 
@@ -17,7 +18,12 @@ class CircularButton extends StatelessWidget {
       style: OutlinedButton.styleFrom(
         backgroundColor: color,
         shape: const CircleBorder(),
-        side: BorderSide.none,
+        side: (color == Colors.white)
+            ? BorderSide(
+                color: Colors.grey,
+                width: 0.5,
+              )
+            : BorderSide.none,
       ),
       child: const Text(''),
     );

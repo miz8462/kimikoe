@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/widgets/circle_color.dart';
 
 class CustomTextForLyrics extends StatelessWidget {
   const CustomTextForLyrics(
@@ -20,14 +21,7 @@ class CustomTextForLyrics extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 2),
-              child: Container(
-                width: circleSize,
-                height: circleSize,
-                decoration: BoxDecoration(
-                  color: color,
-                  borderRadius: BorderRadius.circular(100),
-                ),
-              ),
+              child: circleColor(color),
             ),
             const Gap(8),
             Expanded(
@@ -46,4 +40,6 @@ class CustomTextForLyrics extends StatelessWidget {
       ],
     );
   }
+
+  
 }

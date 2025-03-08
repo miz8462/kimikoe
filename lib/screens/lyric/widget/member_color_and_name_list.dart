@@ -4,10 +4,13 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/utils/error_handling.dart';
+import 'package:kimikoe_app/widgets/circle_color.dart';
 
 class GroupColorAndNameList extends StatefulWidget {
   const GroupColorAndNameList({
-    required this.group, required this.memberFuture, super.key,
+    required this.group,
+    required this.memberFuture,
+    super.key,
   });
   final IdolGroup group;
   final Future<List<Map<String, dynamic>>> memberFuture;
@@ -38,14 +41,7 @@ class _GroupColorAndNameListState extends State<GroupColorAndNameList> {
               return Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
-                    width: circleSize,
-                    height: circleSize,
-                    decoration: BoxDecoration(
-                      color: color,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
+                  circleColor(color),
                   const Gap(spaceSS),
                   Text(name),
                   const Gap(spaceM),

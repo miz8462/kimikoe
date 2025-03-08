@@ -433,6 +433,7 @@ class _AddIdolScreenState extends ConsumerState<AddIdolScreen> {
                             key: Key(WidgetKeys.color),
                             color: _selectedColor,
                             onPressed: _pickColor,
+                            
                           ),
                           const Text(
                             '*カラー選択',
