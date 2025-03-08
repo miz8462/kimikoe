@@ -25,9 +25,6 @@ class _BottomBarState extends ConsumerState<BottomBar> {
   int logoutIndex = 3;
 
   void _openAddOverlay(BuildContext context) {
-    setState(() {
-      widget.navigationShell.goBranch(addIndex);
-    });
     showModalBottomSheet<Widget>(
       context: context,
       isScrollControlled: true,

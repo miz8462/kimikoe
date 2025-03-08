@@ -400,13 +400,14 @@ class _AddIdolScreenState extends ConsumerState<AddIdolScreen> {
               child: Form(
                 key: _formKey,
                 child: Padding(
-                  padding: screenPadding,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
                         '*必須項目',
-                        style: TextStyle(color: textGray, fontSize: fontSS),
+                        style: TextStyle(color: textGray),
                       ),
                       InputForm(
                         key: Key(WidgetKeys.name),

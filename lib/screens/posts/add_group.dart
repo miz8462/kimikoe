@@ -197,7 +197,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Form(
             key: _formKey,
             child: Column(

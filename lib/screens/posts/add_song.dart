@@ -402,7 +402,8 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
             ),
             body: SingleChildScrollView(
               child: Padding(
-                padding: screenPadding,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -410,7 +411,7 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
                     children: [
                       const Text(
                         '*必須項目',
-                        style: TextStyle(color: textGray, fontSize: fontSS),
+                        style: TextStyle(color: textGray),
                       ),
                       InputForm(
                         key: Key(WidgetKeys.title),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/song.dart';
-import 'package:kimikoe_app/widgets/text/styled_text.dart';
 
 class SongInfoCard extends StatelessWidget {
   const SongInfoCard({
@@ -24,19 +23,32 @@ class SongInfoCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  StyledText(
+                  Text(
                     song.group!.name,
-                    fontSize: fontM,
+                    style: TextStyle(
+                      fontSize: fontM,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                   ),
                   const Spacer(),
-                  StyledText(
+                  Text(
                     '作詞：${song.lyricist?.name ?? "不明"}',
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                   ),
-                  StyledText(
+                  Text(
                     '作曲：${song.composer?.name ?? "不明"}',
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                   ),
-                  StyledText(
+                  Text(
                     '発売日：${song.releaseDate ?? "不明"}',
+                    style: const TextStyle(
+                      color: Colors.black,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                   ),
                 ],
               ),

@@ -112,7 +112,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
           child: Form(
             key: _formKey,
             child: Padding(
-              padding: screenPadding,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
