@@ -436,7 +436,7 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
                       ),
                       if (_isGroupSelected) Text('true'),
                       const Gap(spaceS),
-                      const Text('歌詞と歌手はワンフレーム単位のセットで登録'),
+                      const Text('歌詞と歌手はワンフレーズのセットで登録'),
                       const Gap(spaceS),
                       for (int i = 0; i < _lyricAndSingerList.length; i++)
                         Column(

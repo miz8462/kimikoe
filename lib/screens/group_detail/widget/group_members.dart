@@ -6,6 +6,7 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/providers/group_members_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
+import 'package:kimikoe_app/widgets/circle_color.dart';
 
 class GroupMembers extends ConsumerWidget {
   const GroupMembers({
@@ -47,20 +48,7 @@ class GroupMembers extends ConsumerWidget {
                             },
                             child: Row(
                               children: [
-                                Container(
-                                  height: 24,
-                                  width: 24,
-                                  decoration: BoxDecoration(
-                                    borderRadius: borderRadius12,
-                                    color: member.color,
-                                    border: (member.color == Colors.white)
-                                        ? Border.all(
-                                            width: 0.5,
-                                            color: Colors.grey,
-                                          )
-                                        : null,
-                                  ),
-                                ),
+                                CircleColor(member.color),
                                 const Gap(spaceS),
                                 Text(
                                   key: Key('members'),

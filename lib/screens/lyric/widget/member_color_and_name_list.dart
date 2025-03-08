@@ -41,7 +41,7 @@ class _GroupColorAndNameListState extends State<GroupColorAndNameList> {
               return Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  circleColor(color),
+                  CircleColor(color),
                   const Gap(spaceSS),
                   Text(name),
                   const Gap(spaceM),

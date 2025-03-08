@@ -21,7 +21,7 @@ class CustomTextForLyrics extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 2),
-              child: circleColor(color),
+              child: CircleColor(color),
             ),
             const Gap(8),
             Expanded(

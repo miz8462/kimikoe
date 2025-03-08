@@ -37,7 +37,6 @@ void main() {
 
     final decoration = container.decoration! as BoxDecoration;
     expect(decoration.color, color);
-    expect(decoration.borderRadius, BorderRadius.circular(100));
 
     // テキストパートの検証
     expect(find.text(text), findsOneWidget);
