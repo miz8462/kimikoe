@@ -17,7 +17,7 @@ void main() {
     await naviRobot.waitForWidget(IdolGroupListScreen);
     await naviRobot.toAddIdol();
 
-    final name = 'test-idol';
+    final name = 'test-delete-idol';
     final formRobot = FormRobot(tester);
     await formRobot.enterName(name);
     await formRobot.selectGroup(groupName: 'test-group-not-delete');

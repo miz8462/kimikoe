@@ -76,10 +76,7 @@ void main() {
         list: mockDataList,
         name: 'test idol3',
       );
-      expect(
-        result,
-        isNull,
-      );
+      expect(result, isNull);
     });
   });
 }

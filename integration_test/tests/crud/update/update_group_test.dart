@@ -22,9 +22,8 @@ void main() {
     await naviRobot.expectWidget(AddGroupScreen);
 
     // 編集しホームに戻る
-    final editComment = 'edit-comment';
     final formRobot = FormRobot(tester);
-    await formRobot.enterComment(editComment);
+    await formRobot.enterComment('edit-comment');
     await formRobot.tapSubmitButton();
     await formRobot.expectWidget(IdolGroupListScreen);
   });
