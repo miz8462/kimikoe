@@ -71,13 +71,14 @@ void main() {
       final idolId = findDataIdByName(list: mockDataList, name: 'test idol');
       expect(idolId, 1);
     });
-    test('指定された名前がない場合、例外をスローする', () {
+    test('指定された名前がない場合はnullを返す', () {
+      final result = findDataIdByName(
+        list: mockDataList,
+        name: 'test idol3',
+      );
       expect(
-        () => findDataIdByName(
-          list: mockDataList,
-          name: 'test idol3',
-        ),
-        throwsStateError,
+        result,
+        isNull,
       );
     });
   });
