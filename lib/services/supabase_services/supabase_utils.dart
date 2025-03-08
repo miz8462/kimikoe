@@ -38,16 +38,22 @@ Future<List<Artist>> createArtistList({
   }
 }
 
-int findDataIdByName({
+int? findDataIdByName({
   required List<Map<String, dynamic>> list,
   required String name,
 }) {
+  if (name.isEmpty) {
+    logger.w('空の名前が指定されました');
+    return null;
+  }
+
   final selectedDataList =
       list.where((item) => item[ColumnName.name] == name).toList();
   if (selectedDataList.isEmpty) {
     logger.e('指定された名前: $name に対するデータが見つかりません');
-    throw StateError('指定された名前: $name に対するデータが見つかりません');
+    return null;
   }
+
   final selectedData = selectedDataList.single;
   final selectedDataId = selectedData[ColumnName.id] as int;
   logger.i('指定された名前: $name に対するデータIDを取得しました');

@@ -21,10 +21,9 @@ void main() {
     await naviRobot.toEditSong();
     await naviRobot.expectWidget(AddSongScreen);
 
-    // 編集しホームに戻る
-    final editComment = 'edit-comment';
+    // 編集内容を設定
     final formRobot = FormRobot(tester);
-    await formRobot.enterComment(editComment);
+    await formRobot.enterComment('edit-comment');
     await formRobot.tapSubmitButton();
     await formRobot.expectWidget(IdolGroupListScreen);
   });

@@ -215,13 +215,18 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
 
     FocusScope.of(context).unfocus();
 
-    // 「歌詞追加」の歌詞と歌手をjson形式でまとめる e.g. {'':,'singerId':idolId}
+    // 歌詞と歌手のセットをまとめる
     for (var index = 0; index < _lyricAndSingerList.length; index++) {
-      final idolId = findDataIdByName(
-        list: _idolIdAndNameList,
-        name: _singerListControllers[index].text,
-      );
-      _lyricAndSingerList[index]['singerId'] = idolId.toString();
+      final singerName = _singerListControllers[index].text;
+      if (singerName.isNotEmpty) {
+        final idolId = findDataIdByName(
+          list: _idolIdAndNameList,
+          name: singerName,
+        );
+        _lyricAndSingerList[index]['singerId'] = idolId?.toString() ?? '';
+      } else {
+        _lyricAndSingerList[index]['singerId'] = '';
+      }
     }
 
     // 歌詞と歌手のセットをjsonにする
@@ -340,14 +345,18 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
       );
     }
 
+    // groupSongsProviderを呼び出す前にnullチェック
+    if (selectedGroupId != null) {
+      ref.watch(groupSongsProvider(selectedGroupId));
+    } else {
+      logger.w('グループIDがnullのため、groupSongsProviderは更新されません');
+    }
+
     setState(() {
       _isSending = false;
     });
 
-    ref.watch(groupSongsProvider(selectedGroupId));
-
     if (!mounted) return;
-
     context.pushReplacement(RoutingPath.groupList);
   }
 
