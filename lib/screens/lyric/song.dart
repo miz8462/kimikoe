@@ -14,6 +14,7 @@ import 'package:kimikoe_app/screens/lyric/widget/song_info_card.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_delete.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
 import 'package:kimikoe_app/widgets/delete_alert_dialog.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 // HylightedTextクラスを作成し行単位でハイライトできるようにする
 // 文字が見やすい用に色を調節
@@ -33,6 +34,8 @@ class SongScreen extends StatefulWidget {
 
 class _SongScreenState extends State<SongScreen> {
   late Future<List<Map<String, dynamic>>> _memberFuture;
+  YoutubePlayerController? _youtubeController;
+
   @override
   void initState() {
     super.initState();
@@ -40,6 +43,33 @@ class _SongScreenState extends State<SongScreen> {
       widget.group.id!,
       supabase: supabase,
     );
+
+    /*
+    youtube_player_iframeパッケージでは
+    おそらく文字列の関係(7jEmpp_f_-EというIDの動画)で
+    fromVideoIdやcueVideoByUrlなどでは
+    自動再生をfalseにできない動画があった。
+    そのためloadVideoメソッドを一部使っている。
+    */
+    final youtubeUrl = widget.song.movieUrl;
+    if (youtubeUrl != null) {
+      _youtubeController = YoutubePlayerController(
+        params: YoutubePlayerParams(
+          showFullscreenButton: true,
+        ),
+      );
+
+      final params = Uri.parse(youtubeUrl).queryParameters;
+      final videoId = params['v'];
+
+      _youtubeController!.cueVideoById(videoId: videoId!);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _youtubeController!.close();
   }
 
   void _deleteSong(BuildContext context) {
@@ -89,6 +119,16 @@ class _SongScreenState extends State<SongScreen> {
             children: [
               const Gap(spaceM),
               SongInfoCard(song: song),
+              const Gap(spaceM),
+              if (_youtubeController != null)
+                YoutubePlayerScaffold(
+                  controller: _youtubeController!,
+                  builder: (context, player) {
+                    return Column(
+                      children: [player],
+                    );
+                  },
+                ),
               const Gap(spaceM),
               GroupColorAndNameList(group: group, memberFuture: _memberFuture),
               const Gap(spaceS),

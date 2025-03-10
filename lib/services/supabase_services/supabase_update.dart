@@ -95,6 +95,7 @@ Future<void> updateSong({
   required BuildContext context,
   required SupabaseClient supabase,
   int? groupId,
+  String? movieUrl,
   String? imageUrl,
   String? releaseDate,
   int? lyricistId,
@@ -104,6 +105,7 @@ Future<void> updateSong({
   try {
     await supabase.from(TableName.songs).update({
       ColumnName.title: title,
+      ColumnName.movieUrl: movieUrl,
       ColumnName.lyrics: lyric,
       ColumnName.groupId: groupId,
       ColumnName.imageUrl: imageUrl,

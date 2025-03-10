@@ -117,6 +117,7 @@ Future<void> insertSongData({
   required String lyric,
   required BuildContext context,
   required SupabaseClient supabase,
+  String? movieUrl,
   int? groupId,
   String? imageUrl,
   String? releaseDate,
@@ -127,6 +128,7 @@ Future<void> insertSongData({
   try {
     await supabase.from(TableName.songs).insert({
       ColumnName.title: title,
+      ColumnName.movieUrl: movieUrl,
       ColumnName.lyrics: lyric,
       ColumnName.groupId: groupId,
       ColumnName.imageUrl: imageUrl,

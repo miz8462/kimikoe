@@ -8,6 +8,7 @@ class Song {
     required this.imageUrl,
     this.id,
     this.group,
+    this.movieUrl,
     this.lyricist,
     this.composer,
     this.releaseDate,
@@ -19,6 +20,7 @@ class Song {
   final int? id;
   final IdolGroup? group;
   final String imageUrl;
+  final String? movieUrl;
   final Artist? lyricist;
   final Artist? composer;
   final String? releaseDate;

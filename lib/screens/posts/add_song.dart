@@ -62,6 +62,7 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
   late Song _song;
 
   var _enteredTitle = '';
+  var _enteredMovieUrl = '';
   File? _selectedImage;
   String? _selectedReleaseDate;
   var _enteredComment = '';
@@ -193,25 +194,24 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
   }
 
   Future<void> _submitSong() async {
-    setState(() {
-      _isSending = true;
-    });
-
-    if (!_isGroupSelected) return;
-
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       logger.i('ヴァリデーション成功');
     } else {
       logger.w('ヴァリデーション失敗');
-
       setState(() {
         _isSending = false;
       });
       return;
     }
 
+    if (!_isGroupSelected) return;
+
     logger.i('フォーム送信開始');
+
+    setState(() {
+      _isSending = true;
+    });
 
     FocusScope.of(context).unfocus();
 
@@ -319,6 +319,7 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
     if (_isEditing) {
       await updateSong(
         title: _enteredTitle,
+        movieUrl: _enteredMovieUrl,
         lyric: jsonStringLyrics,
         groupId: selectedGroupId,
         imageUrl: imageUrl,
@@ -333,6 +334,7 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
     } else {
       await insertSongData(
         title: _enteredTitle,
+        movieUrl: _enteredMovieUrl,
         lyric: jsonStringLyrics,
         groupId: selectedGroupId,
         imageUrl: imageUrl,
@@ -443,7 +445,6 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
                         isSelected: _isGroupSelected,
                         onSelectedChanged: _updateGroupSelected,
                       ),
-                      if (_isGroupSelected) Text('true'),
                       const Gap(spaceS),
                       const Text('歌詞と歌手はワンフレーズのセットで登録'),
                       const Gap(spaceS),
@@ -476,6 +477,17 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
                         '歌詞追加',
                         onPressed: _addNewLyricItem,
                         backgroundColor: mainColor.withValues(alpha: 0.7),
+                      ),
+                      const Gap(spaceS),
+                      InputForm(
+                        key: Key(WidgetKeys.movie),
+                        initialValue:
+                            _isEditing ? _song.movieUrl : _enteredMovieUrl,
+                        label: '動画URL',
+                        validator: urlValidator,
+                        onSaved: (value) {
+                          _enteredMovieUrl = value!;
+                        },
                       ),
                       const Gap(spaceS),
                       ImageInput(

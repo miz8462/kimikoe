@@ -15,6 +15,7 @@ class ColumnName {
   static const title = 'title';
   static const email = 'email';
   static const imageUrl = 'image_url';
+  static const movieUrl= 'movie_url';
   static const comment = 'comment';
   static const createdAt = 'created_at';
   static const color = 'color';

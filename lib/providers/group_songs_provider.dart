@@ -38,6 +38,7 @@ final groupSongsProvider =
             title: song[ColumnName.title],
             lyrics: song[ColumnName.lyrics],
             group: group,
+            movieUrl: song[ColumnName.movieUrl],
             imageUrl: song[ColumnName.imageUrl],
             lyricist: lyricist,
             composer: composer,

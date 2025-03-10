@@ -21,6 +21,7 @@ void main() {
     await naviRobot.toAddSong();
 
     final title = 'test-song';
+    final movieURL = 'https://example.com';
     final lyric = 'test-lyric';
     final now = DateTime.now();
     final today = formatDateTimeToXXXX(date: now, formatStyle: 'yyyy/MM/dd');
@@ -28,6 +29,7 @@ void main() {
     final formRobot = FormRobot(tester);
     await formRobot.enterTitle(title);
     await formRobot.selectGroup();
+    await formRobot.enterMovieUrl(movieURL);
     await formRobot.tapWidget(WidgetKeys.addLyric);
     await formRobot.ensureVisibleWidget(WidgetKeys.lyric0);
     await formRobot.enterLyric(lyric);

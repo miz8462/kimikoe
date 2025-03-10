@@ -4,6 +4,7 @@ class WidgetKeys {
   static const String title = 'title';
   static const String image = 'image';
   static const String lyric = 'lyric';
+  static const String movie = 'movie';
   static const String year = 'year';
   static const String color = 'color';
   static const String height = 'height';
