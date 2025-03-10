@@ -483,7 +483,7 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
                         key: Key(WidgetKeys.movie),
                         initialValue:
                             _isEditing ? _song.movieUrl : _enteredMovieUrl,
-                        label: '動画URL',
+                        label: 'YouTube動画URL',
                         validator: urlValidator,
                         onSaved: (value) {
                           _enteredMovieUrl = value!;

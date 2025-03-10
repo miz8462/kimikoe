@@ -286,6 +286,7 @@ void main() {
 
         await insertSongData(
           title: 'test title',
+          movieUrl: 'https://youtube.com/watch?v=example',
           lyric: 'test lyric',
           context: mockContext,
           supabase: mockSupabase,
@@ -303,6 +304,7 @@ void main() {
         expect(song.length, 1);
         expect(song.first, {
           'title': 'test title',
+          'movie_url': 'https://youtube.com/watch?v=example',
           'lyrics': 'test lyric',
           'group_id': 1,
           'image_url': 'https://example.com/image.jpg',
@@ -328,6 +330,7 @@ void main() {
         expect(song2.length, 2);
         expect(song2.last, {
           'title': 'test title2',
+          'movie_url': null,
           'lyrics': 'test lyric2',
           'group_id': null,
           'image_url': null,
