@@ -52,7 +52,7 @@ class _SongScreenState extends State<SongScreen> {
     そのためloadVideoメソッドを一部使っている。
     */
     final youtubeUrl = widget.song.movieUrl;
-    if (youtubeUrl != null) {
+    if (youtubeUrl != null && youtubeUrl.isNotEmpty) {
       _youtubeController = YoutubePlayerController(
         params: YoutubePlayerParams(
           showFullscreenButton: true,
@@ -61,7 +61,6 @@ class _SongScreenState extends State<SongScreen> {
 
       final params = Uri.parse(youtubeUrl).queryParameters;
       final videoId = params['v'];
-
       _youtubeController!.cueVideoById(videoId: videoId!);
     }
   }
@@ -69,7 +68,7 @@ class _SongScreenState extends State<SongScreen> {
   @override
   void dispose() {
     super.dispose();
-    _youtubeController!.close();
+    if (_youtubeController != null) _youtubeController!.close();
   }
 
   void _deleteSong(BuildContext context) {

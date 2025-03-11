@@ -12,7 +12,7 @@ import '../../../utils/robots/navigation_robot.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('歌詞登録', (WidgetTester tester) async {
+  testWidgets('曲を登録する', (WidgetTester tester) async {
     final authRobot = AuthRobot(tester);
     await authRobot.initializeAndLogin();
 
@@ -29,12 +29,12 @@ void main() {
     final formRobot = FormRobot(tester);
     await formRobot.enterTitle(title);
     await formRobot.selectGroup();
-    await formRobot.enterMovieUrl(movieURL);
     await formRobot.tapWidget(WidgetKeys.addLyric);
     await formRobot.ensureVisibleWidget(WidgetKeys.lyric0);
     await formRobot.enterLyric(lyric);
     await formRobot.ensureVisibleWidget(WidgetKeys.singer0);
     await formRobot.selectSinger();
+    await formRobot.enterMovieUrl(movieURL);
     await formRobot.selectLyricist();
     await formRobot.selectComposer();
     await formRobot.pickDate(today, WidgetKeys.releaseDate);
@@ -50,20 +50,4 @@ void main() {
       name: title,
     );
   });
-
-//   testWidgets('歌詞ヴァリデーション', (WidgetTester tester) async {
-//     final authRobot = AuthRobot(tester);
-//     await authRobot.initializeAndLogin();
-
-//     final naviRobot = NavigationRobot(tester);
-//     await naviRobot.waitForWidget(IdolGroupListScreen);
-//     await naviRobot.toAddSong();
-
-//     final formRobot = FormRobot(tester);
-
-//     await formRobot.ensureSubmitButton();
-//     await formRobot.tapSubmitButton();
-//     await formRobot.ensureVisibleWidget(WidgetKeys.title);
-//     formRobot.expectValidationMessage(dataType: 'タイトル');
-//   });
 }
