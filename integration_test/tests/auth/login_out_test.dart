@@ -22,9 +22,7 @@ void main() async {
       final naviRobot = NavigationRobot(tester);
 
       await naviRobot.toUserInfo();
-      await naviRobot.tapTopBarMenu();
-      await naviRobot.tapLogoutMenu();
-
+      await naviRobot.tapMenuAndLogout();
       await robot.expectWidget(SignInScreen);
     });
 

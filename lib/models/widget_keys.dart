@@ -42,6 +42,7 @@ class WidgetKeys {
   static const String deleteYes = 'deleteYes';
   static const String logout = 'logout';
   static const String members = 'members';
+  static const String homeButton = 'homeButton';
   static const String addButton = 'addButton';
   static const String addSong = 'addSong';
   static const String addGroup = 'addGroup';

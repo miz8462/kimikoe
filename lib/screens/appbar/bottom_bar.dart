@@ -108,6 +108,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
         destinations: [
           NavigationDestination(
             icon: Icon(
+              key: Key(WidgetKeys.homeButton),
               Icons.home_outlined,
               color: currentIndex == homeIndex ? textDark : textWhite,
             ),

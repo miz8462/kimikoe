@@ -28,8 +28,7 @@ void main() {
 
     // 削除
     await naviRobot.toIdolDetail();
-    await naviRobot.tapTopBarMenu();
-    await naviRobot.tapDeleteMenu();
+    await naviRobot.tapMenuAndDelete();
     await naviRobot.tapDeleteYes();
     await naviRobot.expectWidget(IdolGroupListScreen);
   });

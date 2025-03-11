@@ -8,24 +8,43 @@ import 'custom_robot.dart';
 class NavigationRobot extends CustomRobot {
   NavigationRobot(super.tester);
 
+  Future<void> tapHomeButon() async {
+    await tapWidget(WidgetKeys.homeButton);
+  }
+
   Future<void> tapAddButton() async {
     await tapWidget(WidgetKeys.addButton);
   }
 
-  Future<void> tapTopBarMenu() async {
+  Future<void> _tapTopBarMenu() async {
     await tapWidget(WidgetKeys.topBarMenu);
   }
 
-  Future<void> tapEdit() async {
+  Future<void> _tapEdit() async {
     await tapWidget(WidgetKeys.edit);
   }
 
-  Future<void> tapDeleteMenu() async {
+  Future<void> tapMenuAndEdit() async {
+    await _tapTopBarMenu();
+    await _tapEdit();
+  }
+
+  Future<void> tapDelete() async {
     await tapWidget(WidgetKeys.delete);
   }
 
-  Future<void> tapLogoutMenu() async {
+  Future<void> tapMenuAndDelete() async {
+    await _tapTopBarMenu();
+    await tapDelete();
+  }
+
+  Future<void> _tapLogout() async {
     await tapWidget(WidgetKeys.logout);
+  }
+
+  Future<void> tapMenuAndLogout() async {
+    await _tapTopBarMenu();
+    await _tapLogout();
   }
 
   Future<void> toSongList({String groupName = 'test-group-not-delete'}) async {
@@ -40,8 +59,7 @@ class NavigationRobot extends CustomRobot {
 
   Future<void> toEditSong() async {
     await toSongInfo();
-    await tapTopBarMenu();
-    await tapEdit();
+    await tapMenuAndEdit();
   }
 
   Future<void> toGroupDetail() async {
@@ -51,8 +69,7 @@ class NavigationRobot extends CustomRobot {
 
   Future<void> toEditGroup() async {
     await toGroupDetail();
-    await tapTopBarMenu();
-    await tapEdit();
+    await tapMenuAndEdit();
   }
 
   Future<void> toIdolDetail() async {
@@ -62,8 +79,8 @@ class NavigationRobot extends CustomRobot {
 
   Future<void> toEditIdol() async {
     await toIdolDetail();
-    await tapTopBarMenu();
-    await tapEdit();
+    await tapMenuAndEdit();
+
     await waitForWidget(AddIdolScreen);
   }
 
@@ -93,8 +110,7 @@ class NavigationRobot extends CustomRobot {
 
   Future<void> toEditUser() async {
     await toUserInfo();
-    await tapTopBarMenu();
-    await tapEdit();
+    await tapMenuAndEdit();
   }
 
   Future<void> tapDeleteYes() async {
