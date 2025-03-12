@@ -22,7 +22,7 @@ class OneLineText extends StatelessWidget {
       style: TextStyle(
         fontSize: fontSize,
         fontWeight: FontWeight.w400,
-        color: textDark,
+        color: textColor,
       ),
     );
   }

@@ -5,7 +5,7 @@ import 'package:kimikoe_app/widgets/text/one_line_text.dart';
 import '../../test_utils/test_widgets.dart';
 
 void main() {
-  testWidgets('OneLineTextのがオーバーフローした場合、省略される', (tester) async {
+  testWidgets('OneLineTextウィジェット。テキストがオーバーフローした場合、省略される', (tester) async {
     await tester.pumpWidget(
       buildTestWidget(
         child: SizedBox(
