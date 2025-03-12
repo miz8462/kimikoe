@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
+import 'package:kimikoe_app/widgets/text/one_line_text.dart';
 
 class GroupCardL extends StatelessWidget {
   const GroupCardL({
@@ -50,15 +51,7 @@ class GroupCardL extends StatelessWidget {
                 ),
               ),
             ),
-            Text(
-              group.name,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.start,
-              style: const TextStyle(
-                color: textDark,
-              ),
-            ),
+            OneLineText(group.name),
           ],
         ),
       ),

@@ -9,6 +9,7 @@ import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/song.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
+import 'package:kimikoe_app/widgets/text/one_line_text.dart';
 
 class SongCard extends ConsumerWidget {
   const SongCard({
@@ -68,25 +69,13 @@ class SongCard extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  OneLineText(
                     title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: fontM,
-                      fontWeight: FontWeight.w400,
-                      color: textDark,
-                    ),
+                    fontSize: fontM,
                   ),
-                  Text(
+                  OneLineText(
                     allLyrics,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: fontSS,
-                      fontWeight: FontWeight.w400,
-                      color: textDark,
-                    ),
+                    fontSize: fontSS,
                   ),
                 ],
               ),

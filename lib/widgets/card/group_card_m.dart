@@ -53,7 +53,7 @@ class GroupCardM extends StatelessWidget {
                   Text(
                     groupName,
                     style: const TextStyle(
-                      fontSize: fontLL,
+                      fontSize: fontL,
                       fontWeight: FontWeight.w600,
                       color: textDark,
                     ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/song.dart';
+import 'package:kimikoe_app/widgets/text/one_line_text.dart';
 
 class SongInfoCard extends StatelessWidget {
   const SongInfoCard({
@@ -19,36 +20,28 @@ class SongInfoCard extends StatelessWidget {
         children: [
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(left: 10, bottom: 6),
+              padding: const EdgeInsets.only(left: 10, bottom: 6,top: 6),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  OneLineText(
                     song.group!.name,
-                    style: TextStyle(
-                      fontSize: fontM,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
+                    fontSize: fontM,
                   ),
-                  const Spacer(),
-                  Text(
-                    '作詞：${song.lyricist?.name ?? "不明"}',
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-                  Text(
-                    '作曲：${song.composer?.name ?? "不明"}',
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-                  Text(
-                    '発売日：${song.releaseDate ?? "不明"}',
-                    style: const TextStyle(
-                      color: Colors.black,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
+                  Column(mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      OneLineText(
+                        '作詞：${song.lyricist?.name ?? "不明"}',
+                      ),
+                      OneLineText(
+                        '作曲：${song.composer?.name ?? "不明"}',
+                      ),
+                      OneLineText(
+                        '発売日：${song.releaseDate ?? "不明"}',
+                      ),
+                    ],
                   ),
                 ],
               ),

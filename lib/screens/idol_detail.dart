@@ -14,6 +14,7 @@ import 'package:kimikoe_app/services/supabase_services/supabase_delete.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
 import 'package:kimikoe_app/utils/open_links.dart';
 import 'package:kimikoe_app/widgets/delete_alert_dialog.dart';
+import 'package:kimikoe_app/widgets/text/one_line_text.dart';
 
 class IdolDetailScreen extends ConsumerStatefulWidget {
   const IdolDetailScreen({
@@ -192,9 +193,11 @@ class _IdolDetailScreenState extends ConsumerState<IdolDetailScreen> {
                 ),
                 const Gap(spaceS),
                 if (idol.group != null)
-                  Text(
-                    idol.group!.name,
-                    style: Theme.of(context).textTheme.titleLarge,
+                  Expanded(
+                    child: OneLineText(
+                      idol.group!.name,
+                      fontSize: fontM,
+                    ),
                   ),
               ],
             ),

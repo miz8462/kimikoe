@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
@@ -90,48 +91,62 @@ class _BottomBarState extends ConsumerState<BottomBar> {
 
     final imageUrl = user.imageUrl;
 
+    // 横画面の時表示しない
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
+    // 横画面時にシステムUIを非表示
+    if (isLandscape) {
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    } else {
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    }
+
     return Scaffold(
       body: widget.navigationShell,
-      bottomNavigationBar: NavigationBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        selectedIndex: currentIndex,
-        onDestinationSelected: (index) {
-          if (index == addIndex) {
-            _openAddOverlay(context);
-          } else {
-            widget.navigationShell.goBranch(
-              index,
-              initialLocation: index == widget.navigationShell.currentIndex,
-            );
-          }
-        },
-        destinations: [
-          NavigationDestination(
-            icon: Icon(
-              key: Key(WidgetKeys.homeButton),
-              Icons.home_outlined,
-              color: currentIndex == homeIndex ? textDark : textWhite,
+      bottomNavigationBar: isLandscape
+          ? null
+          : NavigationBar(
+              backgroundColor: Theme.of(context).primaryColor,
+              selectedIndex: currentIndex,
+              onDestinationSelected: (index) {
+                if (index == addIndex) {
+                  _openAddOverlay(context);
+                } else {
+                  widget.navigationShell.goBranch(
+                    index,
+                    initialLocation:
+                        index == widget.navigationShell.currentIndex,
+                  );
+                }
+              },
+              destinations: [
+                NavigationDestination(
+                  icon: Icon(
+                    key: Key(WidgetKeys.homeButton),
+                    Icons.home_outlined,
+                    color: currentIndex == homeIndex ? textDark : textWhite,
+                  ),
+                  label: 'ホーム',
+                ),
+                NavigationDestination(
+                  icon: Icon(
+                    key: Key(WidgetKeys.addButton),
+                    Icons.add_box_outlined,
+                    color: currentIndex == addIndex ? textDark : textWhite,
+                  ),
+                  label: '追加',
+                ),
+                NavigationDestination(
+                  icon: CircleAvatar(
+                    key: Key(WidgetKeys.userAvatar),
+                    backgroundImage: NetworkImage(imageUrl),
+                    radius: avaterSizeS,
+                  ),
+                  label: 'ユーザー',
+                ),
+              ],
             ),
-            label: 'ホーム',
-          ),
-          NavigationDestination(
-            icon: Icon(
-              key: Key(WidgetKeys.addButton),
-              Icons.add_box_outlined,
-              color: currentIndex == addIndex ? textDark : textWhite,
-            ),
-            label: '追加',
-          ),
-          NavigationDestination(
-            icon: CircleAvatar(
-              key: Key(WidgetKeys.userAvatar),
-              backgroundImage: NetworkImage(imageUrl),
-              radius: avaterSizeS,
-            ),
-            label: 'ユーザー',
-          ),
-        ],
-      ),
     );
   }
 }

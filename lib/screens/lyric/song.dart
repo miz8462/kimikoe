@@ -100,6 +100,22 @@ class _SongScreenState extends State<SongScreen> {
       'song': song,
       'isEditing': isEditing,
     };
+
+    // 横画面の時youtubeplayer意外を表示しない
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+    if (isLandscape) {
+      return YoutubePlayerScaffold(
+        controller: _youtubeController!,
+        builder: (context, player) {
+          return Column(
+            children: [
+              player,
+            ],
+          );
+        },
+      );
+    }
     return Scaffold(
       appBar: TopBar(
         pageTitle: song.title,
@@ -124,7 +140,9 @@ class _SongScreenState extends State<SongScreen> {
                   controller: _youtubeController!,
                   builder: (context, player) {
                     return Column(
-                      children: [player],
+                      children: [
+                        player,
+                      ],
                     );
                   },
                 ),
