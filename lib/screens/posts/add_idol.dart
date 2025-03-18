@@ -433,7 +433,6 @@ class _AddIdolScreenState extends ConsumerState<AddIdolScreen> {
                             key: Key(WidgetKeys.color),
                             color: _selectedColor,
                             onPressed: _pickColor,
-                            
                           ),
                           const Text(
                             '*カラー選択',
@@ -457,7 +456,8 @@ class _AddIdolScreenState extends ConsumerState<AddIdolScreen> {
                         key: Key(WidgetKeys.birthYear),
                         label: '生まれた年',
                         controller: _birthYearController,
-                        initialValue: '2000',
+                        initialValue:
+                            _isEditing ? _idol.birthYear.toString() : '2000',
                         picker: _pickBirthYear,
                         onSaved: (value) {
                           setState(
@@ -472,7 +472,7 @@ class _AddIdolScreenState extends ConsumerState<AddIdolScreen> {
                         key: Key(WidgetKeys.birthday),
                         label: '生まれた日付',
                         controller: _birthDayController,
-                        initialValue: '06-15',
+                        initialValue: _isEditing ? _idol.birthDay : '06-15',
                         picker: _pickBirthday,
                         onSaved: (value) {
                           setState(
@@ -486,6 +486,9 @@ class _AddIdolScreenState extends ConsumerState<AddIdolScreen> {
                       PickerForm(
                         key: Key(WidgetKeys.height),
                         label: '身長',
+                        initialValue: _isEditing
+                            ? _idol.height.toString()
+                            : _selectedHeight,
                         controller: _heightController,
                         picker: _pickHeight,
                         onSaved: (value) {

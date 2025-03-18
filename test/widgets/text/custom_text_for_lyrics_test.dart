@@ -6,7 +6,7 @@ import 'package:kimikoe_app/widgets/text/custom_text_for_lyrics.dart';
 import '../../test_utils/test_widgets.dart';
 
 void main() {
-  testWidgets('CustomTextForLyrics', (tester) async {
+  testWidgets('CustomTextForLyricsが表示される', (tester) async {
     final text = 'テストメッセージ';
     final color = Colors.green;
 

@@ -5,7 +5,7 @@ import 'package:kimikoe_app/widgets/text/styled_text.dart';
 import '../../test_utils/test_widgets.dart';
 
 void main() {
-  testWidgets('StyledText', (tester) async {
+  testWidgets('StyledTextが表示される', (tester) async {
     await tester.pumpWidget(
       buildTestWidget(
         child: StyledText(

@@ -8,6 +8,7 @@ import 'package:kimikoe_app/models/idol.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/group_members_provider.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_delete.dart';
@@ -34,6 +35,7 @@ class _IdolDetailScreenState extends ConsumerState<IdolDetailScreen> {
   Uri? instagramWebUrl;
   Uri? instagramDeepLinkUrl;
   Uri? otherUrl;
+  late Future<bool> isImageAvailable;
 
   Future<void> getTwitterUrls(String? url) async {
     final urls = await fetchWebUrlAndDeepLinkUrl(url, scheme: twitterScheme);
@@ -56,6 +58,16 @@ class _IdolDetailScreenState extends ConsumerState<IdolDetailScreen> {
     setState(() {});
   }
 
+  Future<bool> isImageInStorage(String url) async {
+    final isExist = await isUrlExists(url);
+
+    // デバッグ用のログを追加
+    logger.d('Checking image availability for URL: $url');
+    logger.d('Can launch URL: $isExist');
+
+    return isExist;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -63,6 +75,7 @@ class _IdolDetailScreenState extends ConsumerState<IdolDetailScreen> {
     getTwitterUrls(idol.twitterUrl);
     getInstagramUrls(idol.instagramUrl);
     getOtherUrl(idol.otherUrl);
+    isImageAvailable = isImageInStorage(idol.imageUrl);
   }
 
   void _deleteIdol() {
@@ -137,12 +150,29 @@ class _IdolDetailScreenState extends ConsumerState<IdolDetailScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Gap(spaceS),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(widget.idol.imageUrl),
-                  radius: avaterSizeLL,
+                FutureBuilder<bool>(
+                  future: isImageAvailable,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    } else if (snapshot.hasError ||
+                        !snapshot.hasData ||
+                        !snapshot.data!) {
+                      return CircleAvatar(
+                        backgroundImage: NetworkImage(noImage),
+                        radius: avaterSizeLL,
+                      );
+                    } else {
+                      return CircleAvatar(
+                        backgroundImage: NetworkImage(idol.imageUrl),
+                        radius: avaterSizeLL,
+                      );
+                    }
+                  },
                 ),
                 Row(
                   children: [
