@@ -47,6 +47,10 @@ class NavigationRobot extends CustomRobot {
     await _tapLogout();
   }
 
+    Future<void> tapStar() async {
+    await tapWidget(WidgetKeys.star);
+  }
+
   Future<void> toSongList({String groupName = 'test-group-not-delete'}) async {
     await ensureVisibleWidget(groupName);
     await tapWidget(groupName);

@@ -8,6 +8,7 @@ import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/song.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/bottom_bar.dart';
+import 'package:kimikoe_app/screens/favorite.dart';
 import 'package:kimikoe_app/screens/group_detail/group_detail.dart';
 import 'package:kimikoe_app/screens/idol_detail.dart';
 import 'package:kimikoe_app/screens/idol_group_list.dart';
@@ -25,10 +26,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: RoutingPath.groupList);
+final _favoriteNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'favorite');
 final _addItemNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'add-item');
 final _userInfoNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'user-info');
-final _signOutNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'sign-out');
 
 GoRouter createRouter(SupabaseClient supabase) {
   final session = supabase.auth.currentSession;
@@ -125,6 +126,21 @@ GoRouter createRouter(SupabaseClient supabase) {
               ),
             ],
           ),
+          // お気に入り
+          StatefulShellBranch(
+            navigatorKey: _favoriteNavigatorKey,
+            routes: [
+              GoRoute(
+                path: RoutingPath.favorite,
+                name: RoutingPath.favorite,
+                pageBuilder: (context, state) => NoTransitionPage(
+                  key: state.pageKey,
+                  child: const FavoriteScreen(),
+                ),
+              ),
+            ],
+          ),
+          // 追加
           StatefulShellBranch(
             navigatorKey: _addItemNavigatorKey,
             routes: [
@@ -192,6 +208,7 @@ GoRouter createRouter(SupabaseClient supabase) {
               ),
             ],
           ),
+          // ユーザー
           StatefulShellBranch(
             navigatorKey: _userInfoNavigatorKey,
             routes: [
@@ -219,20 +236,6 @@ GoRouter createRouter(SupabaseClient supabase) {
                     },
                   ),
                 ],
-              ),
-            ],
-          ),
-          // TODO: 開発用ログアウトボタン
-          StatefulShellBranch(
-            navigatorKey: _signOutNavigatorKey,
-            routes: [
-              GoRoute(
-                path: RoutingPath.signOut,
-                name: RoutingPath.signOut,
-                pageBuilder: (context, state) => NoTransitionPage(
-                  key: state.pageKey,
-                  child: const SignInScreen(),
-                ),
               ),
             ],
           ),

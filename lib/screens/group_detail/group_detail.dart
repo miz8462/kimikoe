@@ -27,6 +27,7 @@ class GroupDetailScreen extends StatefulWidget {
 class _GroupDetailScreenState extends State<GroupDetailScreen> {
   final _isEditing = true;
   final _isGroup = true;
+  var _isStarred = false;
 
   void _deleteGroup() {
     showDialog<Widget>(
@@ -48,6 +49,12 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
     );
   }
 
+  void _toggleStarred() {
+    setState(() {
+      _isStarred = !_isStarred;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final group = widget.group;
@@ -64,6 +71,9 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
         editRoute: RoutingPath.addGroup,
         delete: _deleteGroup,
         data: data,
+        isStarred: _isStarred,
+        hasFavoriteFeature: true,
+        onStarToggle: _toggleStarred,
       ),
       body: Padding(
         padding: screenPadding,

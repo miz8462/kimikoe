@@ -17,6 +17,9 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
     this.data,
     this.delete,
     this.logout,
+    this.isStarred = false,
+    this.hasFavoriteFeature = false,
+    this.onStarToggle,
   });
   final String? imageUrl;
   final String pageTitle;
@@ -28,6 +31,9 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   final Map<String, Object>? data;
   final void Function()? delete;
   final void Function()? logout;
+  final bool isStarred;
+  final bool hasFavoriteFeature;
+  final VoidCallback? onStarToggle;
 
   // 編集、削除機能。グループ、ユーザーの時は削除なし
   List<Widget> _buildMenu(BuildContext context) {
@@ -129,7 +135,19 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       centerTitle: true,
-      actions: isEditing ? _buildMenu(context) : null,
+      actions: [
+        if (hasFavoriteFeature)
+          IconButton(
+            padding: const EdgeInsets.only(top: 10),
+            icon: Icon(
+              key: const Key(WidgetKeys.star),
+              isStarred ? Icons.star : Icons.star_border,
+              color: isStarred ? const Color.fromARGB(255, 231, 214, 58) : null,
+            ),
+            onPressed: onStarToggle,
+          ),
+        if (isEditing) ..._buildMenu(context),
+      ],
       bottom: const AppBarBottom(),
     );
   }

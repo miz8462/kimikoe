@@ -7,6 +7,8 @@ class RoutingPath {
   static const groupDetail = '/group_detail';
   static const idolDetail = 'idol_detail';
 
+  static const favorite = '/favorite';
+
   static const addSong = '/add_song';
   static const addGroup = '/add_group';
   static const addIdol = '/add_member';

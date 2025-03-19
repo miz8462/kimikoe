@@ -125,6 +125,7 @@ class _IdolDetailScreenState extends ConsumerState<IdolDetailScreen> {
       }
     } else if (idol.birthYear != null && idol.birthYear != 0) {
       formattedBirthDay = '${idol.birthYear}年';
+      
     } else {
       formattedBirthDay = '不明';
     }

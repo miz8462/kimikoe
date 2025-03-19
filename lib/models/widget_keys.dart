@@ -31,7 +31,7 @@ class WidgetKeys {
   static const String switchButton = 'switchButton';
   static const String loginButton = 'loginButton';
   static const String googleButton = 'googleButton';
-  // navigation
+  // pages
   static const String group = 'group';
   static const String songCard = 'songCard';
   static const String groupCardM = 'groupCardM';
@@ -43,6 +43,8 @@ class WidgetKeys {
   static const String logout = 'logout';
   static const String members = 'members';
   static const String homeButton = 'homeButton';
+  static const String favorite = 'favorite';
+  static const String star = 'star';
   static const String addButton = 'addButton';
   static const String addSong = 'addSong';
   static const String addGroup = 'addGroup';

@@ -457,7 +457,7 @@ class _AddIdolScreenState extends ConsumerState<AddIdolScreen> {
                         label: '生まれた年',
                         controller: _birthYearController,
                         initialValue:
-                            _isEditing ? _idol.birthYear.toString() : '2000',
+                            _isEditing ? _idol.birthYear.toString() : null,
                         picker: _pickBirthYear,
                         onSaved: (value) {
                           setState(

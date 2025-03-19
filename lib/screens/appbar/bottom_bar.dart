@@ -21,9 +21,9 @@ class BottomBar extends ConsumerStatefulWidget {
 
 class _BottomBarState extends ConsumerState<BottomBar> {
   int homeIndex = 0;
-  int addIndex = 1;
-  int userIndex = 2;
-  int logoutIndex = 3;
+  int favoriteIndex = 1;
+  int addIndex = 2;
+  int userIndex = 3;
 
   void _openAddOverlay(BuildContext context) {
     showModalBottomSheet<Widget>(
@@ -128,6 +128,14 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                     color: currentIndex == homeIndex ? textDark : textWhite,
                   ),
                   label: 'ホーム',
+                ),
+                NavigationDestination(
+                  icon: Icon(
+                    key: Key(WidgetKeys.favorite),
+                    Icons.star_border,
+                    color: currentIndex == favoriteIndex ? textDark : textWhite,
+                  ),
+                  label: 'お気に入り',
                 ),
                 NavigationDestination(
                   icon: Icon(

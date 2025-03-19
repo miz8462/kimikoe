@@ -18,7 +18,6 @@ import '../../utils/robots/navigation_robot.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  setUpAll(() async {});
   testWidgets('各種ページへ遷移する', (WidgetTester tester) async {
     final authRobot = AuthRobot(tester);
     await authRobot.initializeAndLogin();

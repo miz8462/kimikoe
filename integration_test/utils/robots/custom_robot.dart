@@ -67,4 +67,18 @@ class CustomRobot<T extends Widget> extends Robot<Widget> {
     await waitForWidget(widget);
     expect(find.byType(widget), findsOneWidget);
   }
+
+  Future<void> expectIconOnWidget({
+    required IconData icon,
+    required Type widget,
+  }) async {
+    expect(
+      find.descendant(of: find.byType(widget), matching: find.byIcon(icon)),
+      findsOneWidget,
+    );
+  }
+
+  Future<void> expectKey(Key key) async {
+    expect(find.byKey(key), findsOneWidget);
+  }
 }
