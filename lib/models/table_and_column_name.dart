@@ -5,7 +5,10 @@ class TableName {
   static const idolGroups = 'idol_groups';
   static const profiles = 'profiles';
   static const songs = 'songs';
-  static const images = 'images'; // storage名
+  static const favoriteGroups = 'favorite_groups';
+  static const favoriteSongs = 'favorite_songs';
+  // storage
+  static const images = 'images';
 }
 
 class ColumnName {
@@ -15,7 +18,7 @@ class ColumnName {
   static const title = 'title';
   static const email = 'email';
   static const imageUrl = 'image_url';
-  static const movieUrl= 'movie_url';
+  static const movieUrl = 'movie_url';
   static const comment = 'comment';
   static const createdAt = 'created_at';
   static const color = 'color';
@@ -35,4 +38,7 @@ class ColumnName {
   static const lyricistId = 'lyricist_id';
   static const composerId = 'composer_id';
   static const releaseDate = 'release_date';
+  // favorite
+  static const userId = 'user_id';
+  static const songId = 'song_id';
 }

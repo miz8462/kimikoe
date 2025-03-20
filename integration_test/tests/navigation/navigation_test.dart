@@ -39,6 +39,8 @@ void main() {
     await naviRobot.expectWidget(SongScreen);
     await naviRobot.tapHomeButon();
 
+    // TODO: お気に入り系
+
     // 編集系
     await naviRobot.toEditGroup();
     await naviRobot.expectWidget(AddGroupScreen);

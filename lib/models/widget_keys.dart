@@ -44,6 +44,7 @@ class WidgetKeys {
   static const String members = 'members';
   static const String homeButton = 'homeButton';
   static const String favorite = 'favorite';
+  static const String favoriteEmpty = 'favoriteEmpty';
   static const String star = 'star';
   static const String addButton = 'addButton';
   static const String addSong = 'addSong';

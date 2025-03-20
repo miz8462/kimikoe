@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 
-class TopBar extends StatelessWidget implements PreferredSizeWidget {
+class TopBar extends ConsumerWidget implements PreferredSizeWidget {
   const TopBar({
     super.key,
     this.imageUrl,
@@ -123,7 +124,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return AppBar(
       automaticallyImplyLeading: showLeading,
       title: Padding(

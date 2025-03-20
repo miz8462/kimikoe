@@ -12,6 +12,10 @@ class NavigationRobot extends CustomRobot {
     await tapWidget(WidgetKeys.homeButton);
   }
 
+  Future<void> tapFavoriteButton() async {
+    await tapWidget(WidgetKeys.favorite);
+  }
+
   Future<void> tapAddButton() async {
     await tapWidget(WidgetKeys.addButton);
   }
@@ -47,7 +51,7 @@ class NavigationRobot extends CustomRobot {
     await _tapLogout();
   }
 
-    Future<void> tapStar() async {
+  Future<void> tapStar() async {
     await tapWidget(WidgetKeys.star);
   }
 
