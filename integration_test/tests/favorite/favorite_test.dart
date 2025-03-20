@@ -12,7 +12,8 @@ import '../../utils/robots/navigation_robot.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('グループのスターをタップしたらお気に入りグループに追加される', (WidgetTester tester) async {
+  testWidgets('グループのスターをタップするとお気に入りグループに追加あるいは削除される',
+      (WidgetTester tester) async {
     final authRobot = AuthRobot(tester);
     await authRobot.initializeAndLogin();
 

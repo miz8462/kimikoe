@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
-import 'package:kimikoe_app/providers/favorite_groups/favorite_groups_provider.dart';
+import 'package:kimikoe_app/providers/favorite/favorite_provider.dart';
 import 'package:kimikoe_app/providers/groups_provider.dart' show groupsProvider;
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
@@ -47,7 +47,8 @@ class _FavoriteState extends ConsumerState<FavoriteScreen> {
     final groupList = ref.watch(groupsProvider);
     final groups = groupList.groups;
     final isGroupsLoading = groupList.isLoading;
-    final favoriteGroupListAsync = ref.watch(favoriteGroupsNotifierProvider);
+    final favoriteGroupListAsync =
+        ref.watch(favoriteNotifierProvider(FavoriteType.groups));
 
     return Scaffold(
       appBar: const TopBar(
@@ -102,7 +103,8 @@ class _FavoriteState extends ConsumerState<FavoriteScreen> {
             children: [
               Text('エラー: $error'),
               ElevatedButton(
-                onPressed: () => ref.refresh(favoriteGroupsNotifierProvider),
+                onPressed: () =>
+                    ref.refresh(favoriteNotifierProvider(FavoriteType.groups)),
                 child: const Text('再試行'),
               ),
             ],

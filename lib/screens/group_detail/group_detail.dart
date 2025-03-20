@@ -5,7 +5,7 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
-import 'package:kimikoe_app/providers/favorite_groups/favorite_groups_provider.dart';
+import 'package:kimikoe_app/providers/favorite/favorite_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
@@ -39,7 +39,8 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
   }
 
   Future<void> _initializeStarred() async {
-    final favoriteGroupsAsync = ref.read(favoriteGroupsNotifierProvider);
+    final favoriteGroupsAsync =
+        ref.read(favoriteNotifierProvider(FavoriteType.groups));
     final favoriteGroups = favoriteGroupsAsync.valueOrNull ?? [];
     setState(() {
       _isStarred = favoriteGroups.contains(widget.group.id);
@@ -73,7 +74,8 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
       _isStarred = !_isStarred;
     });
 
-    final notifier = ref.read(favoriteGroupsNotifierProvider.notifier);
+    final notifier =
+        ref.read(favoriteNotifierProvider(FavoriteType.groups).notifier);
 
     if (_isStarred) {
       notifier.add(id);
@@ -90,7 +92,9 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
       'isEditing': _isEditing,
     };
 
-    final favoriteGroupsAsync = ref.watch(favoriteGroupsNotifierProvider);
+    final favoriteGroupsAsync = ref.watch(
+      favoriteNotifierProvider(FavoriteType.groups),
+    );
 
     return Scaffold(
       appBar: favoriteGroupsAsync.when(
