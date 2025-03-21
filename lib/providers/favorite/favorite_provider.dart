@@ -11,7 +11,7 @@ enum FavoriteType { groups, songs }
 
 @Riverpod(keepAlive: true)
 class FavoriteNotifier extends _$FavoriteNotifier {
-  late String _userId;
+  final _userId = supabase.auth.currentUser!.id;
   late final String _tableName;
   late final String _columnId;
   late final FavoriteType _type;
@@ -25,8 +25,11 @@ class FavoriteNotifier extends _$FavoriteNotifier {
     _columnId =
         type == FavoriteType.groups ? ColumnName.groupId : ColumnName.songId;
 
+    return _fetchFavorites();
+  }
+
+  Future<List<int>> _fetchFavorites() async {
     try {
-      _userId = supabase.auth.currentUser!.id;
       final response = await supabase
           .from(_tableName)
           .select()
@@ -38,6 +41,16 @@ class FavoriteNotifier extends _$FavoriteNotifier {
         error: e,
       );
       return [];
+    }
+  }
+
+  Future<void> fetchFavorites() async {
+    state = const AsyncValue.loading();
+    try {
+      final newFavorites = await _fetchFavorites();
+      state = AsyncValue.data(newFavorites);
+    } catch (e, stack) {
+      state = AsyncValue.error(e, stack);
     }
   }
 

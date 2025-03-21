@@ -8,7 +8,7 @@ import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/song.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/bottom_bar.dart';
-import 'package:kimikoe_app/screens/favorite.dart';
+import 'package:kimikoe_app/screens/favorite/favorite.dart';
 import 'package:kimikoe_app/screens/group_detail/group_detail.dart';
 import 'package:kimikoe_app/screens/idol_detail.dart';
 import 'package:kimikoe_app/screens/idol_group_list.dart';

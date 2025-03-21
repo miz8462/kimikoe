@@ -131,7 +131,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                 ),
                 NavigationDestination(
                   icon: Icon(
-                    key: Key(WidgetKeys.favorite),
+                    key: Key(WidgetKeys.favoriteButton),
                     Icons.star_border,
                     color: currentIndex == favoriteIndex ? textDark : textWhite,
                   ),

@@ -13,7 +13,15 @@ class NavigationRobot extends CustomRobot {
   }
 
   Future<void> tapFavoriteButton() async {
-    await tapWidget(WidgetKeys.favorite);
+    await tapWidget(WidgetKeys.favoriteButton);
+  }
+
+  Future<void> tapGroupTab() async {
+    await tapWidget(WidgetKeys.groupTab);
+  }
+
+  Future<void> tapSongTab() async {
+    await tapWidget(WidgetKeys.songTab);
   }
 
   Future<void> tapAddButton() async {

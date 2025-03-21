@@ -43,8 +43,10 @@ class WidgetKeys {
   static const String logout = 'logout';
   static const String members = 'members';
   static const String homeButton = 'homeButton';
-  static const String favorite = 'favorite';
+  static const String favoriteButton = 'favoriteButton';
   static const String favoriteEmpty = 'favoriteEmpty';
+  static const String groupTab = 'groupTab';
+  static const String songTab = 'songTab';
   static const String star = 'star';
   static const String addButton = 'addButton';
   static const String addSong = 'addSong';
@@ -52,4 +54,7 @@ class WidgetKeys {
   static const String addIdol = 'addIdol';
   static const String addArtist = 'addArtist';
   static const String userAvatar = 'userAvatar';
+  // test
+  static const String testGroup = 'test-group-not-delete';
+  static const String testSong = 'test-song-not-delete';
 }
