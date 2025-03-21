@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/song.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
+import 'package:kimikoe_app/providers/favorite/favorite_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
@@ -19,7 +21,7 @@ import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 // HylightedTextクラスを作成し行単位でハイライトできるようにする
 // 文字が見やすい用に色を調節
 
-class SongScreen extends StatefulWidget {
+class SongScreen extends ConsumerStatefulWidget {
   const SongScreen({
     required this.song,
     required this.group,
@@ -29,10 +31,10 @@ class SongScreen extends StatefulWidget {
   final Song song;
 
   @override
-  State<SongScreen> createState() => _SongScreenState();
+  ConsumerState<SongScreen> createState() => _SongScreenState();
 }
 
-class _SongScreenState extends State<SongScreen> {
+class _SongScreenState extends ConsumerState<SongScreen> {
   late Future<List<Map<String, dynamic>>> _memberFuture;
   YoutubePlayerController? _youtubeController;
   var _isStarred = false;
@@ -93,9 +95,20 @@ class _SongScreenState extends State<SongScreen> {
   }
 
   void _toggleStarred() {
+    final id = widget.song.id;
+    if (id == null) return;
     setState(() {
       _isStarred = !_isStarred;
     });
+
+    final notifier =
+        ref.read(favoriteNotifierProvider(FavoriteType.songs).notifier);
+
+    if (_isStarred) {
+      notifier.add(id);
+    } else {
+      notifier.remove(id);
+    }
   }
 
   @override
@@ -123,18 +136,53 @@ class _SongScreenState extends State<SongScreen> {
         },
       );
     }
+
+    final favoriteSongsAsync = ref.watch(
+      favoriteNotifierProvider(FavoriteType.songs),
+    );
+
     return Scaffold(
-      appBar: TopBar(
-        pageTitle: song.title,
-        isEditing: isEditing,
-        editRoute: RoutingPath.addSong,
-        delete: () {
-          _deleteSong(context);
+      appBar: favoriteSongsAsync.when(
+        data: (favoriteSongs) {
+          // お気に入り状態を最新に保つ（必要なら）
+          if (_isStarred != favoriteSongs.contains(song.id)) {
+            _isStarred = favoriteSongs.contains(song.id);
+          }
+          return TopBar(
+            pageTitle: song.title,
+            isEditing: isEditing,
+            editRoute: RoutingPath.addSong,
+            delete: () {
+              _deleteSong(context);
+            },
+            data: data,
+            isStarred: _isStarred,
+            hasFavoriteFeature: true,
+            onStarToggle: _toggleStarred,
+          );
         },
-        data: data,
-        isStarred: _isStarred,
-        hasFavoriteFeature: true,
-        onStarToggle: _toggleStarred,
+        loading: () => TopBar(
+          pageTitle: song.title,
+          isEditing: isEditing,
+          editRoute: RoutingPath.addSong,
+          delete: () {
+            _deleteSong(context);
+          },
+          data: data,
+          isStarred: _isStarred,
+          hasFavoriteFeature: true,
+        ),
+        error: (error, stack) => TopBar(
+          pageTitle: song.title,
+          isEditing: isEditing,
+          editRoute: RoutingPath.addSong,
+          delete: () {
+            _deleteSong(context);
+          },
+          data: data,
+          isStarred: _isStarred,
+          hasFavoriteFeature: true,
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(

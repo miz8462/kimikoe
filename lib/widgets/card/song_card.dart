@@ -16,11 +16,13 @@ class SongCard extends ConsumerWidget {
     required this.song,
     required this.group,
     this.imageProvider,
+    this.isFavoriteScreen = false,
     super.key,
   });
   final Song song;
   final IdolGroup group;
   final ImageProvider? imageProvider;
+  final bool isFavoriteScreen;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -69,6 +71,7 @@ class SongCard extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  if (isFavoriteScreen) OneLineText(group.name),
                   OneLineText(
                     title,
                     fontSize: fontM,

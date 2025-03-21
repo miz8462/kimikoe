@@ -43,7 +43,7 @@ class _SongListScreenState extends ConsumerState<SongListScreen> {
                   return ListView.builder(
                     itemCount: songs.length,
                     itemBuilder: (ctx, index) {
-                      return SongCard(
+                      return SongCard(key: Key(songs[index].title),
                         song: songs[index],
                         group: group,
                       );

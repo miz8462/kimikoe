@@ -5,13 +5,12 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kimikoe_app/models/idol_group.dart';
+import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/favorite/favorite_provider.dart';
-import 'package:kimikoe_app/providers/groups_provider.dart' show groupsProvider;
+import 'package:kimikoe_app/providers/favorite/favorite_songs_provider.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
-import 'package:kimikoe_app/widgets/card/group_card_l.dart';
+import 'package:kimikoe_app/widgets/card/song_card.dart';
 
 class FavoriteSongsScreen extends ConsumerStatefulWidget {
   const FavoriteSongsScreen({super.key});
@@ -43,25 +42,11 @@ class _FavoriteSongsState extends ConsumerState<FavoriteSongsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final groupList = ref.watch(groupsProvider);
-    final groups = groupList.groups;
-    final isGroupsLoading = groupList.isLoading;
-    final favoriteGroupListAsync =
-        ref.watch(favoriteNotifierProvider(FavoriteType.groups));
+    final favoriteSongsAsync = ref.watch(favoriteSongsProvider);
 
-    return favoriteGroupListAsync.when(
-      data: (favoriteGroupList) {
-        var favoriteGroups = <IdolGroup>[];
-        if (!isGroupsLoading && favoriteGroupList.isNotEmpty) {
-          favoriteGroups = groups
-              .where((group) => favoriteGroupList.contains(group.id))
-              .toList();
-        }
-
-        // UIの構築
-        if (isGroupsLoading) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (favoriteGroups.isEmpty) {
+    return favoriteSongsAsync.when(
+      data: (favoriteSongs) {
+        if (favoriteSongs.isEmpty) {
           return const Center(
             key: Key(WidgetKeys.favoriteEmpty),
             child: Text('お気に入りの曲はありません'),
@@ -70,21 +55,23 @@ class _FavoriteSongsState extends ConsumerState<FavoriteSongsScreen> {
           return RefreshIndicator(
             onRefresh: () async {
               await ref
-                  .read(groupsProvider.notifier)
-                  .fetchGroupList(supabase: supabase);
+                  .read(favoriteNotifierProvider(FavoriteType.songs).notifier)
+                  .fetchFavorites();
+              ref.invalidate(favoriteSongsProvider);
             },
-            child: GridView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 18,
-                mainAxisSpacing: 15,
+            child: Padding(
+              padding: screenPadding,
+              child: ListView.builder(
+                itemCount: favoriteSongs.length,
+                itemBuilder: (ctx, index) {
+                  return SongCard(
+                    key: Key(favoriteSongs[index].title),
+                    song: favoriteSongs[index],
+                    group: favoriteSongs[index].group!,
+                    isFavoriteScreen: true,
+                  );
+                },
               ),
-              itemCount: favoriteGroups.length,
-              itemBuilder: (BuildContext context, int index) {
-                final group = favoriteGroups[index];
-                return GroupCardL(group: group);
-              },
             ),
           );
         }
@@ -97,7 +84,7 @@ class _FavoriteSongsState extends ConsumerState<FavoriteSongsScreen> {
             Text('エラー: $error'),
             ElevatedButton(
               onPressed: () =>
-                  ref.refresh(favoriteNotifierProvider(FavoriteType.groups)),
+                  ref.refresh(favoriteNotifierProvider(FavoriteType.songs)),
               child: const Text('再試行'),
             ),
           ],

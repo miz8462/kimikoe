@@ -9,7 +9,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'favorite_groups_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-Future<List<IdolGroup>> fetchFavoriteGroups(Ref ref) async {
+Future<List<IdolGroup>> favoriteGroups(Ref ref) async {
   final favoriteIdsAsync =
       ref.watch(favoriteNotifierProvider(FavoriteType.groups));
   final favoriteIds = favoriteIdsAsync.value ?? [];
