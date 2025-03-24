@@ -54,7 +54,7 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
   late TextEditingController _composerNameController;
   late TextEditingController _releaseDateController;
 
-  // 歌詞とそこを歌う歌手
+  // 歌詞とそのフレーズを歌う歌手
   final List<Map<String, dynamic>> _lyricAndSingerList = [];
   final List<TextEditingController> _lyricListControllers = [];
   final List<TextEditingController> _singerListControllers = [];
@@ -392,7 +392,27 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
     setState(() {
       _lyricListControllers.add(TextEditingController());
       _singerListControllers.add(TextEditingController());
-      _lyricAndSingerList.add({'lyric': '', 'singerId': int});
+      _lyricAndSingerList.add({'lyric': '', 'singerId': ''});
+    });
+  }
+
+  void _removeLyricItem(int index) {
+    setState(() {
+      // 歌詞と歌手のリストから要素を削除t
+      _lyricAndSingerList.removeAt(index);
+
+      // コントローラーを破棄
+      _lyricListControllers[index].dispose();
+      _singerListControllers[index].dispose();
+
+      // リストからコントローラーを削除
+      _lyricListControllers.removeAt(index);
+      _singerListControllers.removeAt(index);
+
+      // デバッグ情報
+      logger.d('Lyric Controllers: $_lyricListControllers');
+      logger.d('Singer Controllers: $_singerListControllers');
+      logger.d('Lyric and Singer List: $_lyricAndSingerList');
     });
   }
 
@@ -454,7 +474,7 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
                           children: [
                             Text('${i + 1}'),
                             TextFormWithController(
-                              key: Key('lyric-$i'),
+                              key: ValueKey(_lyricListControllers[i].hashCode),
                               controller: _lyricListControllers[i],
                               label: '*歌詞',
                               validator: _lyricValidator,
@@ -464,12 +484,21 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
                             ),
                             const Gap(spaceS),
                             CustomDropdownMenu(
-                              key: Key('singer-$i'),
+                              key: ValueKey(
+                                _singerListControllers[i].hashCode,
+                              ),
                               label: '*歌手',
                               dataList: _idolIdAndNameList,
                               controller: _singerListControllers[i],
+                              isSelected:
+                                  _singerListControllers[i].text.isNotEmpty,
                             ),
-                            const Gap(spaceS),
+                            TextButton(
+                              key: Key('remove-lyric-$i'),
+                              onPressed: () => _removeLyricItem(i),
+                              style: TextButton.styleFrom(),
+                              child: Text('このフレーズを削除する'),
+                            ),
                           ],
                         ),
                       StyledButton(

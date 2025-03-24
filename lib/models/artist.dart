@@ -1,7 +1,9 @@
+import 'package:kimikoe_app/config/config.dart';
+
 class Artist {
   const Artist({
     required this.name,
-    required this.imageUrl,
+    this.imageUrl = noImage,
     this.id,
     this.comment,
   });

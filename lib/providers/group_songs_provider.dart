@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kimikoe_app/models/artist.dart';
 import 'package:kimikoe_app/models/song.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/artist_list_provider.dart';
@@ -10,7 +11,7 @@ final groupSongsProvider =
     FutureProvider.family<List<Song>, int>((ref, groupId) async {
   try {
     await ref.watch(artistsFromSupabaseProvider.future);
-    
+
     final group = ref.watch(groupsProvider.notifier).getGroupById(groupId);
     if (group == null) {
       throw StateError('グループが見つかりません: ID $groupId');
@@ -27,10 +28,22 @@ final groupSongsProvider =
 
     for (final song in response) {
       try {
-        final lyricist =
-            ref.read(artistByIdProvider(song[ColumnName.lyricistId]));
-        final composer =
-            ref.read(artistByIdProvider(song[ColumnName.composerId]));
+        late Artist? lyricist;
+        late Artist? composer;
+        if (song[ColumnName.lyricistId] != null) {
+          lyricist = ref.read(artistByIdProvider(song[ColumnName.lyricistId]));
+        } else {
+          lyricist = Artist(
+            name: '不明',
+          );
+        }
+        if (song[ColumnName.composerId] != null) {
+          composer = ref.read(artistByIdProvider(song[ColumnName.composerId]));
+        } else {
+          composer = Artist(
+            name: '不明',
+          );
+        }
 
         songs.add(
           Song(

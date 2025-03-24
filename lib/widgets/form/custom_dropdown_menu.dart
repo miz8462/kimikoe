@@ -33,6 +33,14 @@ class _CustomDropdownMenuState extends State<CustomDropdownMenu> {
   }
 
   @override
+  void didUpdateWidget(covariant CustomDropdownMenu oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      isSelected = widget.controller.text.isNotEmpty;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
@@ -60,9 +68,8 @@ class _CustomDropdownMenuState extends State<CustomDropdownMenu> {
       }).toList(),
       onSelected: (DropdownIdAndName? item) {
         setState(() {
-          isSelected = true;
+          isSelected = item != null;
         });
-
         widget.onSelectedChanged?.call(isSelected: isSelected);
       },
     );
