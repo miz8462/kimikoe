@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
+import 'package:kimikoe_app/models/widget_keys.dart';
 
 class TextFormWithController extends StatelessWidget {
   const TextFormWithController({
@@ -21,6 +22,7 @@ class TextFormWithController extends StatelessWidget {
     return ColoredBox(
       color: backgroundLightBlue,
       child: TextFormField(
+        key: Key(WidgetKeys.lyric),
         focusNode: focusNode,
         controller: controller,
         decoration: InputDecoration(

@@ -8,6 +8,7 @@ import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_delete.dart';
+import 'package:kimikoe_app/widgets/form/custom_dropdown_menu.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'custom_robot.dart';
@@ -30,7 +31,7 @@ class FormRobot extends CustomRobot<Form> {
   }
 
   Future<void> enterLyric(String lyric) async {
-    await enterTextByKey(keyValue: WidgetKeys.lyric0, enterValue: lyric);
+    await enterTextByKey(keyValue: WidgetKeys.lyric, enterValue: lyric);
   }
 
   Future<void> enterMovieUrl(String url) async {
@@ -165,7 +166,7 @@ class FormRobot extends CustomRobot<Form> {
   }
 
   Future<void> selectSinger() async {
-    await tapWidget(WidgetKeys.singer0);
+    await tester.tap(find.byType(CustomDropdownMenu).at(1));
     await tester.pumpAndSettle();
 
     await tester.tap(find.text('阿部葉菜').last);
@@ -181,11 +182,12 @@ class FormRobot extends CustomRobot<Form> {
     await tapWidget(WidgetKeys.lyricist);
     await tester.pumpAndSettle();
 
-    // ドロップダウンメニューの選択肢を見つける
-    final menuItem = find.text('otsumami').last;
 
     // メニュー項目が表示されるまで少し待つ
     await tester.pump(const Duration(milliseconds: 500));
+
+    // ドロップダウンメニューの選択肢を見つける
+    final menuItem = find.text('otsumami').last;
 
     // メニュー項目までスクロール
     await tester.ensureVisible(menuItem);
@@ -205,11 +207,11 @@ class FormRobot extends CustomRobot<Form> {
     await tapWidget(WidgetKeys.composer);
     await tester.pumpAndSettle();
 
-    // ドロップダウンメニューの選択肢を見つける
-    final menuItem = find.text('otsumami').last;
-
     // メニュー項目が表示されるまで少し待つ
     await tester.pump(const Duration(milliseconds: 500));
+
+    // ドロップダウンメニューの選択肢を見つける
+    final menuItem = find.text('otsumami').last;
 
     // メニュー項目までスクロール
     await tester.ensureVisible(menuItem);

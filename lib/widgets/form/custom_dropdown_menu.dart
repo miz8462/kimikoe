@@ -60,6 +60,7 @@ class _CustomDropdownMenuState extends State<CustomDropdownMenu> {
         final name = value[ColumnName.name];
         return DropdownMenuEntry<DropdownIdAndName>(
           value: DropdownIdAndName(
+            key: Key(name),
             id: id,
             name: name,
           ),

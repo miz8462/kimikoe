@@ -10,6 +10,62 @@ class CustomRobot<T extends Widget> extends Robot<Widget> {
     await tester.pumpAndSettle();
   }
 
+  Future<void> ensureVisibleWidgetByIndex({
+    required int index,
+    required Type widgetType,
+  }) async {
+    final finder = find.byType(widgetType);
+    final matches = finder.evaluate();
+
+    if (matches.isEmpty) {
+      throw Exception('No $widgetType widgets found on screen');
+    }
+    if (matches.length <= index) {
+      throw Exception(
+        // ignore: lines_longer_than_80_chars
+        'Index $index out of range for $widgetType (found ${matches.length} widgets)',
+      );
+    }
+
+    await tester.ensureVisible(finder.at(index));
+  }
+
+  Future<void> ensureVisibleWidgetWithText({
+    required Type widgetType,
+    String? childText, // オプションで子要素のテキストを指定
+  }) async {
+    final finder = find.byType(widgetType);
+    final matches = finder.evaluate();
+
+    if (matches.isEmpty) {
+      throw Exception('No $widgetType widgets found on screen');
+    }
+
+    // 子要素のテキストでフィルタリング
+    Iterable<Element> filteredMatches = matches;
+    if (childText != null) {
+      filteredMatches = matches.where((element) {
+        final textFinder = find.descendant(
+          of: find.byElementPredicate((e) => e == element),
+          matching: find.text(childText),
+        );
+        return textFinder.evaluate().isNotEmpty;
+      });
+    }
+
+    final filteredList = filteredMatches.toList();
+    if (filteredList.isEmpty) {
+      throw Exception('No $widgetType widgets with text "$childText" found');
+    }
+
+    // 最初に見つかったウィジェットを可視化
+    await tester.ensureVisible(
+      find.byElementPredicate(
+        (element) => element == filteredList.first,
+      ),
+    );
+  }
+
   Future<void> tapWidget(String keyValue) async {
     await tester.tap(find.byKey(Key(keyValue)));
     await tester.pumpAndSettle();

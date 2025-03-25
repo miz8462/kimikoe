@@ -4,6 +4,7 @@ import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/screens/idol_group_list.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
+import 'package:kimikoe_app/widgets/form/custom_dropdown_menu.dart';
 
 import '../../../utils/robots/auth_robot.dart';
 import '../../../utils/robots/form_robot.dart';
@@ -30,9 +31,12 @@ void main() {
     await formRobot.enterTitle(title);
     await formRobot.selectGroup();
     await formRobot.tapWidget(WidgetKeys.addLyric);
-    await formRobot.ensureVisibleWidget(WidgetKeys.lyric0);
+    await formRobot.ensureVisibleWidget(WidgetKeys.lyric);
     await formRobot.enterLyric(lyric);
-    await formRobot.ensureVisibleWidget(WidgetKeys.singer0);
+    await formRobot.ensureVisibleWidgetWithText(
+      widgetType: CustomDropdownMenu,
+      childText: '*歌手',
+    );
     await formRobot.selectSinger();
     await formRobot.enterMovieUrl(movieURL);
     await formRobot.selectLyricist();
