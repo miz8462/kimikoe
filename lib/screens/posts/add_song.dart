@@ -57,7 +57,7 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
   // 歌詞とそのフレーズを歌う歌手
   final List<Map<String, dynamic>> _lyricAndSingerList = [];
   final List<TextEditingController> _lyricListControllers = [];
-  final List<TextEditingController> _singerListControllers = [];
+  final List<List<TextEditingController>> _singerListControllers = [];
 
   late Song _song;
 
@@ -107,8 +107,10 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
     for (final controller in _lyricListControllers) {
       controller.dispose();
     }
-    for (final controller in _singerListControllers) {
-      controller.dispose();
+    for (final controllers in _singerListControllers) {
+      for (final controller in controllers) {
+        controller.dispose();
+      }
     }
     super.dispose();
   }
@@ -116,52 +118,61 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
   void _initializeEditingFields() {
     try {
       _isGroupSelected = true;
-      // JSONデータをデコード
       final decodedLyrics = jsonDecode(_song.lyrics) as List;
       final jsonLyrics = decodedLyrics.map((item) {
         if (item is Map<String, dynamic>) {
           return {
             'lyric': item['lyric']?.toString() ?? '',
-            'singerId': item['singerId']?.toString() ?? '',
+            'singerIds': (item['singerIds'] as List<dynamic>?)?.cast<String>(),
           };
         }
-        return {'lyric': '', 'singerId': ''};
+        return {
+          'lyric': '',
+          'singerIds': [''],
+        };
       }).toList();
 
       _groupNameController = TextEditingController(text: _song.group!.name);
-      _lyricistNameController = TextEditingController(
-        text: _song.lyricist?.name ?? '',
-      );
-      _composerNameController = TextEditingController(
-        text: _song.composer?.name ?? '',
-      );
+      _lyricistNameController =
+          TextEditingController(text: _song.lyricist?.name ?? '');
+      _composerNameController =
+          TextEditingController(text: _song.composer?.name ?? '');
       _releaseDateController = TextEditingController(text: _song.releaseDate);
 
-      // 歌詞と担当歌手データ
       for (final lyricData in jsonLyrics) {
-        final singerId = int.tryParse(lyricData['singerId'] ?? '');
-        final selectedMember = singerId != null
-            ? _idolIdAndNameList.firstWhere(
-                (member) => member['id'] == singerId,
-                orElse: () => {'name': ''},
-              )
-            : {'name': ''};
-
-        _lyricAndSingerList.add(lyricData);
-        _lyricListControllers.add(
-          TextEditingController(text: lyricData['lyric']),
-        );
-        _singerListControllers.add(
-          TextEditingController(text: selectedMember['name'].toString()),
-        );
+        final singerIds = (lyricData['singerIds'] as List<String>?) ?? [];
+        _lyricAndSingerList.add({
+          'lyric': lyricData['lyric'],
+          'singerIds': lyricData['singerIds'],
+        });
+        _lyricListControllers
+            .add(TextEditingController(text: lyricData['lyric']! as String));
+        final singerControllers = <TextEditingController>[];
+        for (final singerId in singerIds) {
+          final selectedMember = singerId.isNotEmpty
+              ? _idolIdAndNameList.firstWhere(
+                  (member) => member['id'].toString() == singerId,
+                  orElse: () => {'name': ''},
+                )
+              : {'name': ''};
+          singerControllers.add(
+            TextEditingController(text: selectedMember['name'].toString()),
+          );
+        }
+        _singerListControllers.add(singerControllers);
       }
     } catch (e) {
       logger.e('歌詞データの初期化中にエラーが発生しました', error: e);
-      // エラー時のフォールバック処理
       _groupNameController = TextEditingController(text: _song.group!.name);
       _lyricistNameController = TextEditingController();
       _composerNameController = TextEditingController();
       _releaseDateController = TextEditingController();
+      _lyricAndSingerList.add({
+        'lyric': '',
+        'singerIds': [''],
+      });
+      _lyricListControllers.add(TextEditingController());
+      _singerListControllers.add([TextEditingController()]);
     }
   }
 
@@ -170,6 +181,13 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
     _lyricistNameController = TextEditingController();
     _composerNameController = TextEditingController();
     _releaseDateController = TextEditingController();
+    // 歌詞用のコントローラー
+    _lyricAndSingerList.add({
+      'lyric': '',
+      'singerIds': [''],
+    });
+    _lyricListControllers.add(TextEditingController());
+    _singerListControllers.add([TextEditingController()]);
   }
 
   Future<void> _fetchIdAndNameLists() async {
@@ -216,20 +234,18 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
     FocusScope.of(context).unfocus();
 
     // 歌詞と歌手のセットをまとめる
-    for (var index = 0; index < _lyricAndSingerList.length; index++) {
-      final singerName = _singerListControllers[index].text;
-      if (singerName.isNotEmpty) {
-        final idolId = findDataIdByName(
-          list: _idolIdAndNameList,
-          name: singerName,
-        );
-        _lyricAndSingerList[index]['singerId'] = idolId?.toString() ?? '';
-      } else {
-        _lyricAndSingerList[index]['singerId'] = '';
+    for (var i = 0; i < _lyricAndSingerList.length; i++) {
+      final singerIds = <String>[];
+      for (var j = 0; j < _singerListControllers[i].length; j++) {
+        final singerName = _singerListControllers[i][j].text;
+        if (singerName.isNotEmpty) {
+          final idolId =
+              findDataIdByName(list: _idolIdAndNameList, name: singerName);
+          if (idolId != null) singerIds.add(idolId.toString());
+        }
       }
+      _lyricAndSingerList[i]['singerIds'] = singerIds;
     }
-
-    // 歌詞と歌手のセットをjsonにする
     final jsonStringLyrics = jsonEncode(_lyricAndSingerList);
 
     final imageUrl = await processImage(
@@ -390,29 +406,41 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
 
   void _addNewLyricItem() {
     setState(() {
-      _lyricListControllers.add(TextEditingController());
-      _singerListControllers.add(TextEditingController());
-      _lyricAndSingerList.add({'lyric': '', 'singerId': ''});
+      _lyricAndSingerList.add({
+        'lyric': '',
+        'singerIds': [''],
+      });
     });
+    _lyricListControllers.add(TextEditingController());
+    _singerListControllers.add([TextEditingController()]);
   }
 
   void _removeLyricItem(int index) {
     setState(() {
-      // 歌詞と歌手のリストから要素を削除t
-      _lyricAndSingerList.removeAt(index);
-
-      // コントローラーを破棄
       _lyricListControllers[index].dispose();
-      _singerListControllers[index].dispose();
+      for (final controller in _singerListControllers[index]) {
+        controller.dispose();
+      }
 
-      // リストからコントローラーを削除
+      _lyricAndSingerList.removeAt(index);
       _lyricListControllers.removeAt(index);
       _singerListControllers.removeAt(index);
+    });
+  }
 
-      // デバッグ情報
-      logger.d('Lyric Controllers: $_lyricListControllers');
-      logger.d('Singer Controllers: $_singerListControllers');
-      logger.d('Lyric and Singer List: $_lyricAndSingerList');
+  void _addSinger(int lyricIndex) {
+    setState(() {
+      (_lyricAndSingerList[lyricIndex]['singerIds'] as List<String>).add('');
+      _singerListControllers[lyricIndex].add(TextEditingController());
+    });
+  }
+
+  void _removeSinger(int lyricIndex, int singerIndex) {
+    setState(() {
+      (_lyricAndSingerList[lyricIndex]['singerIds'] as List<String>)
+          .removeAt(singerIndex);
+      _singerListControllers[lyricIndex][singerIndex].dispose();
+      _singerListControllers[lyricIndex].removeAt(singerIndex);
     });
   }
 
@@ -483,21 +511,46 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
                               },
                             ),
                             const Gap(spaceS),
-                            CustomDropdownMenu(
-                              key: ValueKey(
-                                _singerListControllers[i].hashCode,
+                            ...List.generate(
+                              _singerListControllers[i].length,
+                              (j) => Row(
+                                children: [
+                                  Expanded(
+                                    child: CustomDropdownMenu(
+                                      key: ValueKey(
+                                        _singerListControllers[i][j].hashCode,
+                                      ),
+                                      label: j == 0 ? '*歌手1' : '歌手${j + 1}（任意）',
+                                      dataList: _idolIdAndNameList,
+                                      controller: _singerListControllers[i][j],
+                                      isSelected: _singerListControllers[i][j]
+                                          .text
+                                          .isNotEmpty,
+                                      onSelected: (value) {
+                                        setState(() {
+                                          (_lyricAndSingerList[i]['singerIds']
+                                              as List<String>)[j] = value;
+                                          if (j ==
+                                              _singerListControllers[i].length -
+                                                  1) {
+                                            _addSinger(i);
+                                          }
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  if (j > 0)
+                                    IconButton(
+                                      icon: const Icon(Icons.remove),
+                                      onPressed: () => _removeSinger(i, j),
+                                    ),
+                                ],
                               ),
-                              label: '*歌手',
-                              dataList: _idolIdAndNameList,
-                              controller: _singerListControllers[i],
-                              isSelected:
-                                  _singerListControllers[i].text.isNotEmpty,
                             ),
                             TextButton(
                               key: Key('remove-lyric-$i'),
                               onPressed: () => _removeLyricItem(i),
-                              style: TextButton.styleFrom(),
-                              child: Text('このフレーズを削除する'),
+                              child: const Text('このフレーズを削除する'),
                             ),
                           ],
                         ),

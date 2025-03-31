@@ -10,6 +10,7 @@ class CustomDropdownMenu extends StatefulWidget {
     required this.controller,
     this.isSelected = false,
     this.onSelectedChanged,
+    this.onSelected,
     super.key,
   });
 
@@ -18,6 +19,7 @@ class CustomDropdownMenu extends StatefulWidget {
   final TextEditingController controller;
   final bool isSelected;
   final void Function({required bool isSelected})? onSelectedChanged;
+  final void Function(String)? onSelected;
 
   @override
   State<CustomDropdownMenu> createState() => _CustomDropdownMenuState();
@@ -72,6 +74,9 @@ class _CustomDropdownMenuState extends State<CustomDropdownMenu> {
           isSelected = item != null;
         });
         widget.onSelectedChanged?.call(isSelected: isSelected);
+        if (item != null) {
+          widget.onSelected?.call(item.id.toString());
+        }
       },
     );
   }

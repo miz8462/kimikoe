@@ -8,13 +8,13 @@ import '../../test_utils/test_widgets.dart';
 void main() {
   testWidgets('CustomTextForLyricsが表示される', (tester) async {
     final text = 'テストメッセージ';
-    final color = Colors.green;
+    final color = [Colors.green];
 
     await tester.pumpWidget(
       buildTestWidget(
         child: CustomTextForLyrics(
           text,
-          color: color,
+          colors: color,
         ),
       ),
     );
