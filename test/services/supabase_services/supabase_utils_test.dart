@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/artist.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_utils.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:mockito/mockito.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -13,6 +13,7 @@ void main() {
   late final SupabaseClient errorSupabase;
   late final SupabaseClient mockSupabase;
   late final MockSupabaseHttpClient mockHttpClient;
+  late final SupabaseServices supabaseServices;
 
   setUpAll(() async {
     mockHttpClient = MockSupabaseHttpClient();
@@ -27,6 +28,7 @@ void main() {
       'error',
     );
     logger = MockLogger();
+    supabaseServices = SupabaseServices();
   });
 
   tearDown(() async {
@@ -41,7 +43,8 @@ void main() {
         ColumnName.imageUrl: 'https://example.com/test.jpg',
       });
 
-      final artists = await createArtistList(supabase: mockSupabase);
+      final artists =
+          await supabaseServices.utils.createArtistList(supabase: mockSupabase);
 
       expect(artists, isA<List<Artist>>());
       expect(artists[0].name, 'test artist');
@@ -49,7 +52,7 @@ void main() {
     });
     test('createArtistListの例外処理', () async {
       try {
-        await createArtistList(supabase: errorSupabase);
+        await supabaseServices.utils.createArtistList(supabase: errorSupabase);
       } catch (e) {
         verify(logger.e('アーティストリストの取得またはマッピング中にエラーが発生しました')).called(1);
       }
@@ -68,11 +71,12 @@ void main() {
       },
     ];
     test('正常にデータIDを取得できる', () {
-      final idolId = findDataIdByName(list: mockDataList, name: 'test idol');
+      final idolId = supabaseServices.utils
+          .findDataIdByName(list: mockDataList, name: 'test idol');
       expect(idolId, 1);
     });
     test('指定された名前がない場合はnullを返す', () {
-      final result = findDataIdByName(
+      final result = supabaseServices.utils.findDataIdByName(
         list: mockDataList,
         name: 'test idol3',
       );

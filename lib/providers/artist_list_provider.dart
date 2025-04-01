@@ -2,14 +2,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/models/artist.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_utils.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
+
+final supabaseServices = SupabaseServices();
 
 final artistsFromSupabaseProvider = FutureProvider<List<Artist>>((ref) async {
   // プロバイダーを作り、そこを通すことで
   // ProviderContainerでオーバーライドしたモックを受け取ることができる
   final supabase = ref.read(supabaseProvider);
 
-  return createArtistList(supabase: supabase);
+  return supabaseServices.utils.createArtistList(supabase: supabase);
 });
 
 final artistsListProvider = Provider<List<Artist>>((ref) {

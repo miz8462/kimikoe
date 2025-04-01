@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_insert.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -13,6 +13,7 @@ void main() {
   late final SupabaseClient errorSupabase;
   late final SupabaseClient mockSupabase;
   late final MockSupabaseHttpClient mockHttpClient;
+  late final SupabaseServices supabaseServices;
 
   setUpAll(() async {
     mockHttpClient = MockSupabaseHttpClient();
@@ -26,6 +27,7 @@ void main() {
       'error',
       'error',
     );
+    supabaseServices = SupabaseServices();
   });
 
   tearDown(() async {
@@ -51,7 +53,7 @@ void main() {
       testWidgets('insertArtistDataの正常動作', (WidgetTester tester) async {
         final mockContext = await createMockContext(tester);
 
-        await insertArtistData(
+        await supabaseServices.insert.insertArtistData(
           name: 'test artist',
           context: mockContext,
           supabase: mockSupabase,
@@ -72,7 +74,7 @@ void main() {
         expect(find.text('アーティストを登録しました: test artist'), findsOneWidget);
 
         // name以外がnullの場合
-        await insertArtistData(
+        await supabaseServices.insert.insertArtistData(
           name: 'test artist2',
           context: mockContext,
           supabase: mockSupabase,
@@ -92,7 +94,7 @@ void main() {
         final mockContext = await createMockContext(tester);
         var didThrowError = false;
         try {
-          await insertArtistData(
+          await supabaseServices.insert.insertArtistData(
             name: 'test artist',
             context: mockContext,
             supabase: errorSupabase,
@@ -115,7 +117,7 @@ void main() {
       testWidgets('insertIdolGroupDataの正常動作', (WidgetTester tester) async {
         final mockContext = await createMockContext(tester);
 
-        await insertIdolGroupData(
+        await supabaseServices.insert.insertIdolGroupData(
           name: 'test group',
           context: mockContext,
           supabase: mockSupabase,
@@ -147,7 +149,7 @@ void main() {
         expect(find.text('グループを登録しました: test group'), findsOneWidget);
 
         // name以外がnullの場合
-        await insertIdolGroupData(
+        await supabaseServices.insert.insertIdolGroupData(
           name: 'test group2',
           context: mockContext,
           supabase: mockSupabase,
@@ -173,7 +175,7 @@ void main() {
         final mockContext = await createMockContext(tester);
         var didThrowError = false;
         try {
-          await insertIdolGroupData(
+          await supabaseServices.insert.insertIdolGroupData(
             name: 'test group',
             context: mockContext,
             supabase: errorSupabase,
@@ -197,7 +199,7 @@ void main() {
       testWidgets('insertIdolDataの正常動作', (WidgetTester tester) async {
         final mockContext = await createMockContext(tester);
 
-        await insertIdolData(
+        await supabaseServices.insert.insertIdolData(
           name: 'test idol',
           context: mockContext,
           supabase: mockSupabase,
@@ -232,7 +234,7 @@ void main() {
         expect(find.text('アイドルを登録しました: test idol'), findsOneWidget);
 
         // name以外がnullの場合
-        await insertIdolData(
+        await supabaseServices.insert.insertIdolData(
           name: 'test idol2',
           context: mockContext,
           supabase: mockSupabase,
@@ -260,7 +262,7 @@ void main() {
         final mockContext = await createMockContext(tester);
         var didThrowError = false;
         try {
-          await insertIdolData(
+          await supabaseServices.insert.insertIdolData(
             name: 'test idol',
             context: mockContext,
             supabase: errorSupabase,
@@ -284,7 +286,7 @@ void main() {
       testWidgets('insertSongDataの正常動作', (WidgetTester tester) async {
         final mockContext = await createMockContext(tester);
 
-        await insertSongData(
+        await supabaseServices.insert.insertSongData(
           title: 'test title',
           movieUrl: 'https://youtube.com/watch?v=example',
           lyric: 'test lyric',
@@ -317,7 +319,7 @@ void main() {
         expect(find.text('曲を登録しました: test title'), findsOneWidget);
 
         // オプションがnullの場合
-        await insertSongData(
+        await supabaseServices.insert.insertSongData(
           title: 'test title2',
           lyric: 'test lyric2',
           context: mockContext,
@@ -345,7 +347,7 @@ void main() {
         final mockContext = await createMockContext(tester);
         var didThrowError = false;
         try {
-          await insertSongData(
+          await supabaseServices.insert.insertSongData(
             title: 'test song',
             lyric: 'test lyric',
             context: mockContext,

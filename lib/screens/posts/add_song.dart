@@ -17,10 +17,7 @@ import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_insert.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_update.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_utils.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
 import 'package:kimikoe_app/utils/bool_check.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
@@ -191,15 +188,16 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
   }
 
   Future<void> _fetchIdAndNameLists() async {
-    final groupList = await fetchIdAndNameList(
+    final supabaseServices = SupabaseServices();
+    final groupList = await supabaseServices.fetch.fetchIdAndNameList(
       TableName.idolGroups,
       supabase: supabase,
     );
-    final idolList = await fetchIdAndNameList(
+    final idolList = await supabaseServices.fetch.fetchIdAndNameList(
       TableName.idols,
       supabase: supabase,
     );
-    final artistList = await fetchIdAndNameList(
+    final artistList = await supabaseServices.fetch.fetchIdAndNameList(
       TableName.artists,
       supabase: supabase,
     );
@@ -212,6 +210,8 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
   }
 
   Future<void> _submitSong() async {
+    final supabaseServices = SupabaseServices();
+
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       logger.i('ヴァリデーション成功');
@@ -239,8 +239,8 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
       for (var j = 0; j < _singerListControllers[i].length; j++) {
         final singerName = _singerListControllers[i][j].text;
         if (singerName.isNotEmpty) {
-          final idolId =
-              findDataIdByName(list: _idolIdAndNameList, name: singerName);
+          final idolId = supabaseServices.utils
+              .findDataIdByName(list: _idolIdAndNameList, name: singerName);
           if (idolId != null) singerIds.add(idolId.toString());
         }
       }
@@ -276,7 +276,7 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
     final isSelectedGroupInList = isInList(_groupIdAndNameList, groupName);
     if (!isSelectedGroupInList && groupName.isNotEmpty) {
       if (!mounted) return;
-      await insertIdolGroupData(
+      await supabaseServices.insert.insertIdolGroupData(
         name: groupName,
         imageUrl: noImage,
         year: '',
@@ -286,15 +286,15 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
       );
       await _fetchIdAndNameLists();
     }
-    selectedGroupId =
-        findDataIdByName(list: _groupIdAndNameList, name: groupName);
+    selectedGroupId = supabaseServices.utils
+        .findDataIdByName(list: _groupIdAndNameList, name: groupName);
     // 作詞家登録
     final lyricistName = _lyricistNameController.text;
     final isSelectedLyricistInList =
         isInList(_artistIdAndNameList, lyricistName);
     if (!isSelectedLyricistInList && lyricistName.isNotEmpty) {
       if (!mounted) return;
-      await insertArtistData(
+      await supabaseServices.insert.insertArtistData(
         name: lyricistName,
         imageUrl: noImage,
         context: context,
@@ -303,7 +303,7 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
       await _fetchIdAndNameLists();
     }
     if (lyricistName.isNotEmpty) {
-      selectedLyricistId = findDataIdByName(
+      selectedLyricistId = supabaseServices.utils.findDataIdByName(
         list: _artistIdAndNameList,
         name: lyricistName,
       );
@@ -315,7 +315,7 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
         isInList(_artistIdAndNameList, composerName);
     if (!isSelectedComposerInList && composerName.isNotEmpty) {
       if (!mounted) return;
-      await insertArtistData(
+      await supabaseServices.insert.insertArtistData(
         name: composerName,
         imageUrl: noImage,
         context: context,
@@ -324,7 +324,7 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
       await _fetchIdAndNameLists();
     }
     if (composerName.isNotEmpty) {
-      selectedComposerId = findDataIdByName(
+      selectedComposerId = supabaseServices.utils.findDataIdByName(
         list: _artistIdAndNameList,
         name: composerName,
       );
@@ -333,7 +333,7 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
     // 登録、編集
     if (!mounted) return;
     if (_isEditing) {
-      await updateSong(
+      await supabaseServices.update.updateSong(
         title: _enteredTitle,
         movieUrl: _enteredMovieUrl,
         lyric: jsonStringLyrics,
@@ -348,7 +348,7 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
         supabase: supabase,
       );
     } else {
-      await insertSongData(
+      await supabaseServices.insert.insertSongData(
         title: _enteredTitle,
         movieUrl: _enteredMovieUrl,
         lyric: jsonStringLyrics,
@@ -364,11 +364,7 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
     }
 
     // groupSongsProviderを呼び出す前にnullチェック
-    if (selectedGroupId != null) {
-      ref.watch(groupSongsProvider(selectedGroupId));
-    } else {
-      logger.w('グループIDがnullのため、groupSongsProviderは更新されません');
-    }
+    ref.watch(groupSongsProvider(selectedGroupId));
 
     setState(() {
       _isSending = false;

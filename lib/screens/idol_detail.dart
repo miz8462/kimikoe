@@ -11,7 +11,7 @@ import 'package:kimikoe_app/providers/group_members_provider.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_delete.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
 import 'package:kimikoe_app/utils/open_links.dart';
 import 'package:kimikoe_app/widgets/delete_alert_dialog.dart';
@@ -79,13 +79,14 @@ class _IdolDetailScreenState extends ConsumerState<IdolDetailScreen> {
   }
 
   void _deleteIdol() {
+    final supabaseSeervices = SupabaseServices();
     showDialog<Widget>(
       context: context,
       builder: (context) {
         return DeleteAlertDialog(
           key: Key(WidgetKeys.deleteIdol),
           onDelete: () async {
-            await deleteDataByName(
+            await supabaseSeervices.delete.deleteDataByName(
               table: TableName.idols,
               name: widget.idol.name,
             );
@@ -125,7 +126,6 @@ class _IdolDetailScreenState extends ConsumerState<IdolDetailScreen> {
       }
     } else if (idol.birthYear != null && idol.birthYear != 0) {
       formattedBirthDay = '${idol.birthYear}年';
-      
     } else {
       formattedBirthDay = '不明';
     }

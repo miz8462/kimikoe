@@ -10,8 +10,7 @@ import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_insert.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_storage.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
 import 'package:kimikoe_app/widgets/button/image_input.dart';
@@ -35,6 +34,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
   var _isSending = false;
 
   Future<void> _submitArtist() async {
+    final supabaseStorage = SupabaseServices().storage;
     logger.i('フォーム送信開始');
 
     setState(() {
@@ -60,7 +60,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
     );
 
     if (_selectedImage != null) {
-      await uploadImageToStorage(
+      await supabaseStorage.uploadImageToStorage(
         table: TableName.images,
         path: imagePath,
         file: _selectedImage!,
@@ -68,13 +68,13 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
       );
     }
 
-    final imageUrl = fetchImageUrl(
+    final imageUrl = supabaseStorage.fetchImageUrl(
       imagePath,
       injectedSupabase: supabase,
     );
 
     if (!mounted) return;
-    await insertArtistData(
+    await supabaseServices.insert.insertArtistData(
       name: _enteredName,
       imageUrl: imageUrl,
       comment: _enteredComment,

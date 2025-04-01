@@ -3,7 +3,7 @@ import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 // 二つ以上の状態を管理する場合Stateクラスを別に作って管理するといい
@@ -44,11 +44,14 @@ class GroupsNotifier extends StateNotifier<GroupsState> {
       logger.i('アイドルグループのリストを取得中...');
       state = state.copyWith(isLoading: true);
 
-      final data = await fetchDataByStream(
-        table: TableName.idolGroups,
-        id: ColumnName.id,
-        supabase: supabase,
-      ).first as List<Map<String, dynamic>>;
+      final supabaseServices = SupabaseServices();
+      final data = await supabaseServices.fetch
+          .fetchDataByStream(
+            table: TableName.idolGroups,
+            id: ColumnName.id,
+            supabase: supabase,
+          )
+          .first as List<Map<String, dynamic>>;
 
       final groups = data.map<IdolGroup>((group) {
         return IdolGroup(

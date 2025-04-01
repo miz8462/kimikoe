@@ -4,7 +4,7 @@ import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/models/user_profile.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_update.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
 
 class UserProfileNotifier extends StateNotifier<UserProfile?> {
   UserProfileNotifier() : super(null);
@@ -52,9 +52,10 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
     BuildContext context,
   ) async {
     try {
+      final supabaseServices = SupabaseServices();
       final currentUserId = supabase.auth.currentUser!.id;
       logger.i('ユーザーのプロフィールを更新中...');
-      await updateUser(
+      await supabaseServices.update.updateUser(
         id: currentUserId,
         name: newUser.name,
         email: newUser.email,

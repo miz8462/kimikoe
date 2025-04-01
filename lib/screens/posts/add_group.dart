@@ -14,8 +14,7 @@ import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_insert.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_update.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
 import 'package:kimikoe_app/utils/pickers/custom_picker.dart';
@@ -109,6 +108,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
   }
 
   Future<void> _submitGroup() async {
+    final supabaseServices = SupabaseServices();
     logger.i('フォーム送信を開始します');
 
     setState(() {
@@ -146,7 +146,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     if (!mounted) return;
     // 登録、修正
     if (_isEditing) {
-      await updateIdolGroup(
+      await supabaseServices.update.updateIdolGroup(
         name: _enteredName,
         imageUrl: imageUrl,
         year: _selectedYear,
@@ -160,7 +160,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
         supabase: supabase,
       );
     } else {
-      await insertIdolGroupData(
+      await supabaseServices.insert.insertIdolGroupData(
         name: _enteredName,
         imageUrl: imageUrl,
         year: _selectedYear,

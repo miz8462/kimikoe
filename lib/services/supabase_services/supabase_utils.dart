@@ -1,61 +1,63 @@
 import 'package:kimikoe_app/models/artist.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_storage.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-Future<List<Artist>> createArtistList({
-  required SupabaseClient supabase,
-}) async {
-  try {
-    logger.i('Supabaseからアーティストデータを取得中...');
-    final response = await fetchArtists(
-      supabase: supabase,
-    );
-    logger.i('${response.length}件のアーティストデータをSupabaseから取得しました');
-    final artists = response.map<Artist>((artist) {
-      final imageUrl = fetchImageUrl(
-        artist[ColumnName.imageUrl],
-        injectedSupabase: supabase,
+class SupabaseUtils {
+  Future<List<Artist>> createArtistList({
+    required SupabaseClient supabase,
+  }) async {
+    final supabaseServices = SupabaseServices();
+    try {
+      logger.i('Supabaseからアーティストデータを取得中...');
+      final response = await supabaseServices.fetch.fetchArtists(
+        supabase: supabase,
       );
-      return Artist(
-        id: artist[ColumnName.id],
-        name: artist[ColumnName.name],
-        imageUrl: imageUrl,
-        comment: artist[ColumnName.comment],
+      logger.i('${response.length}件のアーティストデータをSupabaseから取得しました');
+      final artists = response.map<Artist>((artist) {
+        final imageUrl = supabaseServices.storage.fetchImageUrl(
+          artist[ColumnName.imageUrl],
+          injectedSupabase: supabase,
+        );
+        return Artist(
+          id: artist[ColumnName.id],
+          name: artist[ColumnName.name],
+          imageUrl: imageUrl,
+          comment: artist[ColumnName.comment],
+        );
+      }).toList();
+      logger.i('${artists.length}件のアーティストデータをリストにしました');
+      return artists;
+    } catch (e, stackTrace) {
+      logger.e(
+        'アーティストリストの取得またはマッピング中にエラーが発生しました',
+        error: e,
+        stackTrace: stackTrace,
       );
-    }).toList();
-    logger.i('${artists.length}件のアーティストデータをリストにしました');
-    return artists;
-  } catch (e, stackTrace) {
-    logger.e(
-      'アーティストリストの取得またはマッピング中にエラーが発生しました',
-      error: e,
-      stackTrace: stackTrace,
-    );
-    return [];
-  }
-}
-
-int? findDataIdByName({
-  required List<Map<String, dynamic>> list,
-  required String name,
-}) {
-  if (name.isEmpty) {
-    logger.w('空の名前が指定されました');
-    return null;
+      return [];
+    }
   }
 
-  final selectedDataList =
-      list.where((item) => item[ColumnName.name] == name).toList();
-  if (selectedDataList.isEmpty) {
-    logger.e('指定された名前: $name に対するデータが見つかりません');
-    return null;
-  }
+  int? findDataIdByName({
+    required List<Map<String, dynamic>> list,
+    required String name,
+  }) {
+    if (name.isEmpty) {
+      logger.w('空の名前が指定されました');
+      return null;
+    }
 
-  final selectedData = selectedDataList.single;
-  final selectedDataId = selectedData[ColumnName.id] as int;
-  logger.i('指定された名前: $name に対するデータIDを取得しました');
-  return selectedDataId;
+    final selectedDataList =
+        list.where((item) => item[ColumnName.name] == name).toList();
+    if (selectedDataList.isEmpty) {
+      logger.e('指定された名前: $name に対するデータが見つかりません');
+      return null;
+    }
+
+    final selectedData = selectedDataList.single;
+    final selectedDataId = selectedData[ColumnName.id] as int;
+    logger.i('指定された名前: $name に対するデータIDを取得しました');
+    return selectedDataId;
+  }
 }

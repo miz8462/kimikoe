@@ -11,7 +11,7 @@ import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/screens/group_detail/widget/group_info.dart';
 import 'package:kimikoe_app/screens/group_detail/widget/group_members.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_delete.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
 import 'package:kimikoe_app/widgets/delete_alert_dialog.dart';
 
 class GroupDetailScreen extends ConsumerStatefulWidget {
@@ -51,9 +51,10 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
     showDialog<Widget>(
       context: context,
       builder: (context) {
+        final supabaseServices = SupabaseServices();
         return DeleteAlertDialog(
           onDelete: () async {
-            await deleteDataById(
+            await supabaseServices.delete.deleteDataById(
               table: TableName.idolGroups,
               id: widget.group.id.toString(),
               context: context,

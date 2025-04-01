@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_delete.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -37,6 +37,7 @@ void main() {
   group('deleteDataFromTable', () {
     testWidgets('deleteDataFromTableの正常動作', (WidgetTester tester) async {
       final mockContext = await createMockContext(tester);
+      final supabaseServices = SupabaseServices();
 
       // 削除するデータの登録と、登録されてることの確認
       await mockSupabase.from(TableName.artists).insert({
@@ -46,7 +47,7 @@ void main() {
       final artists = await mockSupabase.from(TableName.artists).select();
       expect(artists.last[ColumnName.name], 'delete artist');
 
-      await deleteDataById(
+      await supabaseServices.delete.deleteDataById(
         table: TableName.artists,
         id: '1',
         context: mockContext,
@@ -75,7 +76,8 @@ void main() {
       final artists = await mockSupabase.from(TableName.artists).select();
       expect(artists.last[ColumnName.name], 'cannot delete artist');
       try {
-        await deleteDataById(
+        final supabaseServices = SupabaseServices();
+        await supabaseServices.delete.deleteDataById(
           table: TableName.artists,
           id: '1',
           context: mockContext,

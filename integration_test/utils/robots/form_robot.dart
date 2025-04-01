@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_delete.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
 import 'package:kimikoe_app/widgets/form/custom_dropdown_menu.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -182,7 +182,6 @@ class FormRobot extends CustomRobot<Form> {
     await tapWidget(WidgetKeys.lyricist);
     await tester.pumpAndSettle();
 
-
     // メニュー項目が表示されるまで少し待つ
     await tester.pump(const Duration(milliseconds: 500));
 
@@ -244,7 +243,9 @@ class FormRobot extends CustomRobot<Form> {
     required String name,
     String columnName = ColumnName.name,
   }) async {
-    await deleteDataByName(table: table, targetColumn: columnName, name: name);
+    final supabaseServises = SupabaseServices();
+    await supabaseServises.delete
+        .deleteDataByName(table: table, targetColumn: columnName, name: name);
     logger.i('テストデータを削除しました');
   }
 

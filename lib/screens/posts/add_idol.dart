@@ -17,10 +17,7 @@ import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_insert.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_update.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_utils.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
 import 'package:kimikoe_app/utils/bool_check.dart';
 import 'package:kimikoe_app/utils/color_code_to_string_hex.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
@@ -120,7 +117,8 @@ class _AddIdolScreenState extends ConsumerState<AddIdolScreen> {
   }
 
   Future<void> _fetchIdAndNameGroupList() async {
-    final groupIdAndNameList = await fetchIdAndNameList(
+    final supabaseServices = SupabaseServices();
+    final groupIdAndNameList = await supabaseServices.fetch.fetchIdAndNameList(
       TableName.idolGroups,
       supabase: supabase,
     );
@@ -141,6 +139,8 @@ class _AddIdolScreenState extends ConsumerState<AddIdolScreen> {
   }
 
   Future<void> _submitIdol() async {
+    final supabaseServices = SupabaseServices();
+
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       logger.i('ヴァリデーションに成功しました');
@@ -215,7 +215,7 @@ class _AddIdolScreenState extends ConsumerState<AddIdolScreen> {
     final isSelectedGroupInList = isInList(_groupIdAndNameList, groupName);
     if (!isSelectedGroupInList && groupName.isNotEmpty) {
       if (!mounted) return;
-      await insertIdolGroupData(
+      await supabaseServices.insert.insertIdolGroupData(
         name: groupName,
         imageUrl: noImage,
         year: '',
@@ -226,7 +226,7 @@ class _AddIdolScreenState extends ConsumerState<AddIdolScreen> {
       await _fetchIdAndNameGroupList();
     }
     if (groupName.isNotEmpty) {
-      selectedGroupId = findDataIdByName(
+      selectedGroupId = supabaseServices.utils.findDataIdByName(
         list: _groupIdAndNameList,
         name: groupName,
       );
@@ -237,7 +237,7 @@ class _AddIdolScreenState extends ConsumerState<AddIdolScreen> {
 
     if (!mounted) return;
     if (_isEditing) {
-      await updateIdol(
+      await supabaseServices.update.updateIdol(
         id: _idol.id!,
         name: _enteredIdolName,
         context: context,
@@ -253,7 +253,7 @@ class _AddIdolScreenState extends ConsumerState<AddIdolScreen> {
         comment: _enteredComment,
       );
     } else {
-      await insertIdolData(
+      await supabaseServices.insert.insertIdolData(
         name: _enteredIdolName,
         groupId: selectedGroupId,
         color: selectedColor,

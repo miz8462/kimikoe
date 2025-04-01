@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_storage.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
 import 'package:kimikoe_app/utils/generate_simple_random_string.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -19,6 +19,9 @@ String createImagePath({
   }
 }
 
+final supabaseServices = SupabaseServices();
+final supabaseStorage = supabaseServices.storage;
+
 // TODO: test
 Future<String?> processImage({
   required bool isEditing,
@@ -27,12 +30,16 @@ Future<String?> processImage({
   required File? selectedImage,
   required BuildContext context,
   String Function({File? imageFile})? createImagePathFunction = createImagePath,
-  UploadImageToStorage? uploadFunction = uploadImageToStorage,
+  UploadImageToStorage? uploadFunction,
   String Function(
     String imagePath, {
     SupabaseClient? injectedSupabase,
-  })? fetchFunction = fetchImageUrl,
+  })? fetchFunction,
 }) async {
+  // uploadFunction と fetchFunction が null の場合は supabaseStorage のメソッドを使用
+  uploadFunction ??= supabaseStorage.uploadImageToStorage;
+  fetchFunction ??= supabaseStorage.fetchImageUrl;
+
   // 新規作成モードで画像変更なし
   if (!isEditing && !isImageChanged) {
     return noImage;
@@ -47,14 +54,14 @@ Future<String?> processImage({
     );
     // 新規の場合、編集で画像を変更した場合は登録する
     if (selectedImage != null) {
-      await uploadFunction!(
+      await uploadFunction(
         table: TableName.images,
         path: imagePath,
         file: selectedImage,
         context: context,
       );
     }
-    return fetchFunction!(
+    return fetchFunction(
       imagePath,
     );
   }

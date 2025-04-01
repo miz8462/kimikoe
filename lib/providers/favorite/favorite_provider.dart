@@ -3,6 +3,7 @@
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'favorite_provider.g.dart';
@@ -12,8 +13,9 @@ enum FavoriteType { groups, songs }
 @Riverpod(keepAlive: true)
 class FavoriteNotifier extends _$FavoriteNotifier {
   final _userId = supabase.auth.currentUser!.id;
+  final supabaseServices = SupabaseServices();
   late final String _tableName;
-  late final String _columnId;
+  late final String _columnName;
   late final FavoriteType _type;
 
   @override
@@ -22,7 +24,7 @@ class FavoriteNotifier extends _$FavoriteNotifier {
     _tableName = type == FavoriteType.groups
         ? TableName.favoriteGroups
         : TableName.favoriteSongs;
-    _columnId =
+    _columnName =
         type == FavoriteType.groups ? ColumnName.groupId : ColumnName.songId;
 
     return _fetchFavorites();
@@ -34,7 +36,7 @@ class FavoriteNotifier extends _$FavoriteNotifier {
           .from(_tableName)
           .select()
           .eq(ColumnName.userId, _userId);
-      return response.map((item) => item[_columnId] as int).toList();
+      return response.map((item) => item[_columnName] as int).toList();
     } catch (e) {
       logger.e(
         'お気に入り${_type == FavoriteType.groups ? "グループ" : "曲"}を取得中にエラーが発生しました',
@@ -61,9 +63,12 @@ class FavoriteNotifier extends _$FavoriteNotifier {
 
     // DB処理
     try {
-      await supabase
-          .from(_tableName)
-          .insert({ColumnName.userId: _userId, _columnId: groupId});
+      await supabaseServices.favorite.addFavorite(
+        table: _tableName,
+        userId: _userId,
+        columnName: _columnName,
+        groupId: groupId,
+      );
     } catch (e) {
       // 失敗したら状態を元に戻す
       state = AsyncData(previousState);
@@ -81,11 +86,12 @@ class FavoriteNotifier extends _$FavoriteNotifier {
 
     try {
       // Supabaseから削除
-      await supabase
-          .from(_tableName)
-          .delete()
-          .eq(ColumnName.userId, _userId)
-          .eq(_columnId, groupId);
+      await supabaseServices.favorite.removeFavorite(
+        table: _tableName,
+        userId: _userId,
+        columnName: _columnName,
+        groupId: groupId,
+      );
     } catch (e) {
       // 失敗したら状態を元に戻す
       state = AsyncData(previousState);

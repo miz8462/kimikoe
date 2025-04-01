@@ -13,8 +13,7 @@ import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/screens/lyric/widget/lyrics.dart';
 import 'package:kimikoe_app/screens/lyric/widget/member_color_and_name_list.dart';
 import 'package:kimikoe_app/screens/lyric/widget/song_info_card.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_delete.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
 import 'package:kimikoe_app/widgets/delete_alert_dialog.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
@@ -38,11 +37,12 @@ class _SongScreenState extends ConsumerState<SongScreen> {
   late Future<List<Map<String, dynamic>>> _memberFuture;
   YoutubePlayerController? _youtubeController;
   var _isStarred = false;
+  final supabaseServices = SupabaseServices();
 
   @override
   void initState() {
     super.initState();
-    _memberFuture = fetchGroupMembers(
+    _memberFuture = supabaseServices.fetch.fetchGroupMembers(
       widget.group.id!,
       supabase: supabase,
     );
@@ -75,12 +75,13 @@ class _SongScreenState extends ConsumerState<SongScreen> {
   }
 
   void _deleteSong(BuildContext context) {
+    final supabaseServices = SupabaseServices();
     showDialog<Widget>(
       context: context,
       builder: (context) {
         return DeleteAlertDialog(
           onDelete: () async {
-            await deleteDataById(
+            await supabaseServices.delete.deleteDataById(
               table: TableName.songs,
               id: widget.song.id.toString(),
               context: context,
@@ -97,12 +98,13 @@ class _SongScreenState extends ConsumerState<SongScreen> {
   void _toggleStarred() {
     final id = widget.song.id;
     if (id == null) return;
-    setState(() {
-      _isStarred = !_isStarred;
-    });
 
     final notifier =
         ref.read(favoriteNotifierProvider(FavoriteType.songs).notifier);
+
+    setState(() {
+      _isStarred = !_isStarred;
+    });
 
     if (_isStarred) {
       notifier.add(id);
@@ -145,8 +147,11 @@ class _SongScreenState extends ConsumerState<SongScreen> {
       appBar: favoriteSongsAsync.when(
         data: (favoriteSongs) {
           // お気に入り状態を最新に保つ（必要なら）
-          if (_isStarred != favoriteSongs.contains(song.id)) {
-            _isStarred = favoriteSongs.contains(song.id);
+          final isCurrentlyStarred = favoriteSongs.contains(song.id);
+          if (_isStarred != isCurrentlyStarred) {
+            setState(() {
+              _isStarred = isCurrentlyStarred;
+            });
           }
           return TopBar(
             pageTitle: song.title,

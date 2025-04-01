@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_storage.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -42,7 +42,8 @@ void main() {
       final mockContext = await createMockContext(tester);
       var didThrowError = false;
       try {
-        await uploadImageToStorage(
+        final supabaseStorage = SupabaseServices().storage;
+        await supabaseStorage.uploadImageToStorage(
           table: 'error',
           file: File('error'),
           path: 'error',

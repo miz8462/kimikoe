@@ -8,7 +8,7 @@ import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/screens/idol_group_list.dart';
 import 'package:kimikoe_app/screens/sign_in.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_delete.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'custom_robot.dart';
@@ -81,8 +81,9 @@ class AuthRobot extends CustomRobot<SignInScreen> {
 
   Future<void> deleteUser() async {
     final context = tester.element(find.byType(IdolGroupListScreen));
+    final supabaseServices = SupabaseServices();
     try {
-      await deleteDataById(
+      await supabaseServices.delete.deleteDataById(
         table: TableName.profiles,
         id: supabase.auth.currentUser!.id,
         context: context,
