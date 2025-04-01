@@ -160,7 +160,7 @@ class _CustomTextForLyricsState extends State<CustomTextForLyrics>
                 ),
             ],
           ),
-          const Gap(12),
+          Gap(8),
           Expanded(
             child: Text(
               widget.text,
@@ -186,8 +186,8 @@ class CircleColor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 16,
-      height: 16,
+      width: 20,
+      height: 20,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: gradientColors == null ? baseColor : null,

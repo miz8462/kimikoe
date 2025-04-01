@@ -8,6 +8,9 @@ import 'package:kimikoe_app/providers/user_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/widgets/button/styled_button.dart';
 
+final iconSize = 30.0;
+final iconRadius = 20.0;
+
 class BottomBar extends ConsumerStatefulWidget {
   const BottomBar({
     required this.navigationShell,
@@ -126,32 +129,39 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                     key: Key(WidgetKeys.homeButton),
                     Icons.home_outlined,
                     color: currentIndex == homeIndex ? textDark : textWhite,
+                    size: iconSize,
+                    semanticLabel: 'ホーム',
                   ),
-                  label: 'ホーム',
+                  label: '',
                 ),
                 NavigationDestination(
                   icon: Icon(
                     key: Key(WidgetKeys.favoriteButton),
                     Icons.star_border,
                     color: currentIndex == favoriteIndex ? textDark : textWhite,
+                    size: iconSize,
+                    semanticLabel: 'お気に入り',
                   ),
-                  label: 'お気に入り',
+                  label: '',
                 ),
                 NavigationDestination(
                   icon: Icon(
                     key: Key(WidgetKeys.addButton),
                     Icons.add_box_outlined,
                     color: currentIndex == addIndex ? textDark : textWhite,
+                    size: iconSize,
+                    semanticLabel: '追加',
                   ),
-                  label: '追加',
+                  label: '',
                 ),
                 NavigationDestination(
                   icon: CircleAvatar(
                     key: Key(WidgetKeys.userAvatar),
                     backgroundImage: NetworkImage(imageUrl),
-                    radius: avaterSizeS,
+                    // radius: avaterSizeS,
+                    maxRadius: iconRadius,
                   ),
-                  label: 'ユーザー',
+                  label: '',
                 ),
               ],
             ),
