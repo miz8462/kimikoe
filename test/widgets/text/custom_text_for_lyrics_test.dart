@@ -8,13 +8,15 @@ import '../../test_utils/test_widgets.dart';
 void main() {
   testWidgets('CustomTextForLyricsが表示される', (tester) async {
     final text = 'テストメッセージ';
-    final color = [Colors.green];
+    final names = ['test1'];
+    final colors = [Colors.green];
 
     await tester.pumpWidget(
       buildTestWidget(
         child: CustomTextForLyrics(
           text,
-          colors: color,
+          names: names,
+          colors: colors,
         ),
       ),
     );
@@ -36,7 +38,7 @@ void main() {
     expect(container.constraints?.maxWidth, circleSize);
 
     final decoration = container.decoration! as BoxDecoration;
-    expect(decoration.color, color);
+    expect(decoration.color, colors[0]);
 
     // テキストパートの検証
     expect(find.text(text), findsOneWidget);

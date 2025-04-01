@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/providers/logger_provider.dart';
 
 class CustomTextForLyrics extends StatefulWidget {
   const CustomTextForLyrics(
@@ -33,7 +32,6 @@ class _CustomTextForLyricsState extends State<CustomTextForLyrics>
   OverlayEntry? _createOverlayEntry(List<String> namesToShow, int indexOffset) {
     final renderBox = context.findRenderObject() as RenderBox?;
     if (renderBox == null) {
-      logger.e('RenderBox is null, cannot create overlay');
       return null;
     }
 
@@ -106,9 +104,6 @@ class _CustomTextForLyricsState extends State<CustomTextForLyrics>
 
   @override
   Widget build(BuildContext context) {
-    logger.d('Names: ${widget.names}');
-    logger.d('Colors: ${widget.colors}');
-
     final effectiveNames = widget.names ?? ['Unknown'];
     final effectiveColors = widget.colors ?? [Colors.black];
 
