@@ -79,14 +79,13 @@ class _IdolDetailScreenState extends ConsumerState<IdolDetailScreen> {
   }
 
   void _deleteIdol() {
-    final supabaseSeervices = SupabaseServices();
     showDialog<Widget>(
       context: context,
       builder: (context) {
         return DeleteAlertDialog(
           key: Key(WidgetKeys.deleteIdol),
           onDelete: () async {
-            await supabaseSeervices.delete.deleteDataByName(
+            await SupabaseServices.delete.deleteDataByName(
               table: TableName.idols,
               name: widget.idol.name,
             );

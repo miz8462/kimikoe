@@ -12,7 +12,6 @@ void main() {
   late final SupabaseClient errorSupabase;
   late final SupabaseClient mockSupabase;
   late final MockSupabaseHttpClient mockHttpClient;
-  late final SupabaseServices supabaseServices;
 
   setUpAll(() async {
     mockHttpClient = MockSupabaseHttpClient();
@@ -27,7 +26,6 @@ void main() {
       'error',
     );
     logger = MockLogger();
-    supabaseServices = SupabaseServices();
   });
 
   tearDown(() async {
@@ -39,7 +37,7 @@ void main() {
       await mockSupabase.from(TableName.artists).insert({
         ColumnName.name: 'test artist',
       });
-      final artistList = await supabaseServices.fetch.fetchArtists(
+      final artistList = await SupabaseServices.fetch.fetchArtists(
         supabase: mockSupabase,
       );
 
@@ -51,7 +49,7 @@ void main() {
       var didThrowError = false;
 
       try {
-        await supabaseServices.fetch.fetchArtists(
+        await SupabaseServices.fetch.fetchArtists(
           supabase: errorSupabase,
         );
       } catch (e) {
@@ -68,7 +66,7 @@ void main() {
         ColumnName.groupId: 1,
         ColumnName.name: 'test idol',
       });
-      final members = await supabaseServices.fetch.fetchGroupMembers(
+      final members = await SupabaseServices.fetch.fetchGroupMembers(
         1,
         supabase: mockSupabase,
       );
@@ -81,7 +79,7 @@ void main() {
       var didThrowError = false;
 
       try {
-        await supabaseServices.fetch.fetchGroupMembers(
+        await SupabaseServices.fetch.fetchGroupMembers(
           1,
           supabase: errorSupabase,
         );
@@ -99,7 +97,7 @@ void main() {
         ColumnName.name: 'test group',
       });
       final idolGroupsIdAndNameList =
-          await supabaseServices.fetch.fetchIdAndNameList(
+          await SupabaseServices.fetch.fetchIdAndNameList(
         TableName.idolGroups,
         supabase: mockSupabase,
       );
@@ -111,7 +109,7 @@ void main() {
       var didThrowError = false;
 
       try {
-        await supabaseServices.fetch.fetchIdAndNameList(
+        await SupabaseServices.fetch.fetchIdAndNameList(
           TableName.idolGroups,
           supabase: errorSupabase,
         );
@@ -134,7 +132,7 @@ void main() {
       });
     });
     test('ストリームでデータを取得する', () async {
-      final stream = await supabaseServices.fetch
+      final stream = await SupabaseServices.fetch
           .fetchDataByStream(
             table: TableName.artists,
             id: '1',
@@ -149,7 +147,7 @@ void main() {
       var didThrowError = false;
 
       try {
-        await supabaseServices.fetch
+        await SupabaseServices.fetch
             .fetchDataByStream(
               table: TableName.artists,
               id: '1',

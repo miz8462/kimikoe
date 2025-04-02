@@ -34,7 +34,6 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
   var _isSending = false;
 
   Future<void> _submitArtist() async {
-    final supabaseStorage = SupabaseServices().storage;
     logger.i('フォーム送信開始');
 
     setState(() {
@@ -74,7 +73,7 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
     );
 
     if (!mounted) return;
-    await supabaseServices.insert.insertArtistData(
+    await SupabaseServices.insert.insertArtistData(
       name: _enteredName,
       imageUrl: imageUrl,
       comment: _enteredComment,

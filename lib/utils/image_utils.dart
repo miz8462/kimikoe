@@ -19,8 +19,7 @@ String createImagePath({
   }
 }
 
-final supabaseServices = SupabaseServices();
-final supabaseStorage = supabaseServices.storage;
+final supabaseStorage = SupabaseServices.storage;
 
 // TODO: test
 Future<String?> processImage({

@@ -52,10 +52,9 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
     BuildContext context,
   ) async {
     try {
-      final supabaseServices = SupabaseServices();
       final currentUserId = supabase.auth.currentUser!.id;
       logger.i('ユーザーのプロフィールを更新中...');
-      await supabaseServices.update.updateUser(
+      await SupabaseServices.update.updateUser(
         id: currentUserId,
         name: newUser.name,
         email: newUser.email,

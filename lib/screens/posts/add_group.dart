@@ -108,7 +108,6 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
   }
 
   Future<void> _submitGroup() async {
-    final supabaseServices = SupabaseServices();
     logger.i('フォーム送信を開始します');
 
     setState(() {
@@ -146,7 +145,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
     if (!mounted) return;
     // 登録、修正
     if (_isEditing) {
-      await supabaseServices.update.updateIdolGroup(
+      await SupabaseServices.update.updateIdolGroup(
         name: _enteredName,
         imageUrl: imageUrl,
         year: _selectedYear,
@@ -160,7 +159,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
         supabase: supabase,
       );
     } else {
-      await supabaseServices.insert.insertIdolGroupData(
+      await SupabaseServices.insert.insertIdolGroupData(
         name: _enteredName,
         imageUrl: imageUrl,
         year: _selectedYear,

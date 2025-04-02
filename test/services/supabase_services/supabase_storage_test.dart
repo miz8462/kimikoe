@@ -42,8 +42,7 @@ void main() {
       final mockContext = await createMockContext(tester);
       var didThrowError = false;
       try {
-        final supabaseStorage = SupabaseServices().storage;
-        await supabaseStorage.uploadImageToStorage(
+        await SupabaseServices.storage.uploadImageToStorage(
           table: 'error',
           file: File('error'),
           path: 'error',

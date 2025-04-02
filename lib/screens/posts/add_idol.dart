@@ -117,8 +117,7 @@ class _AddIdolScreenState extends ConsumerState<AddIdolScreen> {
   }
 
   Future<void> _fetchIdAndNameGroupList() async {
-    final supabaseServices = SupabaseServices();
-    final groupIdAndNameList = await supabaseServices.fetch.fetchIdAndNameList(
+    final groupIdAndNameList = await SupabaseServices.fetch.fetchIdAndNameList(
       TableName.idolGroups,
       supabase: supabase,
     );
@@ -139,8 +138,6 @@ class _AddIdolScreenState extends ConsumerState<AddIdolScreen> {
   }
 
   Future<void> _submitIdol() async {
-    final supabaseServices = SupabaseServices();
-
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       logger.i('ヴァリデーションに成功しました');
@@ -215,7 +212,7 @@ class _AddIdolScreenState extends ConsumerState<AddIdolScreen> {
     final isSelectedGroupInList = isInList(_groupIdAndNameList, groupName);
     if (!isSelectedGroupInList && groupName.isNotEmpty) {
       if (!mounted) return;
-      await supabaseServices.insert.insertIdolGroupData(
+      await SupabaseServices.insert.insertIdolGroupData(
         name: groupName,
         imageUrl: noImage,
         year: '',
@@ -226,7 +223,7 @@ class _AddIdolScreenState extends ConsumerState<AddIdolScreen> {
       await _fetchIdAndNameGroupList();
     }
     if (groupName.isNotEmpty) {
-      selectedGroupId = supabaseServices.utils.findDataIdByName(
+      selectedGroupId = SupabaseServices.utils.findDataIdByName(
         list: _groupIdAndNameList,
         name: groupName,
       );
@@ -237,7 +234,7 @@ class _AddIdolScreenState extends ConsumerState<AddIdolScreen> {
 
     if (!mounted) return;
     if (_isEditing) {
-      await supabaseServices.update.updateIdol(
+      await SupabaseServices.update.updateIdol(
         id: _idol.id!,
         name: _enteredIdolName,
         context: context,
@@ -253,7 +250,7 @@ class _AddIdolScreenState extends ConsumerState<AddIdolScreen> {
         comment: _enteredComment,
       );
     } else {
-      await supabaseServices.insert.insertIdolData(
+      await SupabaseServices.insert.insertIdolData(
         name: _enteredIdolName,
         groupId: selectedGroupId,
         color: selectedColor,

@@ -44,8 +44,7 @@ class GroupsNotifier extends StateNotifier<GroupsState> {
       logger.i('アイドルグループのリストを取得中...');
       state = state.copyWith(isLoading: true);
 
-      final supabaseServices = SupabaseServices();
-      final data = await supabaseServices.fetch
+      final data = await SupabaseServices.fetch
           .fetchDataByStream(
             table: TableName.idolGroups,
             id: ColumnName.id,

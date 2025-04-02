@@ -7,6 +7,5 @@ final fetchGroupMembersProvider = Provider<
       int groupId, {
       required SupabaseClient supabase,
     })>((ref) {
-  final supabaseServices = SupabaseServices();
-  return supabaseServices.fetch.fetchGroupMembers;
+  return SupabaseServices.fetch.fetchGroupMembers;
 });

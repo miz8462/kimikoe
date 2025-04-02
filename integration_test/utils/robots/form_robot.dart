@@ -243,8 +243,7 @@ class FormRobot extends CustomRobot<Form> {
     required String name,
     String columnName = ColumnName.name,
   }) async {
-    final supabaseServises = SupabaseServices();
-    await supabaseServises.delete
+    await SupabaseServices.delete
         .deleteDataByName(table: table, targetColumn: columnName, name: name);
     logger.i('テストデータを削除しました');
   }

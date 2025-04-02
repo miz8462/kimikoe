@@ -38,14 +38,14 @@ class _SongScreenState extends ConsumerState<SongScreen> {
   late Future<List<Map<String, dynamic>>> _memberFuture;
   YoutubePlayerController? _youtubeController;
   var _isStarred = false;
-  final supabaseServices = SupabaseServices();
+
   final _scrollController = ScrollController();
   double _lastScrollOffset = 0;
 
   @override
   void initState() {
     super.initState();
-    _memberFuture = supabaseServices.fetch.fetchGroupMembers(
+    _memberFuture = SupabaseServices.fetch.fetchGroupMembers(
       widget.group.id!,
       supabase: supabase,
     );
@@ -79,13 +79,12 @@ class _SongScreenState extends ConsumerState<SongScreen> {
   }
 
   void _deleteSong(BuildContext context) {
-    final supabaseServices = SupabaseServices();
     showDialog<Widget>(
       context: context,
       builder: (context) {
         return DeleteAlertDialog(
           onDelete: () async {
-            await supabaseServices.delete.deleteDataById(
+            await SupabaseServices.delete.deleteDataById(
               table: TableName.songs,
               id: widget.song.id.toString(),
               context: context,

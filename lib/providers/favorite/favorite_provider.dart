@@ -13,7 +13,7 @@ enum FavoriteType { groups, songs }
 @Riverpod(keepAlive: true)
 class FavoriteNotifier extends _$FavoriteNotifier {
   final _userId = supabase.auth.currentUser!.id;
-  final supabaseServices = SupabaseServices();
+
   late final String _tableName;
   late final String _columnName;
   late final FavoriteType _type;
@@ -63,7 +63,7 @@ class FavoriteNotifier extends _$FavoriteNotifier {
 
     // DB処理
     try {
-      await supabaseServices.favorite.addFavorite(
+      await SupabaseServices.favorite.addFavorite(
         table: _tableName,
         userId: _userId,
         columnName: _columnName,
@@ -86,7 +86,7 @@ class FavoriteNotifier extends _$FavoriteNotifier {
 
     try {
       // Supabaseから削除
-      await supabaseServices.favorite.removeFavorite(
+      await SupabaseServices.favorite.removeFavorite(
         table: _tableName,
         userId: _userId,
         columnName: _columnName,

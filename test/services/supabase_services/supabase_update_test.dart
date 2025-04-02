@@ -14,7 +14,6 @@ void main() {
   late final SupabaseClient errorSupabase;
   late final SupabaseClient mockSupabase;
   late final MockSupabaseHttpClient mockHttpClient;
-  late final SupabaseServices supabaseServices;
   setUpAll(() async {
     mockHttpClient = MockSupabaseHttpClient();
     mockSupabase = SupabaseClient(
@@ -28,7 +27,6 @@ void main() {
       'error',
     );
     logger = MockLogger();
-    supabaseServices = SupabaseServices();
   });
 
   tearDown(() async {
@@ -47,7 +45,7 @@ void main() {
         ColumnName.comment: 'test comment',
       });
 
-      await supabaseServices.update.updateIdolGroup(
+      await SupabaseServices.update.updateIdolGroup(
         id: '1',
         name: 'updated group',
         context: mockContext,
@@ -114,7 +112,7 @@ void main() {
       });
 
       try {
-        await supabaseServices.update.updateIdolGroup(
+        await SupabaseServices.update.updateIdolGroup(
           id: '1',
           name: 'error',
           context: mockContext,
@@ -141,7 +139,7 @@ void main() {
         ColumnName.name: 'test song',
       });
 
-      await supabaseServices.update.updateIdol(
+      await SupabaseServices.update.updateIdol(
         id: 1,
         name: 'updated idol',
         context: mockContext,
@@ -219,7 +217,7 @@ void main() {
       });
 
       try {
-        await supabaseServices.update.updateIdol(
+        await SupabaseServices.update.updateIdol(
           id: 1,
           name: 'error idol',
           context: mockContext,
@@ -259,7 +257,7 @@ void main() {
         ColumnName.lyrics: 'test lyrics',
       });
 
-      await supabaseServices.update.updateSong(
+      await SupabaseServices.update.updateSong(
         id: 1,
         title: 'updated title',
         lyric: 'updated lyrics',
@@ -325,7 +323,7 @@ void main() {
         ColumnName.lyrics: 'test lyrics',
       });
       try {
-        await supabaseServices.update.updateSong(
+        await SupabaseServices.update.updateSong(
           id: 1,
           title: 'error title',
           lyric: 'error lyrics',
@@ -361,7 +359,7 @@ void main() {
         ColumnName.lyrics: 'test lyrics',
       });
 
-      await supabaseServices.update.updateUser(
+      await SupabaseServices.update.updateUser(
         id: '1',
         name: 'updated user',
         email: 'updated@example.com',
@@ -406,7 +404,7 @@ void main() {
         ColumnName.name: 'test user',
       });
       try {
-        await supabaseServices.update.updateUser(
+        await SupabaseServices.update.updateUser(
           id: '1',
           name: 'error user',
           email: 'error@example.com',

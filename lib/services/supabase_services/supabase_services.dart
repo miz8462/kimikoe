@@ -7,20 +7,11 @@ import 'package:kimikoe_app/services/supabase_services/supabase_update.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_utils.dart';
 
 class SupabaseServices {
-  SupabaseServices()
-      : delete = SupabaseDelete(),
-        favorite = SupabaseFavorite(),
-        fetch = SupabaseFetch(),
-        insert = SupabaseInsert(),
-        storage = SupabaseStorage(),
-        update = SupabaseUpdate(),
-        utils = SupabaseUtils();
-
-  final SupabaseDelete delete;
-  final SupabaseFavorite favorite;
-  final SupabaseFetch fetch;
-  final SupabaseInsert insert;
-  final SupabaseStorage storage;
-  final SupabaseUpdate update;
-  final SupabaseUtils utils;
+  static final SupabaseDelete delete = SupabaseDelete();
+  static final SupabaseFavorite favorite = SupabaseFavorite();
+  static final SupabaseFetch fetch = SupabaseFetch();
+  static final SupabaseInsert insert = SupabaseInsert();
+  static final SupabaseStorage storage = SupabaseStorage();
+  static final SupabaseUpdate update = SupabaseUpdate();
+  static final SupabaseUtils utils = SupabaseUtils();
 }

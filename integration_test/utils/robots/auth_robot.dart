@@ -81,9 +81,8 @@ class AuthRobot extends CustomRobot<SignInScreen> {
 
   Future<void> deleteUser() async {
     final context = tester.element(find.byType(IdolGroupListScreen));
-    final supabaseServices = SupabaseServices();
     try {
-      await supabaseServices.delete.deleteDataById(
+      await SupabaseServices.delete.deleteDataById(
         table: TableName.profiles,
         id: supabase.auth.currentUser!.id,
         context: context,

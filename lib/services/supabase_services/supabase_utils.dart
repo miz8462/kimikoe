@@ -8,15 +8,14 @@ class SupabaseUtils {
   Future<List<Artist>> createArtistList({
     required SupabaseClient supabase,
   }) async {
-    final supabaseServices = SupabaseServices();
     try {
       logger.i('Supabaseからアーティストデータを取得中...');
-      final response = await supabaseServices.fetch.fetchArtists(
+      final response = await SupabaseServices.fetch.fetchArtists(
         supabase: supabase,
       );
       logger.i('${response.length}件のアーティストデータをSupabaseから取得しました');
       final artists = response.map<Artist>((artist) {
-        final imageUrl = supabaseServices.storage.fetchImageUrl(
+        final imageUrl = SupabaseServices.storage.fetchImageUrl(
           artist[ColumnName.imageUrl],
           injectedSupabase: supabase,
         );

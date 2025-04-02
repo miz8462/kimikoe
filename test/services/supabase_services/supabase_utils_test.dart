@@ -13,7 +13,6 @@ void main() {
   late final SupabaseClient errorSupabase;
   late final SupabaseClient mockSupabase;
   late final MockSupabaseHttpClient mockHttpClient;
-  late final SupabaseServices supabaseServices;
 
   setUpAll(() async {
     mockHttpClient = MockSupabaseHttpClient();
@@ -28,7 +27,6 @@ void main() {
       'error',
     );
     logger = MockLogger();
-    supabaseServices = SupabaseServices();
   });
 
   tearDown(() async {
@@ -44,7 +42,7 @@ void main() {
       });
 
       final artists =
-          await supabaseServices.utils.createArtistList(supabase: mockSupabase);
+          await SupabaseServices.utils.createArtistList(supabase: mockSupabase);
 
       expect(artists, isA<List<Artist>>());
       expect(artists[0].name, 'test artist');
@@ -52,7 +50,7 @@ void main() {
     });
     test('createArtistListの例外処理', () async {
       try {
-        await supabaseServices.utils.createArtistList(supabase: errorSupabase);
+        await SupabaseServices.utils.createArtistList(supabase: errorSupabase);
       } catch (e) {
         verify(logger.e('アーティストリストの取得またはマッピング中にエラーが発生しました')).called(1);
       }
@@ -71,12 +69,12 @@ void main() {
       },
     ];
     test('正常にデータIDを取得できる', () {
-      final idolId = supabaseServices.utils
+      final idolId = SupabaseServices.utils
           .findDataIdByName(list: mockDataList, name: 'test idol');
       expect(idolId, 1);
     });
     test('指定された名前がない場合はnullを返す', () {
-      final result = supabaseServices.utils.findDataIdByName(
+      final result = SupabaseServices.utils.findDataIdByName(
         list: mockDataList,
         name: 'test idol3',
       );

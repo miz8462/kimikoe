@@ -37,7 +37,6 @@ void main() {
   group('deleteDataFromTable', () {
     testWidgets('deleteDataFromTableの正常動作', (WidgetTester tester) async {
       final mockContext = await createMockContext(tester);
-      final supabaseServices = SupabaseServices();
 
       // 削除するデータの登録と、登録されてることの確認
       await mockSupabase.from(TableName.artists).insert({
@@ -47,7 +46,7 @@ void main() {
       final artists = await mockSupabase.from(TableName.artists).select();
       expect(artists.last[ColumnName.name], 'delete artist');
 
-      await supabaseServices.delete.deleteDataById(
+      await SupabaseServices.delete.deleteDataById(
         table: TableName.artists,
         id: '1',
         context: mockContext,
@@ -76,8 +75,7 @@ void main() {
       final artists = await mockSupabase.from(TableName.artists).select();
       expect(artists.last[ColumnName.name], 'cannot delete artist');
       try {
-        final supabaseServices = SupabaseServices();
-        await supabaseServices.delete.deleteDataById(
+        await SupabaseServices.delete.deleteDataById(
           table: TableName.artists,
           id: '1',
           context: mockContext,

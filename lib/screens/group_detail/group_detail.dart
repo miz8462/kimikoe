@@ -51,10 +51,9 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
     showDialog<Widget>(
       context: context,
       builder: (context) {
-        final supabaseServices = SupabaseServices();
         return DeleteAlertDialog(
           onDelete: () async {
-            await supabaseServices.delete.deleteDataById(
+            await SupabaseServices.delete.deleteDataById(
               table: TableName.idolGroups,
               id: widget.group.id.toString(),
               context: context,
