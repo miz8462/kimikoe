@@ -1,10 +1,12 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kimikoe_app/providers/bottom_bar_visibility/bottom_bar_visibility_provider.dart';
 import 'package:kimikoe_app/providers/groups_provider.dart' show groupsProvider;
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
+import 'package:kimikoe_app/utils/scroll_utils.dart';
 import 'package:kimikoe_app/widgets/card/group_card_l.dart';
 
 class IdolGroupListScreen extends ConsumerStatefulWidget {
@@ -15,10 +17,19 @@ class IdolGroupListScreen extends ConsumerStatefulWidget {
 }
 
 class _IdolGroupListScreenState extends ConsumerState<IdolGroupListScreen> {
+  final _scrollController = ScrollController();
+  double _lastScrollOffset = 0; // 前回のスクロール位置を記録する変数
+
   @override
   void initState() {
     super.initState();
     _checkConnectivity();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   // グループリストページを開く際、ネットに繋がっていない場合
@@ -41,6 +52,8 @@ class _IdolGroupListScreenState extends ConsumerState<IdolGroupListScreen> {
     final state = ref.watch(groupsProvider);
     final groups = state.groups;
     final isLoading = state.isLoading;
+    final isVisible = ref.watch(bottomBarVisibilityNotifierProvider);
+    logger.d(isVisible);
 
     late Widget content;
     if (isLoading) {
@@ -53,18 +66,36 @@ class _IdolGroupListScreenState extends ConsumerState<IdolGroupListScreen> {
           await ref
               .read(groupsProvider.notifier)
               .fetchGroupList(supabase: supabase);
+          ref.read(bottomBarVisibilityNotifierProvider.notifier).show();
         },
-        child: GridView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // 横に表示する数
-            crossAxisSpacing: 18, // 横のスペース
-            mainAxisSpacing: 15, // 縦のスペース
-          ),itemCount: groups.length,
-          itemBuilder: (BuildContext context, int index) {
-            final group = groups[index];
-            return GroupCardL(group: group);
+        child: NotificationListener<ScrollNotification>(
+          onNotification: (notification) {
+            if (ScrollUtils.handleScrollNotification(
+              notification,
+              ref,
+              lastScrollOffset: _lastScrollOffset,
+            )) {
+              setState(() {
+                _lastScrollOffset = notification.metrics.pixels;
+              });
+            }
+            return false;
           },
+          child: GridView.builder(
+            controller: _scrollController,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, // 横に表示する数
+              crossAxisSpacing: 18, // 横のスペース
+              mainAxisSpacing: 15, // 縦のスペース
+            ),
+            itemCount: groups.length,
+            itemBuilder: (BuildContext context, int index) {
+              final group = groups[index];
+              return GroupCardL(group: group);
+            },
+            physics: const AlwaysScrollableScrollPhysics(),
+          ),
         ),
       );
     }

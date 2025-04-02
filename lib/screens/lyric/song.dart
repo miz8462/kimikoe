@@ -14,6 +14,7 @@ import 'package:kimikoe_app/screens/lyric/widget/lyrics.dart';
 import 'package:kimikoe_app/screens/lyric/widget/member_color_and_name_list.dart';
 import 'package:kimikoe_app/screens/lyric/widget/song_info_card.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
+import 'package:kimikoe_app/utils/scroll_utils.dart';
 import 'package:kimikoe_app/widgets/delete_alert_dialog.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
@@ -38,6 +39,8 @@ class _SongScreenState extends ConsumerState<SongScreen> {
   YoutubePlayerController? _youtubeController;
   var _isStarred = false;
   final supabaseServices = SupabaseServices();
+  final _scrollController = ScrollController();
+  double _lastScrollOffset = 0;
 
   @override
   void initState() {
@@ -72,6 +75,7 @@ class _SongScreenState extends ConsumerState<SongScreen> {
   void dispose() {
     super.dispose();
     if (_youtubeController != null) _youtubeController!.close();
+    _scrollController.dispose();
   }
 
   void _deleteSong(BuildContext context) {
@@ -189,40 +193,58 @@ class _SongScreenState extends ConsumerState<SongScreen> {
           hasFavoriteFeature: true,
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: screenPadding,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Gap(spaceM),
-              SongInfoCard(song: song),
-              const Gap(spaceM),
-              if (_youtubeController != null)
-                YoutubePlayerScaffold(
-                  controller: _youtubeController!,
-                  builder: (context, player) {
-                    return Column(
-                      children: [
-                        player,
-                      ],
-                    );
-                  },
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (notification) {
+          if (ScrollUtils.handleScrollNotification(
+            notification,
+            ref,
+            lastScrollOffset: _lastScrollOffset,
+          )) {
+            setState(() {
+              _lastScrollOffset = notification.metrics.pixels;
+            });
+          }
+          return false;
+        },
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          child: Padding(
+            padding: screenPadding,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Gap(spaceM),
+                SongInfoCard(song: song),
+                const Gap(spaceM),
+                if (_youtubeController != null)
+                  YoutubePlayerScaffold(
+                    controller: _youtubeController!,
+                    builder: (context, player) {
+                      return Column(
+                        children: [
+                          player,
+                        ],
+                      );
+                    },
+                  ),
+                const Gap(spaceM),
+                GroupColorAndNameList(
+                  group: group,
+                  memberFuture: _memberFuture,
                 ),
-              const Gap(spaceM),
-              GroupColorAndNameList(group: group, memberFuture: _memberFuture),
-              const Gap(spaceS),
-              Divider(
-                color: mainColor.withValues(alpha: 0.3),
-                thickness: 2,
-              ),
-              const Gap(spaceS),
-              Lyrics(
-                memberFuture: _memberFuture,
-                lyrics: song.lyrics,
-              ),
-              const Gap(spaceM),
-            ],
+                const Gap(spaceS),
+                Divider(
+                  color: mainColor.withValues(alpha: 0.3),
+                  thickness: 2,
+                ),
+                const Gap(spaceS),
+                Lyrics(
+                  memberFuture: _memberFuture,
+                  lyrics: song.lyrics,
+                ),
+                const Gap(spaceM),
+              ],
+            ),
           ),
         ),
       ),

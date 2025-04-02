@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
+import 'package:kimikoe_app/providers/bottom_bar_visibility/bottom_bar_visibility_provider.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/user_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/widgets/button/styled_button.dart';
@@ -92,6 +94,9 @@ class _BottomBarState extends ConsumerState<BottomBar> {
       );
     }
 
+    final isVisible = ref.watch(bottomBarVisibilityNotifierProvider);
+    logger.d('見えてるの見えてないの？ $isVisible');
+
     final imageUrl = user.imageUrl;
 
     // 横画面の時表示しない
@@ -107,7 +112,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
 
     return Scaffold(
       body: widget.navigationShell,
-      bottomNavigationBar: isLandscape
+      bottomNavigationBar: isLandscape || !isVisible
           ? null
           : NavigationBar(
               backgroundColor: Theme.of(context).primaryColor,

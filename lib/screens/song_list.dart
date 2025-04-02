@@ -6,6 +6,7 @@ import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/providers/group_songs_provider.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
+import 'package:kimikoe_app/utils/scroll_utils.dart';
 import 'package:kimikoe_app/widgets/card/group_card_m.dart';
 import 'package:kimikoe_app/widgets/card/song_card.dart';
 
@@ -21,6 +22,15 @@ class SongListScreen extends ConsumerStatefulWidget {
 }
 
 class _SongListScreenState extends ConsumerState<SongListScreen> {
+  final _scrollController = ScrollController();
+  double _lastScrollOffset = 0;
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final group = widget.group;
@@ -40,14 +50,30 @@ class _SongListScreenState extends ConsumerState<SongListScreen> {
             Expanded(
               child: songsList.when(
                 data: (songs) {
-                  return ListView.builder(
-                    itemCount: songs.length,
-                    itemBuilder: (ctx, index) {
-                      return SongCard(key: Key(songs[index].title),
-                        song: songs[index],
-                        group: group,
-                      );
+                  return NotificationListener<ScrollNotification>(
+                    onNotification: (notification) {
+                      if (ScrollUtils.handleScrollNotification(
+                        notification,
+                        ref,
+                        lastScrollOffset: _lastScrollOffset,
+                      )) {
+                        setState(() {
+                          _lastScrollOffset = notification.metrics.pixels;
+                        });
+                      }
+                      return false;
                     },
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      itemCount: songs.length,
+                      itemBuilder: (ctx, index) {
+                        return SongCard(
+                          key: Key(songs[index].title),
+                          song: songs[index],
+                          group: group,
+                        );
+                      },
+                    ),
                   );
                 },
                 error: (error, _) {

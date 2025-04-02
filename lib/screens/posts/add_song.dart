@@ -288,6 +288,18 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
     }
     selectedGroupId = supabaseServices.utils
         .findDataIdByName(list: _groupIdAndNameList, name: groupName);
+    if (selectedGroupId == null) {
+      logger.e('グループIDが取得できませんでした。グループ名: $groupName');
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('グループが見つからないか、登録されていません。')),
+      );
+      setState(() {
+        _isSending = false;
+      });
+      return; // 処理を中止
+    }
+    
     // 作詞家登録
     final lyricistName = _lyricistNameController.text;
     final isSelectedLyricistInList =
