@@ -161,7 +161,6 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                   icon: CircleAvatar(
                     key: Key(WidgetKeys.userAvatar),
                     backgroundImage: NetworkImage(imageUrl),
-                    // radius: avaterSizeS,
                     maxRadius: iconRadius,
                   ),
                   label: '',
