@@ -67,6 +67,7 @@ class CustomRobot<T extends Widget> extends Robot<Widget> {
   }
 
   Future<void> tapWidget(String keyValue) async {
+    await ensureVisibleWidget(keyValue);
     await tester.tap(find.byKey(Key(keyValue)));
     await tester.pumpAndSettle();
   }
@@ -111,7 +112,7 @@ class CustomRobot<T extends Widget> extends Robot<Widget> {
       await Future<void>.delayed(delay);
     }
     if (!conditionMet) {
-      throw Exception('$finderが見つかりませんでした');
+      throw Exception('ウィジェットが見つかりませんでした: $finder');
     }
   }
 
