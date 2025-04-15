@@ -5,7 +5,7 @@ import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/artist_list_provider.dart';
 import 'package:kimikoe_app/providers/groups_provider.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
+import 'package:kimikoe_app/providers/supabase/supabase_services_provider.dart';
 
 final groupSongsProvider =
     FutureProvider.family<List<Song>, int>((ref, groupId) async {
@@ -19,10 +19,8 @@ final groupSongsProvider =
 
     final groupName = group.name;
     logger.i('Supabaseから $groupName の曲リストを取得中...');
-    final response = await supabase
-        .from(TableName.songs)
-        .select()
-        .eq(ColumnName.groupId, groupId);
+    final service = ref.read(supabaseServicesProvider);
+    final response = await service.fetch.fetchSongs(groupId);
 
     final songs = <Song>[];
 

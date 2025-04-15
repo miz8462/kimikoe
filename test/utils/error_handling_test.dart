@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/utils/error_handling.dart';
 
-import '../test_utils/mocks/logger_mock.dart';
+import '../test_utils/mocks/logger.mocks.dart';
 import '../test_utils/test_widgets.dart';
 
 void main() {

@@ -3,154 +3,126 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/groups_provider.dart';
-import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
-import 'package:mockito/mockito.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../test_utils/mocks/logger_mock.dart';
+import '../test_utils/test_utils.dart';
 
 void main() {
   late GroupsNotifier notifier;
+  late ProviderContainer container;
   late SupabaseClient mockSupabase;
-  late SupabaseClient errorSupabase;
 
   setUp(() async {
-    mockSupabase = SupabaseClient(
-      'https://mock.supabase.co',
-      'fakeAnonKey',
-      httpClient: MockSupabaseHttpClient(),
-    );
-    errorSupabase = SupabaseClient('error', 'error');
-    await mockSupabase.from(TableName.idolGroups).insert({
-      ColumnName.id: 1,
-      ColumnName.name: 'test group',
-      ColumnName.imageUrl: 'https://example.com/test.jpg',
-    });
-    logger = MockLogger();
+    container = await TestUtils.setupTestContainer();
+    mockSupabase = Supabase.instance.client;
 
-    notifier = GroupsNotifier();
-    await notifier.initialize(
-      supabase: mockSupabase,
-    );
+    // モックデータの設定
+    await mockSupabase.from(TableName.idolGroups).insert([
+      {
+        ColumnName.id: 1,
+        ColumnName.name: 'test group 1',
+        ColumnName.imageUrl: 'https://example.com/test1.jpg',
+      },
+      {
+        ColumnName.id: 2,
+        ColumnName.name: 'test group 2',
+        ColumnName.imageUrl: 'https://example.com/test2.jpg',
+      },
+    ]);
+
+    notifier = container.read(groupsProvider.notifier);
+    await notifier.initialize();
   });
 
-  tearDown(() {
-    notifier.dispose();
+  tearDown(() async {
+    await TestUtils.cleanup();
+    container.dispose();
   });
 
   group('GroupsState', () {
-    test('クラスの初期化', () {
+    test('初期状態の確認', () {
       final state = GroupsState();
-
-      expect(state, isA<GroupsState>());
-      expect(state.groups, isA<List<IdolGroup>>());
+      expect(state.groups, isEmpty);
       expect(state.isLoading, isFalse);
     });
 
-    test('クラスをcopyWithで上書き', () {
+    test('copyWithによる状態の更新', () {
       final state = GroupsState();
       final newGroups = [
         IdolGroup(
+          id: 1,
           name: 'test group',
           imageUrl: 'https://example.com/test.jpg',
         ),
       ];
+
       final newState = state.copyWith(
         groups: newGroups,
         isLoading: true,
       );
 
       expect(newState.groups, newGroups);
-      expect(newState.isLoading, true);
+      expect(newState.isLoading, isTrue);
     });
   });
 
   group('GroupsNotifier', () {
-    test('initializeでアイドルグループのリストを取得', () async {
+    test('initializeでグループリストを取得', () async {
       expect(notifier.state.isLoading, isFalse);
-      expect(notifier.state.groups.length, 1);
-      expect(notifier.state.groups.first.name, 'test group');
-      verify(logger.i('アイドルグループのリストを取得中...')).called(1);
-      verify(logger.i('アイドルグループのリストを1件取得しました')).called(1);
-    });
-
-    test('initializeでエラーが発生した場合は例外をスロー', () async {
-      var didThrowError = false;
-      try {
-        await notifier.initialize(
-          supabase: errorSupabase,
-        );
-      } catch (e, stackTrace) {
-        didThrowError = true;
-        verify(
-          logger.e(
-            'アイドルグループのリストを取得中にエラーが発生しました',
-            error: e,
-            stackTrace: stackTrace,
-          ),
-        ).called(1);
-      }
-      expect(didThrowError, isTrue);
-    });
-
-    test('addGroup', () async {
-      final newGroup = IdolGroup(
-        name: 'test group2',
-        imageUrl: 'https://example.com/test2.jpg',
-      );
-      notifier.addGroup(newGroup);
-
       expect(notifier.state.groups.length, 2);
-      expect(notifier.state.groups.last.name, 'test group2');
-      verify(logger.i('アイドルグループを追加しています: test group2')).called(1);
+      expect(notifier.state.groups[0].name, 'test group 1');
+      expect(notifier.state.groups[1].name, 'test group 2');
     });
 
-    test('removeGroup', () {
-      expect(notifier.state.groups.length, 1);
-      notifier.removeGroup(notifier.state.groups.first);
-      expect(notifier.state.groups.isEmpty, isTrue);
+    test('addGroupで新しいグループを追加', () {
+      final newGroup = IdolGroup(
+        id: 3,
+        name: 'test group 3',
+        imageUrl: 'https://example.com/test3.jpg',
+      );
+
+      notifier.addGroup(newGroup);
+      expect(notifier.state.groups.length, 3);
+      expect(notifier.state.groups.last, newGroup);
     });
 
-    test('getGroupByID', () {
-      expect(notifier.state.groups.length, 1);
-      expect(notifier.getGroupById(1), isA<IdolGroup>());
-      try {
-        expect(notifier.getGroupById(2), isNull);
-        verify(logger.e('IDが 2 のアイドルグループが見つかりませんでした')).called(1);
-      } catch (e, stackTrace) {
-        verify(
-          logger.e(
-            'ID:2 のグループを見つける際にエラーが発生しました',
-            error: e,
-            stackTrace: stackTrace,
-          ),
-        ).called(1);
-      }
+    test('removeGroupでグループを削除', () {
+      final initialLength = notifier.state.groups.length;
+      final groupToRemove = notifier.state.groups.first;
+
+      notifier.removeGroup(groupToRemove);
+      expect(notifier.state.groups.length, initialLength - 1);
+      expect(notifier.state.groups.contains(groupToRemove), isFalse);
+    });
+
+    test('getGroupByIdで存在するグループを取得', () {
+      final group = notifier.getGroupById(1);
+      expect(group, isNotNull);
+      expect(group!.id, 1);
+      expect(group.name, 'test group 1');
+    });
+
+    test('getGroupByIdで存在しないグループを取得しようとした場合', () {
+      expect(
+        () => notifier.getGroupById(999),
+        throwsStateError,
+      );
     });
   });
 
   group('GroupsProvider', () {
-    test('プロバイダーの初期化', () async {
-      final container = ProviderContainer(
-        overrides: [
-          groupsProvider.overrideWith(
-            (ref) => notifier,
-          ),
-        ],
-      );
+    test('プロバイダーの初期化と状態の確認', () async {
+      final testContainer = await TestUtils.setupTestContainer();
+      final provider = testContainer.read(groupsProvider.notifier);
 
-      await container
-          .read(groupsProvider.notifier)
-          .initialize(supabase: mockSupabase);
-
-      final state = container.read(groupsProvider);
-
-      verify(logger.i('アイドルグループのリストを取得中...')).called(2);
+      await provider.initialize();
+      final state = testContainer.read(groupsProvider);
 
       expect(state, isA<GroupsState>());
-      expect(state.groups.length, 1);
-      expect(state.groups.first.name, 'test group');
+      expect(state.groups.length, 2);
+      expect(state.isLoading, isFalse);
+
+      testContainer.dispose();
     });
   });
 }

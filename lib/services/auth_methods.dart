@@ -7,7 +7,7 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/auth_provider.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
+import 'package:kimikoe_app/providers/supabase/supabase_provider.dart';
 import 'package:kimikoe_app/providers/user_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -86,6 +86,7 @@ class AuthMethods {
 
     try {
       logger.d('サインアップを開始しました。メールアドレス: $email');
+      final supabase = ref.read(supabaseProvider);
       final response = await supabase.auth.signUp(
         email: email,
         password: password,
@@ -169,6 +170,7 @@ class AuthMethods {
         throw Exception('IDトークンが見つかりません');
       }
 
+      final supabase = ref.read(supabaseProvider);
       await supabase.auth.signInWithIdToken(
         provider: OAuthProvider.google,
         idToken: idToken,

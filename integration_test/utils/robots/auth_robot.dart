@@ -1,20 +1,23 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/main.dart' as app;
 import 'package:kimikoe_app/models/environment_keys.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
+import 'package:kimikoe_app/providers/supabase/supabase_provider.dart';
+import 'package:kimikoe_app/providers/supabase/supabase_services_provider.dart';
 import 'package:kimikoe_app/screens/idol_group_list.dart';
 import 'package:kimikoe_app/screens/sign_in.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'custom_robot.dart';
 
 class AuthRobot extends CustomRobot<SignInScreen> {
-  AuthRobot(super.tester);
+  AuthRobot(super.tester, this.container);
+
+  final ProviderContainer container;
 
   late String email;
   late String password;
@@ -26,8 +29,9 @@ class AuthRobot extends CustomRobot<SignInScreen> {
   Future<void> launchApp() async {
     await app.main();
 
-    if (supabase.auth.currentSession != null) {
-      await supabase.auth.signOut();
+    final client = container.read(supabaseProvider);
+    if (client.auth.currentSession != null) {
+      await client.auth.signOut();
     }
 
     await waitForWidget(SignInScreen);
@@ -82,11 +86,12 @@ class AuthRobot extends CustomRobot<SignInScreen> {
   Future<void> deleteUser() async {
     final context = tester.element(find.byType(IdolGroupListScreen));
     try {
-      await SupabaseServices.delete.deleteDataById(
+      final client = container.read(supabaseProvider);
+      final service = container.read(supabaseServicesProvider);
+      await service.delete.deleteDataById(
         table: TableName.profiles,
-        id: supabase.auth.currentUser!.id,
+        id: client.auth.currentUser!.id,
         context: context,
-        supabase: supabase,
       );
     } catch (e) {
       logger.e('テストユーザープロフィール削除中にエラーが発生しました: $e');
@@ -100,7 +105,8 @@ class AuthRobot extends CustomRobot<SignInScreen> {
       dotenv.env[EnvironmentKeys.serviceRoleKey]!,
     );
     try {
-      await supabaseAdmin.auth.admin.deleteUser(supabase.auth.currentUser!.id);
+      final client = container.read(supabaseProvider);
+      await supabaseAdmin.auth.admin.deleteUser(client.auth.currentUser!.id);
       logger.i('テストユーザーを削除しました');
     } catch (e) {
       logger.e('テストユーザー削除中にエラーが発生しました: $e');

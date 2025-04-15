@@ -7,6 +7,8 @@ import 'package:kimikoe_app/utils/image_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../test_utils/mocks/a_mock_generater.mocks.dart';
+
 // モックのファイルとコンテキスト
 class MockFile extends Mock implements File {}
 
@@ -14,12 +16,24 @@ class MockBuildContext extends Mock implements BuildContext {}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+
   late MockFile mockFile;
   late MockBuildContext mockContext;
+  late MockSupabaseStorage mockSupabaseStorage;
 
   setUp(() {
     mockFile = MockFile();
     mockContext = MockBuildContext();
+    mockSupabaseStorage = MockSupabaseStorage();
+
+    // モックの設定
+    when(mockSupabaseStorage.fetchImageUrl(any)).thenReturn('');
+  });
+
+  tearDown(() {
+    reset(mockFile);
+    reset(mockContext);
+    reset(mockSupabaseStorage);
   });
 
   group('getImagePath関数', () {
@@ -64,6 +78,7 @@ void main() {
         existingImageUrl: '',
         selectedImage: null,
         context: mockContext,
+        storage: mockSupabaseStorage,
       );
       expect(result, noImage);
     });
@@ -75,6 +90,7 @@ void main() {
         existingImageUrl: '',
         selectedImage: mockFile,
         context: mockContext,
+        storage: mockSupabaseStorage,
         createImagePathFunction: mockCreateImagePath,
         uploadFunction: mockUploadImageToStorage,
         fetchFunction: mockFetchImageUrl,
@@ -91,6 +107,7 @@ void main() {
         existingImageUrl: 'https://example.com/existing.jpg',
         selectedImage: mockFile,
         context: mockContext,
+        storage: mockSupabaseStorage,
         createImagePathFunction: mockCreateImagePath,
         uploadFunction: mockUploadImageToStorage,
         fetchFunction: mockFetchImageUrl,
@@ -107,6 +124,7 @@ void main() {
         existingImageUrl: 'https://example.com/existing.jpg',
         selectedImage: mockFile,
         context: mockContext,
+        storage: mockSupabaseStorage,
         createImagePathFunction: mockCreateImagePath,
         uploadFunction: mockUploadImageToStorage,
         fetchFunction: mockFetchImageUrl,

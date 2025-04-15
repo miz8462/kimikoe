@@ -3,11 +3,12 @@ import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseFetch {
-  Future<List<Map<String, dynamic>>> fetchArtists({
-    required SupabaseClient supabase,
-  }) async {
+  SupabaseFetch(this.client);
+  final SupabaseClient client;
+
+  Future<List<Map<String, dynamic>>> fetchArtists() async {
     try {
-      final response = await supabase.from(TableName.artists).select();
+      final response = await client.from(TableName.artists).select();
       logger.i('アーティストのリストを取得しました');
       return response;
     } catch (e) {
@@ -16,12 +17,23 @@ class SupabaseFetch {
     }
   }
 
-  Future<List<Map<String, dynamic>>> fetchGroupMembers(
-    int groupId, {
-    required SupabaseClient supabase,
-  }) async {
+  Future<List<Map<String, dynamic>>> fetchSongs(int groupId) async {
     try {
-      final response = await supabase
+      final response = await client
+          .from(TableName.songs)
+          .select()
+          .eq(ColumnName.groupId, groupId);
+      logger.i('曲のリストを取得しました');
+      return response;
+    } catch (e) {
+      logger.e('曲のリストの取得中にエラーが発生しました', error: e);
+      rethrow;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> fetchGroupMembers(int groupId) async {
+    try {
+      final response = await client
           .from(TableName.idols)
           .select()
           .eq(ColumnName.groupId, groupId);
@@ -33,12 +45,26 @@ class SupabaseFetch {
     }
   }
 
-  Future<List<Map<String, dynamic>>> fetchIdAndNameList(
-    String tableName, {
-    required SupabaseClient supabase,
-  }) async {
+  Future<Map<String, dynamic>> fetchCurrentUser(String currentUserId) async {
     try {
-      final response = await supabase
+      final currentUser = await client
+          .from(TableName.profiles)
+          .select()
+          .eq(ColumnName.id, currentUserId)
+          .single();
+      logger.i('現在のユーザーを取得しました');
+      return currentUser;
+    } catch (e) {
+      logger.e('現在のユーザーの取得中にエラーが発生しました', error: e);
+      rethrow;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> fetchIdAndNameList(
+    String tableName,
+  ) async {
+    try {
+      final response = await client
           .from(tableName)
           .select('${ColumnName.id}, ${ColumnName.name}');
       logger.i('$tableNameのIDと名前のリストを取得しました');
@@ -52,16 +78,63 @@ class SupabaseFetch {
   Stream<dynamic> fetchDataByStream({
     required String table,
     required String id,
-    required SupabaseClient supabase,
   }) async* {
     try {
-      final stream = supabase.from(table).stream(primaryKey: [id]);
+      final stream = client.from(table).stream(primaryKey: [id]);
       logger.i('$tableのデータをストリームで取得中...');
       await for (final data in stream) {
         yield data;
       }
     } catch (e) {
       logger.e('$tableのデータをストリームで取得中にエラーが発生しました', error: e);
+      rethrow;
+    }
+  }
+
+  // favorite
+  Future<List<Map<String, dynamic>>> fetchFavorites({
+    required String tableName,
+    required String userId,
+  }) async {
+    try {
+      final response =
+          await client.from(tableName).select().eq(ColumnName.userId, userId);
+      logger.i('お気に入りのグループを取得しました');
+      return response;
+    } catch (e) {
+      logger.e('お気に入りのグループの取得中にエラーが発生しました', error: e);
+      rethrow;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> fetchFavoriteGroups(
+    List<int> favoriteIds,
+  ) async {
+    try {
+      final response = await client
+          .from(TableName.idolGroups)
+          .select()
+          .inFilter(ColumnName.id, favoriteIds);
+      logger.i('お気に入りのグループを取得しました');
+      return response;
+    } catch (e) {
+      logger.e('お気に入りのグループの取得中にエラーが発生しました', error: e);
+      rethrow;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> fetchFavoriteSongs(
+    List<int> favoriteIds,
+  ) async {
+    try {
+      final response = await client
+          .from(TableName.songs)
+          .select()
+          .inFilter(ColumnName.id, favoriteIds);
+      logger.i('お気に入りの曲を取得しました');
+      return response;
+    } catch (e) {
+      logger.e('お気に入りの曲の取得中にエラーが発生しました', error: e);
       rethrow;
     }
   }

@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/providers/bottom_bar_visibility/bottom_bar_visibility_provider.dart';
 import 'package:kimikoe_app/providers/groups_provider.dart' show groupsProvider;
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/utils/scroll_utils.dart';
 import 'package:kimikoe_app/widgets/card/group_card_l.dart';
@@ -63,9 +62,7 @@ class _IdolGroupListScreenState extends ConsumerState<IdolGroupListScreen> {
     } else {
       content = RefreshIndicator(
         onRefresh: () async {
-          await ref
-              .read(groupsProvider.notifier)
-              .fetchGroupList(supabase: supabase);
+          await ref.read(groupsProvider.notifier).fetchGroupList();
           ref.read(bottomBarVisibilityNotifierProvider.notifier).show();
         },
         child: NotificationListener<ScrollNotification>(

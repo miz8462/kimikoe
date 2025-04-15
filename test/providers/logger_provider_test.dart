@@ -3,7 +3,7 @@ import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:logger/logger.dart';
 import 'package:mockito/mockito.dart';
 
-import '../test_utils/mocks/logger_mock.dart';
+import '../test_utils/mocks/logger.mocks.dart';
 import '../test_utils/test_helpers.dart';
 
 void main() {

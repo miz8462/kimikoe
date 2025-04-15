@@ -1,31 +1,29 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:mockito/mockito.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../test_utils/mocks/logger_mock.dart';
+import '../../test_utils/mocks/logger.mocks.dart';
+
 
 void main() {
-  late final SupabaseClient errorSupabase;
   late final SupabaseClient mockSupabase;
-  late final MockSupabaseHttpClient mockHttpClient;
+  late MockSupabaseHttpClient mockHttpClient;
+  late final SupabaseFetch supabaseFetch;
 
   setUpAll(() async {
     mockHttpClient = MockSupabaseHttpClient();
     mockSupabase = SupabaseClient(
       'https://mock.supabase.co',
       'fakeAnonKey',
-      httpClient: MockSupabaseHttpClient(),
+      httpClient: mockHttpClient,
     );
 
-    errorSupabase = SupabaseClient(
-      'error',
-      'error',
-    );
     logger = MockLogger();
+    supabaseFetch = SupabaseFetch(mockSupabase);
   });
 
   tearDown(() async {
@@ -37,9 +35,7 @@ void main() {
       await mockSupabase.from(TableName.artists).insert({
         ColumnName.name: 'test artist',
       });
-      final artistList = await SupabaseServices.fetch.fetchArtists(
-        supabase: mockSupabase,
-      );
+      final artistList = await supabaseFetch.fetchArtists();
 
       expect(artistList.length, 1);
       expect(artistList.first[ColumnName.name], 'test artist');
@@ -47,16 +43,13 @@ void main() {
     });
     testWidgets('fetchArtistsの例外処理', (WidgetTester tester) async {
       var didThrowError = false;
-
       try {
-        await SupabaseServices.fetch.fetchArtists(
-          supabase: errorSupabase,
-        );
+        await supabaseFetch.fetchArtists();
       } catch (e) {
         verify(logger.e('アーティストのリストの取得中にエラーが発生しました', error: e)).called(1);
         didThrowError = true;
+        expect(didThrowError, isTrue);
       }
-      expect(didThrowError, isTrue);
     });
   });
 
@@ -66,10 +59,7 @@ void main() {
         ColumnName.groupId: 1,
         ColumnName.name: 'test idol',
       });
-      final members = await SupabaseServices.fetch.fetchGroupMembers(
-        1,
-        supabase: mockSupabase,
-      );
+      final members = await supabaseFetch.fetchGroupMembers(1);
 
       expect(members.length, 1);
       expect(members.first[ColumnName.name], 'test idol');
@@ -77,17 +67,13 @@ void main() {
 
     testWidgets('fetchGroupMembersの例外処理', (WidgetTester tester) async {
       var didThrowError = false;
-
       try {
-        await SupabaseServices.fetch.fetchGroupMembers(
-          1,
-          supabase: errorSupabase,
-        );
+        await supabaseFetch.fetchGroupMembers(1);
       } catch (e) {
         verify(logger.e('グループメンバーリストの取得中にエラーが発生しました', error: e)).called(1);
         didThrowError = true;
+        expect(didThrowError, isTrue);
       }
-      expect(didThrowError, isTrue);
     });
   });
 
@@ -96,10 +82,8 @@ void main() {
       await mockSupabase.from(TableName.idolGroups).insert({
         ColumnName.name: 'test group',
       });
-      final idolGroupsIdAndNameList =
-          await SupabaseServices.fetch.fetchIdAndNameList(
+      final idolGroupsIdAndNameList = await supabaseFetch.fetchIdAndNameList(
         TableName.idolGroups,
-        supabase: mockSupabase,
       );
 
       expect(idolGroupsIdAndNameList.length, 1);
@@ -107,20 +91,17 @@ void main() {
     });
     testWidgets('fetchIdAndNameListの例外処理', (WidgetTester tester) async {
       var didThrowError = false;
-
       try {
-        await SupabaseServices.fetch.fetchIdAndNameList(
+        await supabaseFetch.fetchIdAndNameList(
           TableName.idolGroups,
-          supabase: errorSupabase,
         );
       } catch (e) {
         verify(
           logger.e('idol_groupsのIDと名前のリストの取得中にエラーが発生しました', error: e),
         ).called(1);
         didThrowError = true;
+        expect(didThrowError, isTrue);
       }
-
-      expect(didThrowError, isTrue);
     });
   });
 
@@ -132,11 +113,10 @@ void main() {
       });
     });
     test('ストリームでデータを取得する', () async {
-      final stream = await SupabaseServices.fetch
+      final stream = await supabaseFetch
           .fetchDataByStream(
             table: TableName.artists,
             id: '1',
-            supabase: mockSupabase,
           )
           .first as List<Map<String, dynamic>>;
 
@@ -145,22 +125,19 @@ void main() {
     });
     test('fetchDataByStreamの例外処理', () async {
       var didThrowError = false;
-
       try {
-        await SupabaseServices.fetch
+        await supabaseFetch
             .fetchDataByStream(
               table: TableName.artists,
               id: '1',
-              supabase: errorSupabase,
             )
             .first;
       } catch (e) {
         verify(logger.e('artistsのデータをストリームで取得中にエラーが発生しました', error: e))
             .called(1);
-
         didThrowError = true;
+        expect(didThrowError, isTrue);
       }
-      expect(didThrowError, isTrue);
     });
   });
 }

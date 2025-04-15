@@ -1,16 +1,16 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
+import 'package:kimikoe_app/providers/supabase/supabase_services_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
 import 'package:kimikoe_app/widgets/button/image_input.dart';
@@ -18,14 +18,14 @@ import 'package:kimikoe_app/widgets/button/styled_button.dart';
 import 'package:kimikoe_app/widgets/form/expanded_text_form.dart';
 import 'package:kimikoe_app/widgets/form/text_input_form.dart';
 
-class AddArtistScreen extends StatefulWidget {
+class AddArtistScreen extends ConsumerStatefulWidget {
   const AddArtistScreen({super.key});
 
   @override
-  State<AddArtistScreen> createState() => _AddArtistScreenState();
+  ConsumerState<AddArtistScreen> createState() => _AddArtistScreenState();
 }
 
-class _AddArtistScreenState extends State<AddArtistScreen> {
+class _AddArtistScreenState extends ConsumerState<AddArtistScreen> {
   final _formKey = GlobalKey<FormState>();
   var _enteredName = '';
   var _enteredComment = '';
@@ -58,8 +58,10 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
       imageFile: _selectedImage,
     );
 
+    final service = ref.watch(supabaseServicesProvider);
+
     if (_selectedImage != null) {
-      await supabaseStorage.uploadImageToStorage(
+      await service.storage.uploadImageToStorage(
         table: TableName.images,
         path: imagePath,
         file: _selectedImage!,
@@ -67,18 +69,16 @@ class _AddArtistScreenState extends State<AddArtistScreen> {
       );
     }
 
-    final imageUrl = supabaseStorage.fetchImageUrl(
+    final imageUrl = service.storage.fetchImageUrl(
       imagePath,
-      injectedSupabase: supabase,
     );
 
     if (!mounted) return;
-    await SupabaseServices.insert.insertArtistData(
+    await service.insert.insertArtistData(
       name: _enteredName,
       imageUrl: imageUrl,
       comment: _enteredComment,
       context: context,
-      supabase: supabase,
     );
 
     setState(() {

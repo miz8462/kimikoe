@@ -9,7 +9,7 @@ import 'package:kimikoe_app/extensions/context_extension.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
+import 'package:kimikoe_app/providers/supabase/supabase_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/services/auth_methods.dart';
 import 'package:kimikoe_app/widgets/button/social_login_button.dart';
@@ -32,8 +32,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   var _enteredName = '';
   var _isLogin = true;
 
-  late final StreamSubscription<AuthState> _authStateSubscription;
+  StreamSubscription<AuthState>? _authStateSubscription;
   late final AuthMethods _authMethods;
+  SupabaseClient? _client;
 
   Future<void> _signUp() async {
     await _authMethods.signUp(_enteredEmail, _enteredPassword, _enteredName);
@@ -50,43 +51,50 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   @override
   void initState() {
     super.initState();
-
     _authMethods = AuthMethods(
       context: context,
       ref: ref,
       formKey: _formKey,
     );
+  }
 
-    _authStateSubscription = supabase.auth.onAuthStateChange.listen(
-      (data) async {
-        if (_isRedirecting) return;
-        final session = data.session;
-        if (session != null) {
-          _isRedirecting = true;
-          if (mounted) {
-            context.go(RoutingPath.groupList);
-            logger.i('セッションが存在します。リダイレクトを開始します');
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_client == null) {
+      _client = ref.watch(supabaseProvider);
+      _authStateSubscription?.cancel();
+      _authStateSubscription = _client!.auth.onAuthStateChange.listen(
+        (data) async {
+          if (_isRedirecting) return;
+          final session = data.session;
+          if (session != null) {
+            _isRedirecting = true;
+            if (mounted) {
+              context.go(RoutingPath.groupList);
+              logger.i('セッションが存在します。リダイレクトを開始します');
+            }
           }
-        }
-      },
-      onError: (Object error) {
-        if (!mounted) {
-          return;
-        }
-        if (error is AuthException) {
-          context.showSnackBar(error.message, isError: true);
-          logger.e('認証エラーが発生しました: ${error.message}');
-        } else {
-          context.showSnackBar('予期しないエラーが発生しました', isError: true);
-          logger.e('予期しないエラーが発生しました: $error');
-        }
-      },
-    );
+        },
+        onError: (Object error) {
+          if (!mounted) {
+            return;
+          }
+          if (error is AuthException) {
+            context.showSnackBar(error.message, isError: true);
+            logger.e('認証エラーが発生しました: ${error.message}');
+          } else {
+            context.showSnackBar('予期しないエラーが発生しました', isError: true);
+            logger.e('予期しないエラーが発生しました: $error');
+          }
+        },
+      );
+    }
   }
 
   @override
   void dispose() {
-    _authStateSubscription.cancel();
+    _authStateSubscription?.cancel();
     super.dispose();
   }
 

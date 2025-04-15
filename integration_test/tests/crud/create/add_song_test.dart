@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
@@ -12,9 +13,18 @@ import '../../../utils/robots/navigation_robot.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  late ProviderContainer container;
+
+  setUp(() {
+    container = ProviderContainer();
+  });
+
+  tearDown(() {
+    container.dispose();
+  });
 
   testWidgets('曲を登録する', (WidgetTester tester) async {
-    final authRobot = AuthRobot(tester);
+    final authRobot = AuthRobot(tester, container);
     await authRobot.initializeAndLogin();
 
     final naviRobot = NavigationRobot(tester);
@@ -27,7 +37,7 @@ void main() {
     final now = DateTime.now();
     final today = formatDateTimeToXXXX(date: now, formatStyle: 'yyyy/MM/dd');
     final comment = 'test-comment';
-    final formRobot = FormRobot(tester);
+    final formRobot = FormRobot(tester, container);
     await formRobot.enterTitle(title);
     await formRobot.selectGroup();
     await formRobot.tapWidget(WidgetKeys.addLyric);

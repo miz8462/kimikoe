@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/utils/show_log_and_snack_bar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseDelete {
+  SupabaseDelete(this.client);
+  final SupabaseClient client;
+
   Future<void> deleteDataById({
     required String table,
     required String id,
     required BuildContext context,
-    required SupabaseClient supabase,
   }) async {
     try {
-      await supabase.from(table).delete().eq(ColumnName.id, id);
+      await client.from(table).delete().eq(ColumnName.id, id);
 
       if (context.mounted) {
         SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -46,7 +47,7 @@ class SupabaseDelete {
     String targetColumn = ColumnName.name,
   }) async {
     try {
-      await supabase.from(table).delete().eq(targetColumn, name);
+      await client.from(table).delete().eq(targetColumn, name);
 
       logger.i('$nameのデータを削除しました');
     } catch (e) {

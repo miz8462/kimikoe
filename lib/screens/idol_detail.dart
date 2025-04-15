@@ -9,9 +9,9 @@ import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/group_members_provider.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
+import 'package:kimikoe_app/providers/supabase/supabase_services_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
 import 'package:kimikoe_app/utils/open_links.dart';
 import 'package:kimikoe_app/widgets/delete_alert_dialog.dart';
@@ -85,7 +85,8 @@ class _IdolDetailScreenState extends ConsumerState<IdolDetailScreen> {
         return DeleteAlertDialog(
           key: Key(WidgetKeys.deleteIdol),
           onDelete: () async {
-            await SupabaseServices.delete.deleteDataByName(
+            final service = ref.read(supabaseServicesProvider);
+            await service.delete.deleteDataByName(
               table: TableName.idols,
               name: widget.idol.name,
             );

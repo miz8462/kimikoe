@@ -4,7 +4,8 @@ import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/utils/logging_util.dart';
 import 'package:mockito/mockito.dart';
 
-import '../test_utils/mocks/logger_mock.dart';
+import '../test_utils/mocks/logger.mocks.dart';
+
 
 void main() {
   setUpAll(() {

@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_delete.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../test_utils/mocks/logger_mock.dart';
+import '../../test_utils/mocks/logger.mocks.dart';
 import '../../test_utils/test_helpers.dart';
 
 void main() {
   late final SupabaseClient errorSupabase;
   late final SupabaseClient mockSupabase;
   late final MockSupabaseHttpClient mockHttpClient;
+  late final SupabaseDelete supabaseDelete;
 
   setUpAll(() async {
     mockHttpClient = MockSupabaseHttpClient();
@@ -28,7 +28,7 @@ void main() {
       'error',
     );
     logger = MockLogger();
-    supabase = mockSupabase;
+    supabaseDelete = SupabaseDelete(mockSupabase);
   });
 
   tearDown(() async {
@@ -46,11 +46,10 @@ void main() {
       final artists = await mockSupabase.from(TableName.artists).select();
       expect(artists.last[ColumnName.name], 'delete artist');
 
-      await SupabaseServices.delete.deleteDataById(
+      await supabaseDelete.deleteDataById(
         table: TableName.artists,
         id: '1',
         context: mockContext,
-        supabase: mockSupabase,
       );
 
       // 削除後のデータ
@@ -75,16 +74,15 @@ void main() {
       final artists = await mockSupabase.from(TableName.artists).select();
       expect(artists.last[ColumnName.name], 'cannot delete artist');
       try {
-        await SupabaseServices.delete.deleteDataById(
+        await SupabaseDelete(errorSupabase).deleteDataById(
           table: TableName.artists,
           id: '1',
           context: mockContext,
-          supabase: errorSupabase,
         );
 
         expect(find.byType(SnackBar), findsOneWidget);
         expect(
-          find.text('ータの削除中にエラーが発生しました。名前: 1'),
+          find.text('データの削除中にエラーが発生しました。ID: 1'),
           findsOneWidget,
         );
       } catch (e) {

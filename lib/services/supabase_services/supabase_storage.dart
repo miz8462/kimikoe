@@ -4,19 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:kimikoe_app/utils/show_log_and_snack_bar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseStorage {
+  SupabaseStorage(this.client);
+  final SupabaseClient client;
   Future<void> uploadImageToStorage({
     required String table,
     required String path,
     required File file,
     required BuildContext context,
-    SupabaseClient? supabaseClient,
   }) async {
-    final client = supabaseClient ?? supabase;
     try {
       await client.storage.from(table).upload(path, file);
       if (!context.mounted) return;
@@ -30,17 +29,10 @@ class SupabaseStorage {
     }
   }
 
-// HACK: Supabase CLI でできるらしいよ
-  String fetchImageUrl(
-    String imagePath, {
-    SupabaseClient? injectedSupabase,
-  }) {
-    // XXX: ｲｼﾞﾙﾅｷｹﾝ
-    final diSupabase = injectedSupabase ?? supabase;
+  String fetchImageUrl(String imagePath) {
     if (imagePath == noImage) return noImage;
     try {
-      final url =
-          diSupabase.storage.from(TableName.images).getPublicUrl(imagePath);
+      final url = client.storage.from(TableName.images).getPublicUrl(imagePath);
       logger.i('画像URLを取得しました');
       return url;
     } catch (e) {

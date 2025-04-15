@@ -11,10 +11,9 @@ import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/groups_provider.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
+import 'package:kimikoe_app/providers/supabase/supabase_services_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
 import 'package:kimikoe_app/utils/date_formatter.dart';
 import 'package:kimikoe_app/utils/image_utils.dart';
 import 'package:kimikoe_app/utils/pickers/custom_picker.dart';
@@ -127,12 +126,14 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
 
     FocusScope.of(context).unfocus();
 
+    final storage = ref.watch(supabaseServicesProvider).storage;
     final imageUrl = await processImage(
       isEditing: _isEditing,
       isImageChanged: _isImageChanged,
       existingImageUrl: _group.imageUrl,
       selectedImage: _selectedImage,
       context: context,
+      storage: storage,
     );
 
     if (imageUrl == null) {
@@ -144,8 +145,9 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
 
     if (!mounted) return;
     // 登録、修正
+    final service = ref.watch(supabaseServicesProvider);
     if (_isEditing) {
-      await SupabaseServices.update.updateIdolGroup(
+      await service.update.updateIdolGroup(
         name: _enteredName,
         imageUrl: imageUrl,
         year: _selectedYear,
@@ -156,10 +158,9 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
         comment: _enteredComment,
         id: _group.id.toString(),
         context: context,
-        supabase: supabase,
       );
     } else {
-      await SupabaseServices.insert.insertIdolGroupData(
+      await service.insert.insertIdolGroupData(
         name: _enteredName,
         imageUrl: imageUrl,
         year: _selectedYear,
@@ -169,7 +170,6 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
         scheduleUrl: _enteredScheduleUrl,
         comment: _enteredComment,
         context: context,
-        supabase: supabase,
       );
     }
 
@@ -177,7 +177,7 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
       _isSending = false;
     });
 
-    await ref.read(groupsProvider.notifier).fetchGroupList(supabase: supabase);
+    await ref.read(groupsProvider.notifier).fetchGroupList();
 
     if (!mounted) {
       return;

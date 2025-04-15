@@ -5,10 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/kimikoe_app.dart';
 import 'package:kimikoe_app/models/environment_keys.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-final providerContainer = ProviderContainer();
 final sessionProvider = StateProvider<Session?>((ref) => null);
 
 Future<void> main() async {
@@ -23,7 +21,6 @@ Future<void> main() async {
       url: dotenv.env[EnvironmentKeys.supabaseUrl]!,
       anonKey: dotenv.env[EnvironmentKeys.supabaseAnonKey]!,
     );
-    initializeSupabaseClient();
   } catch (e) {
     // すでに初期化されている場合は無視
     if (e.toString().contains('already initialized')) {
@@ -33,13 +30,6 @@ Future<void> main() async {
       rethrow;
     }
   }
-
-  final supabase = providerContainer.read(supabaseProvider);
-  supabase.auth.onAuthStateChange.listen(
-    (data) {
-      providerContainer.read(sessionProvider.notifier).state = data.session;
-    },
-  );
 
   // スマホを横にしても画面が回転しない
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);

@@ -3,31 +3,26 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_storage.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../test_utils/test_helpers.dart';
 
 void main() {
-  late final SupabaseClient errorSupabase;
-  // late final SupabaseClient mockSupabase;
+  late final SupabaseClient mockSupabase;
   late final MockSupabaseHttpClient mockHttpClient;
-  // late final MockLogger mockLogger;
+  late final SupabaseStorage supabaseStorage;
 
   setUpAll(() async {
     mockHttpClient = MockSupabaseHttpClient();
-    // mockSupabase = SupabaseClient(
-    //   'https://mock.supabase.co',
-    //   'fakeAnonKey',
-    //   httpClient: MockSupabaseHttpClient(),
-    // );
-
-    errorSupabase = SupabaseClient(
-      'error',
-      'error',
+    mockSupabase = SupabaseClient(
+      'https://mock.supabase.co',
+      'fakeAnonKey',
+      httpClient: MockSupabaseHttpClient(),
     );
-    // mockLogger = MockLogger();
+
+    supabaseStorage = SupabaseStorage(mockSupabase);
   });
 
   tearDown(() async {
@@ -42,12 +37,11 @@ void main() {
       final mockContext = await createMockContext(tester);
       var didThrowError = false;
       try {
-        await SupabaseServices.storage.uploadImageToStorage(
+        await supabaseStorage.uploadImageToStorage(
           table: 'error',
           file: File('error'),
           path: 'error',
           context: mockContext,
-          supabaseClient: errorSupabase,
         );
         expect(find.byType(SnackBar), findsOneWidget);
         expect(

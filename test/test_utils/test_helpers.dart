@@ -4,11 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
+import 'package:kimikoe_app/providers/supabase/supabase_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'mocks/logger_mock.dart';
+import 'mocks/logger.mocks.dart';
 
 /// ProviderContainerを作成するユーティリティ（ボイラープレート）
 ProviderContainer createContainer({
@@ -73,7 +73,7 @@ Future<List<Map<String, dynamic>>> mockFetchGroupMembers(
 Future<void> testSupabaseSetUpAll(MockLogger mockLogger) async {
   setUpAll(() async {
     await dotenv.load();
-    initializeLogger(); 
+    initializeLogger();
     SharedPreferences.setMockInitialValues({});
 
     final supabaseUrl = dotenv.env['LOCAL_SUPABASE_URL'];

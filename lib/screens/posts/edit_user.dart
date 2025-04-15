@@ -6,7 +6,7 @@ import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/user_profile.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
+import 'package:kimikoe_app/providers/supabase/supabase_provider.dart';
 import 'package:kimikoe_app/providers/user_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
@@ -64,7 +64,9 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
       return;
     }
 
-    final userId = supabase.auth.currentUser!.id;
+    final client = ref.watch(supabaseProvider);
+
+    final userId = client.auth.currentUser!.id;
     final user = UserProfile(
       id: userId,
       name: _enteredUserName,
@@ -75,7 +77,7 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
 
     await ref
         .read(userProfileProvider.notifier)
-        .updateUserProfile(user, context);
+        .updateUserProfile(user, context, ref);
 
     // TODO: ユーザー画像の変更機能
     // if (_selectedImage != null) {

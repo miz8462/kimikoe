@@ -1,23 +1,27 @@
 import 'package:kimikoe_app/models/artist.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_storage.dart';
 
 class SupabaseUtils {
-  Future<List<Artist>> createArtistList({
-    required SupabaseClient supabase,
-  }) async {
+  SupabaseUtils({
+    required this.fetch,
+    required this.storage,
+  });
+
+  final SupabaseFetch fetch;
+  final SupabaseStorage storage;
+
+  Future<List<Artist>> createArtistList() async {
     try {
       logger.i('Supabaseからアーティストデータを取得中...');
-      final response = await SupabaseServices.fetch.fetchArtists(
-        supabase: supabase,
-      );
+      final response = await fetch.fetchArtists();
       logger.i('${response.length}件のアーティストデータをSupabaseから取得しました');
+
       final artists = response.map<Artist>((artist) {
-        final imageUrl = SupabaseServices.storage.fetchImageUrl(
+        final imageUrl = storage.fetchImageUrl(
           artist[ColumnName.imageUrl],
-          injectedSupabase: supabase,
         );
         return Artist(
           id: artist[ColumnName.id],
@@ -26,6 +30,7 @@ class SupabaseUtils {
           comment: artist[ColumnName.comment],
         );
       }).toList();
+
       logger.i('${artists.length}件のアーティストデータをリストにしました');
       return artists;
     } catch (e, stackTrace) {

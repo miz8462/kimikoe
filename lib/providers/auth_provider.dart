@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
+import 'package:kimikoe_app/providers/supabase/supabase_provider.dart';
 import 'package:kimikoe_app/providers/user_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -11,7 +11,8 @@ class AuthNotifier extends StateNotifier<Session?> {
     if (!mounted) return;
     try {
       logger.i('ログインを試みています: email = $email');
-      final response = await supabase.auth.signInWithPassword(
+      final client = ref.read(supabaseProvider);
+      final response = await client.auth.signInWithPassword(
         email: email,
         password: password,
       );
@@ -33,7 +34,8 @@ class AuthNotifier extends StateNotifier<Session?> {
   Future<void> logout(WidgetRef ref) async {
     try {
       logger.i('ログアウトを試みています');
-      await supabase.auth.signOut();
+      final client = ref.read(supabaseProvider);
+      await client.auth.signOut();
       state = null;
       logger.i('ログアウトに成功しました');
       ref.read(userProfileProvider.notifier).clearUserProfile();

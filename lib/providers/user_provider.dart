@@ -3,13 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/models/user_profile.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
+import 'package:kimikoe_app/providers/supabase/supabase_provider.dart';
+import 'package:kimikoe_app/providers/supabase/supabase_services_provider.dart';
 
 class UserProfileNotifier extends StateNotifier<UserProfile?> {
-  UserProfileNotifier() : super(null);
+  UserProfileNotifier(this.ref) : super(null);
+  final Ref ref;
 
   Future<void> fetchUserProfile() async {
+    final supabase = ref.watch(supabaseProvider);
     final currentUser = supabase.auth.currentUser;
     if (currentUser == null) {
       logger.i('ユーザーがログインしていません');
@@ -50,18 +52,21 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
   Future<void> updateUserProfile(
     UserProfile newUser,
     BuildContext context,
+    WidgetRef ref,
   ) async {
     try {
-      final currentUserId = supabase.auth.currentUser!.id;
+      final client = ref.watch(supabaseProvider);
+      final currentUserId = client.auth.currentUser!.id;
       logger.i('ユーザーのプロフィールを更新中...');
-      await SupabaseServices.update.updateUser(
+
+      final service = ref.read(supabaseServicesProvider);
+      await service.update.updateUser(
         id: currentUserId,
         name: newUser.name,
         email: newUser.email,
         imageUrl: newUser.imageUrl,
         comment: newUser.comment,
         context: context,
-        supabase: supabase,
       );
 
       state = newUser;
@@ -74,5 +79,5 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
 
 final userProfileProvider =
     StateNotifierProvider<UserProfileNotifier, UserProfile?>(
-  (ref) => UserProfileNotifier()..fetchUserProfile(),
+  (ref) => UserProfileNotifier(ref)..fetchUserProfile(),
 );

@@ -1,11 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:kimikoe_app/providers/supabase/supabase_services_provider.dart';
 
 final fetchGroupMembersProvider = Provider<
     Future<List<Map<String, dynamic>>> Function(
-      int groupId, {
-      required SupabaseClient supabase,
-    })>((ref) {
-  return SupabaseServices.fetch.fetchGroupMembers;
+      int groupId,
+    )>((ref) {
+  final supabaseServices = ref.watch(supabaseServicesProvider);
+  return supabaseServices.fetch.fetchGroupMembers;
 });

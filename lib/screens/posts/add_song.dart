@@ -14,7 +14,7 @@ import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/group_songs_provider.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
+import 'package:kimikoe_app/providers/supabase/supabase_services_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
@@ -75,9 +75,12 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
 
   late bool _isEditing;
 
+  late SupabaseServices _service;
+
   @override
   void initState() {
     super.initState();
+    _service = ref.read(supabaseServicesProvider);
     _initializeState();
   }
 
@@ -188,17 +191,14 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
   }
 
   Future<void> _fetchIdAndNameLists() async {
-    final groupList = await SupabaseServices.fetch.fetchIdAndNameList(
+    final groupList = await _service.fetch.fetchIdAndNameList(
       TableName.idolGroups,
-      supabase: supabase,
     );
-    final idolList = await SupabaseServices.fetch.fetchIdAndNameList(
+    final idolList = await _service.fetch.fetchIdAndNameList(
       TableName.idols,
-      supabase: supabase,
     );
-    final artistList = await SupabaseServices.fetch.fetchIdAndNameList(
+    final artistList = await _service.fetch.fetchIdAndNameList(
       TableName.artists,
-      supabase: supabase,
     );
     setState(() {
       _groupIdAndNameList = groupList;
@@ -236,7 +236,7 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
       for (var j = 0; j < _singerListControllers[i].length; j++) {
         final singerName = _singerListControllers[i][j].text;
         if (singerName.isNotEmpty) {
-          final idolId = SupabaseServices.utils
+          final idolId = _service.utils
               .findDataIdByName(list: _idolIdAndNameList, name: singerName);
           if (idolId != null) singerIds.add(idolId.toString());
         }
@@ -245,12 +245,14 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
     }
     final jsonStringLyrics = jsonEncode(_lyricAndSingerList);
 
+    final storage = ref.watch(supabaseServicesProvider).storage;
     final imageUrl = await processImage(
       isEditing: _isEditing,
       isImageChanged: _isImageChanged,
       existingImageUrl: _song.imageUrl,
       selectedImage: _selectedImage,
       context: context,
+      storage: storage,
     );
 
     if (imageUrl == null) {
@@ -273,30 +275,18 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
     final isSelectedGroupInList = isInList(_groupIdAndNameList, groupName);
     if (!isSelectedGroupInList && groupName.isNotEmpty) {
       if (!mounted) return;
-      await SupabaseServices.insert.insertIdolGroupData(
+      await _service.insert.insertIdolGroupData(
         name: groupName,
         imageUrl: noImage,
         year: '',
         comment: '',
         context: context,
-        supabase: supabase,
       );
       await _fetchIdAndNameLists();
     }
-    
-    selectedGroupId = SupabaseServices.utils
+
+    selectedGroupId = _service.utils
         .findDataIdByName(list: _groupIdAndNameList, name: groupName);
-    if (selectedGroupId == null) {
-      logger.e('グループIDが取得できませんでした。グループ名: $groupName');
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('グループが見つからないか、登録されていません。')),
-      );
-      setState(() {
-        _isSending = false;
-      });
-      return; // 処理を中止
-    }
 
     // 作詞家登録
     final lyricistName = _lyricistNameController.text;
@@ -304,16 +294,15 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
         isInList(_artistIdAndNameList, lyricistName);
     if (!isSelectedLyricistInList && lyricistName.isNotEmpty) {
       if (!mounted) return;
-      await SupabaseServices.insert.insertArtistData(
+      await _service.insert.insertArtistData(
         name: lyricistName,
         imageUrl: noImage,
         context: context,
-        supabase: supabase,
       );
       await _fetchIdAndNameLists();
     }
     if (lyricistName.isNotEmpty) {
-      selectedLyricistId = SupabaseServices.utils.findDataIdByName(
+      selectedLyricistId = _service.utils.findDataIdByName(
         list: _artistIdAndNameList,
         name: lyricistName,
       );
@@ -325,16 +314,15 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
         isInList(_artistIdAndNameList, composerName);
     if (!isSelectedComposerInList && composerName.isNotEmpty) {
       if (!mounted) return;
-      await SupabaseServices.insert.insertArtistData(
+      await _service.insert.insertArtistData(
         name: composerName,
         imageUrl: noImage,
         context: context,
-        supabase: supabase,
       );
       await _fetchIdAndNameLists();
     }
     if (composerName.isNotEmpty) {
-      selectedComposerId = SupabaseServices.utils.findDataIdByName(
+      selectedComposerId = _service.utils.findDataIdByName(
         list: _artistIdAndNameList,
         name: composerName,
       );
@@ -343,7 +331,7 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
     // 登録、編集
     if (!mounted) return;
     if (_isEditing) {
-      await SupabaseServices.update.updateSong(
+      await _service.update.updateSong(
         title: _enteredTitle,
         movieUrl: _enteredMovieUrl,
         lyric: jsonStringLyrics,
@@ -355,10 +343,9 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
         comment: _enteredComment,
         id: _song.id!,
         context: context,
-        supabase: supabase,
       );
     } else {
-      await SupabaseServices.insert.insertSongData(
+      await _service.insert.insertSongData(
         title: _enteredTitle,
         movieUrl: _enteredMovieUrl,
         lyric: jsonStringLyrics,
@@ -369,12 +356,11 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
         composerId: selectedComposerId,
         comment: _enteredComment,
         context: context,
-        supabase: supabase,
       );
     }
 
     // groupSongsProviderを呼び出す前にnullチェック
-    ref.watch(groupSongsProvider(selectedGroupId));
+    ref.watch(groupSongsProvider(selectedGroupId!));
 
     setState(() {
       _isSending = false;

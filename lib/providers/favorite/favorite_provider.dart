@@ -1,9 +1,10 @@
 // ignore_for_file: lines_longer_than_80_chars
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
+import 'package:kimikoe_app/providers/supabase/supabase_provider.dart';
+import 'package:kimikoe_app/providers/supabase/supabase_services_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'favorite_provider.g.dart';
@@ -12,7 +13,12 @@ enum FavoriteType { groups, songs }
 
 @Riverpod(keepAlive: true)
 class FavoriteNotifier extends _$FavoriteNotifier {
-  final _userId = supabase.auth.currentUser!.id;
+  FavoriteNotifier() {
+    _ref = ref;
+  }
+  late Ref _ref;
+
+  late final String _userId; // build時に初期化
 
   late final String _tableName;
   late final String _columnName;
@@ -27,15 +33,24 @@ class FavoriteNotifier extends _$FavoriteNotifier {
     _columnName =
         type == FavoriteType.groups ? ColumnName.groupId : ColumnName.songId;
 
+    final client = _ref.watch(supabaseProvider);
+    if (client.auth.currentUser == null) {
+      throw Exception('ユーザーがログインしていません');
+    }
+
+    _userId = client.auth.currentUser!.id;
+
     return _fetchFavorites();
   }
 
   Future<List<int>> _fetchFavorites() async {
+    final supabaseServices = ref.read(supabaseServicesProvider);
+
     try {
-      final response = await supabase
-          .from(_tableName)
-          .select()
-          .eq(ColumnName.userId, _userId);
+      final response = await supabaseServices.fetch.fetchFavorites(
+        tableName: _tableName,
+        userId: _userId,
+      );
       return response.map((item) => item[_columnName] as int).toList();
     } catch (e) {
       logger.e(
@@ -61,9 +76,11 @@ class FavoriteNotifier extends _$FavoriteNotifier {
     final previousState = state.value ?? [];
     state = AsyncData([...previousState, groupId]);
 
+    final supabaseServices = ref.read(supabaseServicesProvider);
+
     // DB処理
     try {
-      await SupabaseServices.favorite.addFavorite(
+      await supabaseServices.favorite.addFavorite(
         table: _tableName,
         userId: _userId,
         columnName: _columnName,
@@ -84,9 +101,11 @@ class FavoriteNotifier extends _$FavoriteNotifier {
     final previousState = state.value ?? [];
     state = AsyncData(previousState.where((id) => id != groupId).toList());
 
+    final supabaseServices = ref.read(supabaseServicesProvider);
+
     try {
       // Supabaseから削除
-      await SupabaseServices.favorite.removeFavorite(
+      await supabaseServices.favorite.removeFavorite(
         table: _tableName,
         userId: _userId,
         columnName: _columnName,

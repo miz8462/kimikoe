@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
@@ -13,10 +14,19 @@ import '../../utils/robots/navigation_robot.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  late ProviderContainer container;
+
+  setUp(() {
+    container = ProviderContainer();
+  });
+
+  tearDown(() {
+    container.dispose();
+  });
 
   testWidgets('グループのスターをタップするとお気に入りグループに追加あるいは削除される',
       (WidgetTester tester) async {
-    final authRobot = AuthRobot(tester);
+    final authRobot = AuthRobot(tester, container);
     await authRobot.initializeAndLogin();
 
     final naviRobot = NavigationRobot(tester);
@@ -55,7 +65,7 @@ void main() {
   });
 
   testWidgets('曲のスターをタップしたらお気に入り曲に追加される', (WidgetTester tester) async {
-    final authRobot = AuthRobot(tester);
+    final authRobot = AuthRobot(tester, container);
     await authRobot.initializeAndLogin();
 
     final naviRobot = NavigationRobot(tester);

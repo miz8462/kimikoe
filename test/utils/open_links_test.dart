@@ -12,7 +12,7 @@ import 'package:url_launcher_platform_interface/url_launcher_platform_interface.
 import '../test_utils/matchers/in_app_browser_configuration_matcher.dart';
 import '../test_utils/matchers/in_app_web_view_configuration_matcher.dart';
 import '../test_utils/mocks/http_client_mock.dart';
-import '../test_utils/mocks/logger_mock.dart';
+import '../test_utils/mocks/logger.mocks.dart';
 import '../test_utils/mocks/url_launcher_platform_mock.dart';
 
 void main() {

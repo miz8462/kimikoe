@@ -4,7 +4,7 @@ import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/utils/show_log_and_snack_bar.dart';
 import 'package:mockito/mockito.dart';
 
-import '../test_utils/mocks/logger_mock.dart';
+import '../test_utils/mocks/logger.mocks.dart';
 import '../test_utils/test_widgets.dart';
 
 void main() {

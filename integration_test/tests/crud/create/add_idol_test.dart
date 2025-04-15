@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
@@ -11,8 +12,18 @@ import '../../../utils/robots/navigation_robot.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
+  late ProviderContainer container;
+
+  setUp(() {
+    container = ProviderContainer();
+  });
+
+  tearDown(() {
+    container.dispose();
+  });
+
   testWidgets('アイドル登録', (WidgetTester tester) async {
-    final authRobot = AuthRobot(tester);
+    final authRobot = AuthRobot(tester, container);
     await authRobot.initializeAndLogin();
 
     final naviRobot = NavigationRobot(tester);
@@ -22,7 +33,7 @@ void main() {
     final name = 'test-idol';
     final hometown = 'Sapporo';
     final comment = 'test-comment';
-    final formRobot = FormRobot(tester);
+    final formRobot = FormRobot(tester, container);
     await formRobot.enterName(name);
     await formRobot.selectGroup();
     await formRobot.pickColor();
@@ -42,14 +53,14 @@ void main() {
   });
 
   testWidgets('アイドルヴァリデーション', (WidgetTester tester) async {
-    final authRobot = AuthRobot(tester);
+    final authRobot = AuthRobot(tester, container);
     await authRobot.initializeAndLogin();
 
     final naviRobot = NavigationRobot(tester);
     await naviRobot.waitForWidget(IdolGroupListScreen);
     await naviRobot.toAddIdol();
 
-    final formRobot = FormRobot(tester);
+    final formRobot = FormRobot(tester, container);
 
     await formRobot.tapSubmitButton();
     await formRobot.ensureVisibleWidget(WidgetKeys.name);

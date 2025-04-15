@@ -2,9 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:kimikoe_app/providers/supabase/supabase_services_provider.dart';
 
 // 二つ以上の状態を管理する場合Stateクラスを別に作って管理するといい
 class GroupsState {
@@ -27,28 +25,24 @@ class GroupsState {
 }
 
 class GroupsNotifier extends StateNotifier<GroupsState> {
-  GroupsNotifier() : super(GroupsState());
+  GroupsNotifier(this.ref) : super(GroupsState());
+  final Ref ref;
 
-  Future<void> initialize({
-    required SupabaseClient supabase,
-  }) async {
-    await fetchGroupList(
-      supabase: supabase,
-    );
+  Future<void> initialize() async {
+    await fetchGroupList();
   }
 
-  Future<void> fetchGroupList({
-    required SupabaseClient supabase,
-  }) async {
+  Future<void> fetchGroupList() async {
     try {
       logger.i('アイドルグループのリストを取得中...');
       state = state.copyWith(isLoading: true);
 
-      final data = await SupabaseServices.fetch
+      final service = ref.read(supabaseServicesProvider);
+
+      final data = await service.fetch
           .fetchDataByStream(
             table: TableName.idolGroups,
             id: ColumnName.id,
-            supabase: supabase,
           )
           .first as List<Map<String, dynamic>>;
 
@@ -117,9 +111,7 @@ class GroupsNotifier extends StateNotifier<GroupsState> {
 
 final groupsProvider =
     StateNotifierProvider<GroupsNotifier, GroupsState>((ref) {
-  final notifier = GroupsNotifier();
-  notifier.initialize(
-    supabase: supabase,
-  );
+  final notifier = GroupsNotifier(ref);
+  notifier.initialize();
   return notifier;
 });

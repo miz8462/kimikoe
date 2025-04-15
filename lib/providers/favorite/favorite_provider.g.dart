@@ -6,7 +6,7 @@ part of 'favorite_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$favoriteNotifierHash() => r'2665328e8b231cf2ac15199a595350961541acb4';
+String _$favoriteNotifierHash() => r'37d6badfeadc919cc13d7477a541a915aba3e38b';
 
 /// Copied from Dart SDK
 class _SystemHash {

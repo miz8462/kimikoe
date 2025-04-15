@@ -7,13 +7,12 @@ import 'package:kimikoe_app/models/idol_group.dart';
 import 'package:kimikoe_app/models/song.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/favorite/favorite_provider.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
+import 'package:kimikoe_app/providers/supabase/supabase_services_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/screens/lyric/widget/lyrics.dart';
 import 'package:kimikoe_app/screens/lyric/widget/member_color_and_name_list.dart';
 import 'package:kimikoe_app/screens/lyric/widget/song_info_card.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
 import 'package:kimikoe_app/utils/scroll_utils.dart';
 import 'package:kimikoe_app/widgets/delete_alert_dialog.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
@@ -45,9 +44,9 @@ class _SongScreenState extends ConsumerState<SongScreen> {
   @override
   void initState() {
     super.initState();
-    _memberFuture = SupabaseServices.fetch.fetchGroupMembers(
+    final service = ref.read(supabaseServicesProvider);
+    _memberFuture = service.fetch.fetchGroupMembers(
       widget.group.id!,
-      supabase: supabase,
     );
 
     /*
@@ -84,11 +83,11 @@ class _SongScreenState extends ConsumerState<SongScreen> {
       builder: (context) {
         return DeleteAlertDialog(
           onDelete: () async {
-            await SupabaseServices.delete.deleteDataById(
+            final service = ref.read(supabaseServicesProvider);
+            await service.delete.deleteDataById(
               table: TableName.songs,
               id: widget.song.id.toString(),
               context: context,
-              supabase: supabase,
             );
           },
           successMessage: '${widget.song.title}が削除されました',

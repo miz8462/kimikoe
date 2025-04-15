@@ -4,15 +4,17 @@ import 'package:kimikoe_app/utils/show_log_and_snack_bar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseInsert {
+  SupabaseInsert(this.client);
+  final SupabaseClient client;
+
   Future<void> insertArtistData({
     required String name,
     required BuildContext context,
-    required SupabaseClient supabase,
     String? imageUrl,
     String? comment,
   }) async {
     try {
-      await supabase.from(TableName.artists).insert({
+      await client.from(TableName.artists).insert({
         ColumnName.name: name,
         ColumnName.imageUrl: imageUrl,
         ColumnName.comment: comment,
@@ -36,7 +38,6 @@ class SupabaseInsert {
   Future<void> insertIdolGroupData({
     required String name,
     required BuildContext context,
-    required SupabaseClient supabase,
     String? imageUrl,
     String? year,
     String? officialUrl,
@@ -46,7 +47,7 @@ class SupabaseInsert {
     String? comment,
   }) async {
     try {
-      await supabase.from(TableName.idolGroups).insert({
+      await client.from(TableName.idolGroups).insert({
         ColumnName.name: name,
         ColumnName.imageUrl: imageUrl,
         ColumnName.yearFormingGroups: year == null ? null : int.tryParse(year),
@@ -74,7 +75,6 @@ class SupabaseInsert {
   Future<void> insertIdolData({
     required String name,
     required BuildContext context,
-    required SupabaseClient supabase,
     int? groupId,
     String? color,
     String? imageUrl,
@@ -86,7 +86,7 @@ class SupabaseInsert {
     String? comment,
   }) async {
     try {
-      await supabase.from(TableName.idols).insert({
+      await client.from(TableName.idols).insert({
         ColumnName.name: name,
         ColumnName.groupId: groupId,
         ColumnName.color: color,
@@ -117,7 +117,6 @@ class SupabaseInsert {
     required String title,
     required String lyric,
     required BuildContext context,
-    required SupabaseClient supabase,
     String? movieUrl,
     int? groupId,
     String? imageUrl,
@@ -127,7 +126,7 @@ class SupabaseInsert {
     String? comment,
   }) async {
     try {
-      await supabase.from(TableName.songs).insert({
+      await client.from(TableName.songs).insert({
         ColumnName.title: title,
         ColumnName.movieUrl: movieUrl,
         ColumnName.lyrics: lyric,

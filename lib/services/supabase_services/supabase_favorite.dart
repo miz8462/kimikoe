@@ -1,8 +1,11 @@
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseFavorite {
+  SupabaseFavorite(this.client);
+  final SupabaseClient client;
+
   Future<void> addFavorite({
     required String table,
     required String userId,
@@ -10,7 +13,7 @@ class SupabaseFavorite {
     required int groupId,
   }) async {
     try {
-      await supabase.from(table).insert({
+      await client.from(table).insert({
         ColumnName.userId: userId,
         columnName: groupId,
       });
@@ -27,7 +30,7 @@ class SupabaseFavorite {
     required int groupId,
   }) async {
     try {
-      await supabase
+      await client
           .from(table)
           .delete()
           .eq(ColumnName.userId, userId)

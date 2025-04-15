@@ -5,13 +5,29 @@ import 'package:kimikoe_app/services/supabase_services/supabase_insert.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_storage.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_update.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_utils.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseServices {
-  static final SupabaseDelete delete = SupabaseDelete();
-  static final SupabaseFavorite favorite = SupabaseFavorite();
-  static final SupabaseFetch fetch = SupabaseFetch();
-  static final SupabaseInsert insert = SupabaseInsert();
-  static final SupabaseStorage storage = SupabaseStorage();
-  static final SupabaseUpdate update = SupabaseUpdate();
-  static final SupabaseUtils utils = SupabaseUtils();
+  SupabaseServices(this.client) {
+    _initializeServices();
+  }
+
+  final SupabaseClient client;
+  late final SupabaseDelete delete;
+  late final SupabaseFavorite favorite;
+  late final SupabaseFetch fetch;
+  late final SupabaseInsert insert;
+  late final SupabaseStorage storage;
+  late final SupabaseUpdate update;
+  late final SupabaseUtils utils;
+
+  void _initializeServices() {
+    delete = SupabaseDelete(client);
+    favorite = SupabaseFavorite(client);
+    fetch = SupabaseFetch(client);
+    insert = SupabaseInsert(client);
+    storage = SupabaseStorage(client);
+    update = SupabaseUpdate(client);
+    utils = SupabaseUtils(fetch: fetch, storage: storage);
+  }
 }

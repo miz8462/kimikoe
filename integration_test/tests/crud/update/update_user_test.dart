@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:kimikoe_app/screens/idol_group_list.dart';
@@ -9,10 +10,19 @@ import '../../../utils/robots/navigation_robot.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  late ProviderContainer container;
+
+  setUp(() {
+    container = ProviderContainer();
+  });
+
+  tearDown(() {
+    container.dispose();
+  });
 
   testWidgets('ユーザーを編集する', (WidgetTester tester) async {
     // ログイン
-    final authRobot = AuthRobot(tester);
+    final authRobot = AuthRobot(tester, container);
     await authRobot.initializeAndLogin();
 
     // 編集ページへ画面遷移
@@ -22,7 +32,7 @@ void main() {
     await naviRobot.expectWidget(EditUserScreen);
 
     // 編集しホームに戻る
-    final formRobot = FormRobot(tester);
+    final formRobot = FormRobot(tester, container);
     await formRobot.enterComment('edit-comment');
     await formRobot.tapSubmitButton();
     formRobot.expectSuccessMessageEditUser();

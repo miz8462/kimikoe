@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
+import 'package:kimikoe_app/services/supabase_services/supabase_update.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:mockito/mockito.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../test_utils/mocks/logger_mock.dart';
+import '../../test_utils/mocks/logger.mocks.dart';
 import '../../test_utils/test_helpers.dart';
 
 void main() {
-  late final SupabaseClient errorSupabase;
   late final SupabaseClient mockSupabase;
   late final MockSupabaseHttpClient mockHttpClient;
+  late final SupabaseUpdate supabaseUpdate;
+
   setUpAll(() async {
     mockHttpClient = MockSupabaseHttpClient();
     mockSupabase = SupabaseClient(
@@ -22,11 +23,8 @@ void main() {
       httpClient: MockSupabaseHttpClient(),
     );
 
-    errorSupabase = SupabaseClient(
-      'error',
-      'error',
-    );
     logger = MockLogger();
+    supabaseUpdate = SupabaseUpdate(mockSupabase);
   });
 
   tearDown(() async {
@@ -45,11 +43,10 @@ void main() {
         ColumnName.comment: 'test comment',
       });
 
-      await SupabaseServices.update.updateIdolGroup(
+      await supabaseUpdate.updateIdolGroup(
         id: '1',
         name: 'updated group',
         context: mockContext,
-        supabase: mockSupabase,
         imageUrl: 'https://example.com/updated.jpg',
         year: '2024',
         officialUrl: 'https://example.com/updated',
@@ -112,11 +109,10 @@ void main() {
       });
 
       try {
-        await SupabaseServices.update.updateIdolGroup(
+        await supabaseUpdate.updateIdolGroup(
           id: '1',
           name: 'error',
           context: mockContext,
-          supabase: errorSupabase,
         );
         verify(logger.i('グループの更新中にエラーが発生しました。グループ名: error')).called(1);
       } catch (e) {
@@ -139,11 +135,10 @@ void main() {
         ColumnName.name: 'test song',
       });
 
-      await SupabaseServices.update.updateIdol(
+      await supabaseUpdate.updateIdol(
         id: 1,
         name: 'updated idol',
         context: mockContext,
-        supabase: mockSupabase,
         groupId: 1,
         color: 'white',
         imageUrl: 'https://example.com/updated.jpg',
@@ -217,11 +212,10 @@ void main() {
       });
 
       try {
-        await SupabaseServices.update.updateIdol(
+        await supabaseUpdate.updateIdol(
           id: 1,
           name: 'error idol',
           context: mockContext,
-          supabase: errorSupabase,
           groupId: 1,
           color: 'white',
           imageUrl: 'https://example.com/updated.jpg',
@@ -257,12 +251,11 @@ void main() {
         ColumnName.lyrics: 'test lyrics',
       });
 
-      await SupabaseServices.update.updateSong(
+      await supabaseUpdate.updateSong(
         id: 1,
         title: 'updated title',
         lyric: 'updated lyrics',
         context: mockContext,
-        supabase: mockSupabase,
         groupId: 1,
         imageUrl: 'https://example.com/updated.jpg',
         releaseDate: '2024-01-22',
@@ -323,12 +316,11 @@ void main() {
         ColumnName.lyrics: 'test lyrics',
       });
       try {
-        await SupabaseServices.update.updateSong(
+        await supabaseUpdate.updateSong(
           id: 1,
           title: 'error title',
           lyric: 'error lyrics',
           context: mockContext,
-          supabase: errorSupabase,
           groupId: 1,
           imageUrl: 'https://example.com/updated.jpg',
           releaseDate: '2024-01-22',
@@ -359,14 +351,13 @@ void main() {
         ColumnName.lyrics: 'test lyrics',
       });
 
-      await SupabaseServices.update.updateUser(
+      await supabaseUpdate.updateUser(
         id: '1',
         name: 'updated user',
         email: 'updated@example.com',
         imageUrl: 'https://example.com/updated.jpg',
         comment: 'updated comment',
         context: mockContext,
-        supabase: mockSupabase,
       );
 
       final updateduser = await mockSupabase
@@ -404,14 +395,13 @@ void main() {
         ColumnName.name: 'test user',
       });
       try {
-        await SupabaseServices.update.updateUser(
+        await supabaseUpdate.updateUser(
           id: '1',
           name: 'error user',
           email: 'error@example.com',
           imageUrl: 'https://example.com/updated.jpg',
           comment: 'updated comment',
           context: mockContext,
-          supabase: errorSupabase,
         );
 
         expect(find.byType(SnackBar), findsOneWidget);

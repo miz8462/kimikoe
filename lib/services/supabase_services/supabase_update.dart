@@ -6,11 +6,13 @@ import 'package:kimikoe_app/utils/show_log_and_snack_bar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseUpdate {
+  SupabaseUpdate(this.client);
+  final SupabaseClient client;
+
   Future<void> updateIdolGroup({
     required String name,
     required String id,
     required BuildContext context,
-    required SupabaseClient supabase,
     String? imageUrl,
     String? year,
     String? officialUrl,
@@ -20,7 +22,7 @@ class SupabaseUpdate {
     String? comment,
   }) async {
     try {
-      await supabase.from(TableName.idolGroups).update({
+      await client.from(TableName.idolGroups).update({
         ColumnName.name: name,
         ColumnName.imageUrl: imageUrl,
         ColumnName.yearFormingGroups: year == null ? null : int.tryParse(year),
@@ -49,7 +51,6 @@ class SupabaseUpdate {
     required int id,
     required String name,
     required BuildContext context,
-    required SupabaseClient supabase,
     int? groupId,
     String? color,
     String? imageUrl,
@@ -61,7 +62,7 @@ class SupabaseUpdate {
     String? comment,
   }) async {
     try {
-      await supabase.from(TableName.idols).update({
+      await client.from(TableName.idols).update({
         ColumnName.name: name,
         ColumnName.groupId: groupId,
         ColumnName.color: color,
@@ -94,7 +95,6 @@ class SupabaseUpdate {
     required String title,
     required String lyric,
     required BuildContext context,
-    required SupabaseClient supabase,
     int? groupId,
     String? movieUrl,
     String? imageUrl,
@@ -104,7 +104,7 @@ class SupabaseUpdate {
     String? comment,
   }) async {
     try {
-      await supabase.from(TableName.songs).update({
+      await client.from(TableName.songs).update({
         ColumnName.title: title,
         ColumnName.movieUrl: movieUrl,
         ColumnName.lyrics: lyric,
@@ -136,11 +136,10 @@ class SupabaseUpdate {
     required String email,
     required String imageUrl,
     required BuildContext context,
-    required SupabaseClient supabase,
     String? comment,
   }) async {
     try {
-      await supabase.from(TableName.profiles).update({
+      await client.from(TableName.profiles).update({
         ColumnName.name: name,
         ColumnName.email: email,
         ColumnName.imageUrl: imageUrl,

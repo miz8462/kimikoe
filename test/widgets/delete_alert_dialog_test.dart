@@ -4,7 +4,7 @@ import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/widgets/delete_alert_dialog.dart';
 
-import '../test_utils/mocks/logger_mock.dart';
+import '../test_utils/mocks/logger.mocks.dart';
 import '../test_utils/test_widgets.dart';
 
 void main() {

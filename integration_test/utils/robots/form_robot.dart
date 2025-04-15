@@ -3,18 +3,21 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_services.dart';
+import 'package:kimikoe_app/providers/supabase/supabase_services_provider.dart';
 import 'package:kimikoe_app/widgets/form/custom_dropdown_menu.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'custom_robot.dart';
 
 class FormRobot extends CustomRobot<Form> {
-  FormRobot(super.tester);
+  FormRobot(super.tester, this.container);
+
+  final ProviderContainer container;
 
   Future<void> tapSubmitButton() async {
     await ensureVisibleWidget(WidgetKeys.submit);
@@ -243,7 +246,8 @@ class FormRobot extends CustomRobot<Form> {
     required String name,
     String columnName = ColumnName.name,
   }) async {
-    await SupabaseServices.delete
+    final service = container.read(supabaseServicesProvider);
+    await service.delete
         .deleteDataByName(table: table, targetColumn: columnName, name: name);
     logger.i('テストデータを削除しました');
   }

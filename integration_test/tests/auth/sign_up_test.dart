@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:kimikoe_app/screens/idol_group_list.dart';
@@ -9,12 +10,22 @@ import '../../utils/robots/auth_robot.dart';
 void main() async {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   group('サインアップテスト', () {
+    late ProviderContainer container;
+
+    setUp(() {
+      container = ProviderContainer();
+    });
+
+    tearDown(() {
+      container.dispose();
+    });
+
     testWidgets('サインアップ成功', (WidgetTester tester) async {
       final email = createRandomEmail();
       final password = 'doskoidoskoi';
       final name = 'doskoi';
 
-      final robot = AuthRobot(tester);
+      final robot = AuthRobot(tester, container);
       await robot.launchApp();
 
       await robot.signUp(email, password, name);
@@ -27,7 +38,7 @@ void main() async {
     });
 
     testWidgets('サインアップ失敗', (WidgetTester tester) async {
-      final robot = AuthRobot(tester);
+      final robot = AuthRobot(tester, container);
       await robot.launchApp();
 
       await robot.waitForWidget(SignInScreen);

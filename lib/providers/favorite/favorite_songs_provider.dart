@@ -5,7 +5,7 @@ import 'package:kimikoe_app/providers/artist_list_provider.dart';
 import 'package:kimikoe_app/providers/favorite/favorite_provider.dart';
 import 'package:kimikoe_app/providers/groups_provider.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/providers/supabase_provider.dart';
+import 'package:kimikoe_app/providers/supabase/supabase_services_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'favorite_songs_provider.g.dart';
@@ -16,12 +16,12 @@ Future<List<Song>> favoriteSongs(Ref ref) async {
       ref.watch(favoriteNotifierProvider(FavoriteType.songs));
   final favoriteIds = favoriteIdsAsync.value ?? [];
 
+  final supabaseServices = ref.read(supabaseServicesProvider);
+
   if (favoriteIds.isEmpty) return [];
   try {
-    final response = await supabase
-        .from(TableName.songs)
-        .select()
-        .inFilter(ColumnName.id, favoriteIds);
+    final response =
+        await supabaseServices.fetch.fetchFavoriteSongs(favoriteIds);
 
     final songs = response.map<Song>((song) {
       final group = ref
