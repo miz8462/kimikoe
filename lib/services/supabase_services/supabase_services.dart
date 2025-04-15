@@ -1,4 +1,3 @@
-import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_delete.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_favorite.dart';
 import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
