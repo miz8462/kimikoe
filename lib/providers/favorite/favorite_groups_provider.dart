@@ -17,13 +17,10 @@ Future<List<IdolGroup>> _favoriteGroups(Ref ref) async {
   final favoriteIdsAsync =
       ref.watch(favoriteNotifierProvider(FavoriteType.groups));
   final favoriteIds = favoriteIdsAsync.value ?? [];
-
-  final supabaseServices = ref.read(supabaseServicesProvider);
+  final service = ref.read(supabaseServicesProvider);
   if (favoriteIds.isEmpty) return [];
-
   try {
-    final response =
-        await supabaseServices.fetch.fetchFavoriteGroups(favoriteIds);
+    final response = await service.fetch.fetchFavoriteGroups(favoriteIds);
 
     final groups = response.map<IdolGroup>((group) {
       return IdolGroup(

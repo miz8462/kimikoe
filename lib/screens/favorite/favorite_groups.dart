@@ -42,7 +42,6 @@ class _FavoriteGroupsState extends ConsumerState<FavoriteGroupsScreen> {
   @override
   Widget build(BuildContext context) {
     final favoriteGroupsAsync = ref.watch(favoriteGroupsProvider);
-
     return favoriteGroupsAsync.when(
       data: (favoriteGroups) {
         if (favoriteGroups.isEmpty) {

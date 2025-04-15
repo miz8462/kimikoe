@@ -1,6 +1,5 @@
 // ignore_for_file: lines_longer_than_80_chars
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase/supabase_provider.dart';
@@ -13,10 +12,7 @@ enum FavoriteType { groups, songs }
 
 @Riverpod(keepAlive: true)
 class FavoriteNotifier extends _$FavoriteNotifier {
-  FavoriteNotifier() {
-    _ref = ref;
-  }
-  late Ref _ref;
+  FavoriteNotifier();
 
   late final String _userId; // build時に初期化
 
@@ -33,7 +29,7 @@ class FavoriteNotifier extends _$FavoriteNotifier {
     _columnName =
         type == FavoriteType.groups ? ColumnName.groupId : ColumnName.songId;
 
-    final client = _ref.watch(supabaseProvider);
+    final client = ref.watch(supabaseProvider);
     if (client.auth.currentUser == null) {
       throw Exception('ユーザーがログインしていません');
     }
@@ -62,6 +58,10 @@ class FavoriteNotifier extends _$FavoriteNotifier {
   }
 
   Future<void> fetchFavorites() async {
+    if (_userId.isEmpty) {
+      throw Exception('ユーザーIDが初期化されていません');
+    }
+
     state = const AsyncValue.loading();
     try {
       final newFavorites = await _fetchFavorites();

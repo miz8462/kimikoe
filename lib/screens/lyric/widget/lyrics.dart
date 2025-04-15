@@ -61,7 +61,6 @@ class Lyrics extends StatelessWidget {
                 final singerIds = lyric['singerIds'] as List<dynamic>;
                 final singerInfos = singerIds.map((id) {
                   final singerId = id.toString();
-                  logger.d('Processing lyric with singerId: $singerId');
                   return memberData[singerId] ??
                       {'name': 'Unknown Singer', 'color': Colors.black};
                 }).toList();

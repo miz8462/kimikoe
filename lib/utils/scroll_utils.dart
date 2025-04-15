@@ -7,7 +7,7 @@ class ScrollUtils {
     ScrollNotification notification,
     WidgetRef ref, {
     required double lastScrollOffset,
-    double sensitivityThreshold = 50, // ボトムバーの表示/非表示の感度
+    double sensitivityThreshold = 20, // ボトムバーの表示/非表示の感度
   }) {
     final notifier = ref.read(bottomBarVisibilityNotifierProvider.notifier);
 
