@@ -364,14 +364,12 @@ class MockSupabaseStorage extends _i1.Mock implements _i7.SupabaseStorage {
 
   @override
   _i11.Future<void> uploadImageToStorage({
-    required String? table,
     required String? path,
     required _i12.File? file,
     required _i13.BuildContext? context,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#uploadImageToStorage, [], {
-              #table: table,
               #path: path,
               #file: file,
               #context: context,

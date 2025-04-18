@@ -11,13 +11,12 @@ class SupabaseStorage {
   SupabaseStorage(this.client);
   final SupabaseClient client;
   Future<void> uploadImageToStorage({
-    required String table,
     required String path,
     required File file,
     required BuildContext context,
   }) async {
     try {
-      await client.storage.from(table).upload(path, file);
+      await client.storage.from(TableName.images).upload(path, file);
       if (!context.mounted) return;
       showLogAndSnackBar(
         context: context,
@@ -38,6 +37,23 @@ class SupabaseStorage {
     } catch (e) {
       logger.e('画像URLの取得中にエラーが発生しました', error: e);
       return noImage;
+    }
+  }
+
+  Future<void> deleteImageFromStorage(
+    String imagePath,
+    BuildContext context,
+  ) async {
+    try {
+      await client.storage.from(TableName.images).remove([imagePath]);
+      if (!context.mounted) return;
+      showLogAndSnackBar(
+        context: context,
+        message: '画像をストレージから削除しました',
+      );
+    } catch (e) {
+      logger.e('画像をストレージから削除中にエラーが発生しました', error: e);
+      rethrow;
     }
   }
 }

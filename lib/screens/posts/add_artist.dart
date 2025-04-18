@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/providers/supabase/supabase_services_provider.dart';
@@ -62,7 +61,6 @@ class _AddArtistScreenState extends ConsumerState<AddArtistScreen> {
 
     if (_selectedImage != null) {
       await service.storage.uploadImageToStorage(
-        table: TableName.images,
         path: imagePath,
         file: _selectedImage!,
         context: context,

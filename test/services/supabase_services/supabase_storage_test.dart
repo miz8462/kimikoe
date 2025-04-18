@@ -38,7 +38,6 @@ void main() {
       var didThrowError = false;
       try {
         await supabaseStorage.uploadImageToStorage(
-          table: 'error',
           file: File('error'),
           path: 'error',
           context: mockContext,
