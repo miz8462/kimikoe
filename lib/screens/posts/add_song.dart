@@ -494,7 +494,7 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
                           children: [
                             Text('${i + 1}'),
                             TextFormWithController(
-                              key: ValueKey(_lyricListControllers[i].hashCode),
+                              key: Key('${WidgetKeys.lyric}_$i'),
                               controller: _lyricListControllers[i],
                               label: '*歌詞',
                               validator: _lyricValidator,

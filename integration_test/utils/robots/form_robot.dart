@@ -34,7 +34,7 @@ class FormRobot extends CustomRobot<Form> {
   }
 
   Future<void> enterLyric(String lyric) async {
-    await enterTextByKey(keyValue: WidgetKeys.lyric, enterValue: lyric);
+    await enterTextByKey(keyValue: '${WidgetKeys.lyric}_0', enterValue: lyric);
   }
 
   Future<void> enterMovieUrl(String url) async {
