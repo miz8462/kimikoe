@@ -74,6 +74,10 @@ class NavigationRobot extends CustomRobot {
     await tapFirstInList(WidgetKeys.songCard);
   }
 
+  Future<void> fromSongInfoToIdolDetail() async {
+    await tapWidget(WidgetKeys.testMember);
+  }
+
   Future<void> toTestSong() async {
     await toSongList();
     await tapWidget(WidgetKeys.testSong);

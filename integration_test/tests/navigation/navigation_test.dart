@@ -47,6 +47,8 @@ void main() {
     await naviRobot.tapHomeButon();
     await naviRobot.toSongInfo();
     await naviRobot.expectWidget(SongScreen);
+    await naviRobot.fromSongInfoToIdolDetail();
+    await naviRobot.expectWidget(IdolDetailScreen);
     await naviRobot.tapHomeButon();
 
     // TODO: お気に入り系

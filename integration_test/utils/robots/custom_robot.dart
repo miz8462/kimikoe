@@ -6,6 +6,7 @@ class CustomRobot<T extends Widget> extends Robot<Widget> {
   CustomRobot(super.tester);
 
   Future<void> ensureVisibleWidget(String keyValue) async {
+    await tester.pumpAndSettle();
     await tester.ensureVisible(find.byKey(Key(keyValue)));
     await tester.pumpAndSettle();
   }

@@ -1,58 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kimikoe_app/config/config.dart';
 import 'package:kimikoe_app/models/idol_group.dart';
-import 'package:kimikoe_app/models/table_and_column_name.dart';
+import 'package:kimikoe_app/providers/group_members_provider.dart';
+import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/utils/error_handling.dart';
 import 'package:kimikoe_app/widgets/circle_color.dart';
 
-class GroupColorAndNameList extends StatefulWidget {
+class GroupColorAndNameList extends ConsumerWidget {
   const GroupColorAndNameList({
     required this.group,
-    required this.memberFuture,
     super.key,
   });
   final IdolGroup group;
-  final Future<List<Map<String, dynamic>>> memberFuture;
 
   @override
-  State<GroupColorAndNameList> createState() => _GroupColorAndNameListState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final members = ref.watch(groupMembersProvider(group.id!));
 
-class _GroupColorAndNameListState extends State<GroupColorAndNameList> {
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<List<Map<String, dynamic>>>(
-      future: widget.memberFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (snapshot.hasError) {
-          return handleMemberFetchError(snapshot.error);
-        } else if (snapshot.hasData) {
-          final members = snapshot.data!;
-          return Wrap(
-            runSpacing: spaceS,
-            children: members.map<Widget>((member) {
-              final color = Color(int.parse(member[ColumnName.color]));
-              final name = member[ColumnName.name];
-              return Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CircleColor(color),
-                  const Gap(spaceSS),
-                  Text(name),
-                  const Gap(spaceM),
-                ],
+    return members.when(
+      data: (members) {
+        return members.isEmpty
+            ? const Center(child: Text('No members found'))
+            : Wrap(
+                key: Key(group.name),
+                runSpacing: spaceS,
+                children: members.map<Widget>((member) {
+                  final color = member.color; // モデルに応じてアクセス
+                  final name = member.name;
+                  return GestureDetector(
+                    key: Key(member.name),
+                    onTap: () {
+                      context.pushNamed(
+                        RoutingPath.idolDetail,
+                        extra: member,
+                      );
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CircleColor(color),
+                        const Gap(spaceSS),
+                        Text(name),
+                        const Gap(spaceM),
+                      ],
+                    ),
+                  );
+                }).toList(),
               );
-            }).toList(),
-          );
-        } else {
-          return const Center(child: Text('No members found'));
-        }
       },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stack) => handleMemberFetchError(error),
     );
   }
 }

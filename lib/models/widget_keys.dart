@@ -56,4 +56,5 @@ class WidgetKeys {
   // test
   static const String testGroup = 'test-group-not-delete';
   static const String testSong = 'test-song-not-delete';
+  static const String testMember = 'test-member-not-delete';
 }
