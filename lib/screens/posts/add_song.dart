@@ -64,12 +64,15 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
   String? _selectedReleaseDate;
   var _enteredComment = '';
 
-  late List<Map<String, dynamic>> _groupIdAndNameList;
-  late List<Map<String, dynamic>> _idolIdAndNameList;
-  late List<Map<String, dynamic>> _artistIdAndNameList;
+  List<Map<String, dynamic>> _groupIdAndNameList = [];
+  List<Map<String, dynamic>> _idolIdAndNameList = [];
+  List<Map<String, dynamic>> _artistIdAndNameList = [];
+  List<Map<String, dynamic>> _filteredIdolList = [];
+  int? _selectedGroupId;
 
   var _isSending = false;
   var _isFetching = true;
+  var _isFetchingIdols = false;
   var _isImageChanged = false;
   var _isGroupSelected = false;
 
@@ -91,8 +94,21 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
       _song = widget.song!;
     }
     await _fetchIdAndNameLists();
+
     if (_isEditing) {
       _initializeEditingFields();
+      if (_song.group != null) {
+        _selectedGroupId = _song.group!.id;
+        setState(() {
+          _isFetchingIdols = true;
+        });
+        final filterdIdols =
+            await _service.fetch.fetchGroupMembers(_selectedGroupId!);
+        setState(() {
+          _filteredIdolList = filterdIdols;
+          _isFetchingIdols = false;
+        });
+      }
     } else {
       _initializeNewFields();
     }
@@ -204,6 +220,7 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
       _groupIdAndNameList = groupList;
       _idolIdAndNameList = idolList;
       _artistIdAndNameList = artistList;
+      _filteredIdolList = idolList;
       _isFetching = false;
     });
   }
@@ -328,7 +345,7 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
       );
     }
 
-    // 登録、編集
+    // 登録、編集>
     if (!mounted) return;
     if (_isEditing) {
       await _service.update.updateSong(
@@ -484,6 +501,36 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
                         controller: _groupNameController,
                         isSelected: _isGroupSelected,
                         onSelectedChanged: _updateGroupSelected,
+                        onSelected: (String groupId) async {
+                          setState(() {
+                            _selectedGroupId = int.tryParse(groupId);
+                            _isFetchingIdols = true;
+                          });
+                          try {
+                            if (_selectedGroupId != null) {
+                              final filteredIdols = await _service.fetch
+                                  .fetchGroupMembers(_selectedGroupId!);
+                              setState(() {
+                                _filteredIdolList = filteredIdols;
+                                _isFetchingIdols = false;
+                              });
+                            } else {
+                              setState(() {
+                                _filteredIdolList = _idolIdAndNameList;
+                                _isFetchingIdols = false;
+                              });
+                            }
+                          } catch (e) {
+                            if (!context.mounted) return;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('グループメンバーの取得に失敗しました: $e')),
+                            );
+                            setState(() {
+                              _filteredIdolList = _idolIdAndNameList;
+                              _isFetchingIdols = false;
+                            });
+                          }
+                        },
                       ),
                       const Gap(spaceS),
                       const Text('歌詞と歌手はワンフレーズのセットで登録'),
@@ -513,7 +560,9 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
                                         _singerListControllers[i][j].hashCode,
                                       ),
                                       label: j == 0 ? '*歌手1' : '歌手${j + 1}（任意）',
-                                      dataList: _idolIdAndNameList,
+                                      dataList: _isFetchingIdols
+                                          ? []
+                                          : _filteredIdolList,
                                       controller: _singerListControllers[i][j],
                                       isSelected: _singerListControllers[i][j]
                                           .text
