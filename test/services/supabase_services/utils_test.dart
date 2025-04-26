@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/artist.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_utils.dart';
+import 'package:kimikoe_app/services/supabase_services/utils.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:mockito/mockito.dart';
 
@@ -12,7 +12,7 @@ import '../../test_utils/test_utils.dart';
 
 void main() {
   late MockSupabaseHttpClient mockHttpClient;
-  late SupabaseUtils supabaseUtils;
+  late Utils supabaseUtils;
   late MockLogger mockLogger;
   late MockSupabaseFetch mockSupabaseFetch;
   late MockSupabaseStorage mockSupabaseStorage;
@@ -30,7 +30,7 @@ void main() {
     when(mockSupabaseStorage.fetchImageUrl(any)).thenReturn('');
 
     supabaseUtils =
-        SupabaseUtils(fetch: mockSupabaseFetch, storage: mockSupabaseStorage);
+        Utils(fetch: mockSupabaseFetch, storage: mockSupabaseStorage);
   });
 
   tearDown(() {

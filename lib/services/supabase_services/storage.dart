@@ -7,8 +7,8 @@ import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/utils/show_log_and_snack_bar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class SupabaseStorage {
-  SupabaseStorage(this.client);
+class Storage {
+  Storage(this.client);
   final SupabaseClient client;
   Future<void> uploadImageToStorage({
     required String path,

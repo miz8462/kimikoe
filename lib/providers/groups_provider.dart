@@ -41,7 +41,7 @@ class GroupsNotifier extends StateNotifier<GroupsState> {
 
       final data = await service.fetch
           .fetchDataByStream(
-            table: TableName.idolGroups,
+            table: TableName.groups,
             id: ColumnName.id,
           )
           .first as List<Map<String, dynamic>>;

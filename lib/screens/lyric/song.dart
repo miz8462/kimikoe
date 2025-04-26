@@ -10,6 +10,7 @@ import 'package:kimikoe_app/providers/favorite/favorite_provider.dart';
 import 'package:kimikoe_app/providers/supabase/supabase_services_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
+import 'package:kimikoe_app/screens/lyric/widget/lyrics.dart';
 import 'package:kimikoe_app/screens/lyric/widget/member_color_and_name_list.dart';
 import 'package:kimikoe_app/screens/lyric/widget/song_info_card.dart';
 import 'package:kimikoe_app/utils/scroll_utils.dart';
@@ -234,10 +235,10 @@ class _SongScreenState extends ConsumerState<SongScreen> {
                   thickness: 2,
                 ),
                 const Gap(spaceS),
-                // Lyrics(
-                //   memberFuture: _memberFuture,
-                //   lyrics: song.lyrics,
-                // ),
+                Lyrics(
+                  lyrics: song.lyrics,
+                  group: group,
+                ),
                 const Gap(spaceM),
               ],
             ),

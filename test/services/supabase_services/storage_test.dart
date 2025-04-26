@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_storage.dart';
+import 'package:kimikoe_app/services/supabase_services/storage.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -12,7 +12,7 @@ import '../../test_utils/test_helpers.dart';
 void main() {
   late final SupabaseClient mockSupabase;
   late final MockSupabaseHttpClient mockHttpClient;
-  late final SupabaseStorage supabaseStorage;
+  late final Storage supabaseStorage;
 
   setUpAll(() async {
     mockHttpClient = MockSupabaseHttpClient();
@@ -22,7 +22,7 @@ void main() {
       httpClient: MockSupabaseHttpClient(),
     );
 
-    supabaseStorage = SupabaseStorage(mockSupabase);
+    supabaseStorage = Storage(mockSupabase);
   });
 
   tearDown(() async {

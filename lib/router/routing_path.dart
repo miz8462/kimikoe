@@ -9,6 +9,8 @@ class RoutingPath {
 
   static const favorite = '/favorite';
 
+  static const search = '/search';
+
   static const addSong = '/add_song';
   static const addGroup = '/add_group';
   static const addIdol = '/add_member';

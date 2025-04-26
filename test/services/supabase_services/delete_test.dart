@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_delete.dart';
+import 'package:kimikoe_app/services/supabase_services/delete.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -13,7 +13,7 @@ void main() {
   late final SupabaseClient errorSupabase;
   late final SupabaseClient mockSupabase;
   late final MockSupabaseHttpClient mockHttpClient;
-  late final SupabaseDelete supabaseDelete;
+  late final Delete supabaseDelete;
 
   setUpAll(() async {
     mockHttpClient = MockSupabaseHttpClient();
@@ -28,7 +28,7 @@ void main() {
       'error',
     );
     logger = MockLogger();
-    supabaseDelete = SupabaseDelete(mockSupabase);
+    supabaseDelete = Delete(mockSupabase);
   });
 
   tearDown(() async {
@@ -74,7 +74,7 @@ void main() {
       final artists = await mockSupabase.from(TableName.artists).select();
       expect(artists.last[ColumnName.name], 'cannot delete artist');
       try {
-        await SupabaseDelete(errorSupabase).deleteDataById(
+        await Delete(errorSupabase).deleteDataById(
           table: TableName.artists,
           id: '1',
           context: mockContext,

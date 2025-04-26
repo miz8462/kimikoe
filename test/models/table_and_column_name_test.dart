@@ -5,7 +5,7 @@ void main() {
   test('TableName定数のテスト', () {
     expect(TableName.artists, 'artists');
     expect(TableName.idols, 'idols');
-    expect(TableName.idolGroups, 'idol_groups');
+    expect(TableName.groups, 'groups');
     expect(TableName.profiles, 'profiles');
     expect(TableName.songs, 'songs');
     expect(TableName.images, 'images');

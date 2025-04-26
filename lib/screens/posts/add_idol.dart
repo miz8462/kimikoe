@@ -30,8 +30,8 @@ import 'package:kimikoe_app/widgets/button/image_input.dart';
 import 'package:kimikoe_app/widgets/button/styled_button.dart';
 import 'package:kimikoe_app/widgets/form/custom_dropdown_menu.dart';
 import 'package:kimikoe_app/widgets/form/expanded_text_form.dart';
+import 'package:kimikoe_app/widgets/form/input_form.dart';
 import 'package:kimikoe_app/widgets/form/picker_form.dart';
-import 'package:kimikoe_app/widgets/form/text_input_form.dart';
 
 List<Color> colorsList = IdolColors.values.map((color) => color.rgb).toList();
 
@@ -120,7 +120,7 @@ class _AddIdolScreenState extends ConsumerState<AddIdolScreen> {
 
   Future<void> _fetchIdAndNameGroupList() async {
     final groupIdAndNameList = await _service.fetch.fetchIdAndNameList(
-      TableName.idolGroups,
+      TableName.groups,
     );
     setState(() {
       _groupIdAndNameList = groupIdAndNameList;

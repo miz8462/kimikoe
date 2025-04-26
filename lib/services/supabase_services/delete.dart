@@ -5,8 +5,8 @@ import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/utils/show_log_and_snack_bar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class SupabaseDelete {
-  SupabaseDelete(this.client);
+class Delete {
+  Delete(this.client);
   final SupabaseClient client;
 
   Future<void> deleteDataById({

@@ -21,12 +21,14 @@ import 'package:kimikoe_app/screens/posts/edit_user.dart';
 import 'package:kimikoe_app/screens/sign_in.dart';
 import 'package:kimikoe_app/screens/song_list.dart';
 import 'package:kimikoe_app/screens/user.dart';
+import 'package:kimikoe_app/search.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: RoutingPath.groupList);
 final _favoriteNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'favorite');
+final _searchNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'search');
 final _addItemNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'add-item');
 final _userInfoNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'user-info');
@@ -136,6 +138,20 @@ GoRouter createRouter(SupabaseClient supabase) {
                 pageBuilder: (context, state) => NoTransitionPage(
                   key: state.pageKey,
                   child: const FavoriteScreen(),
+                ),
+              ),
+            ],
+          ),
+          // 検索
+          StatefulShellBranch(
+            navigatorKey: _searchNavigatorKey,
+            routes: [
+              GoRoute(
+                path: RoutingPath.search,
+                name: RoutingPath.search,
+                pageBuilder: (context, state) => NoTransitionPage(
+                  key: state.pageKey,
+                  child: const SearchScreen(),
                 ),
               ),
             ],

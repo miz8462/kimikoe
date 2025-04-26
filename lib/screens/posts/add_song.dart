@@ -26,9 +26,9 @@ import 'package:kimikoe_app/widgets/button/image_input.dart';
 import 'package:kimikoe_app/widgets/button/styled_button.dart';
 import 'package:kimikoe_app/widgets/form/custom_dropdown_menu.dart';
 import 'package:kimikoe_app/widgets/form/expanded_text_form.dart';
+import 'package:kimikoe_app/widgets/form/input_form.dart';
 import 'package:kimikoe_app/widgets/form/picker_form.dart';
 import 'package:kimikoe_app/widgets/form/text_form_with_controller.dart';
-import 'package:kimikoe_app/widgets/form/text_input_form.dart';
 
 class AddSongScreen extends ConsumerStatefulWidget {
   const AddSongScreen({
@@ -208,7 +208,7 @@ class _AddSongScreenState extends ConsumerState<AddSongScreen> {
 
   Future<void> _fetchIdAndNameLists() async {
     final groupList = await _service.fetch.fetchIdAndNameList(
-      TableName.idolGroups,
+      TableName.groups,
     );
     final idolList = await _service.fetch.fetchIdAndNameList(
       TableName.idols,

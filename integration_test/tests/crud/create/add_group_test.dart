@@ -49,7 +49,7 @@ void main() {
     await formRobot.waitForWidget(IdolGroupListScreen);
     formRobot.expectSuccessMessage(dataType: 'グループ', name: name);
 
-    await formRobot.deleteTestData(table: TableName.idolGroups, name: name);
+    await formRobot.deleteTestData(table: TableName.groups, name: name);
   });
 
   testWidgets('グループヴァリデーション', (WidgetTester tester) async {

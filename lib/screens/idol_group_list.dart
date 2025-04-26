@@ -6,7 +6,7 @@ import 'package:kimikoe_app/providers/groups_provider.dart' show groupsProvider;
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
 import 'package:kimikoe_app/widgets/card/group_card_l.dart';
-
+  
 class IdolGroupListScreen extends ConsumerStatefulWidget {
   const IdolGroupListScreen({super.key});
   @override

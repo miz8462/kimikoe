@@ -1,18 +1,17 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
+import 'package:kimikoe_app/services/supabase_services/fetch.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:mockito/mockito.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../test_utils/mocks/logger.mocks.dart';
 
-
 void main() {
   late final SupabaseClient mockSupabase;
   late MockSupabaseHttpClient mockHttpClient;
-  late final SupabaseFetch supabaseFetch;
+  late final Fetch supabaseFetch;
 
   setUpAll(() async {
     mockHttpClient = MockSupabaseHttpClient();
@@ -23,7 +22,7 @@ void main() {
     );
 
     logger = MockLogger();
-    supabaseFetch = SupabaseFetch(mockSupabase);
+    supabaseFetch = Fetch(mockSupabase);
   });
 
   tearDown(() async {
@@ -79,11 +78,11 @@ void main() {
 
   group('fetchIdAndNameList', () {
     testWidgets('fetchIdAndNameList', (WidgetTester tester) async {
-      await mockSupabase.from(TableName.idolGroups).insert({
+      await mockSupabase.from(TableName.groups).insert({
         ColumnName.name: 'test group',
       });
       final idolGroupsIdAndNameList = await supabaseFetch.fetchIdAndNameList(
-        TableName.idolGroups,
+        TableName.groups,
       );
 
       expect(idolGroupsIdAndNameList.length, 1);
@@ -93,11 +92,11 @@ void main() {
       var didThrowError = false;
       try {
         await supabaseFetch.fetchIdAndNameList(
-          TableName.idolGroups,
+          TableName.groups,
         );
       } catch (e) {
         verify(
-          logger.e('idol_groupsのIDと名前のリストの取得中にエラーが発生しました', error: e),
+          logger.e('groupsのIDと名前のリストの取得中にエラーが発生しました', error: e),
         ).called(1);
         didThrowError = true;
         expect(didThrowError, isTrue);

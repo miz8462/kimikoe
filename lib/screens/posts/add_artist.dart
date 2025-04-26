@@ -15,7 +15,7 @@ import 'package:kimikoe_app/utils/validator/validator.dart';
 import 'package:kimikoe_app/widgets/button/image_input.dart';
 import 'package:kimikoe_app/widgets/button/styled_button.dart';
 import 'package:kimikoe_app/widgets/form/expanded_text_form.dart';
-import 'package:kimikoe_app/widgets/form/text_input_form.dart';
+import 'package:kimikoe_app/widgets/form/input_form.dart';
 
 class AddArtistScreen extends ConsumerStatefulWidget {
   const AddArtistScreen({super.key});

@@ -2,8 +2,8 @@ import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class SupabaseFetch {
-  SupabaseFetch(this.client);
+class Fetch {
+  Fetch(this.client);
   final SupabaseClient client;
 
   Future<List<Map<String, dynamic>>> fetchArtists() async {
@@ -112,7 +112,7 @@ class SupabaseFetch {
   ) async {
     try {
       final response = await client
-          .from(TableName.idolGroups)
+          .from(TableName.groups)
           .select()
           .inFilter(ColumnName.id, favoriteIds);
       logger.i('お気に入りのグループを取得しました');

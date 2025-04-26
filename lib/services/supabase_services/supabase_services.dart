@@ -1,10 +1,11 @@
-import 'package:kimikoe_app/services/supabase_services/supabase_delete.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_favorite.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_insert.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_storage.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_update.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_utils.dart';
+import 'package:kimikoe_app/services/supabase_services/delete.dart';
+import 'package:kimikoe_app/services/supabase_services/favorite.dart';
+import 'package:kimikoe_app/services/supabase_services/fetch.dart';
+import 'package:kimikoe_app/services/supabase_services/insert.dart';
+import 'package:kimikoe_app/services/supabase_services/search.dart';
+import 'package:kimikoe_app/services/supabase_services/storage.dart';
+import 'package:kimikoe_app/services/supabase_services/update.dart';
+import 'package:kimikoe_app/services/supabase_services/utils.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseServices {
@@ -13,21 +14,23 @@ class SupabaseServices {
   }
 
   final SupabaseClient client;
-  late final SupabaseDelete delete;
-  late final SupabaseFavorite favorite;
-  late final SupabaseFetch fetch;
-  late final SupabaseInsert insert;
-  late final SupabaseStorage storage;
-  late final SupabaseUpdate update;
-  late final SupabaseUtils utils;
+  late final Delete delete;
+  late final Favorite favorite;
+  late final Fetch fetch;
+  late final Insert insert;
+  late final Search search;
+  late final Storage storage;
+  late final Update update;
+  late final Utils utils;
 
   void _initializeServices() {
-    delete = SupabaseDelete(client);
-    favorite = SupabaseFavorite(client);
-    fetch = SupabaseFetch(client);
-    insert = SupabaseInsert(client);
-    storage = SupabaseStorage(client);
-    update = SupabaseUpdate(client);
-    utils = SupabaseUtils(fetch: fetch, storage: storage);
+    delete = Delete(client);
+    favorite = Favorite(client);
+    fetch = Fetch(client);
+    insert = Insert(client);
+    search = Search(client);
+    storage = Storage(client);
+    update = Update(client);
+    utils = Utils(fetch: fetch, storage: storage);
   }
 }

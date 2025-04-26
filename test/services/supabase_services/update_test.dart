@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_update.dart';
+import 'package:kimikoe_app/services/supabase_services/update.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:mockito/mockito.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -13,7 +13,7 @@ import '../../test_utils/test_helpers.dart';
 void main() {
   late final SupabaseClient mockSupabase;
   late final MockSupabaseHttpClient mockHttpClient;
-  late final SupabaseUpdate supabaseUpdate;
+  late final Update supabaseUpdate;
 
   setUpAll(() async {
     mockHttpClient = MockSupabaseHttpClient();
@@ -24,7 +24,7 @@ void main() {
     );
 
     logger = MockLogger();
-    supabaseUpdate = SupabaseUpdate(mockSupabase);
+    supabaseUpdate = Update(mockSupabase);
   });
 
   tearDown(() async {
@@ -37,7 +37,7 @@ void main() {
       // アップデート用のデータを登録。
       // SupabaseのIDは自動生成のためインサート関数にはIDがない。
       // なので、ID付きのモックデータが必要。
-      await mockSupabase.from(TableName.idolGroups).insert({
+      await mockSupabase.from(TableName.groups).insert({
         ColumnName.id: 1,
         ColumnName.name: 'test group',
         ColumnName.comment: 'test comment',
@@ -57,7 +57,7 @@ void main() {
       );
 
       final updatedGroup = await mockSupabase
-          .from(TableName.idolGroups)
+          .from(TableName.groups)
           .select()
           .eq(ColumnName.id, 1)
           .single();
@@ -102,7 +102,7 @@ void main() {
       // アップデート用のデータを登録。
       // SupabaseのIDは自動生成のためインサート関数にはIDがない。
       // なので、ID付きのモックデータが必要。
-      await mockSupabase.from(TableName.idolGroups).insert({
+      await mockSupabase.from(TableName.groups).insert({
         ColumnName.id: 1,
         ColumnName.name: 'test group',
         ColumnName.comment: 'test comment',

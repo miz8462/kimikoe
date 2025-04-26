@@ -104,8 +104,14 @@ class _CustomTextForLyricsState extends State<CustomTextForLyrics>
 
   @override
   Widget build(BuildContext context) {
-    final effectiveNames = widget.names ?? ['Unknown'];
-    final effectiveColors = widget.colors ?? [Colors.black];
+    final effectiveNames = (widget.names?.isNotEmpty ?? false) &&
+            !(widget.names?.contains('Unknown') ?? true)
+        ? widget.names!
+        : <String>[];
+    final effectiveColors = (widget.colors?.isNotEmpty ?? false) &&
+            !(widget.colors?.contains(Colors.black) ?? true)
+        ? widget.colors!
+        : <Color>[];
 
     final minLength = effectiveNames.length < effectiveColors.length
         ? effectiveNames.length
@@ -118,44 +124,48 @@ class _CustomTextForLyricsState extends State<CustomTextForLyrics>
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (displayNames.length <= 2) // 1-2人の場合
-                ...List.generate(displayNames.length, (index) {
-                  return Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () => _showPopup([displayNames[index]], index),
-                        onTapCancel: _hidePopup,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 2),
-                          child: CircleColor(displayColors[index]),
+          // サークルカラーまたはプレースホルダー
+          if (displayNames.isNotEmpty)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (displayNames.length <= 2) // 1-2人の場合
+                  ...List.generate(displayNames.length, (index) {
+                    return Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () => _showPopup([displayNames[index]], index),
+                          onTapCancel: _hidePopup,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 2),
+                            child: CircleColor(displayColors[index]),
+                          ),
                         ),
+                        Gap(4),
+                      ],
+                    );
+                  })
+                else // 3人以上の場合
+                  GestureDetector(
+                    onTap: () => _showPopup(displayNames, 0), // 全員の名前を表示
+                    onTapCancel: _hidePopup,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 2),
+                      child: CircleColor(
+                        Colors.transparent, // ベースは透明
+                        gradientColors: [
+                          Colors.red,
+                          Colors.yellow,
+                          Colors.blue,
+                        ], // 虹色グラデーション
                       ),
-                      Gap(4),
-                    ],
-                  );
-                })
-              else // 3人以上の場合
-                GestureDetector(
-                  onTap: () => _showPopup(displayNames, 0), // 全員の名前を表示
-                  onTapCancel: _hidePopup,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 2),
-                    child: CircleColor(
-                      Colors.transparent, // ベースは透明
-                      gradientColors: [
-                        Colors.red,
-                        Colors.yellow,
-                        Colors.blue,
-                      ], // 虹色グラデーション
                     ),
                   ),
-                ),
-            ],
-          ),
-          Gap(8),
+              ],
+            )
+          else
+            const SizedBox(width: 20), // 歌手なしの場合、CircleColorの幅を確保
+          const Gap(8), // 常にGap(8)を確保
           Expanded(
             child: Text(
               widget.text,

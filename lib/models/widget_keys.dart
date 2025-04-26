@@ -47,6 +47,7 @@ class WidgetKeys {
   static const String groupTab = 'groupTab';
   static const String songTab = 'songTab';
   static const String star = 'star';
+  static const String searchButton = 'searchButton';
   static const String addButton = 'addButton';
   static const String addSong = 'addSong';
   static const String addGroup = 'addGroup';

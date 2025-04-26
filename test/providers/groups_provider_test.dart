@@ -17,7 +17,7 @@ void main() {
     mockSupabase = Supabase.instance.client;
 
     // モックデータの設定
-    await mockSupabase.from(TableName.idolGroups).insert([
+    await mockSupabase.from(TableName.groups).insert([
       {
         ColumnName.id: 1,
         ColumnName.name: 'test group 1',

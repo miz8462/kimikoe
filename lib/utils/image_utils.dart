@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/config/config.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_storage.dart';
+import 'package:kimikoe_app/services/supabase_services/storage.dart';
 import 'package:kimikoe_app/utils/generate_simple_random_string.dart';
 
 // 画像選択していない場合はnoImageを返す
@@ -24,7 +24,7 @@ Future<String?> processImage({
   required String existingImageUrl,
   required File? selectedImage,
   required BuildContext context,
-  required SupabaseStorage storage,
+  required Storage storage,
   String Function({File? imageFile})? createImagePathFunction = createImagePath,
   UploadImageToStorage? uploadFunction,
   String Function(

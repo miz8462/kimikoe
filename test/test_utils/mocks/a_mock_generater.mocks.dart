@@ -7,21 +7,21 @@ import 'dart:async' as _i11;
 import 'dart:io' as _i12;
 
 import 'package:flutter/material.dart' as _i13;
-import 'package:kimikoe_app/services/supabase_services/supabase_delete.dart'
+import 'package:kimikoe_app/services/supabase_services/delete.dart'
     as _i3;
-import 'package:kimikoe_app/services/supabase_services/supabase_favorite.dart'
+import 'package:kimikoe_app/services/supabase_services/favorite.dart'
     as _i4;
-import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart'
+import 'package:kimikoe_app/services/supabase_services/fetch.dart'
     as _i5;
-import 'package:kimikoe_app/services/supabase_services/supabase_insert.dart'
+import 'package:kimikoe_app/services/supabase_services/insert.dart'
     as _i6;
 import 'package:kimikoe_app/services/supabase_services/supabase_services.dart'
     as _i10;
-import 'package:kimikoe_app/services/supabase_services/supabase_storage.dart'
+import 'package:kimikoe_app/services/supabase_services/storage.dart'
     as _i7;
-import 'package:kimikoe_app/services/supabase_services/supabase_update.dart'
+import 'package:kimikoe_app/services/supabase_services/update.dart'
     as _i8;
-import 'package:kimikoe_app/services/supabase_services/supabase_utils.dart'
+import 'package:kimikoe_app/services/supabase_services/utils.dart'
     as _i9;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i14;
@@ -44,47 +44,42 @@ import 'package:supabase_flutter/supabase_flutter.dart' as _i2;
 class _FakeSupabaseClient_0 extends _i1.SmartFake
     implements _i2.SupabaseClient {
   _FakeSupabaseClient_0(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+      : super(parent, parentInvocation);
 }
 
-class _FakeSupabaseDelete_1 extends _i1.SmartFake
-    implements _i3.SupabaseDelete {
+class _FakeSupabaseDelete_1 extends _i1.SmartFake implements _i3.Delete {
   _FakeSupabaseDelete_1(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+      : super(parent, parentInvocation);
 }
 
-class _FakeSupabaseFavorite_2 extends _i1.SmartFake
-    implements _i4.SupabaseFavorite {
+class _FakeSupabaseFavorite_2 extends _i1.SmartFake implements _i4.Favorite {
   _FakeSupabaseFavorite_2(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+      : super(parent, parentInvocation);
 }
 
-class _FakeSupabaseFetch_3 extends _i1.SmartFake implements _i5.SupabaseFetch {
+class _FakeSupabaseFetch_3 extends _i1.SmartFake implements _i5.Fetch {
   _FakeSupabaseFetch_3(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+      : super(parent, parentInvocation);
 }
 
-class _FakeSupabaseInsert_4 extends _i1.SmartFake
-    implements _i6.SupabaseInsert {
+class _FakeSupabaseInsert_4 extends _i1.SmartFake implements _i6.Insert {
   _FakeSupabaseInsert_4(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+      : super(parent, parentInvocation);
 }
 
-class _FakeSupabaseStorage_5 extends _i1.SmartFake
-    implements _i7.SupabaseStorage {
+class _FakeSupabaseStorage_5 extends _i1.SmartFake implements _i7.Storage {
   _FakeSupabaseStorage_5(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+      : super(parent, parentInvocation);
 }
 
-class _FakeSupabaseUpdate_6 extends _i1.SmartFake
-    implements _i8.SupabaseUpdate {
+class _FakeSupabaseUpdate_6 extends _i1.SmartFake implements _i8.Update {
   _FakeSupabaseUpdate_6(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+      : super(parent, parentInvocation);
 }
 
-class _FakeSupabaseUtils_7 extends _i1.SmartFake implements _i9.SupabaseUtils {
+class _FakeSupabaseUtils_7 extends _i1.SmartFake implements _i9.Utils {
   _FakeSupabaseUtils_7(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+      : super(parent, parentInvocation);
 }
 
 /// A class which mocks [SupabaseServices].
@@ -96,200 +91,176 @@ class MockSupabaseServices extends _i1.Mock implements _i10.SupabaseServices {
   }
 
   @override
-  _i2.SupabaseClient get client =>
-      (super.noSuchMethod(
-            Invocation.getter(#client),
-            returnValue: _FakeSupabaseClient_0(
-              this,
-              Invocation.getter(#client),
-            ),
-          )
-          as _i2.SupabaseClient);
+  _i2.SupabaseClient get client => (super.noSuchMethod(
+        Invocation.getter(#client),
+        returnValue: _FakeSupabaseClient_0(
+          this,
+          Invocation.getter(#client),
+        ),
+      ) as _i2.SupabaseClient);
 
   @override
-  _i3.SupabaseDelete get delete =>
-      (super.noSuchMethod(
-            Invocation.getter(#delete),
-            returnValue: _FakeSupabaseDelete_1(
-              this,
-              Invocation.getter(#delete),
-            ),
-          )
-          as _i3.SupabaseDelete);
+  _i3.Delete get delete => (super.noSuchMethod(
+        Invocation.getter(#delete),
+        returnValue: _FakeSupabaseDelete_1(
+          this,
+          Invocation.getter(#delete),
+        ),
+      ) as _i3.Delete);
 
   @override
-  set delete(_i3.SupabaseDelete? _delete) => super.noSuchMethod(
-    Invocation.setter(#delete, _delete),
-    returnValueForMissingStub: null,
-  );
+  set delete(_i3.Delete? _delete) => super.noSuchMethod(
+        Invocation.setter(#delete, _delete),
+        returnValueForMissingStub: null,
+      );
 
   @override
-  _i4.SupabaseFavorite get favorite =>
-      (super.noSuchMethod(
-            Invocation.getter(#favorite),
-            returnValue: _FakeSupabaseFavorite_2(
-              this,
-              Invocation.getter(#favorite),
-            ),
-          )
-          as _i4.SupabaseFavorite);
+  _i4.Favorite get favorite => (super.noSuchMethod(
+        Invocation.getter(#favorite),
+        returnValue: _FakeSupabaseFavorite_2(
+          this,
+          Invocation.getter(#favorite),
+        ),
+      ) as _i4.Favorite);
 
   @override
-  set favorite(_i4.SupabaseFavorite? _favorite) => super.noSuchMethod(
-    Invocation.setter(#favorite, _favorite),
-    returnValueForMissingStub: null,
-  );
+  set favorite(_i4.Favorite? _favorite) => super.noSuchMethod(
+        Invocation.setter(#favorite, _favorite),
+        returnValueForMissingStub: null,
+      );
 
   @override
-  _i5.SupabaseFetch get fetch =>
-      (super.noSuchMethod(
-            Invocation.getter(#fetch),
-            returnValue: _FakeSupabaseFetch_3(this, Invocation.getter(#fetch)),
-          )
-          as _i5.SupabaseFetch);
+  _i5.Fetch get fetch => (super.noSuchMethod(
+        Invocation.getter(#fetch),
+        returnValue: _FakeSupabaseFetch_3(this, Invocation.getter(#fetch)),
+      ) as _i5.Fetch);
 
   @override
-  set fetch(_i5.SupabaseFetch? _fetch) => super.noSuchMethod(
-    Invocation.setter(#fetch, _fetch),
-    returnValueForMissingStub: null,
-  );
+  set fetch(_i5.Fetch? _fetch) => super.noSuchMethod(
+        Invocation.setter(#fetch, _fetch),
+        returnValueForMissingStub: null,
+      );
 
   @override
-  _i6.SupabaseInsert get insert =>
-      (super.noSuchMethod(
-            Invocation.getter(#insert),
-            returnValue: _FakeSupabaseInsert_4(
-              this,
-              Invocation.getter(#insert),
-            ),
-          )
-          as _i6.SupabaseInsert);
+  _i6.Insert get insert => (super.noSuchMethod(
+        Invocation.getter(#insert),
+        returnValue: _FakeSupabaseInsert_4(
+          this,
+          Invocation.getter(#insert),
+        ),
+      ) as _i6.Insert);
 
   @override
-  set insert(_i6.SupabaseInsert? _insert) => super.noSuchMethod(
-    Invocation.setter(#insert, _insert),
-    returnValueForMissingStub: null,
-  );
+  set insert(_i6.Insert? _insert) => super.noSuchMethod(
+        Invocation.setter(#insert, _insert),
+        returnValueForMissingStub: null,
+      );
 
   @override
-  _i7.SupabaseStorage get storage =>
-      (super.noSuchMethod(
-            Invocation.getter(#storage),
-            returnValue: _FakeSupabaseStorage_5(
-              this,
-              Invocation.getter(#storage),
-            ),
-          )
-          as _i7.SupabaseStorage);
+  _i7.Storage get storage => (super.noSuchMethod(
+        Invocation.getter(#storage),
+        returnValue: _FakeSupabaseStorage_5(
+          this,
+          Invocation.getter(#storage),
+        ),
+      ) as _i7.Storage);
 
   @override
-  set storage(_i7.SupabaseStorage? _storage) => super.noSuchMethod(
-    Invocation.setter(#storage, _storage),
-    returnValueForMissingStub: null,
-  );
+  set storage(_i7.Storage? _storage) => super.noSuchMethod(
+        Invocation.setter(#storage, _storage),
+        returnValueForMissingStub: null,
+      );
 
   @override
-  _i8.SupabaseUpdate get update =>
-      (super.noSuchMethod(
-            Invocation.getter(#update),
-            returnValue: _FakeSupabaseUpdate_6(
-              this,
-              Invocation.getter(#update),
-            ),
-          )
-          as _i8.SupabaseUpdate);
+  _i8.Update get update => (super.noSuchMethod(
+        Invocation.getter(#update),
+        returnValue: _FakeSupabaseUpdate_6(
+          this,
+          Invocation.getter(#update),
+        ),
+      ) as _i8.Update);
 
   @override
-  set update(_i8.SupabaseUpdate? _update) => super.noSuchMethod(
-    Invocation.setter(#update, _update),
-    returnValueForMissingStub: null,
-  );
+  set update(_i8.Update? _update) => super.noSuchMethod(
+        Invocation.setter(#update, _update),
+        returnValueForMissingStub: null,
+      );
 
   @override
-  _i9.SupabaseUtils get utils =>
-      (super.noSuchMethod(
-            Invocation.getter(#utils),
-            returnValue: _FakeSupabaseUtils_7(this, Invocation.getter(#utils)),
-          )
-          as _i9.SupabaseUtils);
+  _i9.Utils get utils => (super.noSuchMethod(
+        Invocation.getter(#utils),
+        returnValue: _FakeSupabaseUtils_7(this, Invocation.getter(#utils)),
+      ) as _i9.Utils);
 
   @override
-  set utils(_i9.SupabaseUtils? _utils) => super.noSuchMethod(
-    Invocation.setter(#utils, _utils),
-    returnValueForMissingStub: null,
-  );
+  set utils(_i9.Utils? _utils) => super.noSuchMethod(
+        Invocation.setter(#utils, _utils),
+        returnValueForMissingStub: null,
+      );
 }
 
 /// A class which mocks [SupabaseFetch].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockSupabaseFetch extends _i1.Mock implements _i5.SupabaseFetch {
+class MockSupabaseFetch extends _i1.Mock implements _i5.Fetch {
   MockSupabaseFetch() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.SupabaseClient get client =>
-      (super.noSuchMethod(
-            Invocation.getter(#client),
-            returnValue: _FakeSupabaseClient_0(
-              this,
-              Invocation.getter(#client),
-            ),
-          )
-          as _i2.SupabaseClient);
+  _i2.SupabaseClient get client => (super.noSuchMethod(
+        Invocation.getter(#client),
+        returnValue: _FakeSupabaseClient_0(
+          this,
+          Invocation.getter(#client),
+        ),
+      ) as _i2.SupabaseClient);
 
   @override
-  _i11.Future<List<Map<String, dynamic>>> fetchArtists() =>
-      (super.noSuchMethod(
-            Invocation.method(#fetchArtists, []),
-            returnValue: _i11.Future<List<Map<String, dynamic>>>.value(
-              <Map<String, dynamic>>[],
-            ),
-          )
-          as _i11.Future<List<Map<String, dynamic>>>);
+  _i11.Future<List<Map<String, dynamic>>> fetchArtists() => (super.noSuchMethod(
+        Invocation.method(#fetchArtists, []),
+        returnValue: _i11.Future<List<Map<String, dynamic>>>.value(
+          <Map<String, dynamic>>[],
+        ),
+      ) as _i11.Future<List<Map<String, dynamic>>>);
 
   @override
   _i11.Future<List<Map<String, dynamic>>> fetchSongs(int? groupId) =>
       (super.noSuchMethod(
-            Invocation.method(#fetchSongs, [groupId]),
-            returnValue: _i11.Future<List<Map<String, dynamic>>>.value(
-              <Map<String, dynamic>>[],
-            ),
-          )
-          as _i11.Future<List<Map<String, dynamic>>>);
+        Invocation.method(#fetchSongs, [groupId]),
+        returnValue: _i11.Future<List<Map<String, dynamic>>>.value(
+          <Map<String, dynamic>>[],
+        ),
+      ) as _i11.Future<List<Map<String, dynamic>>>);
 
   @override
   _i11.Future<List<Map<String, dynamic>>> fetchGroupMembers(int? groupId) =>
       (super.noSuchMethod(
-            Invocation.method(#fetchGroupMembers, [groupId]),
-            returnValue: _i11.Future<List<Map<String, dynamic>>>.value(
-              <Map<String, dynamic>>[],
-            ),
-          )
-          as _i11.Future<List<Map<String, dynamic>>>);
+        Invocation.method(#fetchGroupMembers, [groupId]),
+        returnValue: _i11.Future<List<Map<String, dynamic>>>.value(
+          <Map<String, dynamic>>[],
+        ),
+      ) as _i11.Future<List<Map<String, dynamic>>>);
 
   @override
   _i11.Future<Map<String, dynamic>> fetchCurrentUser(String? currentUserId) =>
       (super.noSuchMethod(
-            Invocation.method(#fetchCurrentUser, [currentUserId]),
-            returnValue: _i11.Future<Map<String, dynamic>>.value(
-              <String, dynamic>{},
-            ),
-          )
-          as _i11.Future<Map<String, dynamic>>);
+        Invocation.method(#fetchCurrentUser, [currentUserId]),
+        returnValue: _i11.Future<Map<String, dynamic>>.value(
+          <String, dynamic>{},
+        ),
+      ) as _i11.Future<Map<String, dynamic>>);
 
   @override
   _i11.Future<List<Map<String, dynamic>>> fetchIdAndNameList(
     String? tableName,
   ) =>
       (super.noSuchMethod(
-            Invocation.method(#fetchIdAndNameList, [tableName]),
-            returnValue: _i11.Future<List<Map<String, dynamic>>>.value(
-              <Map<String, dynamic>>[],
-            ),
-          )
-          as _i11.Future<List<Map<String, dynamic>>>);
+        Invocation.method(#fetchIdAndNameList, [tableName]),
+        returnValue: _i11.Future<List<Map<String, dynamic>>>.value(
+          <Map<String, dynamic>>[],
+        ),
+      ) as _i11.Future<List<Map<String, dynamic>>>);
 
   @override
   _i11.Stream<dynamic> fetchDataByStream({
@@ -297,10 +268,9 @@ class MockSupabaseFetch extends _i1.Mock implements _i5.SupabaseFetch {
     required String? id,
   }) =>
       (super.noSuchMethod(
-            Invocation.method(#fetchDataByStream, [], {#table: table, #id: id}),
-            returnValue: _i11.Stream<dynamic>.empty(),
-          )
-          as _i11.Stream<dynamic>);
+        Invocation.method(#fetchDataByStream, [], {#table: table, #id: id}),
+        returnValue: _i11.Stream<dynamic>.empty(),
+      ) as _i11.Stream<dynamic>);
 
   @override
   _i11.Future<List<Map<String, dynamic>>> fetchFavorites({
@@ -308,59 +278,54 @@ class MockSupabaseFetch extends _i1.Mock implements _i5.SupabaseFetch {
     required String? userId,
   }) =>
       (super.noSuchMethod(
-            Invocation.method(#fetchFavorites, [], {
-              #tableName: tableName,
-              #userId: userId,
-            }),
-            returnValue: _i11.Future<List<Map<String, dynamic>>>.value(
-              <Map<String, dynamic>>[],
-            ),
-          )
-          as _i11.Future<List<Map<String, dynamic>>>);
+        Invocation.method(#fetchFavorites, [], {
+          #tableName: tableName,
+          #userId: userId,
+        }),
+        returnValue: _i11.Future<List<Map<String, dynamic>>>.value(
+          <Map<String, dynamic>>[],
+        ),
+      ) as _i11.Future<List<Map<String, dynamic>>>);
 
   @override
   _i11.Future<List<Map<String, dynamic>>> fetchFavoriteGroups(
     List<int>? favoriteIds,
   ) =>
       (super.noSuchMethod(
-            Invocation.method(#fetchFavoriteGroups, [favoriteIds]),
-            returnValue: _i11.Future<List<Map<String, dynamic>>>.value(
-              <Map<String, dynamic>>[],
-            ),
-          )
-          as _i11.Future<List<Map<String, dynamic>>>);
+        Invocation.method(#fetchFavoriteGroups, [favoriteIds]),
+        returnValue: _i11.Future<List<Map<String, dynamic>>>.value(
+          <Map<String, dynamic>>[],
+        ),
+      ) as _i11.Future<List<Map<String, dynamic>>>);
 
   @override
   _i11.Future<List<Map<String, dynamic>>> fetchFavoriteSongs(
     List<int>? favoriteIds,
   ) =>
       (super.noSuchMethod(
-            Invocation.method(#fetchFavoriteSongs, [favoriteIds]),
-            returnValue: _i11.Future<List<Map<String, dynamic>>>.value(
-              <Map<String, dynamic>>[],
-            ),
-          )
-          as _i11.Future<List<Map<String, dynamic>>>);
+        Invocation.method(#fetchFavoriteSongs, [favoriteIds]),
+        returnValue: _i11.Future<List<Map<String, dynamic>>>.value(
+          <Map<String, dynamic>>[],
+        ),
+      ) as _i11.Future<List<Map<String, dynamic>>>);
 }
 
 /// A class which mocks [SupabaseStorage].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockSupabaseStorage extends _i1.Mock implements _i7.SupabaseStorage {
+class MockSupabaseStorage extends _i1.Mock implements _i7.Storage {
   MockSupabaseStorage() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.SupabaseClient get client =>
-      (super.noSuchMethod(
-            Invocation.getter(#client),
-            returnValue: _FakeSupabaseClient_0(
-              this,
-              Invocation.getter(#client),
-            ),
-          )
-          as _i2.SupabaseClient);
+  _i2.SupabaseClient get client => (super.noSuchMethod(
+        Invocation.getter(#client),
+        returnValue: _FakeSupabaseClient_0(
+          this,
+          Invocation.getter(#client),
+        ),
+      ) as _i2.SupabaseClient);
 
   @override
   _i11.Future<void> uploadImageToStorage({
@@ -369,24 +334,21 @@ class MockSupabaseStorage extends _i1.Mock implements _i7.SupabaseStorage {
     required _i13.BuildContext? context,
   }) =>
       (super.noSuchMethod(
-            Invocation.method(#uploadImageToStorage, [], {
-              #path: path,
-              #file: file,
-              #context: context,
-            }),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
-          )
-          as _i11.Future<void>);
+        Invocation.method(#uploadImageToStorage, [], {
+          #path: path,
+          #file: file,
+          #context: context,
+        }),
+        returnValue: _i11.Future<void>.value(),
+        returnValueForMissingStub: _i11.Future<void>.value(),
+      ) as _i11.Future<void>);
 
   @override
-  String fetchImageUrl(String? imagePath) =>
-      (super.noSuchMethod(
-            Invocation.method(#fetchImageUrl, [imagePath]),
-            returnValue: _i14.dummyValue<String>(
-              this,
-              Invocation.method(#fetchImageUrl, [imagePath]),
-            ),
-          )
-          as String);
+  String fetchImageUrl(String? imagePath) => (super.noSuchMethod(
+        Invocation.method(#fetchImageUrl, [imagePath]),
+        returnValue: _i14.dummyValue<String>(
+          this,
+          Invocation.method(#fetchImageUrl, [imagePath]),
+        ),
+      ) as String);
 }

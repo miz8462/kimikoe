@@ -54,7 +54,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
           onDelete: () async {
             final service = ref.read(supabaseServicesProvider);
             await service.delete.deleteDataById(
-              table: TableName.idolGroups,
+              table: TableName.groups,
               id: widget.group.id.toString(),
               context: context,
             );

@@ -1,42 +1,17 @@
+// UPDATE
 import 'package:flutter/material.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
+import 'package:kimikoe_app/providers/logger_provider.dart';
 import 'package:kimikoe_app/utils/show_log_and_snack_bar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class SupabaseInsert {
-  SupabaseInsert(this.client);
+class Update {
+  Update(this.client);
   final SupabaseClient client;
 
-  Future<void> insertArtistData({
+  Future<void> updateIdolGroup({
     required String name,
-    required BuildContext context,
-    String? imageUrl,
-    String? comment,
-  }) async {
-    try {
-      await client.from(TableName.artists).insert({
-        ColumnName.name: name,
-        ColumnName.imageUrl: imageUrl,
-        ColumnName.comment: comment,
-      });
-
-      if (!context.mounted) return;
-      showLogAndSnackBar(
-        context: context,
-        message: 'アーティストを登録しました: $name',
-      );
-    } catch (e) {
-      showLogAndSnackBar(
-        context: context,
-        message: 'アーティストの登録中にエラーが発生しました: $name',
-        isError: true,
-      );
-      rethrow;
-    }
-  }
-
-  Future<void> insertIdolGroupData({
-    required String name,
+    required String id,
     required BuildContext context,
     String? imageUrl,
     String? year,
@@ -47,7 +22,7 @@ class SupabaseInsert {
     String? comment,
   }) async {
     try {
-      await client.from(TableName.idolGroups).insert({
+      await client.from(TableName.groups).update({
         ColumnName.name: name,
         ColumnName.imageUrl: imageUrl,
         ColumnName.yearFormingGroups: year == null ? null : int.tryParse(year),
@@ -56,23 +31,24 @@ class SupabaseInsert {
         ColumnName.instagramUrl: instagramUrl,
         ColumnName.scheduleUrl: scheduleUrl,
         ColumnName.comment: comment,
-      });
+      }).eq(ColumnName.id, id);
       if (!context.mounted) return;
       showLogAndSnackBar(
         context: context,
-        message: 'グループを登録しました: $name',
+        message: 'グループを更新しました。グループ名: $name',
       );
     } catch (e) {
       showLogAndSnackBar(
         context: context,
-        message: 'グループの登録中にエラーが発生しました: $name',
+        message: 'グループの更新中にエラーが発生しました。グループ名: $name',
         isError: true,
       );
       rethrow;
     }
   }
 
-  Future<void> insertIdolData({
+  Future<void> updateIdol({
+    required int id,
     required String name,
     required BuildContext context,
     int? groupId,
@@ -86,7 +62,7 @@ class SupabaseInsert {
     String? comment,
   }) async {
     try {
-      await client.from(TableName.idols).insert({
+      await client.from(TableName.idols).update({
         ColumnName.name: name,
         ColumnName.groupId: groupId,
         ColumnName.color: color,
@@ -97,28 +73,30 @@ class SupabaseInsert {
         ColumnName.hometown: hometown,
         ColumnName.debutYear: debutYear,
         ColumnName.comment: comment,
-      });
+      }).eq(ColumnName.id, id);
       if (!context.mounted) return;
       showLogAndSnackBar(
         context: context,
-        message: 'アイドルを登録しました: $name',
+        message: 'アイドルデータを更新しました。グループ名: $name',
       );
     } catch (e) {
       showLogAndSnackBar(
         context: context,
-        message: 'アイドルの登録中にエラーが発生しました: $name',
+        message: 'アイドルデータの更新中にエラーが発生しました。アイドル名: $name',
         isError: true,
       );
+      logger.e('データの更新中にエラーが発生しました。アイドル名: $name', error: e);
       rethrow;
     }
   }
 
-  Future<void> insertSongData({
+  Future<void> updateSong({
+    required int id,
     required String title,
     required String lyric,
     required BuildContext context,
-    String? movieUrl,
     int? groupId,
+    String? movieUrl,
     String? imageUrl,
     String? releaseDate,
     int? lyricistId,
@@ -126,7 +104,7 @@ class SupabaseInsert {
     String? comment,
   }) async {
     try {
-      await client.from(TableName.songs).insert({
+      await client.from(TableName.songs).update({
         ColumnName.title: title,
         ColumnName.movieUrl: movieUrl,
         ColumnName.lyrics: lyric,
@@ -136,16 +114,46 @@ class SupabaseInsert {
         ColumnName.lyricistId: lyricistId,
         ColumnName.composerId: composerId,
         ColumnName.comment: comment,
-      });
+      }).eq(ColumnName.id, id);
       if (!context.mounted) return;
       showLogAndSnackBar(
         context: context,
-        message: '曲を登録しました: $title',
+        message: '曲を更新しました。曲名: $title',
       );
     } catch (e) {
       showLogAndSnackBar(
         context: context,
-        message: '曲の登録中にエラーが発生しました: $title',
+        message: '曲の更新中にエラーが発生しました。曲名: $title',
+        isError: true,
+      );
+      rethrow;
+    }
+  }
+
+  Future<void> updateUser({
+    required String id,
+    required String name,
+    required String email,
+    required String imageUrl,
+    required BuildContext context,
+    String? comment,
+  }) async {
+    try {
+      await client.from(TableName.profiles).update({
+        ColumnName.name: name,
+        ColumnName.email: email,
+        ColumnName.imageUrl: imageUrl,
+        ColumnName.comment: comment,
+      }).eq(ColumnName.id, id);
+      if (!context.mounted) return;
+      showLogAndSnackBar(
+        context: context,
+        message: 'ユーザー情報を更新しました',
+      );
+    } catch (e) {
+      showLogAndSnackBar(
+        context: context,
+        message: 'ユーザー情報の更新中にエラーが発生しました',
         isError: true,
       );
       rethrow;

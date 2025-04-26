@@ -12,12 +12,12 @@ import 'package:kimikoe_app/providers/supabase/supabase_provider.dart';
 import 'package:kimikoe_app/providers/user_provider.dart';
 import 'package:kimikoe_app/router/routing_path.dart';
 import 'package:kimikoe_app/screens/appbar/top_bar.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_storage.dart';
+import 'package:kimikoe_app/services/supabase_services/storage.dart';
 import 'package:kimikoe_app/utils/validator/validator.dart';
 import 'package:kimikoe_app/widgets/button/image_input.dart';
 import 'package:kimikoe_app/widgets/button/styled_button.dart';
 import 'package:kimikoe_app/widgets/form/expanded_text_form.dart';
-import 'package:kimikoe_app/widgets/form/text_input_form.dart';
+import 'package:kimikoe_app/widgets/form/input_form.dart';
 
 class EditUserScreen extends ConsumerStatefulWidget {
   const EditUserScreen({
@@ -80,7 +80,7 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
 
     final client = ref.watch(supabaseProvider);
     final userId = client.auth.currentUser!.id;
-    final storage = SupabaseStorage(ref.watch(supabaseProvider));
+    final storage = Storage(ref.watch(supabaseProvider));
     final currentUser = ref.watch(userProfileProvider)!;
 
     String? newImageUrl = currentUser.imageUrl;

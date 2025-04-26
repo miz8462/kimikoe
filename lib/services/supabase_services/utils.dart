@@ -1,17 +1,17 @@
 import 'package:kimikoe_app/models/artist.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_fetch.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_storage.dart';
+import 'package:kimikoe_app/services/supabase_services/fetch.dart';
+import 'package:kimikoe_app/services/supabase_services/storage.dart';
 
-class SupabaseUtils {
-  SupabaseUtils({
+class Utils {
+  Utils({
     required this.fetch,
     required this.storage,
   });
 
-  final SupabaseFetch fetch;
-  final SupabaseStorage storage;
+  final Fetch fetch;
+  final Storage storage;
 
   Future<List<Artist>> createArtistList() async {
     try {

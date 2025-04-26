@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kimikoe_app/models/table_and_column_name.dart';
 import 'package:kimikoe_app/providers/logger_provider.dart';
-import 'package:kimikoe_app/services/supabase_services/supabase_insert.dart';
+import 'package:kimikoe_app/services/supabase_services/insert.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../test_utils/mocks/logger.mocks.dart';
 
-
 void main() {
   logger = MockLogger();
   late final SupabaseClient mockSupabase;
   late final MockSupabaseHttpClient mockHttpClient;
-  late final SupabaseInsert supabaseInsert;
+  late final Insert supabaseInsert;
 
   setUpAll(() async {
     mockHttpClient = MockSupabaseHttpClient();
@@ -23,7 +22,7 @@ void main() {
       httpClient: MockSupabaseHttpClient(),
     );
 
-    supabaseInsert = SupabaseInsert(mockSupabase);
+    supabaseInsert = Insert(mockSupabase);
   });
 
   tearDown(() async {
@@ -123,8 +122,7 @@ void main() {
         );
         await tester.pump(Duration(milliseconds: 500));
 
-        final idolGroups =
-            await mockSupabase.from(TableName.idolGroups).select();
+        final idolGroups = await mockSupabase.from(TableName.groups).select();
 
         expect(idolGroups.length, 1);
         expect(idolGroups.first, {
@@ -147,7 +145,7 @@ void main() {
         );
         await tester.pump(Duration(milliseconds: 500));
 
-        final groups2 = await mockSupabase.from(TableName.idolGroups).select();
+        final groups2 = await mockSupabase.from(TableName.groups).select();
 
         expect(groups2.length, 2);
         expect(groups2.last, {
