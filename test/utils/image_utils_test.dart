@@ -52,7 +52,6 @@ void main() {
   group('processImage', () {
     // モックの関数
     Future<void> mockUploadImageToStorage({
-      required String table,
       required String path,
       required File file,
       required BuildContext context,
