@@ -34,7 +34,7 @@ void main() {
       await mockSupabase.from(TableName.artists).insert({
         ColumnName.name: 'test artist',
       });
-      final artistList = await supabaseFetch.fetchArtists();
+      final artistList = await supabaseFetch.fetchArtistsList();
 
       expect(artistList.length, 1);
       expect(artistList.first[ColumnName.name], 'test artist');
@@ -43,7 +43,7 @@ void main() {
     testWidgets('fetchArtistsの例外処理', (WidgetTester tester) async {
       var didThrowError = false;
       try {
-        await supabaseFetch.fetchArtists();
+        await supabaseFetch.fetchArtistsList();
       } catch (e) {
         verify(logger.e('アーティストのリストの取得中にエラーが発生しました', error: e)).called(1);
         didThrowError = true;

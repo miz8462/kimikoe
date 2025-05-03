@@ -7,22 +7,15 @@ import 'dart:async' as _i11;
 import 'dart:io' as _i12;
 
 import 'package:flutter/material.dart' as _i13;
-import 'package:kimikoe_app/services/supabase_services/delete.dart'
-    as _i3;
-import 'package:kimikoe_app/services/supabase_services/favorite.dart'
-    as _i4;
-import 'package:kimikoe_app/services/supabase_services/fetch.dart'
-    as _i5;
-import 'package:kimikoe_app/services/supabase_services/insert.dart'
-    as _i6;
+import 'package:kimikoe_app/services/supabase_services/delete.dart' as _i3;
+import 'package:kimikoe_app/services/supabase_services/favorite.dart' as _i4;
+import 'package:kimikoe_app/services/supabase_services/fetch.dart' as _i5;
+import 'package:kimikoe_app/services/supabase_services/insert.dart' as _i6;
+import 'package:kimikoe_app/services/supabase_services/storage.dart' as _i7;
 import 'package:kimikoe_app/services/supabase_services/supabase_services.dart'
     as _i10;
-import 'package:kimikoe_app/services/supabase_services/storage.dart'
-    as _i7;
-import 'package:kimikoe_app/services/supabase_services/update.dart'
-    as _i8;
-import 'package:kimikoe_app/services/supabase_services/utils.dart'
-    as _i9;
+import 'package:kimikoe_app/services/supabase_services/update.dart' as _i8;
+import 'package:kimikoe_app/services/supabase_services/utils.dart' as _i9;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i14;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i2;
@@ -217,7 +210,8 @@ class MockSupabaseFetch extends _i1.Mock implements _i5.Fetch {
       ) as _i2.SupabaseClient);
 
   @override
-  _i11.Future<List<Map<String, dynamic>>> fetchArtists() => (super.noSuchMethod(
+  _i11.Future<List<Map<String, dynamic>>> fetchArtistsList() =>
+      (super.noSuchMethod(
         Invocation.method(#fetchArtists, []),
         returnValue: _i11.Future<List<Map<String, dynamic>>>.value(
           <Map<String, dynamic>>[],
@@ -225,7 +219,7 @@ class MockSupabaseFetch extends _i1.Mock implements _i5.Fetch {
       ) as _i11.Future<List<Map<String, dynamic>>>);
 
   @override
-  _i11.Future<List<Map<String, dynamic>>> fetchSongs(int? groupId) =>
+  _i11.Future<List<Map<String, dynamic>>> fetchSongsList(int? groupId) =>
       (super.noSuchMethod(
         Invocation.method(#fetchSongs, [groupId]),
         returnValue: _i11.Future<List<Map<String, dynamic>>>.value(

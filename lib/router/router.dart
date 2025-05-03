@@ -18,10 +18,10 @@ import 'package:kimikoe_app/screens/posts/add_group.dart';
 import 'package:kimikoe_app/screens/posts/add_idol.dart';
 import 'package:kimikoe_app/screens/posts/add_song.dart';
 import 'package:kimikoe_app/screens/posts/edit_user.dart';
+import 'package:kimikoe_app/screens/search.dart';
 import 'package:kimikoe_app/screens/sign_in.dart';
 import 'package:kimikoe_app/screens/song_list.dart';
 import 'package:kimikoe_app/screens/user.dart';
-import 'package:kimikoe_app/search.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();

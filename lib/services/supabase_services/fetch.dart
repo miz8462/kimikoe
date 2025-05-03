@@ -6,7 +6,37 @@ class Fetch {
   Fetch(this.client);
   final SupabaseClient client;
 
-  Future<List<Map<String, dynamic>>> fetchArtists() async {
+  Future<Map<String, dynamic>> fetchIdol(int id) async {
+    try {
+      final response = await client
+          .from(TableName.idols)
+          .select()
+          .eq(ColumnName.id, id)
+          .single();
+      logger.i('アイドルを取得しました');
+      return response;
+    } catch (e) {
+      logger.e('アイドルの取得中にエラーが発生しました', error: e);
+      rethrow;
+    }
+  }
+
+    Future<Map<String, dynamic>> fetchSong(int id) async {
+    try {
+      final response = await client
+          .from(TableName.songs)
+          .select()
+          .eq(ColumnName.id, id)
+          .single();
+      logger.i('曲を取得しました');
+      return response;
+    } catch (e) {
+      logger.e('曲の取得中にエラーが発生しました', error: e);
+      rethrow;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> fetchArtistsList() async {
     try {
       final response = await client.from(TableName.artists).select();
       logger.i('アーティストのリストを取得しました');
@@ -17,7 +47,7 @@ class Fetch {
     }
   }
 
-  Future<List<Map<String, dynamic>>> fetchSongs(int groupId) async {
+  Future<List<Map<String, dynamic>>> fetchSongsList(int groupId) async {
     try {
       final response = await client
           .from(TableName.songs)

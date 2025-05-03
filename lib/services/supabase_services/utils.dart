@@ -16,7 +16,7 @@ class Utils {
   Future<List<Artist>> createArtistList() async {
     try {
       logger.i('Supabaseからアーティストデータを取得中...');
-      final response = await fetch.fetchArtists();
+      final response = await fetch.fetchArtistsList();
       logger.i('${response.length}件のアーティストデータをSupabaseから取得しました');
 
       final artists = response.map<Artist>((artist) {

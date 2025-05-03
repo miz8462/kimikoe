@@ -26,7 +26,7 @@ void main() {
     mockSupabaseStorage = MockSupabaseStorage();
 
     // モックの設定
-    when(mockSupabaseFetch.fetchArtists()).thenAnswer((_) async => []);
+    when(mockSupabaseFetch.fetchArtistsList()).thenAnswer((_) async => []);
     when(mockSupabaseStorage.fetchImageUrl(any)).thenReturn('');
 
     supabaseUtils =
@@ -47,7 +47,7 @@ void main() {
   group('createArtistList', () {
     test('アーティストのリストを取得', () async {
       // モックデータを設定
-      when(mockSupabaseFetch.fetchArtists()).thenAnswer(
+      when(mockSupabaseFetch.fetchArtistsList()).thenAnswer(
         (_) async => [
           {
             ColumnName.id: 1,
@@ -69,7 +69,7 @@ void main() {
     });
 
     test('createArtistListの例外処理', () async {
-      when(mockSupabaseFetch.fetchArtists())
+      when(mockSupabaseFetch.fetchArtistsList())
           .thenThrow(Exception('Fetch error'));
 
       final artists = await supabaseUtils.createArtistList();

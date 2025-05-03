@@ -20,7 +20,7 @@ final groupSongsProvider =
     final groupName = group.name;
     logger.i('Supabaseから $groupName の曲リストを取得中...');
     final service = ref.read(supabaseServicesProvider);
-    final response = await service.fetch.fetchSongs(groupId);
+    final response = await service.fetch.fetchSongsList(groupId);
 
     final songs = <Song>[];
 

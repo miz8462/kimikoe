@@ -29,9 +29,9 @@ class Search {
             '${ColumnName.id}, '
             '${ColumnName.title}, '
             '${ColumnName.lyrics}, '
-            'groups!inner(name)',
+            'groups!inner(${ColumnName.id}, ${ColumnName.name})',
           )
-          .ilike(ColumnName.title, '%$query%');
+          .or('title.ilike.%$query%,lyrics.ilike.%$query%');
       return response;
     } catch (e) {
       logger.d('曲名検索中にエラーが発生しました', error: e);
