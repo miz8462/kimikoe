@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kimikoe_app/models/widget_keys.dart';
 import 'package:kimikoe_app/services/image_picker_service.dart';
@@ -25,12 +26,19 @@ class _ImageInputState extends State<ImageInput> {
   late File _selectedImage;
   bool _hasEditingImage = true;
   late ImagePickerService _imagePickerService;
+  final _transformationController = TransformationController();
 
   @override
   void initState() {
     super.initState();
     _imagePickerService = widget.imagePickerService ?? ImagePickerServiceImpl();
     _selectedImage = File(widget.imageUrl);
+  }
+
+  @override
+  void dispose() {
+    _transformationController.dispose();
+    super.dispose();
   }
 
   Future<File?> _getImageFromMobileStorage() async {
@@ -40,9 +48,32 @@ class _ImageInputState extends State<ImageInput> {
       return null;
     }
 
+    final croppedImage = await ImageCropper().cropImage(
+      sourcePath: pickedImage.path,
+      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarTitle: '画像を切り抜き',
+          toolbarColor:
+              mounted ? Theme.of(context).colorScheme.primary : Colors.blue,
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: false,
+        ),
+        IOSUiSettings(
+          title: '画像を切り抜き',
+        ),
+      ],
+    );
+
+    if (!mounted || croppedImage == null) {
+      return null;
+    }
+
     setState(() {
-      _selectedImage = File(pickedImage.path);
+      _selectedImage = File(croppedImage.path);
       _hasEditingImage = false;
+      _transformationController.value = Matrix4.identity();
     });
 
     widget.onPickImage(_selectedImage);
@@ -59,24 +90,31 @@ class _ImageInputState extends State<ImageInput> {
       ),
       height: 250,
       width: double.infinity,
-      alignment: Alignment.center,
-      child: GestureDetector(
-        onTap: _getImageFromMobileStorage,
-        child: _hasEditingImage
-            ? Image(
-                key: Key(WidgetKeys.image),
-                image: NetworkImage(widget.imageUrl),
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: double.infinity,
-              )
-            : Image.file(
-                key: Key(WidgetKeys.image),
-                _selectedImage,
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: double.infinity,
-              ),
+      child: ClipRect(
+        child: GestureDetector(
+          onTap: _getImageFromMobileStorage,
+          child: InteractiveViewer(
+            minScale: 0.5,
+            maxScale: 4,
+            boundaryMargin: const EdgeInsets.all(100),
+            transformationController: _transformationController,
+            child: _hasEditingImage
+                ? Image(
+                    key: const Key(WidgetKeys.image),
+                    image: NetworkImage(widget.imageUrl),
+                    fit: BoxFit.contain,
+                    width: double.infinity,
+                    height: double.infinity,
+                  )
+                : Image.file(
+                    key: const Key(WidgetKeys.image),
+                    _selectedImage,
+                    fit: BoxFit.contain,
+                    width: double.infinity,
+                    height: double.infinity,
+                  ),
+          ),
+        ),
       ),
     );
   }
